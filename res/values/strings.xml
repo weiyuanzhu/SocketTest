@@ -9,5 +9,6 @@
     <string name="title_activity_loading_screen">N-Light</string>
     <string name="location">Location</string>
     <string name="status">status</string>
+    <string name="title_activity_panel_info">PanelInfo</string>
 
 </resources>

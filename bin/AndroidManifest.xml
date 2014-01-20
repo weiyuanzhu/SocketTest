@@ -25,11 +25,15 @@
         <activity
             android:name="mackwell.nlight.PanelListActivity"
             android:label="@string/title_activity_panel_list" >
-            
         </activity>
         <activity
             android:name="mackwell.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen" >
+            
+        </activity>
+        <activity
+            android:name="com.example.nclient.PanelInfo"
+            android:label="@string/title_activity_panel_info" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
