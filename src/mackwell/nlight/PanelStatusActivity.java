@@ -293,9 +293,10 @@ public class PanelStatusActivity extends Activity {
 		
 	};
 	
-	public void getOverallStatus(View v)
+	public void showPanalInfo(View v)
 	{
-		
+		Intent i = new Intent(this,PanelInfo.class);
+		startActivity(i);
 		
 	}
 	
