@@ -15,6 +15,7 @@ public class GetCmd {
 	
 	private static final int port = 500;
 	
+	private boolean closeFlag;
 	
 	private List<Integer> rxBuffer = null;
 	private List<Integer[]> eeprom = null;
@@ -27,15 +28,17 @@ public class GetCmd {
 	public GetCmd() {
 		super();
 		this.rxBuffer = new ArrayList<Integer>();
+		this.closeFlag = false;
 		
 		
 	}
 
-	public byte[] getCMD(String ip,char[] cmd)
+	public List<Integer> getCMD(String ip,char[] cmd)
 	
 	{
 		
 		byte[] rx = null;
+		
 		//thread id
 		//System.out.println("I am running on OverallStatus" + Thread.currentThread().getName());
 		
@@ -51,13 +54,16 @@ public class GetCmd {
 		
 		try {
 			// init socket and in/out stream
-			socket = new Socket(ip,port);
+			
+			socket = new Socket(ip,port);	
 			socket.setSoTimeout(0);
+			this.closeFlag = false;
+			
 			
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
 			in = socket.getInputStream();
    
-			System.out.println("\nConnect to: " + socket.getInetAddress() + ": "+  socket.getPort());
+			System.out.println("\nConnected to: " + socket.getInetAddress() + ": "+  socket.getPort());
 
 			// send command to panel
 			out.print(cmd);
@@ -67,12 +73,12 @@ public class GetCmd {
 			 *   Receive bytes from panel and put in rxBuffer arrayList
 			 */
 			
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 			
 			System.out.println("in.available()= "+ in.available());
 			
 			
-			int count = 0;
+			/*int count = 0;
 			while (count == 0) {
 				   count = in.available();
 				  }
@@ -84,19 +90,34 @@ public class GetCmd {
 			   readCount += in.read(rx, readCount, count - readCount);
 			}
 
+			*/
+			
+			int data = 0;
 			
 			
-			/*int data = 0;
-			
-			
-			while(in.available()>0)
+			while(closeFlag == false && socket.isClosed() == false)
 			{	
-				
+				if(in.available()>0)
+				{
 					data = in.read();	
-					rxBuffer.add(data);	
+			
+					rxBuffer.add(data);
+					if(rxBuffer.size()==16726)
+					{
+						this.closeFlag = true;
+							
+					}
+						
+					
 					//System.out.print(in.available() + " ");
+					
+				}
+				else
+				{
+					Thread.sleep(0,1000);
+				}
 				
-			}*/
+			}
 			
 		
 			
@@ -133,7 +154,7 @@ public class GetCmd {
 			}
 		}		
 
-		return rx;
+		return rxBuffer;
 	}
 	
 	

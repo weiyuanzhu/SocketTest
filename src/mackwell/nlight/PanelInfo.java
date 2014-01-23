@@ -30,7 +30,7 @@ public class PanelInfo extends Activity {
 		//System.out.println("I am running on activity------------" + Thread.currentThread().getName());
 		
 		rxBuffer = new ArrayList<Integer>();
-		getCmd = new GetCmd();
+		
 		
 		
 		
@@ -39,11 +39,11 @@ public class PanelInfo extends Activity {
 
 			@Override
 			public void handleMessage(Message msg) {
-				//System.out.println("Back to Main thread -------------------" + Thread.currentThread().getName());
+				System.out.println("Back to Main thread -------------------" + Thread.currentThread().getName());
 				//System.out.println("rx.length " + rx.length);
 				
 				//parse(rxBuffer);
-				rxBuffer.clear();
+				//rxBuffer.clear();
 			}
 			
 		};		
@@ -61,16 +61,18 @@ public class PanelInfo extends Activity {
 		
 		public void run(){
 			
+			getCmd = new GetCmd();
+			
 			char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
+			
+			char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
 
-			do {
-				
+			
+				rxBuffer.clear();
 				System.out.println("\n------------Retriving panal info----------");
-				rx = getCmd.getCMD("192.168.1.23",getConfig).clone();
-				System.out.println("\nrxBuffer.size = " + rx.length);
-				
-			} 
-			while (rx.length < 16527);
+				rxBuffer = getCmd.getCMD("192.168.1.23",getConfig);
+				System.out.println("\nrxBuffer.size = " + rxBuffer.size());
+			
 				
 					
 			Message msg = myHandler.obtainMessage();
