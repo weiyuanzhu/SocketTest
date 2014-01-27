@@ -16,8 +16,11 @@ import com.example.nclient.R;
 
 public class PanelInfo extends Activity {
 	
+	
+	
 	private GetCmd getCmd = null;
 	private Handler myHandler;
+	
 	private List<Integer> rxBuffer = null;
 	private byte[] rx = null;
 
@@ -70,7 +73,7 @@ public class PanelInfo extends Activity {
 			
 				rxBuffer.clear();
 				System.out.println("\n------------Retriving panal info----------");
-				rxBuffer = getCmd.getCMD("192.168.1.23",getConfig);
+				rxBuffer = getCmd.getCMD("192.168.1.23",getPackageTest);
 				System.out.println("\nrxBuffer.size = " + rxBuffer.size());
 			
 				
@@ -91,6 +94,13 @@ public class PanelInfo extends Activity {
 	public void getPanelInfo(View v)
 	{
 		new Thread(test).start();
+		
+	}
+	
+	public static void recall()
+	{
+		System.out.println("recall Test");
+		
 		
 	}
 }

@@ -8,7 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import mackwell.nlight.PanelInfo;
 
 public class GetCmd {
 	
@@ -57,6 +58,7 @@ public class GetCmd {
 			
 			socket = new Socket(ip,port);	
 			socket.setSoTimeout(0);
+			socket.setReceiveBufferSize(20000);
 			this.closeFlag = false;
 			
 			
@@ -105,6 +107,7 @@ public class GetCmd {
 					if(rxBuffer.size()==16726)
 					{
 						this.closeFlag = true;
+						PanelInfo.recall();
 							
 					}
 						
@@ -114,7 +117,8 @@ public class GetCmd {
 				}
 				else
 				{
-					Thread.sleep(0,1000);
+					//System.out.println(rxBuffer.size());
+					Thread.sleep(0,100);
 				}
 				
 			}
@@ -149,7 +153,6 @@ public class GetCmd {
 				}
 				
 			} catch (IOException ex) {
-				// TODO Auto-generated catch block
 				ex.printStackTrace();
 			}
 		}		
