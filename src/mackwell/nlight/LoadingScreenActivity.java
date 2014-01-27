@@ -8,7 +8,7 @@ import android.view.Menu;
 
 import com.example.nclient.R;
 
-public class LoadingScreen extends Activity {
+public class LoadingScreenActivity extends Activity {
 	
 	private static int delay = 3000;
 	private Handler loadHandler = null;
@@ -36,7 +36,7 @@ public class LoadingScreen extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			
-			Intent i = new Intent(LoadingScreen.this, PanelListActivity.class);
+			Intent i = new Intent(LoadingScreenActivity.this, PanelListActivity.class);
 			startActivity(i);
 			
 			finish();

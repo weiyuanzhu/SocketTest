@@ -28,7 +28,7 @@
             
         </activity>
         <activity
-            android:name="mackwell.nlight.LoadingScreen"
+            android:name="mackwell.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
