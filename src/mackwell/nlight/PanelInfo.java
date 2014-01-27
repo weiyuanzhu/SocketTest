@@ -3,7 +3,7 @@ package mackwell.nlight;
 import java.util.ArrayList;
 import java.util.List;
 
-import weiyuan.socket.GetCmd;
+import weiyuan.socket.*;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,15 +14,18 @@ import android.view.View;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends Activity {
+public class PanelInfo extends Activity  implements Connection.Delegation{
+
+	//panel stop and new line byte
+	static final int UART_STOP_BIT_H = 0x5A;
+	static final int UART_STOP_BIT_L = 0xA5;
+	static final int UART_NEW_LINE_H = 0x0D;
+	static final int UART_NEW_LINE_L = 0x0A;
 	
+	private Connection connection = null;
 	
-	
-	private GetCmd getCmd = null;
-	private Handler myHandler;
-	
-	private List<Integer> rxBuffer = null;
-	private byte[] rx = null;
+	private List<Integer> panalData = null; //
+
 
 	@SuppressLint("HandlerLeak")
 	@Override
@@ -30,26 +33,11 @@ public class PanelInfo extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel_info);
 		
-		//System.out.println("I am running on activity------------" + Thread.currentThread().getName());
+		//create connector
+		panalData = new ArrayList<Integer>();
+		connection = new Connection(this);
 		
-		rxBuffer = new ArrayList<Integer>();
-		
-		
-		
-		
-		myHandler = new Handler()
-		{
-
-			@Override
-			public void handleMessage(Message msg) {
-				System.out.println("Back to Main thread -------------------" + Thread.currentThread().getName());
-				//System.out.println("rx.length " + rx.length);
-				
-				//parse(rxBuffer);
-				//rxBuffer.clear();
-			}
-			
-		};		
+		connection.fetchData();
 		
 	}
 
@@ -59,48 +47,31 @@ public class PanelInfo extends Activity {
 		getMenuInflater().inflate(R.menu.panel_info, menu);
 		return true;
 	}
-	
-	Runnable test = new Runnable(){
-		
-		public void run(){
-			
-			getCmd = new GetCmd();
-			
-			char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
-			
-			char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
 
-			
-				rxBuffer.clear();
-				System.out.println("\n------------Retriving panal info----------");
-				rxBuffer = getCmd.getCMD("192.168.1.23",getPackageTest);
-				System.out.println("\nrxBuffer.size = " + rxBuffer.size());
-			
+	
+	//function for delegate interface
+	@Override
+	public void receive(List<Integer> rx) {
+		
+		panalData = new ArrayList<Integer>(rx);
+
+		connection.setIsClosed(true);
 				
-					
-			Message msg = myHandler.obtainMessage();
-			myHandler.sendMessage(msg);
+		if(this.panalData.size()< 16500)
+		{		
+			System.out.println("not complete " + this.panalData.size());
+			connection.fetchData();			
 		}
-	};
+		else {
+			//rxComplete = true;
+			//new Thread(parse).start();
+		}
+		
 
-	
-	private void parse(List<Integer> rx){
-		
-		//System.out.println("parsing--------------------------");
-		
+		System.out.println("Actual bytes received: " + panalData.size());
 		
 	}
 	
-	public void getPanelInfo(View v)
-	{
-		new Thread(test).start();
-		
-	}
 	
-	public static void recall()
-	{
-		System.out.println("recall Test");
-		
-		
-	}
+
 }

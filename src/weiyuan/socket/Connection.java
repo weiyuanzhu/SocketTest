@@ -14,13 +14,13 @@ public class Connection {
 	
 	
 	//interface for callback
-	public interface ConnectionDelegattion 
+	public interface Delegation 
 	{
 			void receive(List<Integer> rx);
 	}
 	
 	//private fields
-	private ConnectionDelegattion delegate;
+	private Delegation delegate;
 	
 	private int port;
 	
@@ -38,7 +38,7 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(ConnectionDelegattion delegator)
+	public Connection(Delegation delegator)
 	{
 		
 		this.isClosed = false;
@@ -102,12 +102,7 @@ public class Connection {
 				/*
 				 *   Receive bytes from panel and put in rxBuffer arrayList
 				 */
-				
-				//Thread.sleep(1000);
-				
-				System.out.println("in.available()= "+ in.available());
-				
-				
+		
 				/*int count = 0;
 				while (count == 0) {
 					   count = in.available();
