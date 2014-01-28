@@ -3,28 +3,28 @@ package mackwell.nlight;
 import java.util.ArrayList;
 import java.util.List;
 
-import weiyuan.socket.*;
+import weiyuan.socket.Connection;
+import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends Activity  implements Connection.Delegation{
+public class PanelInfo extends ListActivity  implements Connection.Delegation{
 
-	//panel stop and new line byte
-	static final int UART_STOP_BIT_H = 0x5A;
-	static final int UART_STOP_BIT_L = 0xA5;
-	static final int UART_NEW_LINE_H = 0x0D;
-	static final int UART_NEW_LINE_L = 0x0A;
 	
-	private Connection connection = null;
+	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
-	private List<Integer> panalData = null; //
+	private List<List<Integer>> panelData = null;  //all panel data (removed junk bytes)
+	private List<List<Integer>> eepRom = null;		//panel eeprom data
+	private List<List<Integer>> deviceList = null;	//device list
+	
+	private Connection connection = null;	
+	
+	
 
 
 	@SuppressLint("HandlerLeak")
@@ -33,11 +33,14 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel_info);
 		
+		//setup ListView adapter
+		
+	
 		//create connector
-		panalData = new ArrayList<Integer>();
+		rxBuffer = new ArrayList<Integer>();
 		connection = new Connection(this);
 		
-		connection.fetchData();
+		
 		
 	}
 
@@ -53,13 +56,13 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 	@Override
 	public void receive(List<Integer> rx) {
 		
-		panalData = new ArrayList<Integer>(rx);
+		rxBuffer = new ArrayList<Integer>(rx);
 
 		connection.setIsClosed(true);
 				
-		if(this.panalData.size()< 16500)
+		if(this.rxBuffer.size()< 16500)
 		{		
-			System.out.println("not complete " + this.panalData.size());
+			System.out.println("not complete " + this.rxBuffer.size());
 			connection.fetchData();			
 		}
 		else {
@@ -68,9 +71,43 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		}
 		
 
-		System.out.println("Actual bytes received: " + panalData.size());
+		System.out.println("Actual bytes received: " + rxBuffer.size());
+		
+		
 		
 	}
+	
+	public void parse(View v)
+	{
+		
+		panelData = DataParser.removeJunkBytes(rxBuffer);
+		eepRom = DataParser.getEepRom(panelData);
+		
+		System.out.println("================EEPROM========================");
+		
+		for(int i=0; i<eepRom.size();i++)
+		{
+			System.out.println("eepRom "+ i + ": \n" + eepRom.get(i));
+		}
+		
+		System.out.println("================Device List========================");
+		deviceList = DataParser.getDeviceList(panelData);
+		
+		
+		for(int i=0; i<deviceList.size();i++)
+		{
+			System.out.println("device: "+ i + " " + deviceList.get(i));
+		}
+		
+	}
+
+	public void fetchPanelInfo(View v)
+	{
+		connection.fetchData();
+		
+	}
+	
+	 
 	
 	
 

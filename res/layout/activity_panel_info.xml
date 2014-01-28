@@ -8,20 +8,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".PanelInfo" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <ListView
+        android:id="@+id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignParentRight="true"
+        android:onClick="parse"
+        android:text="ParsePanelInfo" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="14dp"
-        android:text="GetPanelInfo" 
-        android:onClick="getPanelInfo"/>
+        android:layout_alignLeft="@+id/android:list"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:onClick="fetchPanelInfo"
+        android:text="FetchPanelInfo" />
 
 </RelativeLayout>
