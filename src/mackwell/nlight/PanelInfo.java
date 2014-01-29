@@ -1,19 +1,21 @@
 package mackwell.nlight;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends ListActivity  implements Connection.Delegation{
+public class PanelInfo extends Activity  implements Connection.Delegation{
 
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
@@ -24,6 +26,9 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 	private Connection connection = null;	
 	
+	private Panel panel = null;
+	
+	private List<char[]> commandList;
 	
 
 
@@ -38,7 +43,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 		//create connector
 		rxBuffer = new ArrayList<Integer>();
-		connection = new Connection(this);
+		commandList = new ArrayList<char[]>();
 		
 		
 		
@@ -103,11 +108,24 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 
 	public void fetchPanelInfo(View v)
 	{
+		
+		char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
+		char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
+		
+		commandList.add(getConfig);
+		
+		connection = new Connection(this,commandList);
 		connection.fetchData();
 		
 	}
 	
-	 
+	public void getPanelInfo(View v) throws UnsupportedEncodingException
+	{
+		panel = new Panel(eepRom);
+		System.out.println("================Panel Info========================");
+		System.out.println(panel.toString());
+		
+	}
 	
 	
 
