@@ -12,6 +12,11 @@ import android.os.Handler;
 
 public class Connection {
 	
+	static final int UART_STOP_BIT_H = 0x5A;
+	static final int UART_STOP_BIT_L = 0xA5;
+	static final int UART_NEW_LINE_H = 0x0D;
+	static final int UART_NEW_LINE_L = 0x0A;
+	
 	
 	//interface for callback
 	public interface Delegation 
@@ -29,6 +34,7 @@ public class Connection {
 	private Socket socket;
 	
 	private List<Integer> rxBuffer; //buffer for receive data
+	
 
 	private List<char[]> commandList;
 
@@ -91,7 +97,7 @@ public class Connection {
 				try {
 					// init socket and in/out stream
 					
-					socket = new Socket("192.168.1.23",port);	
+					socket = new Socket("192.168.1.24",port);	
 					socket.setSoTimeout(0);
 					socket.setReceiveBufferSize(20000);
 					isClosed = false;
@@ -130,22 +136,29 @@ public class Connection {
 					while(!isClosed && !socket.isClosed())
 					{	
 						
-						if(rxBuffer.size()>23 && rxBuffer.get(rxBuffer.size()-23)==0xAE)   // check finished bit; to be changed 
+						if(in.available()==0 && !rxBuffer.isEmpty() && (data == UART_NEW_LINE_L) && 
+		        				rxBuffer.get(rxBuffer.size() - 2).equals(UART_NEW_LINE_H) &&
+		        				rxBuffer.get(rxBuffer.size() - 3).equals(UART_STOP_BIT_L) &&
+		        				rxBuffer.get(rxBuffer.size() - 4).equals(UART_STOP_BIT_H))   // check finished bit; to be changed 
 						{
-							System.out.println(rxBuffer.get(rxBuffer.size()-23));
+							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
 							delegate.receive(rxBuffer);
 							rxBuffer.clear();
 						}
 						
-						//keep listening while available until isClosed flag is set to true
+						
 						if(in.available()>0)
 						{
-							data = in.read();	
-							rxBuffer.add(data);						
+							data = in.read();
+							rxBuffer.add(data);
+		
 						}
+						
+						//keep listening while available until isClosed flag is set to true
+						
 						else
 						{
-							Thread.sleep(100);
+							Thread.sleep(0,100);
 						}				
 					}
 				

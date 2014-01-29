@@ -2,10 +2,12 @@ package mackwell.nlight;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
+import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -42,10 +44,6 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 	
 		//create connector
-		rxBuffer = new ArrayList<Integer>();
-		commandList = new ArrayList<char[]>();
-		
-		
 		
 	}
 
@@ -61,21 +59,15 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 	@Override
 	public void receive(List<Integer> rx) {
 		
-		rxBuffer = new ArrayList<Integer>(rx);
+		rxBuffer.addAll(rx);
 
 		connection.setIsClosed(true);
 				
-		if(this.rxBuffer.size()< 16500)
+		/*if(this.rxBuffer.size() > 15000)
 		{		
-			System.out.println("not complete " + this.rxBuffer.size());
-			connection.fetchData();			
-		}
-		else {
-			//rxComplete = true;
-			//new Thread(parse).start();
-		}
+			connection.setIsClosed(true);		
+		}*/
 		
-
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		
 		
@@ -108,11 +100,16 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 
 	public void fetchPanelInfo(View v)
 	{
+		rxBuffer = new ArrayList<Integer>();
+		commandList = new ArrayList<char[]>();
 		
-		char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
-		char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
+		//char[] getPackage0 = new char[] {2, 165, 64, 0, 32, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getPackage1 = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getPackage2 = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
 		
-		commandList.add(getConfig);
+		commandList = CommandFactory.getPanelInfo();
+		//commandList.add(getPackage1);
 		
 		connection = new Connection(this,commandList);
 		connection.fetchData();
@@ -127,6 +124,12 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 	}
 	
-	
+	public void command (View v)
+	{
+		commandList = CommandFactory.getPanelInfo();
+		for (char[] c : commandList){
+			System.out.println(c);
+		}
+	}
 
 }
