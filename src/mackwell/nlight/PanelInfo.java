@@ -2,7 +2,6 @@ package mackwell.nlight;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import weiyuan.models.Panel;
@@ -12,13 +11,19 @@ import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.nclient.R;
 
 public class PanelInfo extends Activity  implements Connection.Delegation{
+	
+	private Handler progressHandler;
 
+	private ProgressBar progressBar = null;
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
@@ -42,10 +47,32 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel_info);
 		
-		//setup ListView adapter
 		
-		packageCount = 0;
-		//create connector
+		progressHandler = new Handler()
+		{
+
+			@Override
+			public void handleMessage(Message msg) {
+				
+				progressBar.setProgress(msg.arg1);
+				
+				if(msg.arg1 == 16)
+				{
+					progressBar.setVisibility(View.GONE);
+					
+				}
+				
+			}
+			
+			
+		};
+		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		progressBar.setMax(16);
+		
+		
+		
 		
 	}
 
@@ -63,6 +90,12 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 		packageCount += 1 ;
 		
+		Message msg = progressHandler.obtainMessage();
+		msg.arg1 = packageCount;
+		
+		progressHandler.sendMessage(msg);
+		
+		
 		rxBuffer.addAll(rx);
 
 		connection.setIsClosed(true);
@@ -76,6 +109,7 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		if(packageCount == 16)
 		{
 			connection.closeConnection();
+			//progressBar.setVisibility(View.INVISIBLE);
 			
 		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
@@ -110,6 +144,9 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 
 	public void fetchPanelInfo(View v)
 	{
+		packageCount = 0;
+		progressBar.setVisibility(View.VISIBLE);
+		
 		rxBuffer = new ArrayList<Integer>();
 		commandList = new ArrayList<char[]>();
 		

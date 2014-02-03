@@ -115,21 +115,20 @@ public class Connection {
 				try {
 					// init socket and in/out stream
 					
+					isClosed = false;
+					
 					if(socket == null ||  socket.isClosed())
 					{
 						socket = new Socket("192.168.1.24",port);	
 						socket.setSoTimeout(0);
 						socket.setReceiveBufferSize(20000);
+						out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
+						in = socket.getInputStream();
+						
+						System.out.println("\nConnected to: " + socket.getInetAddress() + ": "+  socket.getPort());
 					}
 					
-					isClosed = false;
-					
-					
-					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
-					in = socket.getInputStream();
-		   
-					System.out.println("\nConnected to: " + socket.getInetAddress() + ": "+  socket.getPort());
-	
+
 					// send command to panel
 					out.print(command);
 					out.flush();

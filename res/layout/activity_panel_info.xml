@@ -19,16 +19,6 @@
         android:text="FetchPanelInfo" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="14dp"
-        android:onClick="parse"
-        android:text="ParsePanelInfo" />
-
-    <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,5 +37,26 @@
         android:layout_marginTop="18dp"
         android:text="CommandTest" 
         android:onClick="command"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button4"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="20dp"
+        android:onClick="parse"
+        android:text="ParsePanelInfo" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/button4"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>"
+
+"
 
 </RelativeLayout>
