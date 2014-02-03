@@ -2,28 +2,33 @@ package mackwell.nlight;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends Activity  implements Connection.Delegation{
+public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 	private Handler progressHandler;
 
 	private ProgressBar progressBar = null;
+	
+	private List<Map<String,Object>>  data;
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
@@ -73,6 +78,11 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 		
 		
+		//setup list view
+		
+		SimpleAdapter sa = new SimpleAdapter(this, getData(), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+		
+		setListAdapter(sa);
 		
 	}
 
@@ -163,20 +173,34 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 	}
 	
-	public void getPanelInfo(View v) throws UnsupportedEncodingException
+	public void getPanelInfo() throws UnsupportedEncodingException
 	{
 		panel = new Panel(eepRom);
 		System.out.println("================Panel Info========================");
 		System.out.println(panel.toString());
 		
 	}
-	
-	public void command (View v)
-	{
-		commandList = CommandFactory.getPanelInfo();
-		for (char[] c : commandList){
-			System.out.println(c);
-		}
-	}
 
+	public List<Map<String,Object>> getData()
+	{
+		data = new ArrayList<Map<String,Object>>();
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		map.put("text1", "text1");
+		map.put("text2", "test2");
+	
+		data.add(map);
+		
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "text2");
+		map.put("text2", "test2");
+	
+		data.add(map);
+		
+		return data;
+	}
+	
+	
 }
