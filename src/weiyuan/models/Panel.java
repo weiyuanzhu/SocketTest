@@ -36,7 +36,6 @@ public class Panel {
 	}
 	
 	
-	
 	private byte[] getBytes(List<Integer> list)
 	{
 		byte[] temp = new byte[list.size()];
@@ -55,5 +54,49 @@ public class Panel {
 		return description;
 			
 	}
+
+
+	//getters
+	
+	public String getPanelLocation() {
+		return panelLocation;
+	}
+
+
+	public String getContact() {
+		return contact;
+	}
+
+
+	public String getTel() {
+		return tel;
+	}
+
+
+	public String getMobile() {
+		return mobile;
+	}
+
+
+	public String getVersion() {
+		return version;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public Long getSerialNumber() {
+		return serialNumber;
+	}
+
+
+	public BigInteger getGtin() {
+		return gtin;
+	}
+	
+	
 	
 }

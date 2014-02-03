@@ -25,6 +25,7 @@ import com.example.nclient.R;
 public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 	private Handler progressHandler;
+	private Handler listUpdateHandler;
 
 	private ProgressBar progressBar = null;
 	
@@ -39,6 +40,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	private Connection connection = null;	
 	
 	private Panel panel = null;
+	private SimpleAdapter sa;
 	
 	private List<char[]> commandList;
 	
@@ -72,6 +74,28 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			
 		};
 		
+		listUpdateHandler = new Handler()
+		{
+
+			@Override
+			public void handleMessage(Message msg) {
+				
+				try {
+					data = getData(new Panel(eepRom));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				sa = new SimpleAdapter(PanelInfo.this, data, R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+				
+				setListAdapter(sa);
+			
+			}
+			
+			
+		};
+		
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		
 		progressBar.setMax(16);
@@ -80,7 +104,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 		//setup list view
 		
-		SimpleAdapter sa = new SimpleAdapter(this, getData(), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+		sa = new SimpleAdapter(this, getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
 		
 		setListAdapter(sa);
 		
@@ -121,6 +145,8 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			connection.closeConnection();
 			//progressBar.setVisibility(View.INVISIBLE);
 			
+			parse();
+			
 		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		
@@ -128,7 +154,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 	}
 	
-	public void parse(View v)
+	public void parse()
 	{
 		
 		panelData = DataParser.removeJunkBytes(rxBuffer);
@@ -149,6 +175,9 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		{
 			System.out.println("device: "+ i + " " + deviceList.get(i));
 		}
+		
+		Message msg = listUpdateHandler.obtainMessage();
+		listUpdateHandler.sendMessage(msg);
 		
 	}
 
@@ -173,31 +202,57 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 	}
 	
-	public void getPanelInfo() throws UnsupportedEncodingException
+	public Panel getPanel()
 	{
-		panel = new Panel(eepRom);
+		try {
+			panel = new Panel(eepRom);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("================Panel Info========================");
 		System.out.println(panel.toString());
 		
+		return panel;
+		
 	}
 
-	public List<Map<String,Object>> getData()
+	public List<Map<String,Object>> getData(Panel panel)
 	{
+		
 		data = new ArrayList<Map<String,Object>>();
 		
-		Map<String,Object> map = new HashMap<String,Object>();
+		if(panel == null)
+		{
+					
+			Map<String,Object> map = new HashMap<String,Object>();
+			
+			map.put("text1", "Location");
+			map.put("text2", "**");
 		
-		map.put("text1", "text1");
-		map.put("text2", "test2");
-	
-		data.add(map);
+			data.add(map);
+			
+			map = new HashMap<String,Object>();
+			
+			map.put("text1", "Contact");
+			map.put("text2", "**");
 		
-		map = new HashMap<String,Object>();
-		
-		map.put("text1", "text2");
-		map.put("text2", "test2");
-	
-		data.add(map);
+			data.add(map);
+		}
+		else
+		{
+			Map<String,Object> map = new HashMap<String,Object>();
+			
+			map.put("text1", "Location");
+			map.put("text2", panel.getPanelLocation());
+			data.add(map);
+			
+			map.put("text1", "Contact");
+			map.put("text2", panel.getContact());
+			data.add(map);
+			
+			
+		}
 		
 		return data;
 	}
