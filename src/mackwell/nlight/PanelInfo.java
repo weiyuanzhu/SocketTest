@@ -1,20 +1,29 @@
 package mackwell.nlight;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
+import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends ListActivity  implements Connection.Delegation{
+public class PanelInfo extends Activity  implements Connection.Delegation{
+	
+	private Handler progressHandler;
 
+	private ProgressBar progressBar = null;
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
@@ -24,6 +33,11 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 	private Connection connection = null;	
 	
+	private Panel panel = null;
+	
+	private List<char[]> commandList;
+	
+	private int packageCount;
 	
 
 
@@ -33,12 +47,30 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel_info);
 		
-		//setup ListView adapter
 		
-	
-		//create connector
-		rxBuffer = new ArrayList<Integer>();
-		connection = new Connection(this);
+		progressHandler = new Handler()
+		{
+
+			@Override
+			public void handleMessage(Message msg) {
+				
+				progressBar.setProgress(msg.arg1);
+				
+				if(msg.arg1 == 16)
+				{
+					progressBar.setVisibility(View.GONE);
+					
+				}
+				
+			}
+			
+			
+		};
+		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		progressBar.setMax(16);
+		
 		
 		
 		
@@ -56,21 +88,30 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	@Override
 	public void receive(List<Integer> rx) {
 		
-		rxBuffer = new ArrayList<Integer>(rx);
+		packageCount += 1 ;
+		
+		Message msg = progressHandler.obtainMessage();
+		msg.arg1 = packageCount;
+		
+		progressHandler.sendMessage(msg);
+		
+		
+		rxBuffer.addAll(rx);
 
 		connection.setIsClosed(true);
 				
-		if(this.rxBuffer.size()< 16500)
+		/*if(this.rxBuffer.size() > 15000)
 		{		
-			System.out.println("not complete " + this.rxBuffer.size());
-			connection.fetchData();			
-		}
-		else {
-			//rxComplete = true;
-			//new Thread(parse).start();
-		}
+			connection.setIsClosed(true);		
+		}*/
 		
-
+		
+		if(packageCount == 16)
+		{
+			connection.closeConnection();
+			//progressBar.setVisibility(View.INVISIBLE);
+			
+		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		
 		
@@ -103,12 +144,39 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 
 	public void fetchPanelInfo(View v)
 	{
+		packageCount = 0;
+		progressBar.setVisibility(View.VISIBLE);
+		
+		rxBuffer = new ArrayList<Integer>();
+		commandList = new ArrayList<char[]>();
+		
+		//char[] getPackage0 = new char[] {2, 165, 64, 0, 32, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getPackage1 = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getPackage2 = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
+		//char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
+		
+		commandList = CommandFactory.getPanelInfo();
+		//commandList.add(getPackage1);
+		
+		connection = new Connection(this,commandList);
 		connection.fetchData();
 		
 	}
 	
-	 
+	public void getPanelInfo(View v) throws UnsupportedEncodingException
+	{
+		panel = new Panel(eepRom);
+		System.out.println("================Panel Info========================");
+		System.out.println(panel.toString());
+		
+	}
 	
-	
+	public void command (View v)
+	{
+		commandList = CommandFactory.getPanelInfo();
+		for (char[] c : commandList){
+			System.out.println(c);
+		}
+	}
 
 }
