@@ -32,6 +32,8 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 	
 	private List<char[]> commandList;
 	
+	private int packageCount;
+	
 
 
 	@SuppressLint("HandlerLeak")
@@ -42,7 +44,7 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 		
 		//setup ListView adapter
 		
-	
+		packageCount = 0;
 		//create connector
 		
 	}
@@ -59,6 +61,8 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 	@Override
 	public void receive(List<Integer> rx) {
 		
+		packageCount += 1 ;
+		
 		rxBuffer.addAll(rx);
 
 		connection.setIsClosed(true);
@@ -68,6 +72,12 @@ public class PanelInfo extends Activity  implements Connection.Delegation{
 			connection.setIsClosed(true);		
 		}*/
 		
+		
+		if(packageCount == 16)
+		{
+			connection.closeConnection();
+			
+		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		
 		

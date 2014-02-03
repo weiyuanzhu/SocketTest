@@ -76,6 +76,24 @@ public class Connection {
 		
 	}
 
+	public void closeConnection()
+	{
+		try {
+			if(socket != null)  
+			{		
+				out.close();
+				in.close();
+				socket.close();			
+			}
+			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+	}
+	
+	
 	/*	runnable for thread
 	 *	thread will keep listening on socket.inputstream until received data is complete
 	 *	and then calls its delegate to 
@@ -97,9 +115,13 @@ public class Connection {
 				try {
 					// init socket and in/out stream
 					
-					socket = new Socket("192.168.1.24",port);	
-					socket.setSoTimeout(0);
-					socket.setReceiveBufferSize(20000);
+					if(socket == null ||  socket.isClosed())
+					{
+						socket = new Socket("192.168.1.24",port);	
+						socket.setSoTimeout(0);
+						socket.setReceiveBufferSize(20000);
+					}
+					
 					isClosed = false;
 					
 					
@@ -179,7 +201,9 @@ public class Connection {
 				}
 				finally
 				{		
-					try {
+					
+					System.out.println("Package recieve finished");
+					/*try {
 						if(socket != null)  
 						{		
 							out.close();
@@ -189,7 +213,7 @@ public class Connection {
 						
 					} catch (IOException ex) {
 						ex.printStackTrace();
-					}
+					}*/
 				}		
 		
 			}
