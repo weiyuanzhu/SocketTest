@@ -65,7 +65,8 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 				
 				if(msg.arg1 == 16)
 				{
-					progressBar.setVisibility(View.GONE);
+					progressBar.setProgress(0);
+					progressBar.setVisibility(View.INVISIBLE);
 					
 				}
 				
@@ -222,37 +223,51 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 		data = new ArrayList<Map<String,Object>>();
 		
-		if(panel == null)
-		{
-					
-			Map<String,Object> map = new HashMap<String,Object>();
 			
-			map.put("text1", "Location");
-			map.put("text2", "**");
+		Map<String,Object> map = new HashMap<String,Object>();
+			
+		map.put("text1", "Location");
+		map.put("text2", panel==null? "n/a" : panel.getPanelLocation());
 		
-			data.add(map);
-			
-			map = new HashMap<String,Object>();
-			
-			map.put("text1", "Contact");
-			map.put("text2", "**");
+		data.add(map);
+		map = new HashMap<String,Object>();
 		
-			data.add(map);
-		}
-		else
-		{
-			Map<String,Object> map = new HashMap<String,Object>();
+		map.put("text1", "Contact");
+		map.put("text2", panel==null? "n/a" : panel.getContact());
+		
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Tel:");
+		map.put("text2", panel==null? "n/a" : panel.getTel());
 			
-			map.put("text1", "Location");
-			map.put("text2", panel.getPanelLocation());
-			data.add(map);
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Mobile:");
+		map.put("text2", panel==null? "n/a" : panel.getMobile());
 			
-			map.put("text1", "Contact");
-			map.put("text2", panel.getContact());
-			data.add(map);
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "SerialNumber:");
+		map.put("text2", panel==null? "n/a" : panel.getSerialNumber());
 			
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "GTIN:");
+		map.put("text2", panel==null? "n/a" : panel.getGtin());
 			
-		}
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "FirmWare Version:");
+		map.put("text2", panel==null? "n/a" : panel.getVersion());
+			
+		data.add(map);
+	
+
 		
 		return data;
 	}
