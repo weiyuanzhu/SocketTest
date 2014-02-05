@@ -30,17 +30,18 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 
 	private ProgressBar progressBar = null;
 	
-	private List<Map<String,Object>>  data;
+	private List<Map<String,Object>>  listDataSource; //data for listview
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
 	private List<List<Integer>> panelData = null;  //all panel data (removed junk bytes)
-	private List<List<Integer>> eepRom = null;		//panel eeprom data
-	private List<List<Integer>> deviceList = null;	//device list
+	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
+	private List<List<Integer>> deviceList = null;	//device list (bytes)
 	
 	private Connection connection = null;	
 	
 	private Panel panel = null;
+	
 	private SimpleAdapter sa;
 	
 	private List<char[]> commandList;
@@ -82,14 +83,9 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			@Override
 			public void handleMessage(Message msg) {
 				
-				try {
-					data = getData(new Panel(eepRom));
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				listDataSource = getData(panel);
 				
-				sa = new SimpleAdapter(PanelInfo.this, data, R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+				sa = new SimpleAdapter(PanelInfo.this, listDataSource, R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
 				
 				setListAdapter(sa);
 			
@@ -196,6 +192,14 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			System.out.println("device: "+ i + " " + deviceList.get(i));
 		}
 		
+		
+		try {
+			panel = new Panel (eepRom,deviceList);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Message msg = listUpdateHandler.obtainMessage();
 		listUpdateHandler.sendMessage(msg);
 		
@@ -222,25 +226,11 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 	}
 	
-	public Panel getPanel()
-	{
-		try {
-			panel = new Panel(eepRom);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("================Panel Info========================");
-		System.out.println(panel.toString());
-		
-		return panel;
-		
-	}
 
 	public List<Map<String,Object>> getData(Panel panel)
 	{
 		
-		data = new ArrayList<Map<String,Object>>();
+		listDataSource = new ArrayList<Map<String,Object>>();
 		
 			
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -248,63 +238,59 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		map.put("text1", "Location");
 		map.put("text2", panel==null? "n/a" : panel.getPanelLocation());
 		
-		data.add(map);
+		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "SerialNumber:");
 		map.put("text2", panel==null? "n/a" : panel.getSerialNumber());
 			
-		data.add(map);
+		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "GTIN:");
 		map.put("text2", panel==null? "n/a" : panel.getGtin());
 			
-		data.add(map);
+		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Contact");
 		map.put("text2", panel==null? "n/a" : panel.getContact());
 		
-		data.add(map);
+		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Tel:");
 		map.put("text2", panel==null? "n/a" : panel.getTel());
 			
-		data.add(map);
+		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Mobile:");
 		map.put("text2", panel==null? "n/a" : panel.getMobile());
 			
-		data.add(map);
+		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "FirmWare Version:");
 		map.put("text2", panel==null? "n/a" : panel.getVersion());
 			
-		data.add(map);
+		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Report Usage:");
 		map.put("text2", panel==null? "n/a" : panel.getReportUsage());
 			
-		data.add(map);
+		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Passcode:");
 		map.put("text2", panel==null? "n/a" : panel.getPasscode());
 			
-		data.add(map);
-		
-		
+		listDataSource.add(map);
 	
-
-		
-		return data;
+		return listDataSource;
 	}
 	
 	

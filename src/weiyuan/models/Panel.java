@@ -3,12 +3,14 @@ package weiyuan.models;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Panel {
 	
 	private static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
 	
+	private List<Loop> loops;
 	
 	private String panelLocation;
 	private String contact;
@@ -22,9 +24,13 @@ public class Panel {
 	private Long serialNumber;
 	private BigInteger gtin;
 	
+	private int deviceNumber;
+	
 
-	public Panel(List<List<Integer>> eepRom) throws UnsupportedEncodingException
+	public Panel(List<List<Integer>> eepRom, List<List<Integer>> deviceList) throws UnsupportedEncodingException
 	{
+		loops = new ArrayList<Loop>();
+		
 		this.panelLocation = new String(getBytes(eepRom.get(60)),"UTF-8");
 		
 		String con = new String(getBytes(eepRom.get(61)),"UTF-8");
@@ -55,7 +61,14 @@ public class Panel {
 		
 		this.reportUsage = (new DecimalFormat("#.#####").format(reportUsage / FLASH_MEMORY) +"%"); // update report usage
 		
-
+		System.out.println("================Panel Info========================");
+		System.out.println(this.toString());
+		
+		loops.add(new Loop(deviceList));
+		
+		
+		
+		
 	}
 	
 	
@@ -74,7 +87,7 @@ public class Panel {
 	public String toString()
 	{
 		String description = "\nLocation: " + panelLocation + "\ncontact: " + contact + "\nTel: " + tel + "\nSerialNumber: " + serialNumber + "\nGTIN: " + gtin + "\nVersion: " + version
-				+ "Report Usage: " + reportUsage + "Passcode: " + passcode;
+				+ "\nReport Usage: " + reportUsage + "\nPasscode: " + passcode;
 		return description;
 			
 	}
@@ -130,6 +143,24 @@ public class Panel {
 	public String getReportUsage() {
 		return reportUsage;
 	}
+
+
+	public int getDeviceNumber() {
+		
+		if(!loops.isEmpty()){
+			
+			for (int i = 0; i<loops.size(); i++)
+			{
+				deviceNumber += loops.get(i).getDeviceNumber();
+			}
+		}
+		
+		
+		return deviceNumber;
+	}
+
+
+
 	
 	
 	
