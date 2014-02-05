@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Connection {
 	}
 	
 	//private fields
-	private Delegation delegate;
+	private WeakReference<Delegation> weakDelegate;
 	
 	private int port;
 	
@@ -51,7 +52,7 @@ public class Connection {
 		this.isClosed = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
-		this.delegate = delegate;
+		this.weakDelegate = new WeakReference<Delegation>(delegate);
 		this.commandList = commandList;
 		
 	}
@@ -163,7 +164,7 @@ public class Connection {
 		        				rxBuffer.get(rxBuffer.size() - 4).equals(UART_STOP_BIT_H))   // check finished bit; to be changed 
 						{
 							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
-							delegate.receive(rxBuffer);
+							weakDelegate.get().receive(rxBuffer);
 							rxBuffer.clear();
 						}
 						

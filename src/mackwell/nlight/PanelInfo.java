@@ -12,6 +12,7 @@ import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -110,6 +111,24 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		setListAdapter(sa);
 		
 	}
+	
+	
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+		
+		if (newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE) {
+	           // Nothing need to be done here
+	            
+	        } else {
+	           // Nothing need to be done here
+	        }
+		
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -230,6 +249,19 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		map.put("text2", panel==null? "n/a" : panel.getPanelLocation());
 		
 		data.add(map);
+		
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "SerialNumber:");
+		map.put("text2", panel==null? "n/a" : panel.getSerialNumber());
+			
+		data.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "GTIN:");
+		map.put("text2", panel==null? "n/a" : panel.getGtin());
+			
+		data.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Contact");
@@ -248,24 +280,27 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		map.put("text2", panel==null? "n/a" : panel.getMobile());
 			
 		data.add(map);
-		map = new HashMap<String,Object>();
-		
-		map.put("text1", "SerialNumber:");
-		map.put("text2", panel==null? "n/a" : panel.getSerialNumber());
-			
-		data.add(map);
-		map = new HashMap<String,Object>();
-		
-		map.put("text1", "GTIN:");
-		map.put("text2", panel==null? "n/a" : panel.getGtin());
-			
-		data.add(map);
+	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "FirmWare Version:");
 		map.put("text2", panel==null? "n/a" : panel.getVersion());
 			
 		data.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Report Usage:");
+		map.put("text2", panel==null? "n/a" : panel.getReportUsage());
+			
+		data.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Passcode:");
+		map.put("text2", panel==null? "n/a" : panel.getPasscode());
+			
+		data.add(map);
+		
+		
 	
 
 		
