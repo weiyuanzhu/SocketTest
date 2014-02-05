@@ -40,12 +40,12 @@ public class Panel {
 		
 		this.version = new String(getBytes(eepRom.get(13)),0,16,"UTF-8");
 		
-		this.serialNumber = eepRom.get(3).get(9) + eepRom.get(3).get(9) * 256 + eepRom.get(3).get(9) * 65536 + 
-				eepRom.get(3).get(9) * 16777216L;
+		this.serialNumber = eepRom.get(3).get(9) + eepRom.get(3).get(8) * 256 + eepRom.get(3).get(7) * 65536 + 
+				eepRom.get(3).get(6) * 16777216L;
 		
-		this.gtin = BigInteger.valueOf(eepRom.get(3).get(9) + eepRom.get(3).get(9) * 256 + 
-				eepRom.get(3).get(9) * 65536 + eepRom.get(3).get(9) * 16777216L + 
-				eepRom.get(3).get(9) * 4294967296L + eepRom.get(3).get(9) * 1099511627776L);
+		this.gtin = BigInteger.valueOf(eepRom.get(3).get(5) + eepRom.get(3).get(4) * 256 + 
+				eepRom.get(3).get(3) * 65536 + eepRom.get(3).get(2) * 16777216L + 
+				eepRom.get(3).get(1) * 4294967296L + eepRom.get(3).get(0) * 1099511627776L);
 	
 		
 		this.passcode = String.valueOf(eepRom.get(51).get(0) * 256 + eepRom.get(51).get(1));
