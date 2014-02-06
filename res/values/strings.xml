@@ -10,5 +10,7 @@
     <string name="location">Location</string>
     <string name="status">status</string>
     <string name="title_activity_panel_info">PanelInfo</string>
+    <string name="title_activity_device_list">DeviceList</string>
+    <string name="title_activity_device_info">DeviceInfoActivity</string>
 
 </resources>

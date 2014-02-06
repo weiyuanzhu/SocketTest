@@ -6,17 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PanelInfo" >
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:onClick="fetchPanelInfo"
-        android:text="FetchPanelInfo" />
+    tools:context=".PanelInfoActivity" >
 
     <ListView
         android:id="@+id/android:list"
@@ -37,6 +27,27 @@
         android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_toRightOf="@+id/button1"
+        android:text="devices" 
+        android:onClick="showDeviceList"/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/android:list"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="32dp"
+        android:onClick="fetchPanelInfo"
+        android:text="FetchPanelInfo" 
+        />
 
 "
 

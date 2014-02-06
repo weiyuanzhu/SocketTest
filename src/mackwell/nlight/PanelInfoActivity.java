@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weiyuan.models.Loop;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +25,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
 
-public class PanelInfo extends ListActivity  implements Connection.Delegation{
+public class PanelInfoActivity extends ListActivity  implements Connection.Delegation{
 	
 	private Handler progressHandler;
 	private Handler listUpdateHandler;
@@ -42,7 +44,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	
 	private Panel panel = null;
 	
-	private SimpleAdapter sa;
+	private SimpleAdapter simpleAdapter;
 	
 	private List<char[]> commandList;
 	
@@ -83,11 +85,19 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			@Override
 			public void handleMessage(Message msg) {
 				
+				try {
+					panel = new Panel (eepRom,deviceList);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				listDataSource = getData(panel);
 				
-				sa = new SimpleAdapter(PanelInfo.this, listDataSource, R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+				simpleAdapter = new SimpleAdapter(PanelInfoActivity.this, listDataSource, R.layout.panel_info_row, 
+						new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
 				
-				setListAdapter(sa);
+				setListAdapter(simpleAdapter);
 			
 			}
 			
@@ -102,9 +112,9 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		
 		//setup list view
 		
-		sa = new SimpleAdapter(this, getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+		simpleAdapter = new SimpleAdapter(this, getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
 		
-		setListAdapter(sa);
+		setListAdapter(simpleAdapter);
 		
 	}
 	
@@ -163,6 +173,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 			
 			parse();
 			
+			
 		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		
@@ -191,15 +202,7 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 		{
 			System.out.println("device: "+ i + " " + deviceList.get(i));
 		}
-		
-		
-		try {
-			panel = new Panel (eepRom,deviceList);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		Message msg = listUpdateHandler.obtainMessage();
 		listUpdateHandler.sendMessage(msg);
 		
@@ -294,4 +297,17 @@ public class PanelInfo extends ListActivity  implements Connection.Delegation{
 	}
 	
 	
+	//button --> device list
+	public void showDeviceList(View v){
+		
+		Intent intent = new Intent(this, DeviceListActivity.class);
+
+		if(panel!=null){
+			Loop loop1 = panel.getLoop();
+			intent.putExtra("loop",loop1);   
+		}
+		
+		startActivity(intent);
+		
+	}
 }

@@ -3,7 +3,10 @@ package weiyuan.models;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Device {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Device  implements Parcelable{
 	//05 Feb 2014
 	
 	
@@ -47,8 +50,22 @@ public class Device {
 
 	@Override
 	public String toString() {
-		String deviceStr = "Address: " + address + "FS: " + failureStatus ;
+		String deviceStr = "Address: " + address + " FS: " + failureStatus  + " serialNumber: " + serialNumber + " GTIN: " + GTIN ;
 		return deviceStr;
+		
+	}
+
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
 		
 	}
 	
