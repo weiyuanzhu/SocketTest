@@ -1,0 +1,126 @@
+package mackwell.nlight;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import weiyuan.models.Device;
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import com.example.nclient.R;
+
+public class DeviceInfoActivity extends ListActivity {
+	
+	private TextView title;
+	
+	private SimpleAdapter simpleAdapter;
+	
+	private List<Map<String,Object>> listDataSource;
+	
+	private Device devcice;
+	
+	
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_device_info);
+		
+		title = (TextView) findViewById(R.id.devicetitle);
+		
+		
+		
+		String device = getIntent().getStringExtra("device");
+		
+		simpleAdapter = new SimpleAdapter(this, getData(devcice), R.layout.device_info_row, 
+				new String[] {"text1","text2"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+		
+		
+		title.setText(device);
+		
+		setListAdapter(simpleAdapter);
+		
+		
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.device_info, menu);
+		return true;
+	}
+	
+	public List<Map<String,Object>> getData(Device device)
+	{
+		
+		listDataSource = new ArrayList<Map<String,Object>>();
+		
+			
+		Map<String,Object> map = new HashMap<String,Object>();
+			
+		map.put("text1", "Address");
+		map.put("text2", device==null? "n/a" : "-");
+		
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "SerialNumber:");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "GTIN:");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Location");
+		map.put("text2", device==null? "n/a" : "-");
+		
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Emergendy mode");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Emergency Status");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+	
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Failure Status");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Battery Level");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Communication Status");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+	
+		return listDataSource;
+	}
+	
+
+}

@@ -68,16 +68,31 @@ public class DataParser {
 	}
 	
 	
-	public static List<List<Integer>> getDeviceList(List<List<Integer>> parsedData)
+	public static List<List<List<Integer>>> getDeviceList(List<List<Integer>> parsedData)
 	{
-		List<List<Integer>> deviceList = new ArrayList<List<Integer>>();
+		List<List<List<Integer>>> deviceList = new ArrayList<List<List<Integer>>>();
+		List<List<Integer>> loop1= new ArrayList<List<Integer>>();
+		List<List<Integer>> loop2= new ArrayList<List<Integer>>();
+		
+		deviceList.add(loop1);
+		deviceList.add(loop2);
+		
+		
 		
 		for(int i=16; i<parsedData.size() ;i++)
 		{			
-			deviceList.add(parsedData.get(i));			
+			int address = parsedData.get(i).get(0) / 100;
+			
+			if(address == 0)
+			{
+				loop1.add(parsedData.get(i));	
+			}
+			else loop2.add(parsedData.get(i));
 		}
 		
-		System.out.println("Device Number: " + deviceList.size());
+		
+		
+		System.out.println("Device Number: " + (deviceList.get(0).size()+deviceList.get(1).size()));
 		return deviceList;
 		
 		

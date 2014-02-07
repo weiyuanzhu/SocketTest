@@ -38,7 +38,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 	
 	private List<List<Integer>> panelData = null;  //all panel data (removed junk bytes)
 	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
-	private List<List<Integer>> deviceList = null;	//device list (bytes)
+	private List<List<List<Integer>>> deviceList = null;	//device list (bytes)
 	
 	private Connection connection = null;	
 	
@@ -200,7 +200,11 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 		
 		for(int i=0; i<deviceList.size();i++)
 		{
-			System.out.println("device: "+ i + " " + deviceList.get(i));
+			System.out.println("Loop: " + i);
+			for(int j =0; j<deviceList.get(i).size();j++)
+			{
+				System.out.println("device: "+ j + " " + deviceList.get(i).get(j));
+			}
 		}
 
 		Message msg = listUpdateHandler.obtainMessage();

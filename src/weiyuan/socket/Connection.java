@@ -120,7 +120,7 @@ public class Connection {
 					
 					if(socket == null ||  socket.isClosed())
 					{
-						socket = new Socket("192.168.1.24",port);	
+						socket = new Socket("192.168.1.23",port);	
 						socket.setSoTimeout(0);
 						socket.setReceiveBufferSize(20000);
 						out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);

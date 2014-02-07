@@ -11,6 +11,7 @@ public class Panel {
 	private static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
 	
 	private Loop loop1;
+	private Loop loop2;
 	
 	
 	private String panelLocation;
@@ -31,7 +32,7 @@ public class Panel {
 	private int deviceNumber;
 	
 
-	public Panel(List<List<Integer>> eepRom, List<List<Integer>> deviceList) throws UnsupportedEncodingException
+	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList) throws UnsupportedEncodingException
 	{
 		
 		this.panelLocation = new String(getBytes(eepRom.get(60)),"UTF-8");
@@ -67,8 +68,8 @@ public class Panel {
 		System.out.println("================Panel Info========================");
 		System.out.println(this.toString());
 		
-		loop1 = new Loop(deviceList);
-		
+		loop1 = new Loop(deviceList.get(0));
+		loop2 = new Loop(deviceList.get(1));
 		
 		
 		
