@@ -161,11 +161,13 @@ public class Panel {
 	}
 
 	
-	public Loop getLoop() {
+	public Loop getLoop1() {
 		return loop1;
 	}
 
-
+	public Loop getLoop2() {
+		return loop2;
+	}
 	
 	
 	

@@ -307,8 +307,10 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 		Intent intent = new Intent(this, DeviceListActivity.class);
 
 		if(panel!=null){
-			Loop loop1 = panel.getLoop();
-			intent.putExtra("loop",loop1);   
+			
+			intent.putExtra("loop1",panel.getLoop1());
+			intent.putExtra("loop2",panel.getLoop2());
+			
 		}
 		
 		startActivity(intent);

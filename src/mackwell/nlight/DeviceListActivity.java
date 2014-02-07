@@ -27,7 +27,12 @@ public class DeviceListActivity extends ListActivity {
 		
 		Intent intent = getIntent();
 		
-		Loop loop = (Loop) intent.getSerializableExtra("loop");  
+		Loop loop1 = (Loop) intent.getParcelableExtra("loop1");  
+		Loop loop2 = (Loop) intent.getParcelableExtra("loop2");
+		
+		System.out.println("loop1 n:" + loop1.getDeviceNumber());
+		System.out.println("loop2 n:" + loop2.getDeviceNumber());
+		
 		
 		deviceList = new String[] {"Device 1 ","Device 2","Device 3"};
 		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2,android.R.id.text1, deviceList);

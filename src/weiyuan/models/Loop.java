@@ -27,6 +27,13 @@ public class Loop  implements Parcelable {
 		deviceNumber = 0;
 	}
 	
+
+	private Loop(Parcel source) {
+		this();
+		readFromParcel(source);
+        
+    }
+	
 	
 	
 	public Loop(List<List<Integer>> dl){
@@ -70,6 +77,12 @@ public class Loop  implements Parcelable {
 		dest.writeInt(deviceNumber);
 	}
 
+	public void readFromParcel(Parcel source)
+	{
+		source.readTypedList(deviceList,Device.CREATOR);
+		deviceNumber =  source.readInt();
+		
+	}
 
 	public static final Parcelable.Creator<Loop> CREATOR = new Parcelable.Creator<Loop>() {
 
@@ -89,12 +102,10 @@ public class Loop  implements Parcelable {
 	};
 
 	
-	private Loop(Parcel source) {
-		this();
-        deviceList = (List<Device>)source.readArrayList(ArrayList.class.getClassLoader());
-		deviceNumber = source.readInt();
-        
-    }
+	
+	
+	
+	
 
 
 

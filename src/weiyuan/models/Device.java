@@ -25,6 +25,12 @@ public class Device  implements Parcelable{
 	private String name;
 	
 	
+	public Device()
+	{
+		super();
+		
+	}
+	
 	public Device(List<Integer> device){
 		
 		address = device.get(0);
@@ -48,6 +54,12 @@ public class Device  implements Parcelable{
 	}
 
 
+	public Device(Parcel source) {
+		this();
+		readFromParcel(source);
+	}
+
+
 	@Override
 	public String toString() {
 		String deviceStr = "Address: " + address + " FS: " + failureStatus  + " serialNumber: " + serialNumber + " GTIN: " + GTIN ;
@@ -65,9 +77,32 @@ public class Device  implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
+		dest.writeInt(address);
 		
 	}
+	
+	public void readFromParcel(Parcel source)
+	{
+		source.readInt();
+		
+	}
+	
+	public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>() {
+
+		@Override
+		public Device createFromParcel(Parcel source) {
+			
+			return new Device(source);
+		}
+
+		@Override
+		public Device[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		
+	};
 	
 	
 
