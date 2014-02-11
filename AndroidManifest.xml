@@ -29,7 +29,6 @@
         <activity
             android:name="mackwell.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen" >
-            
         </activity>
         <activity
             android:name="mackwell.nlight.PanelInfo"
