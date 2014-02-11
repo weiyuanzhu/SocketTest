@@ -36,6 +36,8 @@ public class PanelListActivity extends ListActivity {
 				new int[]{R.id.location,R.id.ip,R.id.img});
 		setListAdapter(adapter);
 		
+		
+		
 
 		OverallStatus m = OverallStatus.valueOf("OK");
 		System.out.println(m.getStatus());

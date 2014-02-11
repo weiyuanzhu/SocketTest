@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="middle">"
+
+    <fragment
+        android:name="mackwell.nlight.PanelListFragment"
+        android:id="@+id/panel_list"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" 
+        android:layout_weight="1"/>
+    
+    <FrameLayout
+        android:id="@+id/panel_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"/>
+
+</LinearLayout>
