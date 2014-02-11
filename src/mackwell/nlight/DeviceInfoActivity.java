@@ -22,7 +22,7 @@ public class DeviceInfoActivity extends ListActivity {
 	
 	private List<Map<String,Object>> listDataSource;
 	
-	private Device devcice;
+	private Device device;
 	
 	
 
@@ -34,14 +34,15 @@ public class DeviceInfoActivity extends ListActivity {
 		title = (TextView) findViewById(R.id.devicetitle);
 		
 		
+		String str = getIntent().getStringExtra("deviceName");
 		
-		String device = getIntent().getStringExtra("device");
+		device = getIntent().getParcelableExtra("device");
 		
-		simpleAdapter = new SimpleAdapter(this, getData(devcice), R.layout.device_info_row, 
+		simpleAdapter = new SimpleAdapter(this, getData(device), R.layout.device_info_row, 
 				new String[] {"text1","text2"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
 		
-		title.setText(device);
+		title.setText(str);
 		
 		setListAdapter(simpleAdapter);
 		
@@ -65,14 +66,14 @@ public class DeviceInfoActivity extends ListActivity {
 		Map<String,Object> map = new HashMap<String,Object>();
 			
 		map.put("text1", "Address");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getAddress());
 		
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "SerialNumber:");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getSerialNumber());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
@@ -90,32 +91,32 @@ public class DeviceInfoActivity extends ListActivity {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergendy mode");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getEmergencyMode());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergency Status");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getEmergencyStatus());
 			
 		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Failure Status");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getFailureStatus());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Battery Level");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getBattery());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Communication Status");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.isCommunicationStatus());
 			
 		listDataSource.add(map);
 	

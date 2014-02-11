@@ -13,10 +13,14 @@ import com.example.nclient.R;
 
 public class DeviceListActivity extends ListActivity {
 	
+	private Loop loop1;
+	private Loop loop2;
+	
 	
 	//private List<Loop> loops;
 	
 	private String[] deviceList;
+	private int deviceNumber;
 	
 	private ArrayAdapter<String> arrayAdapter;
 
@@ -27,14 +31,22 @@ public class DeviceListActivity extends ListActivity {
 		
 		Intent intent = getIntent();
 		
-		Loop loop1 = (Loop) intent.getParcelableExtra("loop1");  
-		Loop loop2 = (Loop) intent.getParcelableExtra("loop2");
+		loop1 = (Loop) intent.getParcelableExtra("loop1");  
+		loop2 = (Loop) intent.getParcelableExtra("loop2");
 		
 		System.out.println("loop1 n:" + loop1.getDeviceNumber());
 		System.out.println("loop2 n:" + loop2.getDeviceNumber());
 		
+		deviceNumber = loop1.getDeviceNumber()+loop2.getDeviceNumber();
 		
-		deviceList = new String[] {"Device 1 ","Device 2","Device 3"};
+		deviceList = new String[deviceNumber];
+		
+		for (int i =0; i<deviceList.length;i++)
+		{
+			deviceList[i] = new String("Device " + i);
+			
+		}
+		
 		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2,android.R.id.text1, deviceList);
 		
 		setListAdapter(arrayAdapter);
@@ -57,7 +69,17 @@ public class DeviceListActivity extends ListActivity {
 		
 		Intent intent = new Intent(this, DeviceInfoActivity.class);
 		
-		intent.putExtra("device", deviceList[position]);
+		intent.putExtra("deviceName", deviceList[position]);
+		
+		if(position < 3 )
+		{
+			intent.putExtra("device", loop1.getDevice(position));
+		}
+		else
+		{
+			intent.putExtra("device", loop2.getDevice(position-3));
+		}
+			
 		
 		startActivity(intent);
 	}

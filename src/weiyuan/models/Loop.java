@@ -102,7 +102,12 @@ public class Loop  implements Parcelable {
 	};
 
 	
-	
+	public Device getDevice(int i)
+	{
+		return deviceList.get(i);
+		
+		
+	}
 	
 	
 	
