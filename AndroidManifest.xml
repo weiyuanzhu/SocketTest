@@ -33,21 +33,25 @@
         <activity
             android:name="mackwell.nlight.PanelInfoActivity"
             android:label="@string/title_activity_panel_info" >
+        </activity>
+        <activity
+            android:name="mackwell.nlight.DeviceListActivity"
+            android:label="@string/title_activity_device_list" >
+        </activity>
+        <activity
+            android:name="mackwell.nlight.DeviceInfoActivity"
+            android:label="@string/title_activity_device_info" >
+        </activity>
+        <activity
+            android:name="mackwell.nlight.MainActivity"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>"
         </activity>
-        <activity 
-            android:name="mackwell.nlight.DeviceListActivity"
-            android:label="@string/title_activity_device_list">  
-        </activity>
-        <activity 
-            android:name="mackwell.nlight.DeviceInfoActivity"
-            android:label="@string/title_activity_device_info">  
-        </activity>
-        
     </application>
 
 </manifest>
