@@ -31,7 +31,7 @@
             android:label="@string/title_activity_loading_screen" >
         </activity>
         <activity
-            android:name="mackwell.nlight.PanelInfo"
+            android:name="mackwell.nlight.PanelInfoActivity"
             android:label="@string/title_activity_panel_info" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +39,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="mackwell.nlight.DeviceListActivity"
+            android:label="@string/title_activity_device_list">  
+        </activity>
+        <activity 
+            android:name="mackwell.nlight.DeviceInfoActivity"
+            android:label="@string/title_activity_device_info">  
+        </activity>
+        
     </application>
 
 </manifest>
