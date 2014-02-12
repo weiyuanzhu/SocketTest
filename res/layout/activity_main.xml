@@ -18,6 +18,16 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        />
+        >
+
+        <ImageView
+            android:id="@+id/panelInfo_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mackwell_icon" 
+            android:layout_gravity="center"
+            android:contentDescription="@string/title_activity_panel_info"/>
+
+    </FrameLayout>
 
 </LinearLayout>
