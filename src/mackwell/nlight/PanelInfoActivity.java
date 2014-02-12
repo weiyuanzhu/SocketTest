@@ -112,7 +112,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 		
 		//setup list view
 		
-		simpleAdapter = new SimpleAdapter(this, getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.textView1,R.id.textView2});
+		simpleAdapter = new SimpleAdapter(this, getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.panel_description,R.id.panel_value});
 		
 		setListAdapter(simpleAdapter);
 		

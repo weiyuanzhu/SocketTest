@@ -14,5 +14,6 @@
     <string name="title_activity_device_list">DeviceList</string>
     <string name="title_activity_device_info">DeviceInfoActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

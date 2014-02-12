@@ -2,7 +2,7 @@ package mackwell.nlight;
 
 import mackwell.nlight.PanelListFragment.OnListItemClickedCallBack;
 import android.app.Activity;
-import android.net.Uri;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -23,10 +23,21 @@ public class MainActivity extends Activity implements OnListItemClickedCallBack{
 		return true;
 	}
 
-	
+
+
 	@Override
-	public void onFragmentInteraction(Uri uri) {
-		// TODO Auto-generated method stub
+	public void onListItemClicked(String ip, String location) {
+		
+		System.out.println(location + " " +  ip);
+		
+		PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location);
+		
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		fragmentTransaction.replace(R.id.panel_detail_container, panelFragment,"tagTest");
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.commit();
+		
 		
 	}
 

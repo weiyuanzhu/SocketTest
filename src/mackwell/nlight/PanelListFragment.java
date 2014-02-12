@@ -28,7 +28,7 @@ import com.example.nclient.R;
  */
 public class PanelListFragment extends ListFragment {
 
-	private OnListItemClickedCallBack mListener;
+	private OnListItemClickedCallBack mCallBack;
 	
 	private List<Map<String,Object>> dataList = null;
 	private String[] dataList2;
@@ -49,7 +49,7 @@ public class PanelListFragment extends ListFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnListItemClickedCallBack) activity;
+			mCallBack = (OnListItemClickedCallBack) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
@@ -88,7 +88,7 @@ public class PanelListFragment extends ListFragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		mCallBack = null;
 	}
 	
 	@Override
@@ -101,9 +101,14 @@ public class PanelListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		
 		mCurCheckPosition = position;
-		System.out.println(position);
+		
+		String ip = (String)dataList.get(position).get("ip");
+    	String location = (String)dataList.get(position).get("location");
+		//System.out.println(position);
 		
 		getListView().setItemChecked(position, true);
+		
+		mCallBack.onListItemClicked(ip, location);
 		
 	}
 	
@@ -118,7 +123,9 @@ public class PanelListFragment extends ListFragment {
 	 */
 	public interface OnListItemClickedCallBack {
 		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
+		public void onListItemClicked(String ip, String location);
+
+		
 	}
 	
 	public List<Map<String,Object>> getDataList()
