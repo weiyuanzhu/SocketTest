@@ -22,13 +22,14 @@ public class Connection {
 	//interface for callback
 	public interface Delegation 
 	{
-			void receive(List<Integer> rx);
+			void receive(List<Integer> rx,String ip);
 	}
 	
 	//private fields
 	private WeakReference<Delegation> weakDelegate;
 	
 	private int port;
+	private String ip;
 	
 	private boolean isClosed; // a flag for stop the background listening 
 	
@@ -46,9 +47,9 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(Delegation delegate, List<char[]> commandList)
+	public Connection(Delegation delegate, List<char[]> commandList,String ip)
 	{
-		
+		this.ip = ip;
 		this.isClosed = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
@@ -120,7 +121,7 @@ public class Connection {
 					
 					if(socket == null ||  socket.isClosed())
 					{
-						socket = new Socket("192.168.1.23",port);	
+						socket = new Socket(ip,port);	
 						socket.setSoTimeout(0);
 						socket.setReceiveBufferSize(20000);
 						out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
@@ -164,7 +165,7 @@ public class Connection {
 		        				rxBuffer.get(rxBuffer.size() - 4).equals(UART_STOP_BIT_H))   // check finished bit; to be changed 
 						{
 							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
-							weakDelegate.get().receive(rxBuffer);
+							weakDelegate.get().receive(rxBuffer,ip);
 							rxBuffer.clear();
 						}
 						
@@ -203,7 +204,7 @@ public class Connection {
 				{		
 					
 					System.out.println("Package recieve finished");
-					/*try {
+					try {
 						if(socket != null)  
 						{		
 							out.close();
@@ -213,12 +214,21 @@ public class Connection {
 						
 					} catch (IOException ex) {
 						ex.printStackTrace();
-					}*/
+					}
 				}		
 		
 			}
 		}
 	
 	};
+
+
+
+
+	public String getIp() {
+		return ip;
+	}
+	
+	
 
 }

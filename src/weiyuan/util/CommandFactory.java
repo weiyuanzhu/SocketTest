@@ -10,6 +10,38 @@ public class CommandFactory {
 	static final int UART_NEW_LINE_H = 0x0D;
 	static final int UART_NEW_LINE_L = 0x0A;
 
+	public static List<char[]> getOverallStatus()
+	{
+		List<char[]> commandList = new ArrayList<char[]>();
+		
+		List <Integer> list = new ArrayList<Integer>();
+		
+		list.add(0x02);
+		list.add(0xA0);
+		list.add(0x32);
+		int checksum = CRC.calcCRC(list, list.size());
+		list.add(CRC.getUnsignedInt(checksum));
+		list.add(CRC.getUnsignedInt(checksum >> 8));
+		
+		list.add(UART_STOP_BIT_H);
+		list.add(UART_STOP_BIT_L);
+		list.add(UART_NEW_LINE_H);
+		list.add(UART_NEW_LINE_L);
+		
+		System.out.println(list);
+		
+		char[] command = new char[list.size()];
+		for(int j=0; j<list.size();j++)		
+		{
+			command[j] = (char) list.get(j).intValue();
+			
+		}
+		
+		commandList.add(command);
+		
+		return commandList;
+	}
+	
 	public static List<char[]> getPanelInfo(){
 		
 		List<char[]> commandList = new ArrayList<char[]>();
@@ -25,7 +57,7 @@ public class CommandFactory {
 	
 			int checksum = CRC.calcCRC(list, list.size());
 			list.add(CRC.getUnsignedInt(checksum));
-			list.add(CRC.getUnsignedInt(checksum) >> 8);
+			list.add(CRC.getUnsignedInt(checksum >> 8));
 			
 			list.add(UART_STOP_BIT_H);
 			list.add(UART_STOP_BIT_L);

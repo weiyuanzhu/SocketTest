@@ -5,14 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weiyuan.socket.Connection;
+import weiyuan.util.CommandFactory;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -26,13 +31,20 @@ import com.example.nclient.R;
  * interaction events.
  * 
  */
-public class PanelListFragment extends ListFragment {
+public class PanelListFragment extends ListFragment implements Connection.Delegation{
+	
+	private Handler statusUpdateHandler;
+	
+	private Button refreshBtn;
 
 	private OnListItemClickedCallBack mCallBack;
 	
 	private List<Map<String,Object>> dataList = null;
-	private String[] dataList2;
+	private SimpleAdapter simpleAdapter;
 	private int mCurCheckPosition = 0;
+	
+	private List<Connection> connectionList = null;
+	private List<char[]> commandList;
 
 	public PanelListFragment() {
 		// Required empty public constructor
@@ -45,6 +57,7 @@ public class PanelListFragment extends ListFragment {
 		return inflater.inflate(R.layout.fragment_panel_list, container, false);
 	}
 
+	@SuppressLint("HandlerLeak")
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -54,6 +67,32 @@ public class PanelListFragment extends ListFragment {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
 		}
+		
+		this.statusUpdateHandler = new Handler()
+		{
+
+			@Override
+			public void handleMessage(Message msg) {
+				
+				String ip = (String) msg.obj;
+				for(Map<String,Object> map:dataList)		
+				{
+					if(map.get("ip").equals(ip))
+					{
+						if(msg.arg1 == 1) {map.put("img", R.drawable.tick);}
+						else if(msg.arg1 == 3) {map.put("img", R.drawable.cross);}
+						
+					}
+				}
+				
+			
+				
+				simpleAdapter.notifyDataSetChanged();
+				
+			}
+			
+			
+		};
 	}
 
 	
@@ -63,12 +102,11 @@ public class PanelListFragment extends ListFragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		
-		
+		refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
+		refreshBtn.setOnClickListener(refreshClicked);
 
 		dataList = getDataList();
 		
-		dataList2 = new String[] {"First","Second","Third"};
 		
 		//ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_activated_1,dataList2);
 		
@@ -76,10 +114,10 @@ public class PanelListFragment extends ListFragment {
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		SimpleAdapter adapter = new SimpleAdapter(getActivity(),dataList,R.layout.panel_list_row,
+		simpleAdapter = new SimpleAdapter(getActivity(),dataList,R.layout.panel_list_row,
 				new String[]{"location","ip","img"},
 				new int[]{R.id.location,R.id.ip,R.id.img});
-		setListAdapter(adapter);
+		setListAdapter(simpleAdapter);
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
@@ -111,6 +149,33 @@ public class PanelListFragment extends ListFragment {
 		mCallBack.onListItemClicked(ip, location);
 		
 	}
+	
+	OnClickListener refreshClicked = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			
+			connectionList = new ArrayList<Connection>();
+			
+			PanelListFragment currentFragment= (PanelListFragment)getFragmentManager().findFragmentByTag("panelListFragment");
+			
+			for(int i=0; i<dataList.size(); i++)
+			{
+				
+				
+				commandList = CommandFactory.getOverallStatus();
+				String ip = (String) dataList.get(i).get("ip");
+				
+				Connection connection = new Connection(currentFragment,commandList,ip);
+				connectionList.add(connection);
+				
+				connection.fetchData();
+			}
+		}
+		
+		
+		
+	};
 	
 	/**
 	 * This interface must be implemented by activities that contain this
@@ -165,14 +230,6 @@ public class PanelListFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("location","Testing Panel");
-		map.put("ip","192.168.1.22");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);
-		
-		map = new HashMap<String,Object>();
-		
 		map.put("location","Mackwell Specials");
 		map.put("ip","192.168.1.23");
 		map.put("img", R.drawable.panel);
@@ -188,6 +245,31 @@ public class PanelListFragment extends ListFragment {
 		list.add(map);
 				
 		return list;
+	}
+
+	
+	
+	
+	@Override
+	public void receive(List<Integer> rx,String ip) {
+		System.out.println(rx);
+		
+		Message msg = statusUpdateHandler.obtainMessage();
+		msg.arg1 = rx.get(3);
+		msg.obj = ip;
+
+		statusUpdateHandler.sendMessage(msg);
+		
+		for(Connection c: connectionList){
+			
+			if(c.getIp().equals(ip))
+			{
+				c.setIsClosed(true);
+				c.closeConnection();
+			}
+			
+		}
+		
 	}
 
 }

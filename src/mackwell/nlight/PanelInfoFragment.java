@@ -13,6 +13,7 @@ import weiyuan.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,7 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 	
 	private TextView locationTextView;
 	private Button fetchButton;
+	private Button deviceButton;
 	private ListView listView;
 	private ProgressBar progressBar = null;
 
@@ -187,6 +189,8 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		fetchButton = (Button) getActivity().findViewById(R.id.panelInfo_fetchButton);
 		fetchButton.setOnClickListener(fetchClicked);
 		
+		deviceButton = (Button) getActivity().findViewById(R.id.panelInfo_deviceButton);
+		deviceButton.setOnClickListener(deviceBtnClicked);
 		
 		progressBar.setMax(16);
 		
@@ -201,6 +205,8 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		listView.setAdapter(simpleAdapter);
 
 	}
+	
+	
 	
 	OnClickListener fetchClicked = new OnClickListener()
 	{
@@ -227,10 +233,35 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		
 		
 		
-		
-		connection = new Connection((PanelInfoFragment)getFragmentManager().findFragmentByTag("tagTest") ,commandList);
+		PanelInfoFragment currentFragment= (PanelInfoFragment)getFragmentManager().findFragmentByTag("tagTest");
+		connection = new Connection(currentFragment ,commandList,ip);
 		connection.fetchData();
 		}
+		
+	};
+	
+	
+	OnClickListener deviceBtnClicked = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+
+			System.out.println("Get Device List");
+			
+			Intent intent = new Intent(getActivity(), DeviceListActivity.class);
+
+			if(panel!=null){
+				
+				intent.putExtra("loop1",panel.getLoop1());
+				intent.putExtra("loop2",panel.getLoop2());
+				startActivity(intent);
+				
+			}
+			
+			
+			
+		}
+		
 		
 	};
 	
@@ -301,7 +332,7 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 	}
 
 	@Override
-	public void receive(List<Integer> rx) {
+	public void receive(List<Integer> rx,String ip) {
 
 
 		packageCount += 1 ;
@@ -325,6 +356,7 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		if(packageCount == 16)
 		{
 			connection.closeConnection();
+			connection = null;
 			//progressBar.setVisibility(View.INVISIBLE);
 			
 			parse();

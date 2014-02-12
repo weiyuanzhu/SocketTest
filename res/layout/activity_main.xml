@@ -8,6 +8,7 @@
 
     <fragment
         android:name="mackwell.nlight.PanelListFragment"
+        android:tag="panelListFragment"
         android:id="@+id/panel_list"
         android:layout_width="0dp"
         android:layout_height="match_parent" 

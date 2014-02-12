@@ -146,7 +146,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 	
 	//function for delegate interface
 	@Override
-	public void receive(List<Integer> rx) {
+	public void receive(List<Integer> rx,String ip) {
 		
 		packageCount += 1 ;
 		
@@ -228,7 +228,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 		commandList = CommandFactory.getPanelInfo();
 		//commandList.add(getPackage1);
 		
-		connection = new Connection(this,commandList);
+		connection = new Connection(this,commandList,"192.168.1.24");
 		connection.fetchData();
 		
 	}
