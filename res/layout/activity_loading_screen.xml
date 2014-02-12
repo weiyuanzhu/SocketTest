@@ -16,4 +16,14 @@
         android:layout_centerVertical="true"
         android:src="@drawable/nlight_connect" />
 
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_marginBottom="16dp"
+        android:text="@string/app_version"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 </RelativeLayout>
