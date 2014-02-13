@@ -70,6 +70,24 @@ public class Connection {
 	 * 
 	 * */
 	 
+	public void flush(char[] command)
+	{
+		
+		class Flush implements Runnable {
+	        char[] command;
+	        Flush(char[] c) { command = c; }
+	        public void run() {
+	        	isClosed = false;
+	        	out.print(command);
+	        	out.flush();
+	        }
+	    }
+	    Thread t = new Thread(new Flush(command));
+	    t.start();
+	}
+	
+
+	
 	public void fetchData(){
 
 		
@@ -122,7 +140,7 @@ public class Connection {
 					if(socket == null ||  socket.isClosed())
 					{
 						socket = new Socket(ip,port);	
-						socket.setSoTimeout(0);
+						socket.setSoTimeout(500);
 						socket.setReceiveBufferSize(20000);
 						out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
 						in = socket.getInputStream();
