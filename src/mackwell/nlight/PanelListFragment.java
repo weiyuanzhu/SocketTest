@@ -161,15 +161,13 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 			
 			for(int i=0; i<dataList.size(); i++)
 			{
-				
-				
-				commandList = CommandFactory.ftTest();
+				commandList = CommandFactory.getOverallStatus();
 				String ip = (String) dataList.get(i).get("ip");
 				
-				//Connection connection = new Connection(currentFragment,commandList,ip);
-				//connectionList.add(connection);
+				Connection connection = new Connection(currentFragment,commandList,ip);
+				connectionList.add(connection);
 				
-				//connection.fetchData();
+				connection.fetchData();
 			}
 		}
 		

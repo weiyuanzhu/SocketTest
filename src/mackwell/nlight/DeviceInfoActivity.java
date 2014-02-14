@@ -6,16 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 import weiyuan.models.Device;
+import weiyuan.socket.Connection;
+import weiyuan.util.CommandFactory;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.nclient.R;
 
-public class DeviceInfoActivity extends ListActivity {
+public class DeviceInfoActivity extends ListActivity implements Connection.Delegation{
 	
+	
+	private Connection connection;
 	private TextView title;
 	
 	private SimpleAdapter simpleAdapter;
@@ -121,6 +126,35 @@ public class DeviceInfoActivity extends ListActivity {
 		listDataSource.add(map);
 	
 		return listDataSource;
+	}
+	
+	public void ftTest(View v)
+	{
+		System.out.println("----------ftTest--------");
+		List<char[] > commandList = CommandFactory.ftTest(device.getAddress());
+		
+		Connection connection = new Connection (this, commandList, "192.168.1.24");
+		connection.fetchData();
+		
+	}
+	
+	public void stopTest(View v)
+	{
+		System.out.println("----------ftTest--------");
+		List<char[] > commandList = CommandFactory.stopTest(device.getAddress());
+		
+		Connection connection = new Connection (this, commandList, "192.168.1.24");
+		connection.fetchData();
+		
+	}
+	
+	
+
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		System.out.println(rx);
+		connection.setIsClosed(true);
+		
 	}
 	
 

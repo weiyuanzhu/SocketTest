@@ -24,4 +24,30 @@
 
     </ListView>
 
+    <Button
+        android:id="@+id/device_stBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/device_ftBtn"
+        android:text="StopTest" 
+        android:onClick="stopTest"/>
+
+    <Button
+        android:id="@+id/device_dtBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/device_stBtn"
+        android:text="DT_Test" />
+
+    <Button
+        android:id="@+id/device_ftBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/android:list"
+        android:layout_alignParentBottom="true"
+        android:onClick="ftTest"
+        android:text="FT_Test" />
+
 </RelativeLayout>
