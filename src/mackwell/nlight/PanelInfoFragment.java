@@ -36,6 +36,7 @@ import com.example.nclient.R;
  * this fragment.
  * 
  */
+@SuppressLint("ValidFragment")
 public class PanelInfoFragment extends Fragment implements Connection.Delegation {
 	
 	
@@ -98,8 +99,9 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 	 * @return A new instance of fragment PanelInfoFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static PanelInfoFragment newInstance(String ip, String location) {
-		PanelInfoFragment fragment = new PanelInfoFragment();
+	@SuppressLint("ValidFragment")
+	public static PanelInfoFragment newInstance(String ip, String location,Panel panel) {
+		PanelInfoFragment fragment = new PanelInfoFragment(panel);
 		Bundle args = new Bundle();
 		args.putString(ARG_IP, ip);
 		args.putString(ARG_LOCATION, location);
@@ -107,13 +109,15 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		return fragment;
 	}
 
-	public PanelInfoFragment() {
-		// Required empty public constructor
+	public PanelInfoFragment(Panel panel) {
+		// Required empty public constructor\
+		this.panel = panel;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 		if (getArguments() != null) {
 			ip = getArguments().getString(ARG_IP);
 			location = getArguments().getString(ARG_LOCATION);

@@ -146,7 +146,7 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 		
 		getListView().setItemChecked(position, true);
 		
-		mCallBack.onListItemClicked(ip, location);
+		mCallBack.onListItemClicked(ip, location,position);
 		
 	}
 	
@@ -186,7 +186,7 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 	 */
 	public interface OnListItemClickedCallBack {
 		// TODO: Update argument type and name
-		public void onListItemClicked(String ip, String location);
+		public void onListItemClicked(String ip, String location,int index);
 
 		
 	}

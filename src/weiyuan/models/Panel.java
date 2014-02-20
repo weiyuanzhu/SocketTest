@@ -31,6 +31,12 @@ public class Panel {
 	
 	private int deviceNumber;
 	
+	public Panel()
+	{
+		this.panelLocation = "test";
+		this.contact = "test";
+		
+	}
 
 	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList) throws UnsupportedEncodingException
 	{
