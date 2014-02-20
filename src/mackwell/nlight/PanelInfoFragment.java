@@ -278,57 +278,57 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		Map<String,Object> map = new HashMap<String,Object>();
 			
 		map.put("text1", "Location");
-		map.put("text2", panel==null? "n/a" : panel.getPanelLocation());
+		map.put("text2", panel==null? "..." : panel.getPanelLocation());
 		
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "SerialNumber:");
-		map.put("text2", panel==null? "n/a" : panel.getSerialNumber());
+		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "GTIN:");
-		map.put("text2", panel==null? "n/a" : panel.getGtin());
+		map.put("text2", panel==null? "..." : panel.getGtin());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Contact");
-		map.put("text2", panel==null? "n/a" : panel.getContact());
+		map.put("text2", panel==null? "..." : panel.getContact());
 		
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Tel:");
-		map.put("text2", panel==null? "n/a" : panel.getTel());
+		map.put("text2", panel==null? "..." : panel.getTel());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Mobile:");
-		map.put("text2", panel==null? "n/a" : panel.getMobile());
+		map.put("text2", panel==null? "..." : panel.getMobile());
 			
 		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "FirmWare Version:");
-		map.put("text2", panel==null? "n/a" : panel.getVersion());
+		map.put("text2", panel==null? "..." : panel.getVersion());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Report Usage:");
-		map.put("text2", panel==null? "n/a" : panel.getReportUsage());
+		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Passcode:");
-		map.put("text2", panel==null? "n/a" : panel.getPasscode());
+		map.put("text2", panel==null? "..." : panel.getPasscode());
 			
 		listDataSource.add(map);
 	
