@@ -256,6 +256,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 
 			if(panel!=null){
 				
+				intent.putExtra("location", panel.getPanelLocation());
 				intent.putExtra("loop1",panel.getLoop1());
 				intent.putExtra("loop2",panel.getLoop2());
 				startActivity(intent);

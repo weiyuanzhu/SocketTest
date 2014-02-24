@@ -15,6 +15,7 @@ public class DeviceListActivity extends ListActivity {
 	
 	private Loop loop1;
 	private Loop loop2;
+	private String title;
 	
 	
 	//private List<Loop> loops;
@@ -29,7 +30,12 @@ public class DeviceListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device_list);
 		
+		
+		
 		Intent intent = getIntent();
+		
+		title = intent.getStringExtra("location");
+		setTitle(title);
 		
 		loop1 = (Loop) intent.getParcelableExtra("loop1");  
 		loop2 = (Loop) intent.getParcelableExtra("loop2");
