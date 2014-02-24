@@ -35,7 +35,7 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_panel);
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
 	
 		fragmentList = new ArrayList<PanelInfoFragment>(5);
