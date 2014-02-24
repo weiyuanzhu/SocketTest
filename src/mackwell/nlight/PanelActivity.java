@@ -75,4 +75,10 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 	}
 
+	@Override
+	public void getAllPanels() {
+		System.out.println("getAllPanels");
+		
+	}
+
 }

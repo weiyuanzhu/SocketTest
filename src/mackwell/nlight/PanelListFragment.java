@@ -36,6 +36,8 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 	private Handler statusUpdateHandler;
 	
 	private Button refreshBtn;
+	private Button getAllPanelsBtn;
+	
 
 	private OnListItemClickedCallBack mCallBack;
 	
@@ -104,6 +106,9 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 		
 		refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
 		refreshBtn.setOnClickListener(refreshClicked);
+		
+		getAllPanelsBtn = (Button) getActivity().findViewById(R.id.panelList_getAllPanelButton);
+		getAllPanelsBtn.setOnClickListener(getAllPanelsListener);
 
 		dataList = getDataList();
 		
@@ -187,6 +192,7 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 	public interface OnListItemClickedCallBack {
 		// TODO: Update argument type and name
 		public void onListItemClicked(String ip, String location,int index);
+		public void getAllPanels();
 
 		
 	}
@@ -270,4 +276,15 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 		
 	}
 
+	OnClickListener getAllPanelsListener = new OnClickListener()
+	{
+
+		@Override
+		public void onClick(View arg0) {
+			mCallBack.getAllPanels();
+			
+		}
+		
+		
+	};
 }

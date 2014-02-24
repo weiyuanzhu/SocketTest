@@ -39,6 +39,15 @@
          android:layout_alignParentLeft="true"
          android:text="Refresh"/>
 
+     <Button
+         android:id="@+id/panelList_getAllPanelButton"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_toRightOf="@+id/panelList_refreshButton"
+         android:layout_alignParentBottom="true"
+         android:layout_marginLeft="10dp"
+         android:text="GetAll" />
+
     </RelativeLayout>
 
 </FrameLayout>
