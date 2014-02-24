@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-public class DeviceInfoActivity extends ListActivity implements Connection.Delegation{
+public class DeviceInfoActivity extends ListActivity implements Connection.CallBack{
 	
 	
 	private Connection connection;

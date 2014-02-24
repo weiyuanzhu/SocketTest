@@ -37,7 +37,7 @@ import com.example.nclient.R;
  * 
  */
 @SuppressLint("ValidFragment")
-public class PanelInfoFragment extends Fragment implements Connection.Delegation {
+public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	
 	
 

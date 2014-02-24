@@ -8,7 +8,7 @@ import java.util.Map;
 import mackwell.nlight.PanelListFragment.OnListItemClickedCallBack;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
-import weiyuan.socket.Connection.Delegation;
+import weiyuan.socket.Connection.CallBack;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import com.example.nclient.R;
 
-public class PanelActivity extends Activity implements OnListItemClickedCallBack, Delegation{
+public class PanelActivity extends Activity implements OnListItemClickedCallBack, CallBack{
 	
 	private List<Panel> panelList = null;
 

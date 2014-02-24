@@ -25,7 +25,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
 
-public class PanelInfoActivity extends ListActivity  implements Connection.Delegation{
+public class PanelInfoActivity extends ListActivity  implements Connection.CallBack{
 	
 	private Handler progressHandler;
 	private Handler listUpdateHandler;

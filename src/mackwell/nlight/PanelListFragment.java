@@ -31,7 +31,7 @@ import com.example.nclient.R;
  * interaction events.
  * 
  */
-public class PanelListFragment extends ListFragment implements Connection.Delegation{
+public class PanelListFragment extends ListFragment implements Connection.CallBack{
 	
 	private Handler statusUpdateHandler;
 	

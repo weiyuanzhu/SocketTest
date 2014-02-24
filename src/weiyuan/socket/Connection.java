@@ -13,20 +13,22 @@ import android.os.Handler;
 
 public class Connection {
 	
+	//interface for callback
+		public interface CallBack 
+		{
+				void receive(List<Integer> rx,String ip);
+		}
+	
 	static final int UART_STOP_BIT_H = 0x5A;
 	static final int UART_STOP_BIT_L = 0xA5;
 	static final int UART_NEW_LINE_H = 0x0D;
 	static final int UART_NEW_LINE_L = 0x0A;
 	
 	
-	//interface for callback
-	public interface Delegation 
-	{
-			void receive(List<Integer> rx,String ip);
-	}
+	
 	
 	//private fields
-	private WeakReference<Delegation> weakDelegate;
+	private WeakReference<CallBack> mCallBack;
 	
 	private int port;
 	private String ip;
@@ -47,13 +49,13 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(Delegation delegate, String ip)
+	public Connection(CallBack delegate, String ip)
 	{
 		this.ip = ip;
 		this.isClosed = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
-		this.weakDelegate = new WeakReference<Delegation>(delegate);
+		this.mCallBack = new WeakReference<CallBack>(delegate);
 		
 	}
 
@@ -168,7 +170,9 @@ public class Connection {
 		        				rxBuffer.get(rxBuffer.size() - 4).equals(UART_STOP_BIT_H))   // check finished bit; to be changed 
 						{
 							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
-							weakDelegate.get().receive(rxBuffer,ip);
+							
+							//mCallback.get() to get mCallBack instance, for it is  weakReference
+							mCallBack.get().receive(rxBuffer,ip);
 							rxBuffer.clear();
 						}
 						
@@ -205,9 +209,8 @@ public class Connection {
 				}
 				finally
 				{		
-					
 					System.out.println("Package recieve finished");
-					try {
+					/*try {
 						if(socket != null)  
 						{		
 							out.close();
@@ -217,7 +220,7 @@ public class Connection {
 						
 					} catch (IOException ex) {
 						ex.printStackTrace();
-					}
+					}*/
 				}		
 		
 			}
