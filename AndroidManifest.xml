@@ -43,7 +43,7 @@
             android:label="@string/title_activity_device_info" >
         </activity>
         <activity
-            android:name="mackwell.nlight.MainActivity"
+            android:name="mackwell.nlight.PanelActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape">
             <intent-filter>

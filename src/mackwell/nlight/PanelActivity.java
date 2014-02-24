@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.example.nclient.R;
 
-public class MainActivity extends Activity implements OnListItemClickedCallBack{
+public class PanelActivity extends Activity implements OnListItemClickedCallBack{
 	
 	private List<Panel> panelList = null;
 	
