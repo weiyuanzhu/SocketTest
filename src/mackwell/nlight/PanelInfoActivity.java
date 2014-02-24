@@ -228,8 +228,8 @@ public class PanelInfoActivity extends ListActivity  implements Connection.Deleg
 		commandList = CommandFactory.getPanelInfo();
 		//commandList.add(getPackage1);
 		
-		connection = new Connection(this,commandList,"192.168.1.24");
-		connection.fetchData();
+		connection = new Connection(this, "192.168.1.24");
+		connection.fetchData(commandList);
 		
 	}
 	

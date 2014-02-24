@@ -47,14 +47,13 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(Delegation delegate, List<char[]> commandList,String ip)
+	public Connection(Delegation delegate, String ip)
 	{
 		this.ip = ip;
 		this.isClosed = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
 		this.weakDelegate = new WeakReference<Delegation>(delegate);
-		this.commandList = commandList;
 		
 	}
 
@@ -70,34 +69,20 @@ public class Connection {
 	 * 
 	 * */
 	 
-	public void flush(char[] command)
-	{
-		
-		class Flush implements Runnable {
-	        char[] command;
-	        Flush(char[] c) { command = c; }
-	        public void run() {
-	        	isClosed = false;
-	        	out.print(command);
-	        	out.flush();
-	        }
-	    }
-	    Thread t = new Thread(new Flush(command));
-	    t.start();
-	}
 	
 
 	
-	public void fetchData(){
+	public void fetchData(List<char[]> commandList){
 
-		
 		new Thread(fetch).start();
 		System.out.println("connection started ");
+		this.commandList = commandList;
 		
 	}
 
 	public void closeConnection()
 	{
+		isClosed = true;
 		try {
 			if(socket != null)  
 			{		

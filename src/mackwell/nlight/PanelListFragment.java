@@ -169,10 +169,10 @@ public class PanelListFragment extends ListFragment implements Connection.Delega
 				commandList = CommandFactory.getOverallStatus();
 				String ip = (String) dataList.get(i).get("ip");
 				
-				Connection connection = new Connection(currentFragment,commandList,ip);
+				Connection connection = new Connection(currentFragment,ip);
 				connectionList.add(connection);
 				
-				connection.fetchData();
+				connection.fetchData(commandList);
 			}
 		}
 		

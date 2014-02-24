@@ -133,8 +133,8 @@ public class DeviceInfoActivity extends ListActivity implements Connection.Deleg
 		System.out.println("----------ftTest--------");
 		List<char[] > commandList = CommandFactory.ftTest(device.getAddress());
 		
-		Connection connection = new Connection (this, commandList, "192.168.1.24");
-		connection.fetchData();
+		Connection connection = new Connection (this,"192.168.1.24");
+		connection.fetchData(commandList);
 		
 	}
 	
@@ -143,8 +143,8 @@ public class DeviceInfoActivity extends ListActivity implements Connection.Deleg
 		System.out.println("----------ftTest--------");
 		List<char[] > commandList = CommandFactory.stopTest(device.getAddress());
 		
-		Connection connection = new Connection (this, commandList, "192.168.1.24");
-		connection.fetchData();
+		Connection connection = new Connection (this, "192.168.1.24");
+		connection.fetchData(commandList);
 		
 	}
 	

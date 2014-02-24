@@ -238,8 +238,8 @@ public class PanelInfoFragment extends Fragment implements Connection.Delegation
 		
 		
 		PanelInfoFragment currentFragment= (PanelInfoFragment)getFragmentManager().findFragmentByTag("tagTest");
-		connection = new Connection(currentFragment ,commandList,ip);
-		connection.fetchData();
+		connection = new Connection(currentFragment,ip);
+		connection.fetchData(commandList);
 		}
 		
 	};

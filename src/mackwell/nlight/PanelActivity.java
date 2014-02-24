@@ -90,7 +90,7 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 		for(Panel p : panelList){
 			Map<Panel, Connection> map = new HashMap<Panel, Connection>();
-			Connection connection = new Connection(this, null, p.getId());
+			Connection connection = new Connection(this, p.getId());
 			
 			map.put(p, connection);
 			panel_connection_list.add(map);
