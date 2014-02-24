@@ -13,6 +13,7 @@ public class Panel {
 	private Loop loop1;
 	private Loop loop2;
 	
+	private String ip;
 	
 	private String panelLocation;
 	private String contact;
@@ -31,8 +32,9 @@ public class Panel {
 	
 	private int deviceNumber;
 	
-	public Panel()
+	public Panel(String ip)
 	{
+		this.setIp(ip);
 		this.panelLocation = "test";
 		this.contact = "test";
 		
@@ -173,6 +175,14 @@ public class Panel {
 
 	public Loop getLoop2() {
 		return loop2;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 	
 	

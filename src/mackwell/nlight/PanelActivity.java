@@ -1,10 +1,14 @@
 package mackwell.nlight;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mackwell.nlight.PanelListFragment.OnListItemClickedCallBack;
 import weiyuan.models.Panel;
+import weiyuan.socket.Connection;
+import weiyuan.socket.Connection.Delegation;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -14,11 +18,14 @@ import android.widget.ImageView;
 
 import com.example.nclient.R;
 
-public class PanelActivity extends Activity implements OnListItemClickedCallBack{
+public class PanelActivity extends Activity implements OnListItemClickedCallBack, Delegation{
 	
 	private List<Panel> panelList = null;
+
+	private List<Map<Panel,Connection>> panel_connection_list = null; 
 	
 	private List<PanelInfoFragment> fragmentList = null;
+	
 	
 	private ImageView panelInfoImage;
 
@@ -56,7 +63,7 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 		if(panelList.get(index)==null)
 		{
-			panelList.set(index, new Panel());
+			panelList.set(index, new Panel(ip));
 		}
 		if(fragmentList.get(index) == null)
 		{
@@ -78,6 +85,25 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 	@Override
 	public void getAllPanels() {
 		System.out.println("getAllPanels");
+		panel_connection_list = new ArrayList<Map<Panel,Connection>>();
+		
+		
+		for(Panel p : panelList){
+			Map<Panel, Connection> map = new HashMap<Panel, Connection>();
+			Connection connection = new Connection(this, null, p.getId());
+			
+			map.put(p, connection);
+			panel_connection_list.add(map);
+		}
+		
+		System.out.println(panel_connection_list);
+		
+		
+	}
+
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		// TODO Auto-generated method stub
 		
 	}
 
