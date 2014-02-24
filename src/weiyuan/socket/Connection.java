@@ -25,6 +25,7 @@ public class Connection {
 	static final int UART_NEW_LINE_L = 0x0A;
 	
 	private int panelInfoPackageNo;
+	private boolean rxCompleted;
 	
 	
 	
@@ -55,6 +56,7 @@ public class Connection {
 	{
 		this.ip = ip;
 		this.isClosed = false;
+		this.rxCompleted = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
 		this.mCallBack = new WeakReference<CallBack>(callBack);
@@ -178,6 +180,12 @@ public class Connection {
 							//mCallback.get() to get mCallBack instance, for it is  weakReference
 							
 							panelInfoPackageNo ++ ;
+							
+							if(panelInfoPackageNo == commandList.size()){
+								System.out.println(" Recieve task completed");
+								rxCompleted = true;
+							}
+							
 							mCallBack.get().receive(rxBuffer,ip);
 							rxBuffer.clear();
 						}
@@ -215,19 +223,23 @@ public class Connection {
 				}
 				finally
 				{		
-					System.out.println("Package recieve finished");
 					
-					/*try {
-						if(socket != null)  
-						{		
-							out.close();
-							in.close();
-							socket.close();			
+					
+					if(panelInfoPackageNo == commandList.size()){
+						System.out.println(" Recieve task completed");
+						rxCompleted = true;
+						try {
+							if(socket != null)  
+							{		
+								out.close();
+								in.close();
+								socket.close();			
+							}
+							
+						} catch (IOException ex) {
+							ex.printStackTrace();
 						}
-						
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}*/
+					}
 				}		
 		
 			}
@@ -243,6 +255,14 @@ public class Connection {
 	public int getPanelInfoPackageNo() {
 		return panelInfoPackageNo;
 	}
+
+
+	public boolean isRxCompleted() {
+		return rxCompleted;
+	}
+
+
+
 
 
 

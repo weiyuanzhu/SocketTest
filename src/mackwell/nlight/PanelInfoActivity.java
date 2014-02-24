@@ -86,7 +86,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 			public void handleMessage(Message msg) {
 				
 				try {
-					panel = new Panel (eepRom,deviceList);
+					panel = new Panel (eepRom,deviceList,null);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

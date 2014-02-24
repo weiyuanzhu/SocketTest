@@ -40,8 +40,9 @@ public class Panel {
 		
 	}
 
-	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList) throws UnsupportedEncodingException
+	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList, String ip) throws UnsupportedEncodingException
 	{
+		this.ip = ip;
 		
 		this.panelLocation = new String(getBytes(eepRom.get(60)),"UTF-8");
 		

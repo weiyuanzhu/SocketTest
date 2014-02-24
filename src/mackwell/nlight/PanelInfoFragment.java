@@ -170,7 +170,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 			public void handleMessage(Message msg) {
 				
 				try {
-					panel = new Panel (eepRom,deviceList);
+					panel = new Panel (eepRom,deviceList,ip);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -364,8 +364,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 			//progressBar.setVisibility(View.INVISIBLE);
 			
 			parse();
-			
-			
+		
 		}
 		System.out.println("Actual bytes received: " + rxBuffer.size());
 		

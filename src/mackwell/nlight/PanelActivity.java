@@ -1,5 +1,6 @@
 package mackwell.nlight;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.CommandFactory;
+import weiyuan.util.DataParser;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ import com.example.nclient.R;
 
 public class PanelActivity extends Activity implements OnListItemClickedCallBack, CallBack{
 	
-	private List<Panel> panelList = null;
+	private Map<String,Panel> panelMap = null;
 	private Map<String,Connection> panel_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
@@ -35,13 +37,12 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
-		
-		panelList = new ArrayList<Panel>(5);
-		
+	
 		fragmentList = new ArrayList<PanelInfoFragment>(5);
 
-		initRxBufferMap();
-		initPanelList();
+		initPanelMap();
+
+
 		
 	}
 
@@ -57,11 +58,12 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 	@Override
 	protected void onDestroy() {
 		
-		for(Panel p : panelList)
+		for(String key : panelMap.keySet())
 		{
-			String ip = p.getIp();
-			Connection connection = panel_connection_map.get(ip);
+			
+			Connection connection = panel_connection_map.get(key);
 			connection.closeConnection();
+			connection = null;
 		}
 		
 		super.onDestroy();
@@ -74,13 +76,13 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		panelInfoImage.setVisibility(View.INVISIBLE);
 		System.out.println(location + " " +  ip + "positon: " + index);
 		
-		if(panelList.get(index)==null)
+		if(panelMap.get(ip)==null)
 		{
-			panelList.set(index, new Panel(ip));
+			panelMap.put(ip, new Panel(ip));
 		}
 		if(fragmentList.get(index) == null)
 		{
-			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelList.get(index));
+			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelMap.get(ip));
 			fragmentList.set(index, panelFragment);
 		}
 		
@@ -101,11 +103,11 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 		
 		
-		for(Panel p : panelList){
+		for(String key : panelMap.keySet()){
 			
-			Connection connection = new Connection(this, p.getIp());
+			Connection connection = new Connection(this, key);
 			
-			panel_connection_map.put(p.getIp(), connection);
+			panel_connection_map.put(key, connection);
 			
 		}
 		
@@ -113,9 +115,9 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 		List<char[]> commandList = CommandFactory.getPanelInfo();
 		
-		for(Panel p : panelList){
-			String ip = p.getIp();
-			Connection conn = (Connection) panel_connection_map.get(ip);
+		for(String key : panelMap.keySet()){
+			
+			Connection conn = (Connection) panel_connection_map.get(key);
 			conn.fetchData(commandList);
 		}
 		
@@ -127,57 +129,76 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		rxBuffer.addAll(rx);
 		Connection connection = panel_connection_map.get(ip);
 		connection.setIsClosed(true);
-		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + "rxBuffer size: " + rxBuffer.size());
+		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
+		if(connection.isRxCompleted())
+		{
+			//connection.closeConnection();
+			parse(ip);
+			
+		}
 	}
 
 	
-	public void initPanelList()
+	public void initPanelMap()
 
-	{
+	{	
+			panelMap = new HashMap<String,Panel>();
 			panel_connection_map = new HashMap<String,Connection>();
+			rxBufferMap = new HashMap<String,List<Integer>>();
 			
 			String ip1 = "192.168.1.17";
-			panelList.add(new Panel(ip1));
+			panelMap.put(ip1, new Panel(ip1));
+			rxBufferMap.put(ip1, new ArrayList<Integer>());
 			fragmentList.add(null);
 			
 			String ip2 = "192.168.1.21";
-			panelList.add(new Panel(ip2));
+			panelMap.put(ip2, new Panel(ip2));
+			rxBufferMap.put(ip2, new ArrayList<Integer>());
 			fragmentList.add(null);
 			
 			String ip3 = "192.168.1.20";
-			panelList.add(new Panel(ip3));
+			panelMap.put(ip3, new Panel(ip3));
+			rxBufferMap.put(ip3, new ArrayList<Integer>());
 			fragmentList.add(null);
 			
 			String ip4 = "192.168.1.23";
-			panelList.add(new Panel(ip4));
+			panelMap.put(ip4, new Panel(ip4));
+			rxBufferMap.put(ip4, new ArrayList<Integer>());
 			fragmentList.add(null);
 		
 			String ip5 = "192.168.1.24";
-			panelList.add(new Panel(ip5));
+			panelMap.put(ip5, new Panel(ip5));
+			rxBufferMap.put(ip5, new ArrayList<Integer>());
 			fragmentList.add(null);
+			
 		
 	}
 
-	public void initRxBufferMap()
-	{
-		rxBufferMap = new HashMap<String,List<Integer>>();
+
+	public void parse(String ip){
 		
-		String ip1 = "192.168.1.17";
-		rxBufferMap.put(ip1, new ArrayList<Integer>());
+		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		
-		String ip2 = "192.168.1.21";
-		rxBufferMap.put(ip2, new ArrayList<Integer>());
-		
-		String ip3 = "192.168.1.20";
-		rxBufferMap.put(ip3, new ArrayList<Integer>());
-		
-		String ip4 = "192.168.1.23";
-		rxBufferMap.put(ip4, new ArrayList<Integer>());
-		
-		String ip5 = "192.168.1.24";
-		rxBufferMap.put(ip5, new ArrayList<Integer>());
+		List<List<Integer>> panelData = DataParser.removeJunkBytes(rxBuffer); 
+		List<List<Integer>> eepRom = DataParser.getEepRom(panelData);	
+		List<List<List<Integer>>> deviceList = DataParser.getDeviceList(panelData);
 		
 		
+		try {
+			Panel newPanel = new Panel(eepRom, deviceList, ip);
+			panelMap.put(ip, newPanel);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+
+		
+
+		
+	
 		
 	}
 }
