@@ -24,6 +24,8 @@ public class Connection {
 	static final int UART_NEW_LINE_H = 0x0D;
 	static final int UART_NEW_LINE_L = 0x0A;
 	
+	private int panelInfoPackageNo;
+	
 	
 	
 	
@@ -49,13 +51,13 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(CallBack delegate, String ip)
+	public Connection(CallBack callBack, String ip)
 	{
 		this.ip = ip;
 		this.isClosed = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
-		this.mCallBack = new WeakReference<CallBack>(delegate);
+		this.mCallBack = new WeakReference<CallBack>(callBack);
 		
 	}
 
@@ -75,10 +77,11 @@ public class Connection {
 
 	
 	public void fetchData(List<char[]> commandList){
-
+		
+		this.commandList = commandList;
 		new Thread(fetch).start();
 		System.out.println("connection started ");
-		this.commandList = commandList;
+		
 		
 	}
 
@@ -110,6 +113,7 @@ public class Connection {
 
 		@Override
 		public void run() {
+			panelInfoPackageNo = 0;
 			System.out.println("Slaver is doing job on a new thread.");
 			
 			//char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
@@ -172,6 +176,8 @@ public class Connection {
 							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
 							
 							//mCallback.get() to get mCallBack instance, for it is  weakReference
+							
+							panelInfoPackageNo ++ ;
 							mCallBack.get().receive(rxBuffer,ip);
 							rxBuffer.clear();
 						}
@@ -210,6 +216,7 @@ public class Connection {
 				finally
 				{		
 					System.out.println("Package recieve finished");
+					
 					/*try {
 						if(socket != null)  
 						{		
@@ -228,12 +235,17 @@ public class Connection {
 	
 	};
 
-
-
-
 	public String getIp() {
 		return ip;
 	}
+
+
+	public int getPanelInfoPackageNo() {
+		return panelInfoPackageNo;
+	}
+
+
+
 	
 	
 
