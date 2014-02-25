@@ -14,7 +14,9 @@ import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import com.example.nclient.R;
 
 public class PanelActivity extends Activity implements OnListItemClickedCallBack, CallBack{
 	
+	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
 	private Map<String,Connection> panel_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
@@ -142,6 +145,7 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 	public void initPanelMap()
 
 	{	
+			panelList = new ArrayList<Panel>();
 			panelMap = new HashMap<String,Panel>();
 			panel_connection_map = new HashMap<String,Connection>();
 			rxBufferMap = new HashMap<String,List<Integer>>();
@@ -171,11 +175,16 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 			rxBufferMap.put(ip5, new ArrayList<Integer>());
 			fragmentList.add(null);
 			
-		
+			for(String k: panelMap.keySet())
+			{
+				panelList.add(panelMap.get(k));
+				
+			}
 	}
 
 
 	public void parse(String ip){
+
 		
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		
@@ -187,18 +196,32 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		try {
 			Panel newPanel = new Panel(eepRom, deviceList, ip);
 			panelMap.put(ip, newPanel);
+		
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		
 
 		
+	}
 
+	@Override
+	public void passTest() {
+		int temp = 0;
 		
-	
+		for(String key:panelMap.keySet())
+		{
+			panelList.set(temp, panelMap.get(key));
+			temp++;
+			
+		}
 		
+		System.out.println("Pass Panel Test");
+		
+		Intent intent = new Intent(this,PanelInfoActivity.class);
+		intent.putParcelableArrayListExtra("panelList", (ArrayList<? extends Parcelable>) panelList);
+		
+		startActivity(intent);
 	}
 }

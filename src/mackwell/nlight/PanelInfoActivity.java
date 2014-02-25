@@ -59,6 +59,14 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 		setContentView(R.layout.activity_panel_info);
 		
 		
+		Intent intent = getIntent();
+		
+		ArrayList<Panel> panelList = intent.getParcelableArrayListExtra("panelList");
+		
+	
+		
+		panel = panelList.get(4);
+		
 		progressHandler = new Handler()
 		{
 

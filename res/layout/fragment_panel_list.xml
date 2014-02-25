@@ -45,8 +45,17 @@
          android:layout_height="wrap_content"
          android:layout_toRightOf="@+id/panelList_refreshButton"
          android:layout_alignParentBottom="true"
-         android:layout_marginLeft="10dp"
+         android:layout_marginLeft="5dp"
          android:text="GetAll" />
+     
+     <Button
+         android:id="@+id/panelList_passTest"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_toRightOf="@+id/panelList_getAllPanelButton"
+         android:layout_alignParentBottom="true"
+         android:layout_marginLeft="5dp"
+         android:text="pass" />
 
     </RelativeLayout>
 

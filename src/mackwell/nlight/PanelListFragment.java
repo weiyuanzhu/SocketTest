@@ -33,11 +33,29 @@ import com.example.nclient.R;
  */
 public class PanelListFragment extends ListFragment implements Connection.CallBack{
 	
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated to
+	 * the activity and potentially other fragments contained in that activity.
+	 * <p>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnListItemClickedCallBack {
+		// TODO: Update argument type and name
+		public void onListItemClicked(String ip, String location,int index);
+		public void getAllPanels();
+		public void passTest();
+
+		
+	}
+	
 	private Handler statusUpdateHandler;
 	
 	private Button refreshBtn;
 	private Button getAllPanelsBtn;
-	
+	private Button passTest;
 
 	private OnListItemClickedCallBack mCallBack;
 	
@@ -106,10 +124,11 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 		refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
 		refreshBtn.setOnClickListener(refreshClicked);
+		passTest = (Button) getActivity().findViewById(R.id.panelList_passTest);
 		
 		getAllPanelsBtn = (Button) getActivity().findViewById(R.id.panelList_getAllPanelButton);
 		getAllPanelsBtn.setOnClickListener(getAllPanelsListener);
-
+		passTest.setOnClickListener(passListener);
 		dataList = getDataList();
 		
 		
@@ -180,22 +199,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 	};
 	
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnListItemClickedCallBack {
-		// TODO: Update argument type and name
-		public void onListItemClicked(String ip, String location,int index);
-		public void getAllPanels();
-
-		
-	}
+	
 	
 	public List<Map<String,Object>> getDataList()
 	{
@@ -282,6 +286,17 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		@Override
 		public void onClick(View arg0) {
 			mCallBack.getAllPanels();
+			
+		}
+		
+		
+	};
+	
+	OnClickListener passListener = new OnClickListener()
+	{
+		@Override
+		public void onClick(View arg0) {
+			mCallBack.passTest();
 			
 		}
 		

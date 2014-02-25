@@ -113,7 +113,6 @@ public class Panel  implements Parcelable{
 			return null;
 		}
 		
-		
 	};
 	
 	
@@ -227,6 +226,7 @@ public class Panel  implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(panelLocation);
+		dest.writeString(contact);
 		dest.writeValue(loop1);
 		dest.writeValue(loop2);
 	}
@@ -234,6 +234,7 @@ public class Panel  implements Parcelable{
 	public void readFromParcel(Parcel source)
 	{
 		panelLocation = source.readString();
+		contact = source.readString();
 		loop1 = (Loop) source.readValue(Loop.class.getClassLoader());
 		loop2 = (Loop) source.readValue(Loop.class.getClassLoader());
 		
