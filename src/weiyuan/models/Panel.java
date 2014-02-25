@@ -6,7 +6,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Panel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Panel  implements Parcelable{
 	
 	private static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
 	
@@ -32,12 +35,24 @@ public class Panel {
 	
 	private int deviceNumber;
 	
+	public Panel()
+	{
+		//init 
+	}
+
 	public Panel(String ip)
+
 	{
 		this.setIp(ip);
 		this.panelLocation = "test";
 		this.contact = "test";
 		
+	}
+
+	public Panel(Parcel source)
+	{
+		this();
+		readFromParcel(source);
 	}
 
 	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList, String ip) throws UnsupportedEncodingException
@@ -184,6 +199,27 @@ public class Panel {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(panelLocation);
+		dest.writeValue(loop1);
+		dest.writeValue(loop2);
+	}
+	
+	public void readFromParcel(Parcel source)
+	{
+		panelLocation = source.readString();
+		loop1 = (Loop) source.readValue(Loop.class.getClassLoader());
+		loop2 = (Loop) source.readValue(Loop.class.getClassLoader());
+		
 	}
 	
 	
