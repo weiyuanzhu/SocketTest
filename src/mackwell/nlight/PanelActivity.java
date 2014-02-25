@@ -13,6 +13,7 @@ import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,20 +35,32 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 	
 	
 	private ImageView panelInfoImage;
+	private PanelListFragment panelListFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel);
+		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
+		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.panel_list);
 	
-		fragmentList = new ArrayList<PanelInfoFragment>(5);
+		
+		
+		Intent intent = getIntent();
+		
+		panelList = intent.getParcelableArrayListExtra("panelList");
+		panelListFragment.setPanelList(panelList);
+		
+		fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
 
+		System.out.println("All panel get: " + panelList.size());
 		initPanelMap();
 
 
 		
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +113,7 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		
 	}
 
-	@Override
+
 	public void getAllPanels() {
 		System.out.println("getAllPanels");
 		
@@ -143,43 +156,18 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 
 	
 	public void initPanelMap()
-
 	{	
-			panelList = new ArrayList<Panel>();
-			panelMap = new HashMap<String,Panel>();
-			panel_connection_map = new HashMap<String,Connection>();
-			rxBufferMap = new HashMap<String,List<Integer>>();
-			
-			String ip1 = "192.168.1.17";
-			panelMap.put(ip1, new Panel(ip1));
-			rxBufferMap.put(ip1, new ArrayList<Integer>());
-			fragmentList.add(null);
-			
-			String ip2 = "192.168.1.21";
-			panelMap.put(ip2, new Panel(ip2));
-			rxBufferMap.put(ip2, new ArrayList<Integer>());
-			fragmentList.add(null);
-			
-			String ip3 = "192.168.1.20";
-			panelMap.put(ip3, new Panel(ip3));
-			rxBufferMap.put(ip3, new ArrayList<Integer>());
-			fragmentList.add(null);
-			
-			String ip4 = "192.168.1.23";
-			panelMap.put(ip4, new Panel(ip4));
-			rxBufferMap.put(ip4, new ArrayList<Integer>());
-			fragmentList.add(null);
+		panelMap = new HashMap<String,Panel>();
 		
-			String ip5 = "192.168.1.24";
-			panelMap.put(ip5, new Panel(ip5));
-			rxBufferMap.put(ip5, new ArrayList<Integer>());
-			fragmentList.add(null);
+		for(int i=0; i<panelList.size();i++)
+		{
+			panelMap.put(panelList.get(i).getIp(), panelList.get(i));	
+			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(panelList.get(i).getIp(), panelList.get(i).getPanelLocation(),panelList.get(i));
+			fragmentList.add(panelFragment);
 			
-			for(String k: panelMap.keySet())
-			{
-				panelList.add(panelMap.get(k));
-				
-			}
+		}
+			
+			
 	}
 
 

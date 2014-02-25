@@ -27,7 +27,6 @@ public class Panel  implements Parcelable{
 	private String passcode;
 	
 
-
 	private String reportUsage;
 	
 	private Long serialNumber;
@@ -225,18 +224,22 @@ public class Panel  implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(ip);
 		dest.writeString(panelLocation);
 		dest.writeString(contact);
 		dest.writeValue(loop1);
 		dest.writeValue(loop2);
+		dest.writeLong(serialNumber);
 	}
 	
 	public void readFromParcel(Parcel source)
 	{
+		ip = source.readString();
 		panelLocation = source.readString();
 		contact = source.readString();
 		loop1 = (Loop) source.readValue(Loop.class.getClassLoader());
 		loop2 = (Loop) source.readValue(Loop.class.getClassLoader());
+		serialNumber = source.readLong();
 		
 	}
 	

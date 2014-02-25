@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.util.CommandFactory;
 import android.annotation.SuppressLint;
@@ -51,6 +52,16 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 	}
 	
+	private List<Panel> panelList;
+	
+	protected List<Panel> getPanelList() {
+		return panelList;
+	}
+
+	protected void setPanelList(List<Panel> panelList) {
+		this.panelList = panelList;
+	}
+
 	private Handler statusUpdateHandler;
 	
 	private Button refreshBtn;
@@ -205,53 +216,21 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	{
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("location","Nigel's Test Demo Unit");
-		map.put("ip","192.168.1.17");
-		map.put("img", R.drawable.panel);
+		Map<String, Object> map  = null;
 		
-		list.add(map);
-		
-		map = new HashMap<String,Object>();
-		
-		map.put("location","Mackwell Factory");
-		map.put("ip","192.168.1.21");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);
-		
-		/*map = new HashMap<String,Object>();
-		
-		map.put("location","N-Light CONNECT demo 01");
-		map.put("ip","192.168.1.19");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);*/
-		
-		map = new HashMap<String,Object>();
-		
-		map.put("location","Mackwell Link Building");
-		map.put("ip","192.168.1.20");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);
-		
-		map = new HashMap<String,Object>();
-		
-		map.put("location","Mackwell Specials");
-		map.put("ip","192.168.1.23");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);
-		
-		map = new HashMap<String,Object>();
-		
-		map.put("location","Technical Demo Board");
-		map.put("ip","192.168.1.24");
-		map.put("img", R.drawable.panel);
-		
-		list.add(map);
-				
+		for(int i =0; i<panelList.size();i++)
+		{
+			Panel p = panelList.get(i);
+			
+			map = new HashMap<String, Object>();
+			map.put("location",p.getPanelLocation());
+			map.put("ip",p.getIp());
+			map.put("img", R.drawable.panel);
+			
+			list.add(map);
+	
+		}
+	
 		return list;
 	}
 
