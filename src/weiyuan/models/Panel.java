@@ -99,6 +99,23 @@ public class Panel  implements Parcelable{
 		
 	}
 	
+	public static final Parcelable.Creator<Panel> CREATOR = new Parcelable.Creator<Panel>(){
+
+		@Override
+		public Panel createFromParcel(Parcel source) {
+
+			return new Panel(source);
+		}
+
+		@Override
+		public Panel[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		
+	};
+	
 	
 	private byte[] getBytes(List<Integer> list)
 	{
