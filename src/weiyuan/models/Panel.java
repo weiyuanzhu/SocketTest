@@ -31,12 +31,14 @@ public class Panel  implements Parcelable{
 	
 	private Long serialNumber;
 	private BigInteger gtin;
+	private int[] gtinArray;
 	
 	private int deviceNumber;
 	
 	public Panel()
 	{
 		//init 
+		gtinArray = new int[6]; 
 	}
 
 	public Panel(String ip)
@@ -56,6 +58,8 @@ public class Panel  implements Parcelable{
 
 	public Panel(List<List<Integer>> eepRom, List<List<List<Integer>>> deviceList, String ip) throws UnsupportedEncodingException
 	{
+		gtinArray = new int[6];
+		
 		this.ip = ip;
 		
 		this.panelLocation = new String(getBytes(eepRom.get(60)),"UTF-8");
@@ -79,7 +83,13 @@ public class Panel  implements Parcelable{
 		this.gtin = BigInteger.valueOf(eepRom.get(3).get(5) + eepRom.get(3).get(4) * 256 + 
 				eepRom.get(3).get(3) * 65536 + eepRom.get(3).get(2) * 16777216L + 
 				eepRom.get(3).get(1) * 4294967296L + eepRom.get(3).get(0) * 1099511627776L);
-	
+		
+		for(int i=0; i< gtinArray.length; i++)
+		{
+			int temp = 5-i;
+			gtinArray[i] = eepRom.get(3).get(temp);
+		}
+		
 		
 		this.passcode = String.valueOf(eepRom.get(51).get(0) * 256 + eepRom.get(51).get(1));
 		
@@ -177,6 +187,9 @@ public class Panel  implements Parcelable{
 		return gtin;
 	}
 
+	public void setGtin(BigInteger gtin) {
+		this.gtin = gtin;
+	}
 
 	public String getPasscode() {
 		return passcode;
@@ -195,11 +208,20 @@ public class Panel  implements Parcelable{
 				deviceNumber += loop1.getDeviceNumber();		
 		}
 		
-		
+		if(loop2 != null)
+		{
+			deviceNumber += loop2.getDeviceNumber();
+		}
+				
 		return deviceNumber;
 	}
 
 	
+	
+	public int[] getGtinArray() {
+		return gtinArray;
+	}
+
 	public Loop getLoop1() {
 		return loop1;
 	}
@@ -224,23 +246,46 @@ public class Panel  implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		
+		dest.writeValue(loop1);
+		dest.writeValue(loop2);
+		
 		dest.writeString(ip);
 		dest.writeString(panelLocation);
 		dest.writeString(contact);
-		dest.writeValue(loop1);
-		dest.writeValue(loop2);
+		dest.writeString(tel);
+		dest.writeString(mobile);
+		dest.writeString(version);
+		dest.writeString(id);
+		dest.writeString(passcode);
+		dest.writeString(reportUsage);
+		
+		
 		dest.writeLong(serialNumber);
+		dest.writeIntArray(gtinArray);
 	}
 	
 	public void readFromParcel(Parcel source)
 	{
+		
+		loop1 = (Loop) source.readValue(Loop.class.getClassLoader());
+		loop2 = (Loop) source.readValue(Loop.class.getClassLoader());
+		
 		ip = source.readString();
 		panelLocation = source.readString();
 		contact = source.readString();
-		loop1 = (Loop) source.readValue(Loop.class.getClassLoader());
-		loop2 = (Loop) source.readValue(Loop.class.getClassLoader());
+		tel  = source.readString();
+		mobile  = source.readString();
+		version  = source.readString();
+		id  = source.readString();
+		passcode  = source.readString();
+		reportUsage = source.readString();
+		
 		serialNumber = source.readLong();
 		
+		source.readIntArray(gtinArray);
+
+	
 	}
 	
 	

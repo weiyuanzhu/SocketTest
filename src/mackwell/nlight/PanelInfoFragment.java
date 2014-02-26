@@ -1,6 +1,7 @@
 package mackwell.nlight;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,8 +111,18 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	}
 
 	public PanelInfoFragment(Panel panel) {
-		// Required empty public constructor\
+		// Required empty public constructor
+		
 		this.panel = panel;
+		
+		//set BigInteger gtin from gtinArray int[]
+		
+		BigInteger gtin = BigInteger.valueOf(panel.getGtinArray()[0] + panel.getGtinArray()[1] * 256 + 
+				panel.getGtinArray()[2] * 65536 + panel.getGtinArray()[3] * 16777216L + 
+				panel.getGtinArray()[4] * 4294967296L + panel.getGtinArray()[5] * 1099511627776L);
+		this.panel.setGtin(gtin);
+		
+		
 	}
 
 	@Override
@@ -290,6 +301,10 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
+		
+		
+		
+		
 		
 		map.put("text1", "GTIN:");
 		map.put("text2", panel==null? "..." : panel.getGtin());
