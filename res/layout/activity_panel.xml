@@ -25,7 +25,7 @@
             android:id="@+id/panelInfo_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/mackwell_icon" 
+            android:src="@drawable/mackwell_logo" 
             android:layout_gravity="center"
             android:contentDescription="@string/title_activity_panel_info"/>
 

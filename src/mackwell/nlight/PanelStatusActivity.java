@@ -88,7 +88,7 @@ public class PanelStatusActivity extends Activity {
 				  	case 1 : 
 				  	{
 				  		statusTextView.setText("OK");
-				  		imageView.setImageResource(drawable.tick);
+				  		imageView.setImageResource(drawable.greentick);
 				  		load.setVisibility(View.INVISIBLE);
 						imageView.setVisibility(View.VISIBLE);
 						
@@ -110,7 +110,7 @@ public class PanelStatusActivity extends Activity {
 				  	case 2 : 
 				  		{
 				  			statusTextView.setText("System not configured"); 
-				  			imageView.setImageResource(drawable.cross);
+				  			imageView.setImageResource(drawable.redcross);
 				  			load.setVisibility(View.INVISIBLE);
 							imageView.setVisibility(View.VISIBLE);
 				  			
@@ -122,7 +122,7 @@ public class PanelStatusActivity extends Activity {
 			  			load.setVisibility(View.INVISIBLE);
 						imageView.setVisibility(View.VISIBLE);
 			  			
-			  			imageView.setImageResource(drawable.cross);
+			  			imageView.setImageResource(drawable.redcross);
 			  			
 			  			if(faultFlag==0)
 						{

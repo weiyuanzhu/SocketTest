@@ -110,8 +110,8 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 				{
 					if(map.get("ip").equals(ip))
 					{
-						if(msg.arg1 == 1) {map.put("img", R.drawable.tick);}
-						else if(msg.arg1 == 3) {map.put("img", R.drawable.cross);}
+						if(msg.arg1 == 1) {map.put("img", R.drawable.greentick);}
+						else if(msg.arg1 == 3) {map.put("img", R.drawable.redcross);}
 						
 					}
 				}
