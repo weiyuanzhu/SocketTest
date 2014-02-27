@@ -8,6 +8,7 @@ import java.util.Map;
 import weiyuan.models.Device;
 import weiyuan.socket.Connection;
 import weiyuan.util.CommandFactory;
+import weiyuan.util.ToggleCmdEnum;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -131,7 +132,8 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 	public void ftTest(View v)
 	{
 		System.out.println("----------ftTest--------");
-		List<char[] > commandList = CommandFactory.ftTest(device.getAddress());
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		 List<char[] > commandList = ToggleCmdEnum.FT.getCmd(64);
 		
 		Connection connection = new Connection (this,"192.168.1.24");
 		connection.fetchData(commandList);
