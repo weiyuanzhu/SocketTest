@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mackwell.nlight.PanelListFragment.OnListItemClickedCallBack;
+import mackwell.nlight.PanelListFragment.OnPanelListItemClickedCallBack;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
@@ -24,7 +24,7 @@ import android.widget.ImageView;
 
 import com.example.nclient.R;
 
-public class PanelActivity extends Activity implements OnListItemClickedCallBack, CallBack{
+public class PanelActivity extends Activity implements OnPanelListItemClickedCallBack, CallBack{
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;

@@ -58,6 +58,11 @@ public class Loop  implements Parcelable {
 
 
 
+	public List<Device> getDeviceList() {
+		return deviceList;
+	}
+
+
 	public int getDeviceNumber() {
 		return deviceNumber;
 	}

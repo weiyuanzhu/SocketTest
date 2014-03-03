@@ -28,7 +28,7 @@ import com.example.nclient.R;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link PanelListFragment.OnListItemClickedCallBack} interface to handle
+ * {@link PanelListFragment.OnPanelListItemClickedCallBack} interface to handle
  * interaction events.
  * 
  */
@@ -43,7 +43,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
-	public interface OnListItemClickedCallBack {
+	public interface OnPanelListItemClickedCallBack {
 		// TODO: Update argument type and name
 		public void onListItemClicked(String ip, String location,int index);
 		public void getAllPanels();
@@ -68,7 +68,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	private Button getAllPanelsBtn;
 	private Button passTest;
 
-	private OnListItemClickedCallBack mCallBack;
+	private OnPanelListItemClickedCallBack mCallBack;
 	
 	private List<Map<String,Object>> dataList = null;
 	private SimpleAdapter simpleAdapter;
@@ -93,7 +93,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mCallBack = (OnListItemClickedCallBack) activity;
+			mCallBack = (OnPanelListItemClickedCallBack) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");

@@ -8,8 +8,8 @@
 
     <fragment
         android:name="mackwell.nlight.DeviceListFragment"
-        android:tag="panelListFragment"
-        android:id="@+id/device_list"
+        android:tag="deviceListFragment"
+        android:id="@+id/device_list_fragment"
         android:layout_width="0dp"
         android:layout_height="match_parent" 
         android:layout_weight="1"/>
