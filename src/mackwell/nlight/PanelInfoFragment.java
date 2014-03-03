@@ -116,11 +116,13 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		this.panel = panel;
 		
 		//set BigInteger gtin from gtinArray int[]
-		
-		BigInteger gtin = BigInteger.valueOf(panel.getGtinArray()[0] + panel.getGtinArray()[1] * 256 + 
+		if(panel.getGtinArray()!=null)
+		{	
+			BigInteger gtin = BigInteger.valueOf(panel.getGtinArray()[0] + panel.getGtinArray()[1] * 256 + 
 				panel.getGtinArray()[2] * 65536 + panel.getGtinArray()[3] * 16777216L + 
 				panel.getGtinArray()[4] * 4294967296L + panel.getGtinArray()[5] * 1099511627776L);
-		this.panel.setGtin(gtin);
+			this.panel.setGtin(gtin);
+		}
 		
 		
 	}

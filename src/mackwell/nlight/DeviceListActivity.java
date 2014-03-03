@@ -40,10 +40,10 @@ public class DeviceListActivity extends ListActivity {
 		loop1 = (Loop) intent.getParcelableExtra("loop1");  
 		loop2 = (Loop) intent.getParcelableExtra("loop2");
 		
-		System.out.println("loop1 n:" + loop1.getDeviceNumber());
-		System.out.println("loop2 n:" + loop2.getDeviceNumber());
+		System.out.println("loop1 n:" + (loop1 == null? " 0" :loop1.getDeviceNumber()));
+		System.out.println("loop2 n:" + (loop2 == null? " 0" :loop2.getDeviceNumber()));
 		
-		deviceNumber = loop1.getDeviceNumber()+loop2.getDeviceNumber();
+		deviceNumber = (loop1 ==null? 0:loop1.getDeviceNumber()) + (loop2 ==null? 0:loop2.getDeviceNumber());
 		
 		deviceList = new String[deviceNumber];
 		

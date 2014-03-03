@@ -50,12 +50,23 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		Intent intent = getIntent();
 		
 		panelList = intent.getParcelableArrayListExtra("panelList");
-		panelListFragment.setPanelList(panelList);
 		
-		fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
+		if(panelList!=null){
+			panelListFragment.setPanelList(panelList);
+		
+			fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
 
-		System.out.println("All panel get: " + panelList.size());
-		initPanelMap();
+			System.out.println("All panel get: " + panelList.size());
+			initPanelMap();
+		}
+		else 
+		{
+			fragmentList = new ArrayList<PanelInfoFragment>(5);
+			initPanel();
+			panelListFragment.setPanelList(panelList);
+		}
+		
+		
 
 
 		
@@ -211,5 +222,46 @@ public class PanelActivity extends Activity implements OnListItemClickedCallBack
 		intent.putParcelableArrayListExtra("panelList", (ArrayList<? extends Parcelable>) panelList);
 		
 		startActivity(intent);
+	}
+	
+	private void initPanel()
+	{
+		panelList = new ArrayList<Panel>();
+		panelMap = new HashMap<String,Panel>();
+		panel_connection_map = new HashMap<String,Connection>();
+		rxBufferMap = new HashMap<String,List<Integer>>();
+		
+		String ip1 = "192.168.1.17";
+		panelMap.put(ip1, new Panel(ip1));
+		rxBufferMap.put(ip1, new ArrayList<Integer>());
+		fragmentList.add(null);
+		
+		String ip2 = "192.168.1.21";
+		panelMap.put(ip2, new Panel(ip2));
+		rxBufferMap.put(ip2, new ArrayList<Integer>());
+		fragmentList.add(null);
+		
+		String ip3 = "192.168.1.20";
+		panelMap.put(ip3, new Panel(ip3));
+		rxBufferMap.put(ip3, new ArrayList<Integer>());
+		fragmentList.add(null);
+		
+		String ip4 = "192.168.1.23";
+		panelMap.put(ip4, new Panel(ip4));
+		rxBufferMap.put(ip4, new ArrayList<Integer>());
+		fragmentList.add(null);
+	
+		String ip5 = "192.168.1.24";
+		panelMap.put(ip5, new Panel(ip5));
+		rxBufferMap.put(ip5, new ArrayList<Integer>());
+		fragmentList.add(null);
+		
+		for(String k: panelMap.keySet())
+		{
+			panelList.add(panelMap.get(k));
+			
+		}
+		
+		
 	}
 }

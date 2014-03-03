@@ -47,6 +47,7 @@ public class Panel  implements Parcelable{
 		this.setIp(ip);
 		this.panelLocation = "test";
 		this.contact = "test";
+		this.loop1 = new Loop();
 		
 	}
 
