@@ -265,11 +265,12 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 
 			System.out.println("Get Device List");
 			
-			Intent intent = new Intent(getActivity(), DeviceListActivity.class);
+			Intent intent = new Intent(getActivity(), DeviceActivity.class);
 
 			if(panel!=null){
 				
 				intent.putExtra("location", panel.getPanelLocation());
+				intent.putExtra("panel", panel);
 				intent.putExtra("loop1",panel.getLoop1());
 				intent.putExtra("loop2",panel.getLoop2());
 				startActivity(intent);

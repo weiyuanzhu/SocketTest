@@ -49,6 +49,15 @@ public class Panel  implements Parcelable{
 		this.contact = "test";
 		this.loop1 = new Loop();
 		this.loop2 = new Loop();
+		this.tel = "test";
+		this.mobile = "test";
+		this.version = "test";
+		this.id = "test";
+		this.passcode= "test";
+		this.reportUsage = "test";
+		this.serialNumber = (long) 0;
+		this.gtinArray = new int[]{0,0,0,0,0,0};
+		
 		
 	}
 

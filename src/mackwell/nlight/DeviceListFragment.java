@@ -4,6 +4,7 @@ import com.example.nclient.R;
 import com.example.nclient.R.layout;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,13 +15,13 @@ import android.view.ViewGroup;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link DeviceListFragment.OnFragmentInteractionListener} interface to handle
+ * {@link DeviceListFragment.OnDeviceFragmentInteractionListener} interface to handle
  * interaction events.
  * 
  */
-public class DeviceListFragment extends Fragment {
+public class DeviceListFragment extends ListFragment {
 
-	private OnFragmentInteractionListener mListener;
+	private OnDeviceFragmentInteractionListener mListener;
 
 	public DeviceListFragment() {
 		// Required empty public constructor
@@ -45,7 +46,7 @@ public class DeviceListFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnFragmentInteractionListener) activity;
+			mListener = (OnDeviceFragmentInteractionListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
@@ -67,7 +68,7 @@ public class DeviceListFragment extends Fragment {
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
-	public interface OnFragmentInteractionListener {
+	public interface OnDeviceFragmentInteractionListener {
 		// TODO: Update argument type and name
 		public void onFragmentInteraction(Uri uri);
 	}
