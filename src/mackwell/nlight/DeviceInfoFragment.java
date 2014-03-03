@@ -1,4 +1,7 @@
-package com.example.nclient;
+package mackwell.nlight;
+
+import com.example.nclient.R;
+import com.example.nclient.R.layout;
 
 import android.app.Activity;
 import android.net.Uri;
