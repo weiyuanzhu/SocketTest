@@ -10,28 +10,22 @@ import java.util.List;
  * @author weiyuan zhu
  *
  */
-public enum ToggleCmdEnum {
+public enum GetCmdEnum {
 	
-	FT(0x60),
-	DT(0x61),
-	ST(0x62),
-	INHIBIT(0x63),
-	RESET_INHIBIT(0x64),
-	IDENTIFY(0x65),
-	STOP_IDENTIFY(0x66),
-	REMOVE_DEVICE(0x67),
-	REMOVE_LOOP(0x68),
-	COMMISSION_LOOP(0x69),
-	DFU(0x6A),
-	STOP_COMMISSION(0x6B),
-	RETEST_GROUP(0x6C),
-	MACKWELL_SPECIAL(0x6D),
-	EEPROM_CORRUPT_FLAG(0x6E),
-	REFRESH(0x6F);
-
+	GET_INIT(0x21), 
+	GET_FACTORY_RESET(0x23),
+	GET_FLASH_RESET(0x24),
+	GET_REPORT(0x25),
+	GET_LIST(0x26),
+	UPDATE_LIST(0x27),
+	UPDATE_REPORT(0x28),
+	GET_OVERALL_STATUS(0x32);
+	
+	
+	
 	private int value;
 	
-	private ToggleCmdEnum(int value){
+	private GetCmdEnum(int value){
 		this.value = value;
 	}
 	
@@ -44,16 +38,15 @@ public enum ToggleCmdEnum {
 		return super.toString()+ "(" + value + ")";
 	}
 	
-	public List<char[]> toggle(int address)
+	public List<char[]> get()
 	{
 		List<char[]> commandList = new ArrayList<char[]>();
 		
 		List<Integer> txBuffer = new ArrayList<Integer>();
 		
 		txBuffer.add(Constants.HOST_ID);
-		txBuffer.add(Constants.MASTER_TOGGLE);
+		txBuffer.add(Constants.MASTER_GET);
 		txBuffer.add(getValue());
-		txBuffer.add(address);
 		int checksum = CRC.calcCRC(txBuffer, txBuffer.size());
 		txBuffer.add(CRC.getUnsignedInt(checksum));
 		txBuffer.add(CRC.getUnsignedInt(checksum >> 8));
@@ -63,6 +56,7 @@ public enum ToggleCmdEnum {
 		txBuffer.add(Constants.UART_NEW_LINE_H);
 		txBuffer.add(Constants.UART_NEW_LINE_L);
 		
+		//transfer List<Integer> to char[]
 		char[] command = new char[txBuffer.size()];
 		for(int j=0; j<txBuffer.size();j++)		
 		{
@@ -76,8 +70,5 @@ public enum ToggleCmdEnum {
 		
 		
 	}
-	
-	
-	
 
 }

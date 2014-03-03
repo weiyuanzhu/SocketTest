@@ -133,7 +133,7 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 	{
 		System.out.println("----------ftTest--------");
 		 //commandList = CommandFactory.ftTest(device.getAddress());
-		 List<char[] > commandList = ToggleCmdEnum.FT.getCmd(64);
+		 List<char[] > commandList = ToggleCmdEnum.FT.toggle(64);
 		
 		Connection connection = new Connection (this,"192.168.1.24");
 		connection.fetchData(commandList);
