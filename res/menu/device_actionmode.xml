@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+     <item
+        android:id="@+id/device_id"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="ID"/>
+      <item
+        android:id="@+id/device_ft"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="FT"/>
+      
+      <item
+        android:id="@+id/device_dt"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="DT"/>
+      <item
+        android:id="@+id/device_st"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="ST"/>
+
+</menu>

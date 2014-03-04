@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +60,17 @@ public class DeviceListFragment extends Fragment {
 		
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			// TODO Auto-generated method stub
-			return false;
+			MenuInflater inflater = mode.getMenuInflater();
+	        inflater.inflate(R.menu.device_actionmode, menu);
+	        return true;
+		
 		}
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int pos = deviceListView.getCheckedItemPosition();
+			int position = deviceListView.getCheckedItemPosition();
+			System.out.println(position);
+			
 			return false;
 		}
 	};
@@ -126,7 +131,7 @@ public class DeviceListFragment extends Fragment {
 		mAdapter = new MyExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 		deviceListView.setAdapter(mAdapter);
 		
-		//deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		
 		
@@ -185,11 +190,16 @@ public class DeviceListFragment extends Fragment {
 				
 				
 				System.out.println("type: " + type + " group position: " + groupPosition + " childPositon: " + childPosition);
-				if(mActionMode!=null){
-	                return false;
-	            }
+				if (mActionMode != null) {
+		            return false;
+		        }
+
+		        // Start the CAB using the ActionMode.Callback defined above
+		        mActionMode = getActivity().startActionMode(mActionModeCallback);
+		        view.setSelected(true);
+		        return true;
 				
-				return false;
+
 			}
 			
 			
