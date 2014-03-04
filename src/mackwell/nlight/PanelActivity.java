@@ -19,8 +19,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.nclient.R;
 
@@ -78,6 +80,22 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_about:
+	        	
+	        	Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+	        	
+	            return true;
+	        case R.id.action_settings:
+	            
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 
@@ -263,5 +281,14 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		}
 		
 		
+	}
+	
+	private String getAppVersion(){
+		StringBuilder version = new StringBuilder();
+    	version.append("Mackwell N-Light Android, Version ");
+    	String app_version = getString(R.string.app_version);
+    	version.append(app_version);
+		
+    	return version.toString();
 	}
 }

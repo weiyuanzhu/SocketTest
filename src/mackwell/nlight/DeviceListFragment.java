@@ -45,7 +45,7 @@ public class DeviceListFragment extends Fragment {
 	private MyExpandableListAdapter mAdapter;
 	private ActionMode mActionMode;
 	
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
 		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
@@ -69,7 +69,9 @@ public class DeviceListFragment extends Fragment {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			int position = deviceListView.getCheckedItemPosition();
+
 			System.out.println(position);
+
 			
 			return false;
 		}
@@ -195,7 +197,7 @@ public class DeviceListFragment extends Fragment {
 		        }
 
 		        // Start the CAB using the ActionMode.Callback defined above
-		        mActionMode = getActivity().startActionMode(mActionModeCallback);
+		        mActionMode = getActivity().startActionMode(deviceActionModeCallback);
 		        view.setSelected(true);
 		        return true;
 				
@@ -263,5 +265,10 @@ public class DeviceListFragment extends Fragment {
 		
 		
 	}
+	
 
+		
+		
 }
+
+
