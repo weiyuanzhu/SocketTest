@@ -1,15 +1,26 @@
 package mackwell.nlight;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import weiyuan.models.Device;
+
 import com.example.nclient.R;
 import com.example.nclient.R.layout;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -19,15 +30,34 @@ import android.view.ViewGroup;
  * method to create an instance of this fragment.
  * 
  */
-public class DeviceInfoFragment extends Fragment {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
+public class DeviceInfoFragment extends ListFragment {
+	
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated to
+	 * the activity and potentially other fragments contained in that activity.
+	 * <p>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnFragmentInteractionListener {
+		// TODO: Update argument type and name
+		public void onFragmentInteraction(Uri uri);
+	}
+	
+
+	private static final String ARG_DEVICE = "device";
+
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
 	private String mParam2;
+	
+	private Device device;
+	private SimpleAdapter mSimpleAdapter;
+	private List<Map<String,Object>> listDataSource;
+	
 
 	private OnFragmentInteractionListener mListener;
 
@@ -42,25 +72,26 @@ public class DeviceInfoFragment extends Fragment {
 	 * @return A new instance of fragment DeviceInfoFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static DeviceInfoFragment newInstance(String param1, String param2) {
+
+	public static DeviceInfoFragment newInstance(Device device) {
 		DeviceInfoFragment fragment = new DeviceInfoFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
+		args.putParcelable(ARG_DEVICE, device);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public DeviceInfoFragment() {
-		// Required empty public constructor
+	public DeviceInfoFragment()
+	{
+
 	}
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
+			device = getArguments().getParcelable(ARG_DEVICE);
 		}
 	}
 
@@ -68,26 +99,27 @@ public class DeviceInfoFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater
-				.inflate(R.layout.fragment_device_info, container, false);
+		return inflater.inflate(R.layout.fragment_device_info, container, false);
 	}
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
+
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		try {
-			mListener = (OnFragmentInteractionListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
-		}
+		
+	}
+
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		
+		System.out.println(device.toString());
+		mSimpleAdapter = new SimpleAdapter(getActivity(), getData(device), R.layout.device_info_row, 
+				new String[] {"text1","text2"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+		
+		setListAdapter(mSimpleAdapter);
 	}
 
 	@Override
@@ -96,18 +128,72 @@ public class DeviceInfoFragment extends Fragment {
 		mListener = null;
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
+	
+	
+	public List<Map<String,Object>> getData(Device device)
+	{
+		
+		listDataSource = new ArrayList<Map<String,Object>>();
+		
+			
+		Map<String,Object> map = new HashMap<String,Object>();
+			
+		map.put("text1", "Address");
+		map.put("text2", device==null? "n/a" : device.getAddress());
+		
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "SerialNumber:");
+		map.put("text2", device==null? "n/a" : device.getSerialNumber());
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "GTIN:");
+		map.put("text2", device==null? "n/a" : "-");
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Location");
+		map.put("text2", device==null? "n/a" : "-");
+		
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Emergendy mode");
+		map.put("text2", device==null? "n/a" : device.getEmergencyMode());
+			
+		listDataSource.add(map);
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Emergency Status");
+		map.put("text2", device==null? "n/a" : device.getEmergencyStatus());
+			
+		listDataSource.add(map);
+	
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Failure Status");
+		map.put("text2", device==null? "n/a" : device.getFailureStatus());
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Battery Level");
+		map.put("text2", device==null? "n/a" : device.getBattery());
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("text1", "Communication Status");
+		map.put("text2", device==null? "n/a" : device.isCommunicationStatus());
+			
+		listDataSource.add(map);
+	
+		return listDataSource;
 	}
 
 }

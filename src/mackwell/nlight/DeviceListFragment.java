@@ -33,13 +33,30 @@ import com.example.nclient.R;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link DeviceListFragment.OnDeviceFragmentInteractionListener} interface to handle
+ * {@link DeviceListFragment.OnDevicdListFragmentListener} interface to handle
  * interaction events.
  * 
  */
 public class DeviceListFragment extends Fragment {
+	
+	
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated to
+	 * the activity and potentially other fragments contained in that activity.
+	 * <p>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnDevicdListFragmentListener {
+		// TODO: Update argument type and name
+		public void onDeviceItemClicked(int groupPosition, int childPosition);
 
-	private OnDeviceFragmentInteractionListener mListener;
+	}
+	
+
+	private OnDevicdListFragmentListener mListener;
 	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
@@ -99,18 +116,12 @@ public class DeviceListFragment extends Fragment {
 		
 	}
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnDeviceFragmentInteractionListener) activity;
+			mListener = (OnDevicdListFragmentListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
@@ -166,14 +177,16 @@ public class DeviceListFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                     int groupPosition, int childPosition, long id) {
-                Toast.makeText(
+                /*Toast.makeText(
                         getActivity(),
                         listDataHeader.get(groupPosition)
                                 + " : "
                                 + listDataChild.get(
                                         listDataHeader.get(groupPosition)).get(
                                         childPosition), Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
+                
+                mListener.onDeviceItemClicked(groupPosition, childPosition);
                 return false;
             }
         });
@@ -218,19 +231,7 @@ public class DeviceListFragment extends Fragment {
 		mListener = null;
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnDeviceFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
-	}
+	
 
 	public void setLoop1(Loop loop) {
 		this.loop1 = loop;

@@ -13,7 +13,6 @@ import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;

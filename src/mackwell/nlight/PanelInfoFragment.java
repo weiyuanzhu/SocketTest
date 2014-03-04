@@ -142,10 +142,8 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		
-		View rootView = inflater.inflate(R.layout.fragment_panel_info, container, false);
-		
-		
-		return rootView;
+		return inflater.inflate(R.layout.fragment_panel_info, container, false);
+
 	}
 
 	@SuppressLint("HandlerLeak")
