@@ -34,7 +34,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	
 	private List<PanelInfoFragment> fragmentList = null;
 	
-	
+	private Panel currentDisplayingPanel;
 	private ImageView panelInfoImage;
 	private PanelListFragment panelListFragment;
 
@@ -92,6 +92,10 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	        case R.id.action_settings:
 	            
 	            return true;
+	            
+	        case R.id.action_show_device_list:
+	        	if(currentDisplayingPanel != null) showDevices();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -106,8 +110,10 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		{
 			
 			Connection connection = panel_connection_map.get(key);
-			connection.closeConnection();
-			connection = null;
+			if(connection!=null){
+				connection.closeConnection();
+				connection = null;
+			}
 		}
 		
 		super.onDestroy();
@@ -127,6 +133,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		if(fragmentList.get(index) == null)
 		{
 			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelMap.get(ip));
+			currentDisplayingPanel = panelMap.get(ip);
 			fragmentList.set(index, panelFragment);
 		}
 		
@@ -134,7 +141,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
 		fragmentTransaction.replace(R.id.panel_detail_container, fragmentList.get(index),"tagTest");
-		fragmentTransaction.addToBackStack(null);
+		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
 		
@@ -289,5 +296,22 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
     	version.append(app_version);
 		
     	return version.toString();
+	}
+	
+	private void showDevices(){
+		System.out.println("Get Device List");
+		
+		Intent intent = new Intent(this, DeviceActivity.class);
+
+		if(currentDisplayingPanel!=null){
+			
+			intent.putExtra("location", currentDisplayingPanel.getPanelLocation());
+			intent.putExtra("panel", currentDisplayingPanel);
+			intent.putExtra("loop1",currentDisplayingPanel.getLoop1());
+			intent.putExtra("loop2",currentDisplayingPanel.getLoop2());
+			startActivity(intent);
+			
+		}
+		
 	}
 }

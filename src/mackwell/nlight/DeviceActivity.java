@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
@@ -44,6 +46,22 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		getMenuInflater().inflate(R.menu.device, menu);
 		return true;
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_about:
+	        	
+	        	Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
+	        	
+	            return true;
+	        case R.id.action_settings:
+	            
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
 
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
@@ -63,6 +81,15 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
 		
+	}
+	
+	private String getAppVersion(){
+		StringBuilder version = new StringBuilder();
+    	version.append("Mackwell N-Light Android, Version ");
+    	String app_version = getString(R.string.app_version);
+    	version.append(app_version);
+		
+    	return version.toString();
 	}
 
 	
