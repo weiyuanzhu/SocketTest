@@ -31,7 +31,7 @@ public class DeviceActivity extends Activity implements OnDeviceFragmentInteract
 		
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
-		deviceListFragment.setLoop1(panel.getLoop2());
+		deviceListFragment.setLoop2(panel.getLoop2());
 		
 	}
 

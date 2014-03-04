@@ -13,11 +13,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
@@ -35,13 +38,44 @@ import com.example.nclient.R;
  */
 public class DeviceListFragment extends Fragment {
 
+	private OnDeviceFragmentInteractionListener mListener;
+	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
+	private ActionMode mActionMode;
+	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+		
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mActionMode = null;
+		}
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			int pos = deviceListView.getCheckedItemPosition();
+			return false;
+		}
+	};
 	
 	List<String> listDataHeader;
     HashMap<String, List<Device>> listDataChild;
+    
+    
 	
-	private OnDeviceFragmentInteractionListener mListener;
+	
 	
 	private Loop loop1;
 	private Loop loop2;
@@ -85,12 +119,14 @@ public class DeviceListFragment extends Fragment {
 		
 		deviceListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView_deviceList);
 		
+		
+		
 		initListData();
 		
 		mAdapter = new MyExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 		deviceListView.setAdapter(mAdapter);
 		
-		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		//deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		
 		
 		
@@ -123,7 +159,6 @@ public class DeviceListFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                     int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
                 Toast.makeText(
                         getActivity(),
                         listDataHeader.get(groupPosition)
@@ -136,7 +171,31 @@ public class DeviceListFragment extends Fragment {
             }
         });
 		
-		
+		deviceListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				deviceListView.setItemChecked(position, true);
+				int type = ExpandableListView.getPackedPositionType(id);
+				int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                int childPosition = ExpandableListView.getPackedPositionChild(id);  
+				  
+				
+				
+				System.out.println("type: " + type + " group position: " + groupPosition + " childPositon: " + childPosition);
+				if(mActionMode!=null){
+	                return false;
+	            }
+				
+				return false;
+			}
+			
+			
+			
+			
+		});
 		
 		super.onActivityCreated(savedInstanceState);
 	}
@@ -161,12 +220,12 @@ public class DeviceListFragment extends Fragment {
 		public void onFragmentInteraction(Uri uri);
 	}
 
-	public void setLoop1(Loop loop1) {
-		this.loop1 = loop1;
+	public void setLoop1(Loop loop) {
+		this.loop1 = loop;
 	}
 
-	public void setLoop2(Loop loop2) {
-		this.loop2 = loop2;
+	public void setLoop2(Loop loop) {
+		this.loop2 = loop;
 	}
 	
 
@@ -177,9 +236,7 @@ public class DeviceListFragment extends Fragment {
  
         // Adding child data
        
-       
-        
- 
+
         // Adding child data
         // Header, Child data
         
@@ -189,7 +246,7 @@ public class DeviceListFragment extends Fragment {
         }
         if(this.loop2!=null){
         	 listDataHeader.add("Loop2");
-        	 listDataChild.put(listDataHeader.get(1), (List<Device>) loop2.getDeviceList());
+        	 listDataChild.put(listDataHeader.get(1), loop2.getDeviceList());
        }
 
 
