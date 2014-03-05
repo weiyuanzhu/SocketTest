@@ -13,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,7 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		Intent intent = getIntent();
 		
@@ -62,7 +64,13 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.action_about:
+	    	case android.R.id.home:
+	    		Intent intent = NavUtils.getParentActivityIntent(this);
+	    		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    		NavUtils.navigateUpTo(this, intent);
+	    		return true;
+	       
+	    	case R.id.action_about:
 	        	
 	        	Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
 	        	

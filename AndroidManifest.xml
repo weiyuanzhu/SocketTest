@@ -29,7 +29,7 @@
         <activity
             android:name="mackwell.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen" 
-            android:theme="@android:style/Theme.Holo.Light">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,7 +61,8 @@
         <activity
             android:name="mackwell.nlight.DeviceActivity"
             android:label="@string/title_activity_device"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape" 
+            android:parentActivityName="mackwell.nlight.PanelActivity">
         </activity>
     </application>
 
