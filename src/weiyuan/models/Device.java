@@ -21,6 +21,7 @@ public class Device  implements Parcelable{
 	private int battery;
 	private long serialNumber;
 	private BigInteger GTIN;
+	private int[] gtinArray;
 	private int dtTime;
 	private int lampOnTime;
 	private int lampEmergencyTime;
@@ -47,6 +48,7 @@ public class Device  implements Parcelable{
 		lampOnTime = 0;
 		lampEmergencyTime = 0;
 		feature = 0;
+		gtinArray = new int[]{0,0,0,0,0,0};
 	}
 	
 	public Device(List<Integer> device)
@@ -64,6 +66,11 @@ public class Device  implements Parcelable{
 		lampEmergencyTime = device.get(18);
 		feature = device.get(19);
 		
+		for(int i=0; i< gtinArray.length; i++)
+		{
+			int temp = 15-i;
+			gtinArray[i] = device.get(temp);
+		}
 	}
 
 
@@ -96,6 +103,7 @@ public class Device  implements Parcelable{
 		dest.writeInt(lampOnTime);
 		dest.writeInt(lampEmergencyTime);
 		dest.writeInt(feature);
+		dest.writeIntArray(gtinArray);
 		
 		
 		
@@ -115,6 +123,7 @@ public class Device  implements Parcelable{
 		lampOnTime = source.readInt();
 		lampEmergencyTime = source.readInt();
 		feature = source.readInt();
+		source.readIntArray(gtinArray);
 	
 
 	}

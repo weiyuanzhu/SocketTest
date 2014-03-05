@@ -151,9 +151,11 @@ public class DeviceListFragment extends Fragment {
 		deviceListView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				System.out.println(arg2 + "clicked");
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				
+				deviceListView.setItemChecked(position, true);
+				System.out.println(position + "clicked");
 				
 			}
 		});
@@ -185,7 +187,13 @@ public class DeviceListFragment extends Fragment {
                                         listDataHeader.get(groupPosition)).get(
                                         childPosition), Toast.LENGTH_SHORT)
                         .show();*/
-                
+            	if(groupPosition==0){
+            		deviceListView.setItemChecked(childPosition+1, true);
+            	}
+            	else {
+            		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
+            		deviceListView.setItemChecked(pos, true);
+            	}
                 mListener.onDeviceItemClicked(groupPosition, childPosition);
                 return false;
             }
