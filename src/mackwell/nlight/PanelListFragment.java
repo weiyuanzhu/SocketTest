@@ -134,7 +134,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		super.onActivityCreated(savedInstanceState);
 		
 		refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
-		refreshBtn.setOnClickListener(refreshClicked);
+		//refreshBtn.setOnClickListener(refreshClicked);
 		passTest = (Button) getActivity().findViewById(R.id.panelList_passTest);
 		
 		getAllPanelsBtn = (Button) getActivity().findViewById(R.id.panelList_getAllPanelButton);
@@ -155,6 +155,8 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		setListAdapter(simpleAdapter);
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
+		refreshStatus();
 		
 	}
 
@@ -185,10 +187,8 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 	}
 	
-	OnClickListener refreshClicked = new OnClickListener(){
 
-		@Override
-		public void onClick(View v) {
+		public void refreshStatus() {
 			
 			connectionList = new ArrayList<Connection>();
 			
@@ -206,9 +206,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			}
 		}
 		
-		
-		
-	};
+
 	
 	
 	

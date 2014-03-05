@@ -48,7 +48,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		setContentView(R.layout.activity_panel);
 		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
-		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.panel_list);
+		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list);
 	
 		
 		
@@ -96,7 +96,9 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	        case R.id.action_settings:
 	            
 	            return true;
-	            
+	        case R.id.action_refresh:
+	        	panelListFragment.refreshStatus();
+	        	return true;
 	        case R.id.action_show_device_list:
 	        	if(currentDisplayingPanel != null){
 	        		showDevices();
