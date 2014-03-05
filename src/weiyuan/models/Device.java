@@ -37,7 +37,7 @@ public class Device  implements Parcelable{
 	
 	public Device()
 	{	
-		address = 0;
+		address = 129;
 		failureStatus = 0;
 		communicationStatus = true; 
 		emergencyStatus = 0;
@@ -50,6 +50,13 @@ public class Device  implements Parcelable{
 		lampEmergencyTime = 0;
 		feature = 0;
 		gtinArray = new int[]{0,0,0,0,0,0};
+	}
+	
+	public Device(int fs)
+	{
+		this();
+		failureStatus = fs;
+		
 	}
 	
 	public Device(List<Integer> device)
