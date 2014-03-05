@@ -46,13 +46,15 @@
             android:id="@+id/panelInfo_fetchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fetch Panel Data"/>
+            android:text="Fetch Panel Data"
+            android:visibility="gone"/>
             
             <Button
             android:id="@+id/panelInfo_deviceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ShowDeviceList"/>
+            android:text="ShowDeviceList"
+            android:visibility="gone"/>
             
             
         </LinearLayout>

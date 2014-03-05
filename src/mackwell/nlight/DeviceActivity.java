@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 import mackwell.nlight.DeviceListFragment;
 
@@ -23,6 +25,8 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 	private DeviceListFragment deviceListFragment = null;
 	private DeviceInfoFragment deviceFragment = null;
 	
+	private ImageView image = null;
+	
 	
 
 	@Override
@@ -33,6 +37,8 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		Intent intent = getIntent();
 		
 		this.panel = intent.getParcelableExtra("panel");
+		
+		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
@@ -66,6 +72,7 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
 		
+		image.setVisibility(View.INVISIBLE);
 		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
 		
 		if(groupPosition==0)
