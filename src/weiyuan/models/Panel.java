@@ -95,6 +95,7 @@ public class Panel  implements Parcelable{
 				eepRom.get(3).get(3) * 65536 + eepRom.get(3).get(2) * 16777216L + 
 				eepRom.get(3).get(1) * 4294967296L + eepRom.get(3).get(0) * 1099511627776L);
 		
+		this.gtinArray = new int[]{0,0,0,0,0,0};
 		for(int i=0; i< gtinArray.length; i++)
 		{
 			int temp = 5-i;

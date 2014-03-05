@@ -92,7 +92,6 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			
 			Intent intent = new Intent(LoadingScreenActivity.this, PanelActivity.class);
 			

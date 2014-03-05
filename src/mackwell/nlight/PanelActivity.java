@@ -37,6 +37,8 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	private Panel currentDisplayingPanel;
 	private ImageView panelInfoImage;
 	private PanelListFragment panelListFragment;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

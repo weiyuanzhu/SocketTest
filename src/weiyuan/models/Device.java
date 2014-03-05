@@ -66,6 +66,7 @@ public class Device  implements Parcelable{
 		lampEmergencyTime = device.get(18);
 		feature = device.get(19);
 		
+		gtinArray = new int[]{0,0,0,0,0,0};
 		for(int i=0; i< gtinArray.length; i++)
 		{
 			int temp = 15-i;
