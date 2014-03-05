@@ -48,6 +48,11 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		
+		if(panel.getOverAllStatus()!=0)
+		{
+			image.setImageResource(R.drawable.redcross);		
+		}else image.setImageResource(R.drawable.greentick);
+		
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
 		deviceListFragment.setLoop2(panel.getLoop2());

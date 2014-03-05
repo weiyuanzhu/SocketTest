@@ -17,6 +17,7 @@ public class Loop  implements Parcelable {
 	
 	private List<Device> deviceList;
 	
+	private int status;
 	private int deviceNumber; 
 	
 	
@@ -25,9 +26,20 @@ public class Loop  implements Parcelable {
 	{
 		deviceList = (List<Device>) new ArrayList<Device>();
 		deviceNumber = 0;
+		setStatus(0);
 		addDevice(new Device());
 		addDevice(new Device(200));
 		addDevice(new Device(1));
+		
+		for(Device d : deviceList)
+		{
+			if(d.getFailureStatus()!=0) 
+			{
+				setStatus(1);
+				
+			}
+			
+		}
 	}
 	
 
@@ -47,6 +59,11 @@ public class Loop  implements Parcelable {
 		{
 			Device d = new Device(dl.get(i));
 			deviceList.add(d);
+			if(d.getFailureStatus()!=0) 
+			{
+				setStatus(1);
+				
+			}
 			System.out.println(d.toString());
 	
 		}		
@@ -83,12 +100,14 @@ public class Loop  implements Parcelable {
 		
 		dest.writeTypedList(deviceList);
 		dest.writeInt(deviceNumber);
+		dest.writeInt(status);
 	}
 
 	public void readFromParcel(Parcel source)
 	{
 		source.readTypedList(deviceList,Device.CREATOR);
 		deviceNumber =  source.readInt();
+		status = source.readInt();
 		
 	}
 
@@ -121,6 +140,16 @@ public class Loop  implements Parcelable {
 		deviceList.add(device);
 		deviceNumber ++;
 		
+	}
+
+
+	public int getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
 	};
 	
 	

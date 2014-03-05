@@ -35,6 +35,8 @@ public class Panel  implements Parcelable{
 	
 	private int deviceNumber;
 	
+	private int overAllStatus;
+	
 	public Panel()
 	{
 		//init 
@@ -44,19 +46,26 @@ public class Panel  implements Parcelable{
 	public Panel(String ip)
 
 	{
-		this.setIp(ip);
-		this.panelLocation = "test";
-		this.contact = "test";
-		this.loop1 = new Loop();
-		this.loop2 = new Loop();
-		this.tel = "test";
-		this.mobile = "test";
-		this.version = "test";
-		this.id = "test";
-		this.passcode= "test";
-		this.reportUsage = "test";
-		this.serialNumber = (long) 0;
-		this.gtinArray = new int[]{0,0,0,0,0,0};
+		setIp(ip);
+		panelLocation = "test";
+		contact = "test";
+		loop1 = new Loop();
+		loop2 = new Loop();
+		tel = "test";
+		mobile = "test";
+		version = "test";
+		id = "test";
+		passcode= "test";
+		reportUsage = "test";
+		serialNumber = (long) 0;
+		gtinArray = new int[]{0,0,0,0,0,0};
+		overAllStatus = 0;
+		
+		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
+		{
+			overAllStatus = 1;
+			
+		}else overAllStatus =0;
 		
 		
 	}
@@ -117,6 +126,11 @@ public class Panel  implements Parcelable{
 		loop2 = new Loop(deviceList.get(1));
 		
 		
+		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
+		{
+			overAllStatus = 1;
+			
+		}else overAllStatus =0;
 		
 	}
 	
@@ -275,6 +289,7 @@ public class Panel  implements Parcelable{
 		
 		dest.writeLong(serialNumber);
 		dest.writeIntArray(gtinArray);
+		dest.writeInt(overAllStatus);
 	}
 	
 	public void readFromParcel(Parcel source)
@@ -296,9 +311,16 @@ public class Panel  implements Parcelable{
 		serialNumber = source.readLong();
 		
 		source.readIntArray(gtinArray);
+		overAllStatus = source.readInt();
 
 	
 	}
+
+	public int getOverAllStatus() {
+		return overAllStatus;
+	}
+
+
 	
 	
 	
