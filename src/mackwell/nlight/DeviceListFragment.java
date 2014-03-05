@@ -52,6 +52,10 @@ public class DeviceListFragment extends Fragment {
 	public interface OnDevicdListFragmentListener {
 		// TODO: Update argument type and name
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
+		public void ft(int address);
+		public void dt(int address);
+		public void st(int address);
+		public void id(int address);
 
 	}
 	
@@ -61,6 +65,15 @@ public class DeviceListFragment extends Fragment {
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
 	private ActionMode mActionMode;
+	List<String> listDataHeader;
+    HashMap<String, List<Device>> listDataChild;
+    
+    
+	
+	
+	
+	private Loop loop1;
+	private Loop loop2;
 	
 	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
 		
@@ -85,24 +98,35 @@ public class DeviceListFragment extends Fragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			
 			int position = deviceListView.getCheckedItemPosition();
-
 			System.out.println(position);
+			switch(item.getItemId())
+			{
+				case R.id.device_ft:
+					mListener.ft(getAddress(position));
+					break;
+				case R.id.device_st:
+					mListener.st(getAddress(position));
+					break;
+				case R.id.device_dt:
+					mListener.dt(getAddress(position));
+					break;
+				case R.id.device_id:
+					mListener.id(getAddress(position));
+					break;
+				default: break;
+			
+			}
+			
 
 			
+			mode.finish();
 			return false;
 		}
 	};
 	
-	List<String> listDataHeader;
-    HashMap<String, List<Device>> listDataChild;
-    
-    
 	
-	
-	
-	private Loop loop1;
-	private Loop loop2;
 
 	public DeviceListFragment() {
 		// Required empty public constructor
@@ -155,7 +179,7 @@ public class DeviceListFragment extends Fragment {
 					long id) {
 				
 				deviceListView.setItemChecked(position, true);
-				System.out.println(position + "clicked");
+				System.out.println(position + " clicked");
 				
 			}
 		});
@@ -275,7 +299,35 @@ public class DeviceListFragment extends Fragment {
 		
 	}
 	
-
+	private int getAddress(int position)
+	{
+		int address = 0; 
+		int temp = loop1.getDeviceNumber()+2;
+		
+		if(position == 0){
+			address = 64;
+		}
+		else if( position > 0 && position<temp)
+		{
+			address = loop1.getDevice(position-1).getAddress();
+			
+		}
+		else if(position == temp)
+		{
+			address = 192;
+			
+		}
+		else {
+			
+			address = loop1.getDevice(position-temp).getAddress();
+		}
+		
+		
+		
+		return address;
+		
+		
+	}
 		
 		
 }

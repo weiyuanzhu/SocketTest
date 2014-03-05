@@ -4,6 +4,9 @@ import java.util.List;
 
 import mackwell.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import weiyuan.models.Panel;
+import weiyuan.socket.Connection;
+import weiyuan.socket.Connection.CallBack;
+import weiyuan.util.ToggleCmdEnum;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -19,13 +22,14 @@ import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
 
-public class DeviceActivity extends Activity implements OnDevicdListFragmentListener{
+public class DeviceActivity extends Activity implements OnDevicdListFragmentListener,CallBack{
 	
 	private Panel panel = null;
 	private DeviceListFragment deviceListFragment = null;
 	private DeviceInfoFragment deviceFragment = null;
 	
 	private ImageView image = null;
+	private Connection connection;
 	
 	
 
@@ -37,6 +41,8 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		Intent intent = getIntent();
 		
 		this.panel = intent.getParcelableExtra("panel");
+		
+		this.connection = new Connection(this,panel.getIp());
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		
@@ -79,7 +85,11 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		{
 			deviceFragment = DeviceInfoFragment.newInstance(panel.getLoop1().getDevice(childPosition));
 		}
-		else deviceFragment = DeviceInfoFragment.newInstance(panel.getLoop2().getDevice(childPosition));
+		else {
+			deviceFragment = DeviceInfoFragment.newInstance(panel.getLoop2().getDevice(childPosition));
+			
+			
+		}
 		
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -97,6 +107,51 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
     	version.append(app_version);
 		
     	return version.toString();
+	}
+
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		System.out.println(rx);
+		connection.setIsClosed(true);
+		
+	}
+	
+	
+
+	@Override
+	public void ft(int address) {
+		System.out.println("----------ftTest--------");
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
+		connection.fetchData(commandList);
+		
+	}
+
+	@Override
+	public void dt(int address) {
+		System.out.println("----------ftTest--------");
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		List<char[] > commandList = ToggleCmdEnum.DT.toggle(address);
+		connection.fetchData(commandList);
+		
+	}
+
+	@Override
+	public void st(int address) {
+		System.out.println("----------ftTest--------");
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		List<char[] > commandList = ToggleCmdEnum.ST.toggle(address);
+		connection.fetchData(commandList);
+		
+	}
+
+	@Override
+	public void id(int address) {
+		System.out.println("----------ftTest--------");
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		List<char[] > commandList = ToggleCmdEnum.IDENTIFY.toggle(address);
+		connection.fetchData(commandList);
+		
 	}
 
 	

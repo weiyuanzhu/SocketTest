@@ -28,7 +28,8 @@
         </activity>
         <activity
             android:name="mackwell.nlight.LoadingScreenActivity"
-            android:label="@string/title_activity_loading_screen" >
+            android:label="@string/title_activity_loading_screen" 
+            android:theme="@android:style/Theme.Holo.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

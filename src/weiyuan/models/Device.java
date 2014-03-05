@@ -14,6 +14,7 @@ public class Device  implements Parcelable{
 	
 	
 	private int address;
+	private String location;
 	private int failureStatus;
 	private boolean communicationStatus; // false : communication lost / true : communication ok
 	private int emergencyStatus;
@@ -26,7 +27,7 @@ public class Device  implements Parcelable{
 	private int lampOnTime;
 	private int lampEmergencyTime;
 	private int feature;
-	//private String name;
+	
 	
 	
 	public Device(Parcel source) {
@@ -196,6 +197,14 @@ public class Device  implements Parcelable{
 
 	public int getFeature() {
 		return feature;
+	}
+
+	public int[] getGtinArray() {
+		return gtinArray;
+	}
+
+	public void setGTIN(BigInteger gTIN) {
+		GTIN = gTIN;
 	}
 	
 	

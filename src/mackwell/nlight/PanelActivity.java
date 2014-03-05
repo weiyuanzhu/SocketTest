@@ -38,6 +38,8 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	private ImageView panelInfoImage;
 	private PanelListFragment panelListFragment;
 	
+	private int currentSelected;
+	
 	
 
 	@Override
@@ -96,7 +98,10 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	            return true;
 	            
 	        case R.id.action_show_device_list:
-	        	if(currentDisplayingPanel != null) showDevices();
+	        	if(currentDisplayingPanel != null){
+	        		showDevices();
+	        	}
+	        	
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -124,6 +129,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 	@Override
 	public void onListItemClicked(String ip, String location, int index) {
 		
+		currentDisplayingPanel = panelMap.get(ip);
 		
 		panelInfoImage.setVisibility(View.INVISIBLE);
 		System.out.println(location + " " +  ip + "positon: " + index);
@@ -135,7 +141,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		if(fragmentList.get(index) == null)
 		{
 			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelMap.get(ip));
-			currentDisplayingPanel = panelMap.get(ip);
+			
 			fragmentList.set(index, panelFragment);
 		}
 		

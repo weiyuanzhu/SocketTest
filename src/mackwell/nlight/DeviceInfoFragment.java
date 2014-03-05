@@ -1,5 +1,6 @@
 package mackwell.nlight;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,15 @@ public class DeviceInfoFragment extends ListFragment {
 		if (getArguments() != null) {
 			device = getArguments().getParcelable(ARG_DEVICE);
 		}
+		
+		if(device.getGtinArray()!=null)
+		{	
+			
+			BigInteger gtin = BigInteger.valueOf(device.getGtinArray()[0] + device.getGtinArray()[1] * 256 + 
+				device.getGtinArray()[2] * 65536 + device.getGtinArray()[3] * 16777216L + 
+				device.getGtinArray()[4] * 4294967296L + device.getGtinArray()[5] * 1099511627776L);
+			this.device.setGTIN(gtin);
+		}
 	}
 
 	@Override
@@ -152,7 +162,7 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "GTIN:");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : device.getGTIN());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
