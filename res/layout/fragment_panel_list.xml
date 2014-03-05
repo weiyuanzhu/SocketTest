@@ -37,8 +37,8 @@
          android:layout_height="wrap_content"
          android:layout_alignParentBottom="true"
          android:layout_alignParentLeft="true"
-         android:text="Refresh"
-     	 android:visibilit="gone"/>y
+         android:visibility="gone"
+         android:text="Refresh"/>
 
      <Button
          android:id="@+id/panelList_getAllPanelButton"
@@ -47,8 +47,8 @@
          android:layout_toRightOf="@+id/panelList_refreshButton"
          android:layout_alignParentBottom="true"
          android:layout_marginLeft="5dp"
-         android:text="GetAll" 
-         android:visibilit="gone"/>
+         android:visibility="gone"
+         android:text="GetAll"/>
      
      <Button
          android:id="@+id/panelList_passTest"
@@ -57,8 +57,8 @@
          android:layout_toRightOf="@+id/panelList_getAllPanelButton"
          android:layout_alignParentBottom="true"
          android:layout_marginLeft="5dp"
-         android:text="pass" 
-         android:visibilit="gone"/>
+         android:visibility="gone"
+         android:text="pass"/>
 
     </RelativeLayout>
 
