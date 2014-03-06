@@ -38,11 +38,15 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		//get panel from intent
 		Intent intent = getIntent();
 		
 		this.panel = intent.getParcelableExtra("panel");
+		
+		//set action bar
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(panel.getPanelLocation());
 		
 		this.connection = new Connection(this,panel.getIp());
 		
