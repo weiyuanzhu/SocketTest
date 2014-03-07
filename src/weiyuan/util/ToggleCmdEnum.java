@@ -68,6 +68,7 @@ public enum ToggleCmdEnum {
 		{
 			command[j] = (char) txBuffer.get(j).intValue();
 			
+			
 		}
 		
 		commandList.add(command);

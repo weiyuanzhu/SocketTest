@@ -17,7 +17,7 @@
         android:allowBackup="true"
         android:icon="@drawable/mackwell_logo"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light">
+        android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name="mackwell.nlight.PanelStatusActivity"
             android:label="@string/app_name" >
@@ -28,15 +28,9 @@
         </activity>
         <activity
             android:name="mackwell.nlight.LoadingScreenActivity"
-            android:label="@string/title_activity_loading_screen" 
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> 
-            
-                        
+            android:label="@string/title_activity_loading_screen"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
+          
         </activity>
         <activity
             android:name="mackwell.nlight.PanelInfoActivity"
@@ -54,15 +48,21 @@
             android:name="mackwell.nlight.PanelActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
-            
-            
-           
         </activity>
         <activity
             android:name="mackwell.nlight.DeviceActivity"
             android:label="@string/title_activity_device"
-            android:screenOrientation="landscape" 
-            android:parentActivityName="mackwell.nlight.PanelActivity">
+            android:parentActivityName="mackwell.nlight.PanelActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.example.nclient.TestActivity"
+            android:label="@string/title_activity_test" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

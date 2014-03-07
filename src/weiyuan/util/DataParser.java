@@ -1,5 +1,6 @@
 package weiyuan.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +98,33 @@ public class DataParser {
 		
 		
 	}
+	
+	static public List<Integer> convertString(String str)
+	{
+		
+		List<Integer> buffer = new ArrayList<Integer>();
+		byte[] byteArray;
+		try {
+			byteArray = str.getBytes("UTF-8");
+			
+			for(byte b : byteArray) {
+				buffer.add(CRC.getUnsignedInt(b));
+			}
+			for(int i = buffer.size(); i < 33; i++) {
+				buffer.add(0x20);  // append SPACE '0x20' at the end to fill 32 character space
+			}
+			
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return buffer;
+		
+		
+		
+	}
+	
 }
 
 

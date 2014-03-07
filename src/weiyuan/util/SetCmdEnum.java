@@ -62,20 +62,21 @@ public enum SetCmdEnum {
 		txBuffer.add(getValue());
 		txBuffer.addAll(buffer);
 		
+		int checksum = CRC.calcCRC(txBuffer, txBuffer.size());
+		txBuffer.add(CRC.getUnsignedInt(checksum));
+		txBuffer.add(CRC.getUnsignedInt(checksum >> 8));
+		
 		txBuffer.add(Constants.UART_STOP_BIT_H);
 		txBuffer.add(Constants.UART_STOP_BIT_L);
 		txBuffer.add(Constants.UART_NEW_LINE_H);
 		txBuffer.add(Constants.UART_NEW_LINE_L);
 		
-		StringBuilder sb = new StringBuilder();
-		for(int a : buffer) {
-			sb.append(String.valueOf(a));
-		}
 		
 		char[] command = new char[txBuffer.size()];
 		for(int j=0; j<txBuffer.size();j++)		
 		{
 			command[j] = (char) txBuffer.get(j).intValue();
+			System.out.print(txBuffer.get(j).intValue() + " ");
 			
 		}
 		
