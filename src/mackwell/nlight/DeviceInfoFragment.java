@@ -168,38 +168,38 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Location");
-		map.put("text2", device==null? "n/a" : "-");
+		map.put("text2", device==null? "n/a" : "R&D");
 		
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergendy mode");
-		map.put("text2", device==null? "n/a" : device.getEmergencyMode());
+		map.put("text2", device==null? "n/a" : "Normal Mode");
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergency Status");
-		map.put("text2", device==null? "n/a" : device.getEmergencyStatus());
+		map.put("text2", device==null? "n/a" : "DT Done");
 			
 		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Failure Status");
-		map.put("text2", device==null? "n/a" : device.getFailureStatus());
+		map.put("text2", device==null? "n/a" : "All OK");
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Battery Level");
-		map.put("text2", device==null? "n/a" : device.getBattery());
+		map.put("text2", device==null? "n/a" : device.getBattery()/254*100+ "%");
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Communication Status");
-		map.put("text2", device==null? "n/a" : device.isCommunicationStatus());
+		map.put("text2", device==null? "n/a" : "OK");
 			
 		listDataSource.add(map);
 	

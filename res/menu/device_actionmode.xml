@@ -21,5 +21,10 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="ST"/>
-
+      <item
+        android:id="@+id/device_stopId"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="StopId"/>
+ 
 </menu>

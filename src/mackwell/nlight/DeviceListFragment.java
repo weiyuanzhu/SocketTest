@@ -56,6 +56,7 @@ public class DeviceListFragment extends Fragment {
 		public void dt(int address);
 		public void st(int address);
 		public void id(int address);
+		public void stopId(int address);
 
 	}
 	
@@ -114,6 +115,9 @@ public class DeviceListFragment extends Fragment {
 					break;
 				case R.id.device_id:
 					mListener.id(getAddress(position));
+					break;
+				case R.id.device_stopId:
+					mListener.stopId(getAddress(position));
 					break;
 				default: break;
 			

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.view.Menu;
+import android.view.View;
 
 import com.example.nclient.R;
 
@@ -60,7 +61,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		
 		mHandler = new Handler();
 		init();
-		loadAllPanels();
+		
 		
 		
 	}
@@ -86,6 +87,8 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		getMenuInflater().inflate(R.menu.loading_screen, menu);
 		return true;
 	}
+	
+
 	
 	Runnable loadFinished = new Runnable()
 	{
@@ -134,11 +137,13 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 
 
 	}
+	
 
 	
 	
-	public void loadAllPanels()
+	public void loadAllPanels(View v)
 	{
+		System.out.println("clicked");
 		List<char[]> commandList = CommandFactory.getPanelInfo();
 		
 		for(String key : ip_connection_map.keySet()){

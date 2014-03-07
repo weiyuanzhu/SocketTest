@@ -171,5 +171,14 @@ public class DeviceActivity extends Activity implements OnDevicdListFragmentList
 		
 	}
 
+	@Override
+	public void stopId(int address) {
+		System.out.println("----------ftTest--------");
+		 //commandList = CommandFactory.ftTest(device.getAddress());
+		List<char[] > commandList = ToggleCmdEnum.STOP_IDENTIFY.toggle(address);
+		connection.fetchData(commandList);
+		
+	}
+
 	
 }
