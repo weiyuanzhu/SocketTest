@@ -51,13 +51,13 @@ public class Loop  implements Parcelable {
 	
 	
 	
-	public Loop(List<List<Integer>> dl){
+	public Loop(List<List<Integer>> dl,List<List<Integer>> eepRom){
 		
 		deviceList = (List<Device>) new ArrayList<Device>();
 		
 		for(int i =0; i<dl.size(); i++)
 		{
-			Device d = new Device(dl.get(i));
+			Device d = new Device(dl.get(i),eepRom);
 			deviceList.add(d);
 			if(d.getFailureStatus()!=0) 
 			{

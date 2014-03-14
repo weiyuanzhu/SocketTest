@@ -168,7 +168,7 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Location");
-		map.put("text2", device==null? "n/a" : "R&D");
+		map.put("text2", device==null? "n/a" : device.getLocation());
 		
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();

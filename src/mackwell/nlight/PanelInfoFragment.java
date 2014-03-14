@@ -401,7 +401,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		}
 		
 		System.out.println("================Device List========================");
-		deviceList = DataParser.getDeviceList(panelData);
+		deviceList = DataParser.getDeviceList(panelData,eepRom);
 		
 		
 		for(int i=0; i<deviceList.size();i++)

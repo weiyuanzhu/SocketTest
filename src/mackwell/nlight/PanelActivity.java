@@ -223,7 +223,7 @@ public class PanelActivity extends Activity implements OnPanelListItemClickedCal
 		
 		List<List<Integer>> panelData = DataParser.removeJunkBytes(rxBuffer); 
 		List<List<Integer>> eepRom = DataParser.getEepRom(panelData);	
-		List<List<List<Integer>>> deviceList = DataParser.getDeviceList(panelData);
+		List<List<List<Integer>>> deviceList = DataParser.getDeviceList(panelData,eepRom);
 		
 		
 		try {

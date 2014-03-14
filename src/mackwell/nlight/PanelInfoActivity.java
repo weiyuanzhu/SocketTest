@@ -203,7 +203,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 		}
 		
 		System.out.println("================Device List========================");
-		deviceList = DataParser.getDeviceList(panelData);
+		deviceList = DataParser.getDeviceList(panelData,eepRom);
 		
 		
 		for(int i=0; i<deviceList.size();i++)

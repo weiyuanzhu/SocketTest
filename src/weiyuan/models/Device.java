@@ -3,8 +3,11 @@ package weiyuan.models;
 
 
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.List;
+
+import weiyuan.util.Constants;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,6 +17,8 @@ public class Device  implements Parcelable{
 	
 	
 	private int address;
+	
+
 	private String location;
 	private int failureStatus;
 	private boolean communicationStatus; // false : communication lost / true : communication ok
@@ -38,6 +43,7 @@ public class Device  implements Parcelable{
 	public Device()
 	{	
 		address = 129;
+		location = "test";
 		failureStatus = 0;
 		communicationStatus = true; 
 		emergencyStatus = 0;
@@ -59,7 +65,7 @@ public class Device  implements Parcelable{
 		
 	}
 	
-	public Device(List<Integer> device)
+	public Device(List<Integer> device,List<List<Integer>> eepRom)
 	{
 		address = device.get(0);
 		failureStatus = device.get(1);
@@ -73,6 +79,7 @@ public class Device  implements Parcelable{
 		lampOnTime = device.get(17);
 		lampEmergencyTime = device.get(18);
 		feature = device.get(19);
+		location = getDeviceLocation(device,eepRom);
 		
 		gtinArray = new int[]{0,0,0,0,0,0};
 		for(int i=0; i< gtinArray.length; i++)
@@ -102,6 +109,7 @@ public class Device  implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) 
 	{
 		dest.writeInt(address);
+		dest.writeString(location);
 		dest.writeInt(failureStatus);
 		dest.writeByte((byte)(communicationStatus ? 1 : 0));
 		dest.writeInt(emergencyStatus);
@@ -122,6 +130,7 @@ public class Device  implements Parcelable{
 	public void readFromParcel(Parcel source)
 	{
 		address = source.readInt();
+		location = source.readString();
 		failureStatus = source.readInt();
 		communicationStatus = source.readByte()!= 0;
 		emergencyStatus = source.readInt();
@@ -160,6 +169,10 @@ public class Device  implements Parcelable{
 
 	public int getAddress() {
 		return address;
+	}
+	
+	public String getLocation() {
+		return location.replaceAll("\\s+$", "");
 	}
 
 	public int getFailureStatus() {
@@ -205,6 +218,8 @@ public class Device  implements Parcelable{
 	public int getFeature() {
 		return feature;
 	}
+	
+	
 
 	public int[] getGtinArray() {
 		return gtinArray;
@@ -214,7 +229,38 @@ public class Device  implements Parcelable{
 		GTIN = gTIN;
 	}
 	
+	private String getDeviceLocation(List<Integer> device,List<List<Integer>> eepRom)
+	{
+		String location = null;
+		
+		int deviceNameLocation = (device.get(0) & Constants.LOOP_ID) == Constants.LOOP_ID ? 
+				(device.get(0) & Constants.DEVICE_ID) + 64 : device.get(0);
+		
+		int eepRomLocation = deviceNameLocation + Constants.LOOP_ID;
+
+		byte[] deviceLocationArray = getBytes(eepRom.get(eepRomLocation));
+		try {
+			location = new String(deviceLocationArray,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return location;
+
+		
+	}
 	
+	private byte[] getBytes(List<Integer> list)
+	{
+		byte[] temp = new byte[list.size()];
+		
+		for (int i=0; i<list.size(); i++)
+		{
+			temp[i] =  list.get(i).byteValue();
+			//System.out.print(temp[i]);
+		}
+		return temp;
+	}
 
 
 }

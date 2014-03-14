@@ -115,7 +115,8 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		 * Initial collections 
 		 * 
 		 */
-		ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
+		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
+		ipList = new String[] {"192.168.1.24"};
 		panelList = new ArrayList<Panel>();
 		panelMap = new HashMap<String,Panel>();
 		ip_connection_map = new HashMap<String,Connection>();
@@ -161,7 +162,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		
 		List<List<Integer>> panelData = DataParser.removeJunkBytes(rxBuffer); 
 		List<List<Integer>> eepRom = DataParser.getEepRom(panelData);	
-		List<List<List<Integer>>> deviceList = DataParser.getDeviceList(panelData);
+		List<List<List<Integer>>> deviceList = DataParser.getDeviceList(panelData,eepRom);
 		
 		
 		try {
@@ -169,7 +170,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 			panelMap.put(ip, newPanel);
 			panelList.add(newPanel);
 			
-			if(panelList.size()==5){
+			if(panelList.size()==ipList.length){
 				mHandler.post(loadFinished);	
 			}
 			

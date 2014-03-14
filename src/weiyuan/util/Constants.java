@@ -67,5 +67,11 @@ public class Constants {
 	static final int PRINT_ERROR_TEXT = 0x09;
 	
 	private static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
+	
+	public static final int LOOP_MASK = 0x40;
+	
+	public static final int LOOP_ID = 0x80;
+	public static final int DEVICE_ID = 0x3F;
+	public static final int DEVICE_LOST_BYTE = 0x40;
 
 }

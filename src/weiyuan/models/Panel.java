@@ -122,8 +122,8 @@ public class Panel  implements Parcelable{
 		System.out.println("================Panel Info========================");
 		System.out.println(this.toString());
 		
-		loop1 = new Loop(deviceList.get(0));
-		loop2 = new Loop(deviceList.get(1));
+		loop1 = new Loop(deviceList.get(0),eepRom);
+		loop2 = new Loop(deviceList.get(1),eepRom);
 		
 		
 		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
