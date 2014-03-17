@@ -180,7 +180,7 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergency Status");
-		map.put("text2", device==null? "n/a" : "DT Done");
+		map.put("text2", device==null? "n/a" : device.getEmergencyStatusText());
 			
 		listDataSource.add(map);
 	

@@ -1,19 +1,21 @@
 package messageType;
 
 public enum EmergencyStatus implements BitField{
-	INHIBIT_MODE,
-	FUNCTION_TEST_DONE,
-	DURATION_TEST_DONE,
-	BATTERY_FULLY_CHARGED,
-	FUNCTION_TEST_PENDING,
-	DURATION_TEST_PENDING,
-	IDENTIFICATION_ACTIVE,
-	PHYSICALLY_SELECTED;
+	INHIBIT_MODE("Inhibit Mode"),
+	FUNCTION_TEST_DONE("FT Done"),
+	DURATION_TEST_DONE("DT Done"),
+	BATTERY_FULLY_CHARGED("Battery Full"),
+	FUNCTION_TEST_PENDING("FT Pending"),
+	DURATION_TEST_PENDING("DT Pending"),
+	IDENTIFICATION_ACTIVE("Identification Activt"),
+	PHYSICALLY_SELECTED("Physically Selected");
 	
 	private final int flag;
+	private final String description;
 	
-	EmergencyStatus() {
+	EmergencyStatus(String des) {
 		this.flag = 1 << this.ordinal();
+		this.description = des;
 	}
 	
 	@Override
@@ -23,8 +25,7 @@ public enum EmergencyStatus implements BitField{
 	
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return description;
 	}
 
 	@Override

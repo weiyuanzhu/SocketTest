@@ -10,6 +10,8 @@ import java.util.List;
 
 import messageType.EmergencyMode;
 import messageType.EmergencyModeFlag;
+import messageType.EmergencyStatus;
+import messageType.EmergencyStatusFlag;
 import messageType.FailureStatus;
 import messageType.FailureStatusFlag;
 
@@ -197,9 +199,12 @@ public class Device  implements Parcelable{
 		else{
 			for(FailureStatus fs : fsSet)
 			{
-				sb.append(fs.getDescription()+",");
+				sb.append(fs.getDescription()+" , ");
 			}
 			System.out.println(sb);
+			
+			//trim last ","
+			sb.deleteCharAt(sb.length()-2);
 			return sb.toString();
 		}
 	}
@@ -210,6 +215,26 @@ public class Device  implements Parcelable{
 
 	public int getEmergencyStatus() {
 		return emergencyStatus;
+	}
+	
+	public String getEmergencyStatusText() {
+		StringBuilder sb = new StringBuilder();
+		
+		EnumSet<EmergencyStatus> esSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
+		
+		if (esSet.size()==0)
+		{
+			return "All OK";
+		}
+		else{
+			for(EmergencyStatus es : esSet)
+			{
+				sb.append(es.getDescription()+" , ");
+			}
+			System.out.println(sb);
+			sb.deleteCharAt(sb.length()-2);
+			return sb.toString();
+		}
 	}
 
 	public int getEmergencyMode() {
@@ -228,9 +253,10 @@ public class Device  implements Parcelable{
 		else{
 			for(EmergencyMode em : emSet)
 			{
-				sb.append(em.getDescription()+"; ");
+				sb.append(em.getDescription()+" , ");
 			}
 			System.out.println(sb);
+			sb.deleteCharAt(sb.length()-2);
 			return sb.toString();
 		}
 	}
