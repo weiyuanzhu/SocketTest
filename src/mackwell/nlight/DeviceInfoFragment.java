@@ -173,7 +173,7 @@ public class DeviceInfoFragment extends ListFragment {
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Emergendy mode");
+		map.put("text1", "Emergency Mode");
 		map.put("text2", device==null? "n/a" : "Normal Mode");
 			
 		listDataSource.add(map);
@@ -187,13 +187,13 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Failure Status");
-		map.put("text2", device==null? "n/a" : "All OK");
+		map.put("text2", device==null? "n/a" : device.getFailureStatusText());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Battery Level");
-		map.put("text2", device==null? "n/a" : device.getBattery()/254*100+ "%");
+		map.put("text2", device==null? "n/a" : device.getBatteryLevel());
 			
 		listDataSource.add(map);
 		

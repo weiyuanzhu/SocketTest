@@ -5,7 +5,11 @@ package weiyuan.models;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.util.EnumSet;
 import java.util.List;
+
+import messageType.FailureStatus;
+import messageType.FailureStatusFlag;
 
 import weiyuan.util.Constants;
 
@@ -178,6 +182,25 @@ public class Device  implements Parcelable{
 	public int getFailureStatus() {
 		return failureStatus;
 	}
+	
+	public String getFailureStatusText() {
+		StringBuilder sb = new StringBuilder();
+		
+		EnumSet<FailureStatus> fsSet = new FailureStatusFlag().getFlagStatus(failureStatus);
+		
+		if (fsSet.size()==0)
+		{
+			return "All OK";
+		}
+		else{
+			for(FailureStatus fs : fsSet)
+			{
+				sb.append(fs.getDes()+",");
+			}
+			System.out.println(sb);
+			return sb.toString();
+		}
+	}
 
 	public boolean isCommunicationStatus() {
 		return communicationStatus;
@@ -193,6 +216,12 @@ public class Device  implements Parcelable{
 
 	public int getBattery() {
 		return battery;
+	}
+	
+	public String getBatteryLevel()
+	{
+		return battery/254*100 + "%";
+		
 	}
 
 	public long getSerialNumber() {

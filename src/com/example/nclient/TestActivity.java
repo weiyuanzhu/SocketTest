@@ -13,6 +13,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import messageType.EmergencyMode;
+import messageType.EmergencyModeFlag;
+import messageType.EmergencyStatus;
+import messageType.EmergencyStatusFlag;
+import messageType.FailureStatus;
+import messageType.FailureStatusFlag;
+
 public class TestActivity extends Activity implements CallBack {
 	
 	Connection connection;
@@ -42,6 +49,20 @@ public class TestActivity extends Activity implements CallBack {
 		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
 		connection.fetchData(commandList);
 		
+		
+	}
+	
+	public void messagTest(View v)
+	{
+		StringBuilder sb = new StringBuilder();
+		for(FailureStatus fs : new FailureStatusFlag().getFlagStatus(200))
+		{
+			
+			sb.append(fs.getDes()+",");
+			
+			
+		}
+		System.out.println(sb);
 		
 	}
 
