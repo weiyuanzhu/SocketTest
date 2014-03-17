@@ -116,7 +116,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		 * 
 		 */
 		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-		ipList = new String[] {"192.168.1.24"};
+		ipList = new String[] {"192.168.1.23"};
 		panelList = new ArrayList<Panel>();
 		panelMap = new HashMap<String,Panel>();
 		ip_connection_map = new HashMap<String,Connection>();

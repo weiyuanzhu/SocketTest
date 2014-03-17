@@ -23,7 +23,7 @@ public enum FailureStatus implements BitField{
 		return flag;
 	}
 	
-	public String getDes()
+	public String getDescription()
 	{
 		return this.description;
 		

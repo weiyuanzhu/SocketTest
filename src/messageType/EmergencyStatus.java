@@ -22,6 +22,12 @@ public enum EmergencyStatus implements BitField{
 	}
 	
 	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public String toString() {
 		// capitalise first character
 				return super.toString().charAt(0) + 

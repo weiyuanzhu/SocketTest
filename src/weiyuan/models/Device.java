@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.List;
 
+import messageType.EmergencyMode;
+import messageType.EmergencyModeFlag;
 import messageType.FailureStatus;
 import messageType.FailureStatusFlag;
 
@@ -195,7 +197,7 @@ public class Device  implements Parcelable{
 		else{
 			for(FailureStatus fs : fsSet)
 			{
-				sb.append(fs.getDes()+",");
+				sb.append(fs.getDescription()+",");
 			}
 			System.out.println(sb);
 			return sb.toString();
@@ -212,6 +214,25 @@ public class Device  implements Parcelable{
 
 	public int getEmergencyMode() {
 		return emergencyMode;
+	}
+	
+	public String getEmergencyModeText() {
+		StringBuilder sb = new StringBuilder();
+		
+		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
+		
+		if (emSet.size()==0)
+		{
+			return "All OK";
+		}
+		else{
+			for(EmergencyMode em : emSet)
+			{
+				sb.append(em.getDescription()+"; ");
+			}
+			System.out.println(sb);
+			return sb.toString();
+		}
 	}
 
 	public int getBattery() {

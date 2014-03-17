@@ -58,7 +58,7 @@ public class TestActivity extends Activity implements CallBack {
 		for(FailureStatus fs : new FailureStatusFlag().getFlagStatus(200))
 		{
 			
-			sb.append(fs.getDes()+",");
+			sb.append(fs.getDescription()+",");
 			
 			
 		}

@@ -21,6 +21,14 @@ public enum Features implements BitField{
 		return flag;
 	}
 	
+	
+	
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		// capitalise first character

@@ -174,7 +174,7 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Emergency Mode");
-		map.put("text2", device==null? "n/a" : "Normal Mode");
+		map.put("text2", device==null? "n/a" : device.getEmergencyModeText());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
