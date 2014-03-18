@@ -338,5 +338,32 @@ public class Device  implements Parcelable{
 		return temp;
 	}
 
+	//generic method for get status text
+	
+	//todo
+	
+	/*public <T>  String  test(T t)
+	{
+		
+		t.getClass().getName();
+		StringBuilder sb = new StringBuilder();
+		
+		EnumSet<t> emSet = new EmergencyModeFlag().getFlagStatus(i);
+		
+		if (emSet.size()==0)
+		{
+			return "All OK";
+		}
+		else{
+			for(Enum a : emSet)
+			{
+				sb.append(((EmergencyMode) a).getDescription()+" , ");
+			}
+			System.out.println(sb);
+			sb.deleteCharAt(sb.length()-2);
+			return sb.toString();
+		
+		 return null;
+	}*/
 
 }
