@@ -215,7 +215,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	
 	
 	
-	public List<Map<String,Object>> getDataList()
+	private List<Map<String,Object>> getDataList()
 	{
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
@@ -228,7 +228,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation());
 			map.put("ip",p.getIp());
-			map.put("img", R.drawable.panel);
+			map.put("img", R.drawable.mackwell_logo);
 			
 			list.add(map);
 	

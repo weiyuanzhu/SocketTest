@@ -63,7 +63,7 @@ public class Device  implements Parcelable{
 		lampOnTime = 0;
 		lampEmergencyTime = 0;
 		feature = 0;
-		gtinArray = new int[]{0,0,0,0,0,0};
+		gtinArray = new int[]{5,4,3,2,1,0};
 	}
 	
 	public Device(int fs)

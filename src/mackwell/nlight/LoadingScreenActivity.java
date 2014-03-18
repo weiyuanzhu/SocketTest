@@ -268,9 +268,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 				msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
 				mHandler.sendMessage(msg);
-			
-				//msg.arg1 = 3;
-				//post finish loading action with a small amount of delay
+
 				mHandler.postDelayed(loadFinished, delay);	
 			}
 			
