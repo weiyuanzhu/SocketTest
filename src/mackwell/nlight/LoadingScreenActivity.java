@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +26,9 @@ import android.widget.TextView;
 import com.example.nclient.R;
 
 public class LoadingScreenActivity extends Activity implements CallBack {
+	
+	private static final int PARSING = 1;
+	private static final int LOADING_FINISHED = 2;
 	
 	private ImageButton liveBtn = null;
 	private ImageButton demoBtn = null;
@@ -37,7 +41,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	private Map<String,Connection> ip_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
-	private static int delay = 3000;
+	private static int delay = 1000;
 	private Handler mHandler = null;
 	
 	private boolean isLoading = false;
@@ -68,10 +72,38 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading_screen);
 		
+		//init all view items
 		liveBtn = (ImageButton) findViewById(R.id.loadscreen_live_imageBtn);
 		demoBtn = (ImageButton) findViewById(R.id.loadscreen_demo_imageBtn);
+		progressText = (TextView) findViewById(R.id.loadscreen_progress_textView);
+		progressBar = (ProgressBar) findViewById(R.id.loadscreen_progressBar);
 		
-		mHandler = new Handler();
+	
+		
+		//handler for deal with ui update and navigation
+		mHandler = new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				
+				switch(msg.arg1){
+					case PARSING: 
+						progressText.setText("Analysing Panel Data");
+						break;
+					case LOADING_FINISHED:
+						progressText.setText("Finish Loading");
+						break;
+					default: break;
+				
+				}
+				
+				super.handleMessage(msg);
+			}
+			
+			
+		};
+		
+		//init loading panals 
 		init();
 		
 		
@@ -101,6 +133,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	}
 	
 
+	//pass all panel objects to next activity when loading and parsing is finished
 	
 	Runnable loadFinished = new Runnable()
 	{
@@ -109,8 +142,13 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		public void run() {
 			
 			isLoading = false;
+			
+			
+			
+			//create intent
 			Intent intent = new Intent(LoadingScreenActivity.this, PanelActivity.class);
 			
+			//put panelList into intent
 			intent.putParcelableArrayListExtra("panelList", (ArrayList<? extends Parcelable>) panelList);
 			startActivity(intent);
 			
@@ -161,8 +199,17 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	
 	public void loadAllPanels(View v)
 	{
+		
+		//still on main thread
+		//show progress bar and text
+		progressText.setText("Loading Panel Data");
+		progressText.setVisibility(View.VISIBLE);
+		progressBar.setVisibility(View.VISIBLE);
+		
 		//check if loading is already in process
 		if(!isLoading){
+			
+			
 			System.out.println("clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
@@ -184,6 +231,12 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	
 	public void parse(String ip)
 	{
+		
+		
+		Message msg = mHandler.obtainMessage();
+		msg.arg1 = PARSING;
+		mHandler.sendMessage(msg);
+		
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		
 		List<List<Integer>> panelData = DataParser.removeJunkBytes(rxBuffer); 
@@ -197,7 +250,14 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 			panelList.add(newPanel);
 			
 			if(panelList.size()==ipList.length){
-				mHandler.post(loadFinished);	
+				
+				msg = new Message();
+				msg.arg1 = LOADING_FINISHED;
+				mHandler.sendMessage(msg);
+			
+				//msg.arg1 = 3;
+				//post finish loading action with a small amount of delay
+				mHandler.postDelayed(loadFinished, delay);	
 			}
 			
 		} catch (UnsupportedEncodingException e) {

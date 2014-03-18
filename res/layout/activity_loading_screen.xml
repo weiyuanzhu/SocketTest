@@ -47,19 +47,21 @@
         android:src="@drawable/nlight_connect" />
 
     <TextView
-        android:id="@+id/loadscreen_label_textView"
+        android:id="@+id/loadscreen_progress_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/loadscreen_progressBar"
         android:layout_centerHorizontal="true"
-        android:text="Loading Panel Info"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="@string/app_version"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loadscreen_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" 
+        android:visibility="gone"/>
 
 </RelativeLayout>
