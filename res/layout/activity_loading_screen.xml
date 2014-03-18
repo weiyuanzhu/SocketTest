@@ -26,11 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/loadscreen_logo_imageView"
         android:layout_alignTop="@+id/loadscreen_logo_imageView"
-        android:onClick="loadAllPanels"
+        android:onClick="demoMode"
         android:src="@drawable/ic_action_about" />
     
     <ImageButton
-        android:id="@+id/loadscreen_live_imageBrn"
+        android:id="@+id/loadscreen_live_imageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="loadAllPanels"

@@ -18,10 +18,18 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.nclient.R;
 
 public class LoadingScreenActivity extends Activity implements CallBack {
+	
+	private ImageButton liveBtn = null;
+	private ImageButton demoBtn = null;
+	private TextView progressText = null;
+	private ProgressBar progressBar = null;
 	
 	private String[] ipList = null;
 	private List<Panel> panelList = null;
@@ -32,6 +40,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	private static int delay = 3000;
 	private Handler mHandler = null;
 	
+	private boolean isLoading = false;
 	
 	
 	/*
@@ -58,6 +67,9 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading_screen);
+		
+		liveBtn = (ImageButton) findViewById(R.id.loadscreen_live_imageBtn);
+		demoBtn = (ImageButton) findViewById(R.id.loadscreen_demo_imageBtn);
 		
 		mHandler = new Handler();
 		init();
@@ -96,6 +108,7 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		@Override
 		public void run() {
 			
+			isLoading = false;
 			Intent intent = new Intent(LoadingScreenActivity.this, PanelActivity.class);
 			
 			intent.putParcelableArrayListExtra("panelList", (ArrayList<? extends Parcelable>) panelList);
@@ -139,18 +152,31 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 
 	}
 	
-
+	public void demoMode(View v){
+		
+		System.out.println("---------------Demo Mode----------------");
+		
+	}
 	
 	
 	public void loadAllPanels(View v)
 	{
-		System.out.println("clicked");
-		List<char[]> commandList = CommandFactory.getPanelInfo();
-		
-		for(String key : ip_connection_map.keySet()){
+		//check if loading is already in process
+		if(!isLoading){
+			System.out.println("clicked");
+			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
-			Connection conn = (Connection) ip_connection_map.get(key);
-			conn.fetchData(commandList);
+			for(String key : ip_connection_map.keySet()){
+				
+				Connection conn = (Connection) ip_connection_map.get(key);
+				conn.fetchData(commandList);
+			}
+			
+			
+			//set button disable
+			liveBtn.setEnabled(false);
+			isLoading = true;
+			
 		}
 		
 		
