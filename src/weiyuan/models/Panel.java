@@ -12,6 +12,8 @@ import android.os.Parcelable;
 public class Panel  implements Parcelable{
 	
 	private static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
+	private static final int ALL_OK = 0;
+	private static final int FAULT = 1;
 	
 	private Loop loop1;
 	private Loop loop2;
@@ -47,25 +49,26 @@ public class Panel  implements Parcelable{
 
 	{
 		setIp(ip);
-		panelLocation = "test";
-		contact = "test";
+		panelLocation = "Mackwell L&B Demo";
+		contact = "Mackwell Engineer";
 		loop1 = new Loop();
 		loop2 = new Loop();
-		tel = "test";
-		mobile = "test";
-		version = "test";
+		tel = "01922 458 255";
+		mobile = "0742600000";
+		version = "Firmware test";
 		id = "test";
-		passcode= "test";
-		reportUsage = "test";
-		serialNumber = (long) 0;
-		gtinArray = new int[]{0,0,0,0,0,0};
+		passcode= "1111";
+		reportUsage = "1%";
+		serialNumber = (long) 1234567;
+		gtinArray = new int[]{1,2,3,4,5,6};
 		overAllStatus = 0;
 		
 		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
 		{
-			overAllStatus = 1;
+			overAllStatus = FAULT;
 			
-		}else overAllStatus =0;
+		}
+		else overAllStatus = ALL_OK;
 		
 		
 	}
@@ -128,9 +131,9 @@ public class Panel  implements Parcelable{
 		
 		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
 		{
-			overAllStatus = 1;
+			overAllStatus = FAULT;
 			
-		}else overAllStatus =0;
+		}else overAllStatus = ALL_OK;
 		
 	}
 	

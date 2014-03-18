@@ -168,7 +168,10 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 		 */
 		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
 		ipList = new String[] {"192.168.1.23"};
+		
+		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
+		
 		panelMap = new HashMap<String,Panel>();
 		ip_connection_map = new HashMap<String,Connection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
@@ -192,7 +195,18 @@ public class LoadingScreenActivity extends Activity implements CallBack {
 	
 	public void demoMode(View v){
 		
-		System.out.println("---------------Demo Mode----------------");
+		progressText.setText("Preparing Panel Data");
+		progressText.setVisibility(View.VISIBLE);
+		progressBar.setVisibility(View.VISIBLE);
+		
+		for(int i =0; i<ipList.length; i++)
+		{
+			Panel newPanel = new Panel(ipList[i]);
+			panelList.add(newPanel);
+	
+		}
+		
+		mHandler.postDelayed(loadFinished, delay);
 		
 	}
 	
