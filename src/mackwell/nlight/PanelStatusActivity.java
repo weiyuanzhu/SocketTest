@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.example.nclient.R;
 import com.example.nclient.R.drawable;
 
-public class PanelStatusActivity extends Activity {
+public class PanelStatusActivity extends BaseActivity {
 	
 	private int status;
 	private List <Integer> txBuffer = new ArrayList<Integer>();

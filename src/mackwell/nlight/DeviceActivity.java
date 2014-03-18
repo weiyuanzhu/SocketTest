@@ -23,7 +23,7 @@ import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
 
-public class DeviceActivity extends Activity implements OnDevicdListFragmentListener,CallBack{
+public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,CallBack{
 	
 	private Panel panel = null;
 	private DeviceListFragment deviceListFragment = null;

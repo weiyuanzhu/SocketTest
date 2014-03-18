@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-public class LoadingScreenActivity extends Activity implements CallBack {
+public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
