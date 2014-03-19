@@ -68,10 +68,7 @@
             android:name="mackwell.nlight.BaseActivity"
             android:label="@string/title_activity_base" >
         </activity>
-        <activity
-            android:name="com.example.nclient.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+    
     </application>
 
 </manifest>

@@ -53,7 +53,7 @@ public class BaseActivity extends Activity {
 
 	
 
-	@Override
+	/*@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		 switch (item.getItemId()) {
 	        case R.id.action_settings:
@@ -64,7 +64,7 @@ public class BaseActivity extends Activity {
 	        default:
 	                return super.onOptionsItemSelected(item);
 	        }
-	}
+	}*/
 
 	/**
 	 * method 
