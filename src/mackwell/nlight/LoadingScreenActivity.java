@@ -29,8 +29,11 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
+	
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
+	
+	private boolean isLoading = false;
 	
 	private ImageButton liveBtn = null;
 	private ImageButton demoBtn = null;
@@ -46,7 +49,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private static int delay = 1000;
 	private Handler mHandler = null;
 	
-	private boolean isLoading = false;
+	
 	
 	
 	/*
@@ -206,13 +209,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		progressText.setText("Preparing Panel Data");
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
-		
-		for(int i =0; i<ipList.length; i++)
-		{
-			Panel newPanel = new Panel(ipList[i]);
-			panelList.add(newPanel);
-	
-		}
+
+		prepareDataForDemo();
 		
 		mHandler.postDelayed(loadFinished, delay);
 		
@@ -222,7 +220,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	public void loadAllPanels(View v)
 	{
 		
-		//still on main thread
+		//on main thread
 		//show progress bar and text
 		
 		//set isDemo flag
@@ -288,6 +286,20 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	private void prepareDataForDemo()
+	{
+	
+		Panel panel = new Panel("192.168.0.24");
+		panelList.add(panel);
+	
+		panel = new Panel("192.168.0.22");
+		panel.getLoop1().setStatus(0);
+		panel.getLoop2().setStatus(0);
+		panelList.add(panel);
+		
 		
 	}
 

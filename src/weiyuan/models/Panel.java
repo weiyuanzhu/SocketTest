@@ -6,14 +6,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import weiyuan.util.Constants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Panel  implements Parcelable{
 	
 	public static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
-	public static final int ALL_OK = 0;
-	public static final int FAULT = 1;
+	
 	
 	private Loop loop1;
 	private Loop loop2;
@@ -63,14 +64,27 @@ public class Panel  implements Parcelable{
 		gtinArray = new int[]{1,2,3,4,5,6};
 		overAllStatus = 0;
 		
-		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
-		{
-			overAllStatus = FAULT;
-		}
-		else overAllStatus = ALL_OK;
-		
-		
 	}
+	public Panel(String ip,int status)
+
+	{
+		setIp(ip);
+		panelLocation = "Mackwell L&B Demo";
+		contact = "Mackwell Engineer";
+		loop1 = new Loop();
+		loop2 = new Loop();
+		tel = "01922 458 255";
+		mobile = "0742600000";
+		version = "V1.3.0 ";
+		id = "test";
+		passcode= "1111";
+		reportUsage = "1%";
+		serialNumber = (long) 1234567;
+		gtinArray = new int[]{1,2,3,4,5,6};
+		overAllStatus = status;
+	
+	}
+	
 
 	public Panel(Parcel source)
 	{
@@ -128,11 +142,7 @@ public class Panel  implements Parcelable{
 		loop2 = new Loop(deviceList.get(1),eepRom);
 		
 		
-		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
-		{
-			overAllStatus = FAULT;
-			
-		}else overAllStatus = ALL_OK;
+		
 		
 	}
 	
@@ -319,6 +329,12 @@ public class Panel  implements Parcelable{
 	}
 
 	public int getOverAllStatus() {
+		
+		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
+		{
+			overAllStatus = Constants.FAULT;
+			
+		}else overAllStatus = Constants.ALL_OK;
 		return overAllStatus;
 	}
 

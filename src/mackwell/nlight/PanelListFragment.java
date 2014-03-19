@@ -8,6 +8,7 @@ import java.util.Map;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.util.CommandFactory;
+import weiyuan.util.Constants;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
@@ -227,7 +228,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation());
 			map.put("ip",p.getIp());
-			if(p.getOverAllStatus()== Panel.ALL_OK){
+			if(p.getOverAllStatus()== Constants.ALL_OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);
 			

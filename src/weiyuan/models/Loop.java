@@ -3,6 +3,8 @@ package weiyuan.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import weiyuan.util.Constants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,18 +30,9 @@ public class Loop  implements Parcelable {
 		deviceNumber = 0;
 		setStatus(0);
 		addDevice(new Device());
-		addDevice(new Device(200));
-		addDevice(new Device(1));
+		addDevice(new Device(1,200));
+		addDevice(new Device(2,0));
 		
-		for(Device d : deviceList)
-		{
-			if(d.getFailureStatus()!=0) 
-			{
-				setStatus(1);
-				
-			}
-			
-		}
 	}
 	
 
@@ -144,12 +137,28 @@ public class Loop  implements Parcelable {
 
 
 	public int getStatus() {
+		status = Constants.ALL_OK;
+		
+		for(Device d: deviceList)
+		{
+			if (d.getFailureStatus()!=0)
+			{
+				status = Constants.FAULT;
+			}
+			
+		}
+		
 		return status;
 	}
 
 
 	public void setStatus(int status) {
 		this.status = status;
+		
+		for(Device d: deviceList)
+		{
+			d.setFailureStatus(status);
+		}
 	};
 	
 	

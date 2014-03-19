@@ -50,14 +50,14 @@ public class Device  implements Parcelable{
 	
 	public Device()
 	{	
-		address = 129;
+		address = 0;
 		location = "test";
 		failureStatus = 0;
 		communicationStatus = true; 
 		emergencyStatus = 0;
 		emergencyMode = 0;
 		battery = 0;
-		serialNumber = 0;
+		serialNumber = 50901923;
 		GTIN = BigInteger.valueOf(0);
 		dtTime = 0;
 		lampOnTime = 0;
@@ -66,9 +66,10 @@ public class Device  implements Parcelable{
 		gtinArray = new int[]{5,4,3,2,1,0};
 	}
 	
-	public Device(int fs)
+	public Device(int add,int fs)
 	{
 		this();
+		address = add;
 		failureStatus = fs;
 		
 	}
@@ -187,6 +188,10 @@ public class Device  implements Parcelable{
 		return failureStatus;
 	}
 	
+	public void setFailureStatus(int failureStatus) {
+		this.failureStatus = failureStatus;
+	}
+
 	public String getFailureStatusText() {
 		StringBuilder sb = new StringBuilder();
 		
