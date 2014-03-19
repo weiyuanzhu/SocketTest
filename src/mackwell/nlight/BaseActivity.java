@@ -7,11 +7,15 @@ import com.example.nclient.R.menu;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * @author weiyuan zhu
@@ -21,6 +25,7 @@ import android.view.Menu;
 
 public class BaseActivity extends Activity {
 	
+	protected static boolean isDemo = false;
 	
 	//protected flags for connections 
 	
@@ -47,6 +52,20 @@ public class BaseActivity extends Activity {
 	
 
 	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		 switch (item.getItemId()) {
+	        case R.id.action_settings:
+	                Intent settingsActivity = new Intent(getBaseContext(), com.example.nclient.SettingsActivity.class);
+	                startActivity(settingsActivity);
+	                return true;
+
+	        default:
+	                return super.onOptionsItemSelected(item);
+	        }
+	}
+
 	/**
 	 * method 
 	 */
@@ -69,5 +88,8 @@ public class BaseActivity extends Activity {
         }
 
     }
+
+	
+
 
 }

@@ -27,6 +27,8 @@ import com.example.nclient.R;
 
 public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
+	public static final String DEMO_MODE = "Demo Mode";
+	
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
 	
@@ -150,6 +152,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			
 			//put panelList into intent
 			intent.putParcelableArrayListExtra("panelList", (ArrayList<? extends Parcelable>) panelList);
+			intent.putExtra(DEMO_MODE, isDemo);
 			startActivity(intent);
 			
 			finish();
@@ -195,6 +198,10 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	public void demoMode(View v){
 		
+		//set isDemo flag
+		
+		isDemo = true;
+		
 		progressText.setText("Preparing Panel Data");
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
@@ -216,6 +223,10 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		
 		//still on main thread
 		//show progress bar and text
+		
+		//set isDemo flag
+		isDemo = false;
+		
 		progressText.setText("Loading Panel Data");
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);

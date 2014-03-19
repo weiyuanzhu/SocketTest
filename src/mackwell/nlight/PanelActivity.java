@@ -55,6 +55,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		Intent intent = getIntent();
 		
 		panelList = intent.getParcelableArrayListExtra("panelList");
+		isDemo = intent.getBooleanExtra(LoadingScreenActivity.DEMO_MODE, true);
+		
+		System.out.println("DeomoMode--------> " + isDemo);
 		
 		if(panelList!=null){
 			panelListFragment.setPanelList(panelList);

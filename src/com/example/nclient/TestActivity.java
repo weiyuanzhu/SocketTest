@@ -11,9 +11,11 @@ import weiyuan.util.ToggleCmdEnum;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +36,8 @@ public class TestActivity extends BaseActivity implements CallBack {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
 		setContentView(R.layout.activity_test);
 		
 		connection = new Connection(this, ip);
@@ -57,6 +61,8 @@ public class TestActivity extends BaseActivity implements CallBack {
 		return true;
 	}
 
+	
+	
 	public void test(View v)
 	{
 		List<Integer> buffer = new ArrayList<Integer>();
@@ -73,6 +79,10 @@ public class TestActivity extends BaseActivity implements CallBack {
 	{
 		System.out.println(isConnected);
 		updateConnectedFlags();
+		
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		Boolean test = sharedPref.getBoolean("testPref", false);
+		System.out.println("testPref--->" + test);
 
 	}
 
