@@ -69,7 +69,7 @@ public class BaseActivity extends Activity {
 	/**
 	 * method 
 	 */
-	protected void updateConnectedFlags() {
+	protected void checkConnectivity() {
         ConnectivityManager connMgr =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 

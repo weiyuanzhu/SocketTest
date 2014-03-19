@@ -25,7 +25,11 @@ import android.widget.Toast;
 
 import com.example.nclient.R;
 
-public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, CallBack{
+/**
+ * @author weiyuan zhu
+ *
+ */
+public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, Connection.CallBack{
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
@@ -40,7 +44,23 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private int currentSelected;
 	
+	//call back for connection
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		List<Integer> rxBuffer = rxBufferMap.get(ip);
+		rxBuffer.addAll(rx);
+		Connection connection = panel_connection_map.get(ip);
+		connection.setIsClosed(true);
+		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
+		if(connection.isRxCompleted())
+		{
+			//connection.closeConnection();
+			parse(ip);
+			
+		}
+	}
 	
+	//activity life circle
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +70,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
 		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list);
 	
-		
+		//update connection flags
+		checkConnectivity();
 		
 		Intent intent = getIntent();
 		
@@ -75,7 +96,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		}
 		
 		
-
+		panelListFragment.refreshStatus(isDemo, isConnected);
 
 		
 	}
@@ -100,7 +121,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	            
 	            return true;
 	        case R.id.action_refresh:
-	        	panelListFragment.refreshStatus();
+	        	panelListFragment.refreshStatus(isDemo, isConnected);
 	        	return true;
 	        case R.id.action_show_device_list:
 	        	if(currentDisplayingPanel != null){
@@ -187,20 +208,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 
-	@Override
-	public void receive(List<Integer> rx, String ip) {
-		List<Integer> rxBuffer = rxBufferMap.get(ip);
-		rxBuffer.addAll(rx);
-		Connection connection = panel_connection_map.get(ip);
-		connection.setIsClosed(true);
-		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
-		if(connection.isRxCompleted())
-		{
-			//connection.closeConnection();
-			parse(ip);
-			
-		}
-	}
+	
 
 	
 	public void initPanelMap()

@@ -23,7 +23,7 @@ import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
 
-public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,CallBack{
+public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack{
 	
 	private Panel panel = null;
 	private DeviceListFragment deviceListFragment = null;
@@ -38,6 +38,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
+		
+		//update connection flags
+		checkConnectivity();
 		
 		//get panel from intent
 		Intent intent = getIntent();

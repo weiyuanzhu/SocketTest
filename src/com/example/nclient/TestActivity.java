@@ -78,7 +78,7 @@ public class TestActivity extends BaseActivity implements CallBack {
 	public void messagTest(View v)
 	{
 		System.out.println(isConnected);
-		updateConnectedFlags();
+		checkConnectivity();
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		Boolean test = sharedPref.getBoolean("testPref", false);

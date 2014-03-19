@@ -80,7 +80,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		progressText = (TextView) findViewById(R.id.loadscreen_progress_textView);
 		progressBar = (ProgressBar) findViewById(R.id.loadscreen_progressBar);
 		
-	
+		//update connection flags
+		checkConnectivity();
 		
 		//handler for deal with ui update and navigation
 		mHandler = new Handler(){

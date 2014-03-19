@@ -161,7 +161,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		refreshStatus();
+		
 		
 	}
 
@@ -193,7 +193,11 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	}
 	
 
-		public void refreshStatus() {
+	public void refreshStatus(boolean isDemo, boolean isConnected) {
+			
+			//check connectivity and demo mode flag
+			
+		if(!isDemo && isConnected){
 			
 			connectionList = new ArrayList<Connection>();
 			
@@ -210,6 +214,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 				connection.fetchData(commandList);
 			}
 		}
+	}
 		
 
 	
