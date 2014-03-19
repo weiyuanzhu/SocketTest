@@ -139,13 +139,15 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	@Override
 	protected void onDestroy() {
 		
-		for(String key : panelMap.keySet())
-		{
-			
-			Connection connection = panel_connection_map.get(key);
-			if(connection!=null){
-				connection.closeConnection();
-				connection = null;
+		if(panelMap!=null && panel_connection_map!=null){
+			for(String key : panelMap.keySet())
+			{
+				
+				Connection connection = panel_connection_map.get(key);
+				if(connection!=null){
+					connection.closeConnection();
+					connection = null;
+				}
 			}
 		}
 		
