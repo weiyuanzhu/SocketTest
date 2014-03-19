@@ -54,13 +54,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	
 	private List<Panel> panelList;
 	
-	protected List<Panel> getPanelList() {
-		return panelList;
-	}
-
-	protected void setPanelList(List<Panel> panelList) {
-		this.panelList = panelList;
-	}
+	
 
 	private Handler statusUpdateHandler;
 	
@@ -233,7 +227,9 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation());
 			map.put("ip",p.getIp());
-			map.put("img", R.drawable.mackwell_logo);
+			if(p.getOverAllStatus()== Panel.ALL_OK){
+				map.put("img", R.drawable.greentick);
+			}else map.put("img", R.drawable.redcross);
 			
 			list.add(map);
 	
@@ -289,4 +285,12 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 		
 	};
+	
+	protected List<Panel> getPanelList() {
+		return panelList;
+	}
+
+	protected void setPanelList(List<Panel> panelList) {
+		this.panelList = panelList;
+	}
 }

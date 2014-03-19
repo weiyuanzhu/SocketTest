@@ -80,17 +80,23 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		System.out.println("DeomoMode--------> " + isDemo);
 		
+		
+		//check panelList
 		if(panelList!=null){
 			panelListFragment.setPanelList(panelList);
 		
 			fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
 
 			System.out.println("All panel get: " + panelList.size());
+			
+			//init
 			initPanelMap();
 		}
 		else 
 		{
-			fragmentList = new ArrayList<PanelInfoFragment>(5);
+			//if panelList exist, init FragmentList and pass panelList to PanelListFragment
+			fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
+			
 			initPanel();
 			panelListFragment.setPanelList(panelList);
 		}
