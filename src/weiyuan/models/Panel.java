@@ -52,8 +52,8 @@ public class Panel  implements Parcelable{
 		setIp(ip);
 		panelLocation = "Mackwell L&B Demo";
 		contact = "Mackwell Engineer";
-		loop1 = new Loop();
-		loop2 = new Loop();
+		loop1 = new Loop("Loop1");
+		loop2 = new Loop("Loop2");
 		tel = "01922 458 255";
 		mobile = "0742600000";
 		version = "Firmware test";
@@ -71,8 +71,8 @@ public class Panel  implements Parcelable{
 		setIp(ip);
 		panelLocation = "Mackwell L&B Demo";
 		contact = "Mackwell Engineer";
-		loop1 = new Loop();
-		loop2 = new Loop();
+		loop1 = new Loop("Loop1");
+		loop2 = new Loop("Loop2");
 		tel = "01922 458 255";
 		mobile = "0742600000";
 		version = "V1.3.0 ";
@@ -138,8 +138,8 @@ public class Panel  implements Parcelable{
 		System.out.println("================Panel Info========================");
 		System.out.println(this.toString());
 		
-		loop1 = new Loop(deviceList.get(0),eepRom);
-		loop2 = new Loop(deviceList.get(1),eepRom);
+		loop1 = new Loop(deviceList.get(0),eepRom,"Loop1");
+		loop2 = new Loop(deviceList.get(1),eepRom,"Loop2");
 		
 		
 		

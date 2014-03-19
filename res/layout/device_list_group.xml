@@ -2,16 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp"
    	android:background="?android:attr/activatedBackgroundIndicator">
  
+    <ImageView
+        android:id="@+id/groupImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:paddingLeft="20dp"
+        android:src="@drawable/ic_action_refresh" />
  
     <TextView
         android:id="@+id/lblListHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+		android:layout_gravity="center_vertical"
+		android:paddingLeft="10dp"
         android:textSize="25sp"
         />
  

@@ -5,8 +5,10 @@ package Adapter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import weiyuan.models.Device;
+import weiyuan.models.Loop;
 
 import com.example.nclient.R;
 
@@ -26,12 +28,12 @@ import android.widget.TextView;
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	private Context mContext;
-    private List<String> listDataHeader; // header titles
+    private List<Loop> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<Device>> listDataChild;
+    private Map<Loop, List<Device>> listDataChild;
  
-    public MyExpandableListAdapter(Context context, List<String> listDataHeader,
-            HashMap<String, List<Device>> listChildData) {
+    public MyExpandableListAdapter(Context context, List<Loop> listDataHeader,
+            Map<Loop, List<Device>> listChildData) {
         this.mContext = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -100,12 +102,22 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
             View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+    	
+    	Loop loop = (Loop) getGroup(groupPosition);
+    	
+        String headerTitle = (String) loop.getLoopName();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.device_list_group, null);
         }
+        
+        ImageView groupImage = (ImageView) convertView
+                .findViewById(R.id.groupImage);
+        
+        if(loop.getStatus()==0){
+        	groupImage.setImageResource(R.drawable.greentick);
+        }else groupImage.setImageResource(R.drawable.redcross);
  
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);

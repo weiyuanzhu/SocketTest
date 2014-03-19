@@ -21,6 +21,7 @@ public class Loop  implements Parcelable {
 	
 	private int status;
 	private int deviceNumber; 
+	private String loopName;
 	
 	
 	
@@ -29,12 +30,21 @@ public class Loop  implements Parcelable {
 		deviceList = (List<Device>) new ArrayList<Device>();
 		deviceNumber = 0;
 		setStatus(0);
+		loopName = "Loop";
+	
+	}
+	
+	public Loop(String name)
+	{
+		deviceList = (List<Device>) new ArrayList<Device>();
+		deviceNumber = 0;
+		setStatus(0);
 		addDevice(new Device());
 		addDevice(new Device(1,200));
 		addDevice(new Device(2,0));
+		loopName = name;
 		
 	}
-	
 
 	private Loop(Parcel source) {
 		this();
@@ -44,7 +54,7 @@ public class Loop  implements Parcelable {
 	
 	
 	
-	public Loop(List<List<Integer>> dl,List<List<Integer>> eepRom){
+	public Loop(List<List<Integer>> dl,List<List<Integer>> eepRom, String loopName){
 		
 		deviceList = (List<Device>) new ArrayList<Device>();
 		
@@ -94,6 +104,7 @@ public class Loop  implements Parcelable {
 		dest.writeTypedList(deviceList);
 		dest.writeInt(deviceNumber);
 		dest.writeInt(status);
+		dest.writeString(loopName);
 	}
 
 	public void readFromParcel(Parcel source)
@@ -101,6 +112,7 @@ public class Loop  implements Parcelable {
 		source.readTypedList(deviceList,Device.CREATOR);
 		deviceNumber =  source.readInt();
 		status = source.readInt();
+		loopName = source.readString();
 		
 	}
 
@@ -159,6 +171,14 @@ public class Loop  implements Parcelable {
 		{
 			d.setFailureStatus(status);
 		}
+	}
+
+	public String getLoopName() {
+		return loopName;
+	}
+
+	public void setLoopName(String loopName) {
+		this.loopName = loopName;
 	};
 	
 	

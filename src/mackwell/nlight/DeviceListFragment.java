@@ -3,6 +3,7 @@ package mackwell.nlight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import weiyuan.models.Device;
 import weiyuan.models.Loop;
@@ -66,12 +67,10 @@ public class DeviceListFragment extends Fragment {
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
 	private ActionMode mActionMode;
-	List<String> listDataHeader;
-    HashMap<String, List<Device>> listDataChild;
+	private List<Loop> listDataHeader;
+    private Map<Loop, List<Device>> listDataChild;
     
-    
-	
-	
+
 	
 	private Loop loop1;
 	private Loop loop2;
@@ -280,8 +279,8 @@ public class DeviceListFragment extends Fragment {
 
 	private void initListData()
 	{
-		listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<Device>>();
+		listDataHeader = new ArrayList<Loop>();
+        listDataChild = new HashMap<Loop, List<Device>>();
  
         // Adding child data
        
@@ -290,12 +289,12 @@ public class DeviceListFragment extends Fragment {
         // Header, Child data
         
         if(this.loop1!=null){
-        	 listDataHeader.add("Loop1");
-        	 listDataChild.put(listDataHeader.get(0), loop1.getDeviceList());
+        	 listDataHeader.add(loop1);
+        	 listDataChild.put(loop1, loop1.getDeviceList());
         }
         if(this.loop2!=null){
-        	 listDataHeader.add("Loop2");
-        	 listDataChild.put(listDataHeader.get(1), loop2.getDeviceList());
+        	 listDataHeader.add(loop2);
+        	 listDataChild.put(loop2, loop2.getDeviceList());
        }
 
 
