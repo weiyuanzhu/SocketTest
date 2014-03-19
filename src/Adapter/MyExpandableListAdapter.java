@@ -73,9 +73,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         }else childImage.setImageResource(R.drawable.redcross);
         
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
+                .findViewById(R.id.devicelist_child_address_textView);
  
         txtListChild.setText(childText);
+        
+        TextView deviceLocation = (TextView) convertView
+                .findViewById(R.id.devicelist_child_location_textView);
+        
+        deviceLocation.setText(device.getLocation());
         return convertView;
     }
  
