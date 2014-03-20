@@ -30,11 +30,7 @@
             android:name="mackwell.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
         <activity
             android:name="mackwell.nlight.PanelInfoActivity"
@@ -62,6 +58,12 @@
         <activity
             android:name="com.example.nclient.TestActivity"
             android:label="@string/title_activity_test" >
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             
         </activity>
         <activity

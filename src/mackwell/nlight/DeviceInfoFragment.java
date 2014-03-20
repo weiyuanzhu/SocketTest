@@ -206,4 +206,16 @@ public class DeviceInfoFragment extends ListFragment {
 		return listDataSource;
 	}
 
+	
+	// location clicked to set location for device
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+
+		System.out.println("position---> " + position);
+		
+		super.onListItemClick(l, v, position, id);
+	}
+	
+	
+
 }
