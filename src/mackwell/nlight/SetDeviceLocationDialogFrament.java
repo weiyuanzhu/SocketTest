@@ -5,8 +5,19 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
+import com.example.nclient.R;
+
+/**
+ * @author weiyuan zhu
+ *
+ */
 public class SetDeviceLocationDialogFrament extends DialogFragment{
+	
+	private EditText locationEditText = null;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -14,12 +25,23 @@ public class SetDeviceLocationDialogFrament extends DialogFragment{
 		//create alertdialog builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
-		builder.setMessage("test")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					
+		//get inflater
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		
+		//create final view with dialog layout
+		final View dialogView = inflater.inflate(R.layout.dialog_setdevice_name, null);
+		
+		//set dialog view
+		builder.setView(dialogView);
+		
+		//set title and buttons
+		builder.setMessage("Set Device Location")
+				.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
+						locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
+						System.out.println(locationEditText.getText().toString());
 						
 					}
 				})
