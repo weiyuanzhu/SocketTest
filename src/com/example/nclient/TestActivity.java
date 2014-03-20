@@ -22,6 +22,7 @@ import android.view.View;
 
 import mackwell.nlight.BaseActivity;
 import mackwell.nlight.SetDeviceLocationDialogFrament;
+import mackwell.nlight.SetDeviceLocationDialogFrament.NoticeDialogListener;
 import messageType.EmergencyMode;
 import messageType.EmergencyModeFlag;
 import messageType.EmergencyStatus;
@@ -29,7 +30,7 @@ import messageType.EmergencyStatusFlag;
 import messageType.FailureStatus;
 import messageType.FailureStatusFlag;
 
-public class TestActivity extends BaseActivity implements CallBack {
+public class TestActivity extends BaseActivity implements Connection.CallBack,NoticeDialogListener{
 
 	Connection connection;
 	final String ip = "192.168.1.24";
@@ -94,6 +95,14 @@ public class TestActivity extends BaseActivity implements CallBack {
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
 		connection.setIsClosed(true);
+		
+	}
+
+
+
+	@Override
+	public void setLocation(String location) {
+		System.out.println("callback ------> "+location);
 		
 	}
 	

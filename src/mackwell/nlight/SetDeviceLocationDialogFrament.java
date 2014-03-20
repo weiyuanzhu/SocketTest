@@ -1,5 +1,6 @@
 package mackwell.nlight;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -17,7 +18,26 @@ import com.example.nclient.R;
  */
 public class SetDeviceLocationDialogFrament extends DialogFragment{
 	
+	public interface NoticeDialogListener{
+		public void setLocation(String location);
+		
+	}
+	
+	
+	private NoticeDialogListener mListener= null;
 	private EditText locationEditText = null;
+
+	
+	
+	@Override
+	public void onAttach(Activity activity) {
+		
+		mListener = (NoticeDialogListener) activity;
+		
+		super.onAttach(activity);
+	}
+
+
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -40,8 +60,14 @@ public class SetDeviceLocationDialogFrament extends DialogFragment{
 			
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
+						//get edittext view
 						locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
-						System.out.println(locationEditText.getText().toString());
+					
+						//pass location back to activity via callback
+						
+						mListener.setLocation(locationEditText.getText().toString());
+						
+						System.out.println("device location-----> " + locationEditText.getText().toString());
 						
 					}
 				})
