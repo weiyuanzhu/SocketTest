@@ -1,11 +1,16 @@
 package mackwell.nlight;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import mackwell.nlight.DeviceInfoFragment.DeviceSetLocationListener;
 import mackwell.nlight.DeviceListFragment.OnDevicdListFragmentListener;
+import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
+import weiyuan.util.DataParser;
+import weiyuan.util.SetCmdEnum;
 import weiyuan.util.ToggleCmdEnum;
 import android.app.Activity;
 import android.app.Fragment;
@@ -23,7 +28,9 @@ import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
 
-public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack{
+public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack, 
+															DeviceSetLocationListener,NoticeDialogListener{
+	
 	
 	private Panel panel = null;
 	private DeviceListFragment deviceListFragment = null;
@@ -120,6 +127,15 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	
+	
+	
+	@Override
+	protected void onDestroy() {
+		connection = null;
+		super.onDestroy();
+	}
+
 	private String getAppVersion(){
 		StringBuilder version = new StringBuilder();
     	version.append("Mackwell N-Light Android, Version ");
@@ -182,6 +198,35 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		connection.fetchData(commandList);
 		
 	}
+	
+	@Override
+	public void setDeviceLocation(String location) {
+		//display dialog
+		
+		SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+		dialog.show(getFragmentManager(), "setDeviceLocationDialog");
+		
+	}
+
+	@Override
+	public void setLocation(String location) {
+		//update device fragment
+		deviceFragment.updateLocation(location);
+		
+		//send command to 
+		
+		List<Integer> buffer = new ArrayList<Integer>();
+		
+		buffer.add(00);		
+		buffer.addAll(DataParser.convertString(location));
+		System.out.println(buffer);
+		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
+		connection.fetchData(commandList);
+		
+	}
+	
+	
+
 
 	
 }

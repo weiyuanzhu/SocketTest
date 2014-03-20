@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+
 import weiyuan.models.Device;
 
 import com.example.nclient.R;
@@ -20,8 +22,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -30,6 +35,10 @@ import android.widget.SimpleAdapter;
  * interaction events. Use the {@link DeviceInfoFragment#newInstance} factory
  * method to create an instance of this fragment.
  * 
+ */
+/**
+ * @author weiyuan zhu
+ *
  */
 public class DeviceInfoFragment extends ListFragment {
 	
@@ -42,9 +51,9 @@ public class DeviceInfoFragment extends ListFragment {
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
-	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
+	public interface DeviceSetLocationListener {
+		
+		public void setDeviceLocation(String location);
 	}
 	
 
@@ -60,7 +69,7 @@ public class DeviceInfoFragment extends ListFragment {
 	private List<Map<String,Object>> listDataSource;
 	
 
-	private OnFragmentInteractionListener mListener;
+	private DeviceSetLocationListener mListener;
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -117,6 +126,7 @@ public class DeviceInfoFragment extends ListFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		mListener = (DeviceSetLocationListener) activity;
 		
 	}
 
@@ -127,9 +137,13 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		System.out.println(device.toString());
 		mSimpleAdapter = new SimpleAdapter(getActivity(), getData(device), R.layout.device_info_row, 
-				new String[] {"text1","text2"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
 		setListAdapter(mSimpleAdapter);
+		
+		getListView().setOnItemLongClickListener(longClickListener);
+
+
 	}
 
 	@Override
@@ -148,58 +162,58 @@ public class DeviceInfoFragment extends ListFragment {
 			
 		Map<String,Object> map = new HashMap<String,Object>();
 			
-		map.put("text1", "Address");
-		map.put("text2", device==null? "n/a" : device.getAddress());
+		map.put("description", "Address");
+		map.put("value", device==null? "n/a" : device.getAddress());
 		
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "SerialNumber:");
-		map.put("text2", device==null? "n/a" : device.getSerialNumber());
+		map.put("description", "SerialNumber:");
+		map.put("value", device==null? "n/a" : device.getSerialNumber());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "GTIN:");
-		map.put("text2", device==null? "n/a" : device.getGTIN());
+		map.put("description", "GTIN:");
+		map.put("value", device==null? "n/a" : device.getGTIN());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Location");
-		map.put("text2", device==null? "n/a" : device.getLocation());
+		map.put("description", "Location");
+		map.put("value", device==null? "n/a" : device.getLocation());
 		
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Emergency Mode");
-		map.put("text2", device==null? "n/a" : device.getEmergencyModeText());
+		map.put("description", "Emergency Mode");
+		map.put("value", device==null? "n/a" : device.getEmergencyModeText());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Emergency Status");
-		map.put("text2", device==null? "n/a" : device.getEmergencyStatusText());
+		map.put("description", "Emergency Status");
+		map.put("value", device==null? "n/a" : device.getEmergencyStatusText());
 			
 		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Failure Status");
-		map.put("text2", device==null? "n/a" : device.getFailureStatusText());
+		map.put("description", "Failure Status");
+		map.put("value", device==null? "n/a" : device.getFailureStatusText());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Battery Level");
-		map.put("text2", device==null? "n/a" : device.getBatteryLevel());
+		map.put("description", "Battery Level");
+		map.put("value", device==null? "n/a" : device.getBatteryLevel());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Communication Status");
-		map.put("text2", device==null? "n/a" : "OK");
+		map.put("description", "Communication Status");
+		map.put("value", device==null? "n/a" : "OK");
 			
 		listDataSource.add(map);
 	
@@ -207,15 +221,43 @@ public class DeviceInfoFragment extends ListFragment {
 	}
 
 	
-	// location clicked to set location for device
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
+	// location long clicked listener to set location for device
 
-		System.out.println("position---> " + position);
+	OnItemLongClickListener longClickListener = new OnItemLongClickListener(){
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+				int position, long id) {
+			
+			// if locaion long clicked
+			if(position==3)
+			{
 		
-		super.onListItemClick(l, v, position, id);
-	}
+				//display dialog
+				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
+				
+			}
 	
+			return false;
+		}
+		
+		
+		
+	};
+
+	
+	
+	/**
+	 * @param location
+	 */
+	public void updateLocation(String location)
+	{
+		//update listDataSource
+		listDataSource.get(3).put("value", location);
+		mSimpleAdapter.notifyDataSetChanged();
+		
+	}
 	
 
 }

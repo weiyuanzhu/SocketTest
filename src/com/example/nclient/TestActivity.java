@@ -21,8 +21,8 @@ import android.view.Menu;
 import android.view.View;
 
 import mackwell.nlight.BaseActivity;
-import mackwell.nlight.SetDeviceLocationDialogFrament;
-import mackwell.nlight.SetDeviceLocationDialogFrament.NoticeDialogListener;
+import mackwell.nlight.SetDeviceLocationDialogFragment;
+import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import messageType.EmergencyMode;
 import messageType.EmergencyModeFlag;
 import messageType.EmergencyStatus;
@@ -86,7 +86,7 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 		Boolean test = sharedPref.getBoolean("testPref", false);
 		System.out.println("testPref--->" + test);
 
-		SetDeviceLocationDialogFrament dialog = new SetDeviceLocationDialogFrament();
+		SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
 		dialog.show(getFragmentManager(), "SetLocation");
 		
 	}

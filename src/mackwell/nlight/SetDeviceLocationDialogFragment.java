@@ -18,7 +18,7 @@ import com.example.nclient.R;
  * @author weiyuan zhu
  *
  */
-public class SetDeviceLocationDialogFrament extends DialogFragment{
+public class SetDeviceLocationDialogFragment extends DialogFragment{
 	
 	public interface NoticeDialogListener{
 		public void setLocation(String location);

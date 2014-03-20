@@ -292,7 +292,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.0.24");
+		Panel panel = new Panel("192.168.1.24");
 		panelList.add(panel);
 	
 		panel = new Panel("192.168.0.22");
