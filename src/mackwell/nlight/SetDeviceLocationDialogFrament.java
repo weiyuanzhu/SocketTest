@@ -1,11 +1,13 @@
 package mackwell.nlight;
 
+import weiyuan.util.Constants;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -51,6 +53,13 @@ public class SetDeviceLocationDialogFrament extends DialogFragment{
 		//create final view with dialog layout
 		final View dialogView = inflater.inflate(R.layout.dialog_setdevice_name, null);
 		
+		//get edittext view
+		locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
+		
+		//set max length allowed for edittext
+		InputFilter[] filters = {new InputFilter.LengthFilter(Constants.TEXT_MAX)};  
+		locationEditText.setFilters(filters); 
+		
 		//set dialog view
 		builder.setView(dialogView);
 		
@@ -60,9 +69,7 @@ public class SetDeviceLocationDialogFrament extends DialogFragment{
 			
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						//get edittext view
-						locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
-					
+
 						//pass location back to activity via callback
 						
 						mListener.setLocation(locationEditText.getText().toString());

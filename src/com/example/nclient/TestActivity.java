@@ -102,7 +102,7 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 
 	@Override
 	public void setLocation(String location) {
-		System.out.println("callback ------> "+location);
+		System.out.println("callback ------> " + location);
 		
 	}
 	

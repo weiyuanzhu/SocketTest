@@ -2,6 +2,8 @@ package weiyuan.util;
 
 public class Constants {
 	
+	public static final int TEXT_MAX = 32;
+	
 	public static final int ALL_OK = 0;
 	public static final int FAULT = 1;
 	public static final int WARNING = 2;
