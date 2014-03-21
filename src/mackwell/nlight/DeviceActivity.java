@@ -200,6 +200,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 	
 	@Override
+	public void seekBar() {
+		SeekBarDialogFragment dialog = new SeekBarDialogFragment();
+		dialog.show(getFragmentManager(), "SetLocation");	
+	}
+	
+	@Override
 	public void setDeviceLocation(String location) {
 		//display dialog
 		
@@ -224,6 +230,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		connection.fetchData(commandList);
 		
 	}
+
+	
 	
 	
 

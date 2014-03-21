@@ -52,7 +52,7 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		
 		//create final view with dialog layout
 		final View dialogView = inflater.inflate(R.layout.dialog_setdevice_name, null);
-		
+
 		//get edittext view
 		locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
 		

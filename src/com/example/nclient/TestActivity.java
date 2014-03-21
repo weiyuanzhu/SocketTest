@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.View;
 
 import mackwell.nlight.BaseActivity;
+import mackwell.nlight.SeekBarDialogFragment;
 import mackwell.nlight.SetDeviceLocationDialogFragment;
 import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import messageType.EmergencyMode;
@@ -86,7 +87,7 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 		Boolean test = sharedPref.getBoolean("testPref", false);
 		System.out.println("testPref--->" + test);
 
-		SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+		SeekBarDialogFragment dialog = new SeekBarDialogFragment();
 		dialog.show(getFragmentManager(), "SetLocation");
 		
 	}
