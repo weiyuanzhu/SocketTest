@@ -18,11 +18,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import mackwell.nlight.BaseActivity;
 import mackwell.nlight.SeekBarDialogFragment;
 import mackwell.nlight.SetDeviceLocationDialogFragment;
+import mackwell.nlight.SettingsActivity;
+import mackwell.nlight.SettingsFragment;
 import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import messageType.EmergencyMode;
 import messageType.EmergencyModeFlag;
@@ -78,6 +82,28 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 		
 	}
 	
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stu
+		
+		switch (item.getItemId()) {
+       
+        case R.id.action_settings:
+        	Intent settingIntent = new Intent(this, SettingsActivity.class);
+        	startActivity(settingIntent);
+        	
+            return true;
+       
+    
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+	}
+
+
+
 	public void messagTest(View v)
 	{
 		System.out.println(isConnected);
