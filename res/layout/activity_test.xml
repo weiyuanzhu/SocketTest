@@ -34,4 +34,6 @@
         android:text="MessageTest"
         android:onClick="messagTest" />
 
+    
+
 </RelativeLayout>

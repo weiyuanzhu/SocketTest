@@ -102,7 +102,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		}
 		
 		
-		panelListFragment.refreshStatus(isDemo, isConnected);
+		//panelListFragment.refreshStatus(isDemo, isConnected);
 
 		
 	}

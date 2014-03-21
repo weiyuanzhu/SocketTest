@@ -66,7 +66,7 @@ public class Device  implements Parcelable{
 		gtinArray = new int[]{5,4,3,2,1,0};
 	}
 	
-	public Device(int add,int fs)
+	public Device(int add,int fs,int es)
 	{
 		this();
 		address = add;
@@ -229,7 +229,7 @@ public class Device  implements Parcelable{
 		
 		if (esSet.size()==0)
 		{
-			return "All OK";
+			return "FT Done, DT Done";
 		}
 		else{
 			for(EmergencyStatus es : esSet)
@@ -253,7 +253,7 @@ public class Device  implements Parcelable{
 		
 		if (emSet.size()==0)
 		{
-			return "All OK";
+			return "Normal Mode";
 		}
 		else{
 			for(EmergencyMode em : emSet)

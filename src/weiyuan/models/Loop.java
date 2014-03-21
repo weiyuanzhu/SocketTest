@@ -40,8 +40,8 @@ public class Loop  implements Parcelable {
 		deviceNumber = 0;
 		setStatus(0);
 		addDevice(new Device());
-		addDevice(new Device(1,200));
-		addDevice(new Device(2,0));
+		addDevice(new Device(1,200,6));
+		addDevice(new Device(2,0,6));
 		loopName = name;
 		
 	}

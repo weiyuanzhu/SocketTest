@@ -39,6 +39,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private ImageView image = null;
 	private Connection connection;
 	
+	private int currentDeviceAddress;
+	
 	
 
 	@Override
@@ -104,6 +106,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
+		
+		currentDeviceAddress = childPosition;
+		
+		System.out.println("current device:-------------->" + currentDeviceAddress);
 		
 		image.setVisibility(View.INVISIBLE);
 		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
@@ -223,7 +229,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		List<Integer> buffer = new ArrayList<Integer>();
 		
-		buffer.add(00);		
+		buffer.add(currentDeviceAddress);		
 		buffer.addAll(DataParser.convertString(location));
 		System.out.println(buffer);
 		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
