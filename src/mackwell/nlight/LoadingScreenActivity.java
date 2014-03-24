@@ -159,7 +159,9 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			intent.putExtra(DEMO_MODE, isDemo);
 			startActivity(intent);
 			
-			finish();
+			
+			//finish this activity to prevent back navi
+			//finish();
 			
 		}
 		
