@@ -29,6 +29,8 @@ public class Loop  implements Parcelable {
 	{
 		deviceList = (List<Device>) new ArrayList<Device>();
 		deviceNumber = 0;
+		
+		
 		setStatus(0);
 		loopName = "Loop";
 	
@@ -39,6 +41,11 @@ public class Loop  implements Parcelable {
 		deviceList = (List<Device>) new ArrayList<Device>();
 		deviceNumber = 0;
 		setStatus(0);
+		
+		int[] gtin = new int[] {0,1,2,3,4,5};
+		deviceList.add(new Device(0,"test1",0,0,0,100,1375167879,gtin));
+		deviceList.add(new Device(1,"test2",0,0,0,100,1294967295,gtin));
+		deviceList.add(new Device(2,"test3",0,0,0,100,1424967295,gtin));
 		loopName = name;
 		
 	}

@@ -42,6 +42,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private Panel currentDisplayingPanel;
 	private ImageView panelInfoImage;
+
 	private PanelListFragment panelListFragment;
 	
 	private int currentSelected;
@@ -70,6 +71,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		setContentView(R.layout.activity_panel);
 		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
+
 		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list);
 	
 		//update connection flags
@@ -129,6 +131,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	            
 	            return true;
 	        case R.id.action_refresh:
+	        	Toast.makeText(this, "Refreshing panel status...", Toast.LENGTH_LONG).show();
 	        	panelListFragment.refreshStatus(isDemo, isConnected);
 	        	return true;
 	        case R.id.action_show_device_list:

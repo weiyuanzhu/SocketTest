@@ -39,6 +39,7 @@ public class Panel  implements Parcelable{
 	private int deviceNumber;
 	
 	private int overAllStatus;
+	private int faultDeviceNo;
 	
 	public Panel()
 	{
@@ -56,34 +57,16 @@ public class Panel  implements Parcelable{
 		loop2 = new Loop("Loop2");
 		tel = "01922 458 255";
 		mobile = "0742600000";
-		version = "Firmware test";
+		version = "V 1.3.0";
 		id = "test";
 		passcode= "1111";
 		reportUsage = "1%";
 		serialNumber = (long) 1234567;
-		gtinArray = new int[]{1,2,3,4,5,6};
+		gtinArray = new int[]{6,5,4,3,2,1};
 		overAllStatus = 0;
 		
 	}
-	public Panel(String ip,int status)
-
-	{
-		setIp(ip);
-		panelLocation = "Mackwell L&B Demo";
-		contact = "Mackwell Engineer";
-		loop1 = new Loop("Loop1");
-		loop2 = new Loop("Loop2");
-		tel = "01922 458 255";
-		mobile = "0742600000";
-		version = "V1.3.0 ";
-		id = "test";
-		passcode= "1111";
-		reportUsage = "1%";
-		serialNumber = (long) 1234567;
-		gtinArray = new int[]{1,2,3,4,5,6};
-		overAllStatus = status;
 	
-	}
 	
 
 	public Panel(Parcel source)
@@ -191,6 +174,10 @@ public class Panel  implements Parcelable{
 	}
 
 
+	public void setPanelLocation(String panelLocation) {
+		this.panelLocation = panelLocation;
+	}
+
 	public String getContact() {
 		return contact;
 	}
@@ -219,7 +206,13 @@ public class Panel  implements Parcelable{
 	public Long getSerialNumber() {
 		return serialNumber;
 	}
+	
+	
 
+
+	public void setSerialNumber(Long serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
 	public BigInteger getGtin() {
 		return gtin;
@@ -280,6 +273,30 @@ public class Panel  implements Parcelable{
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	
+
+	public int getFaultDeviceNo() {
+		int temp = 0;
+		
+		for(Device d: loop1.getDeviceList())
+		{
+			if(d.getEmergencyStatus()!=0) temp++;
+			
+		}
+		
+		for(Device d: loop2.getDeviceList())
+		{
+			if(d.getEmergencyStatus()!=0) temp++;
+			
+		}
+		
+		return faultDeviceNo;
+	}
+
+	private void setFaultDeviceNo(int faultDeviceNo) {
+		this.faultDeviceNo = faultDeviceNo;
 	}
 
 	@Override

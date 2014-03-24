@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weiyuan.models.Device;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
@@ -313,12 +314,16 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.1.24");
+		Panel panel = new Panel("192.168.1.18");
+		panel.setPanelLocation("Mackwell L&B 1");
+		panel.setSerialNumber((long)1376880756);
+
 		panelList.add(panel);
 	
-		panel = new Panel("192.168.0.22");
-		panel.getLoop1().setStatus(0);
-		panel.getLoop2().setStatus(0);
+		panel = new Panel("192.168.1.19");
+		panel.setPanelLocation("Mackwell L&B 2");
+		panel.setSerialNumber((long)1566884756);
+
 		panelList.add(panel);
 		
 		

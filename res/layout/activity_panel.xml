@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/mackwell_logo" 
             android:layout_gravity="center"
-            android:contentDescription="@string/title_activity_panel_info"/>
+            android:contentDescription="@string/title_activity_panel_info"/>"
 
     </FrameLayout>
 

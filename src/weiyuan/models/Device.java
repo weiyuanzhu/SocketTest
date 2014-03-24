@@ -56,7 +56,7 @@ public class Device  implements Parcelable{
 		communicationStatus = true; 
 		emergencyStatus = 0;
 		emergencyMode = 0;
-		battery = 0;
+		battery = 254;
 		serialNumber = 0;
 		GTIN = BigInteger.valueOf(0);
 		dtTime = 0;
@@ -66,7 +66,7 @@ public class Device  implements Parcelable{
 		gtinArray = new int[]{0,0,0,0,0,0};
 	}
 	
-	public Device(int add,int loc,int fs,int es,int em,int bat,long sn,int[] gtin)
+	public Device(int add,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
 	{
 		this();
 		address = 0;
