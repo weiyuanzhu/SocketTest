@@ -20,23 +20,23 @@
 
     
 
-    <ImageButton
+    <Button
         android:id="@+id/loadscreen_demo_imageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/loadscreen_logo_imageView"
         android:layout_alignTop="@+id/loadscreen_logo_imageView"
         android:onClick="demoMode"
-        android:src="@drawable/ic_action_about" />
+        android:text="DEMO MODE"/>
     
-    <ImageButton
+    <Button
         android:id="@+id/loadscreen_live_imageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="loadAllPanels"
         android:layout_alignTop="@+id/loadscreen_live_imageBtn"
         android:layout_toLeftOf="@+id/loadscreen_live_imageBtn"
-        android:src="@drawable/ic_action_cloud" />
+        android:text="LIVE MODE"/>
 
     <ImageView
         android:id="@+id/loadscreen_logo_imageView"

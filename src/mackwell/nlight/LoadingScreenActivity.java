@@ -19,6 +19,7 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,8 +36,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	private boolean isLoading = false;
 	
-	private ImageButton liveBtn = null;
-	private ImageButton demoBtn = null;
+	private Button liveBtn = null;
+	private Button demoBtn = null;
 	private TextView progressText = null;
 	private ProgressBar progressBar = null;
 	
@@ -78,8 +79,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		setContentView(R.layout.activity_loading_screen);
 		
 		//init all view items
-		liveBtn = (ImageButton) findViewById(R.id.loadscreen_live_imageBtn);
-		demoBtn = (ImageButton) findViewById(R.id.loadscreen_demo_imageBtn);
+		liveBtn = (Button) findViewById(R.id.loadscreen_live_imageBtn);
+		demoBtn = (Button) findViewById(R.id.loadscreen_demo_imageBtn);
 		progressText = (TextView) findViewById(R.id.loadscreen_progress_textView);
 		progressBar = (ProgressBar) findViewById(R.id.loadscreen_progressBar);
 		
