@@ -203,6 +203,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	public void demoMode(View v){
 		
 		//set isDemo flag
+		demoBtn.setEnabled(false);
 		
 		isDemo = true;
 		

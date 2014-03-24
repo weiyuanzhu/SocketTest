@@ -4,7 +4,8 @@
         android:id="@+id/device_id"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="ID"/>
+        android:title="ID"
+     	android:icon="@drawable/ic_identify_device_blue"/>n
       <item
         android:id="@+id/device_ft"
         android:orderInCategory="100"
