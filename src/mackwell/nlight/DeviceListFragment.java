@@ -106,18 +106,23 @@ public class DeviceListFragment extends Fragment {
 			{
 				case R.id.device_ft:
 					mListener.ft(getAddress(position));
+					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
 					mListener.st(getAddress(position));
+					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
 					mListener.dt(getAddress(position));
+					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
 					mListener.id(getAddress(position));
+					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
 					mListener.stopId(getAddress(position));
+					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
 					break;
 				
 				default: break;

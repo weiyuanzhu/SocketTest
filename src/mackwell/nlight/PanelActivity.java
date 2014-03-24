@@ -338,6 +338,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			intent.putExtra("panel", currentDisplayingPanel);
 			intent.putExtra("loop1",currentDisplayingPanel.getLoop1());
 			intent.putExtra("loop2",currentDisplayingPanel.getLoop2());
+			intent.putExtra(LoadingScreenActivity.DEMO_MODE, isDemo);
 			startActivity(intent);
 			
 		}
