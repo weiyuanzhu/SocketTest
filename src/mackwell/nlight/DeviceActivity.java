@@ -40,6 +40,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private Connection connection;
 	
 	private int currentDeviceAddress;
+	private int currentGroupPosition;
 	
 	
 
@@ -113,6 +114,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
 		
 		currentDeviceAddress = childPosition;
+		currentGroupPosition = groupPosition;
 		
 		System.out.println("current device:-------------->" + currentDeviceAddress);
 		
@@ -247,6 +249,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		System.out.println(buffer);
 		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
 		connection.fetchData(commandList);
+		
+		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
 		
 	}
 

@@ -57,20 +57,30 @@ public class Device  implements Parcelable{
 		emergencyStatus = 0;
 		emergencyMode = 0;
 		battery = 0;
-		serialNumber = 50901923;
+		serialNumber = 0;
 		GTIN = BigInteger.valueOf(0);
 		dtTime = 0;
 		lampOnTime = 0;
 		lampEmergencyTime = 0;
 		feature = 0;
-		gtinArray = new int[]{5,4,3,2,1,0};
+		gtinArray = new int[]{0,0,0,0,0,0};
 	}
 	
-	public Device(int add,int fs,int es)
+	public Device(int add,int loc,int fs,int es,int em,int bat,long sn,int[] gtin)
 	{
 		this();
-		address = add;
-		failureStatus = fs;
+		address = 0;
+		location = "test";
+		failureStatus = 0;
+		emergencyStatus = 0;
+		emergencyMode = 0;
+		battery = 0;
+		serialNumber = 0;
+		dtTime = 0;
+		lampOnTime = 0;
+		lampEmergencyTime = 0;
+		feature = 0;
+		gtinArray = new int[]{0,0,0,0,0,0};
 		
 	}
 	
@@ -182,6 +192,12 @@ public class Device  implements Parcelable{
 	
 	public String getLocation() {
 		return location.replaceAll("\\s+$", "");
+	}
+	
+	
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public int getFailureStatus() {

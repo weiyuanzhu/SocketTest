@@ -39,9 +39,6 @@ public class Loop  implements Parcelable {
 		deviceList = (List<Device>) new ArrayList<Device>();
 		deviceNumber = 0;
 		setStatus(0);
-		addDevice(new Device());
-		addDevice(new Device(1,200,6));
-		addDevice(new Device(2,0,6));
 		loopName = name;
 		
 	}

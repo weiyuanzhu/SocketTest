@@ -336,6 +336,17 @@ public class DeviceListFragment extends Fragment {
 		
 		
 	}
+	
+	public void updateLocation(int groupPosition, int index, String location)
+	{
+		if(groupPosition==0){
+			listDataChild.get(loop1).get(index).setLocation(location);
+			
+		}else listDataChild.get(loop2).get(index).setLocation(location);
+		
+		
+		mAdapter.notifyDataSetChanged();
+	}
 		
 		
 }

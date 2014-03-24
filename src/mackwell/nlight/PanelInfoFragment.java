@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,6 +151,8 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		
+		System.out.println("---------onViewCreated-----------");
+		
 		locationTextView = (TextView) getActivity().findViewById(R.id.panel_location);
 
 		locationTextView.setText(location);
@@ -215,14 +218,54 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		
 		simpleAdapter = new SimpleAdapter(getActivity(), getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.panel_description,R.id.panel_value});
 		
-
+		
 		
 		listView.setAdapter(simpleAdapter);
+		
+		
+		
 
 	}
 	
 	
 	
+	
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+		System.out.println("---------onStart-----------");
+		//TextView deleteIcon = (TextView) listView.getChildAt(1).findViewById(R.id.panel_value);  
+		
+		//TextView test = (TextView) listView.getAdapter().getView(1, null, null).findViewById(R.id.panel_value);
+		//deleteIcon.setTextColor(Color.BLUE);
+		//test.setText("list view test");
+	}
+
+	
+	
+
+
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		/*System.out.println("---------onResume-----------");
+		TextView deleteIcon = (TextView) listView.getChildAt(1).findViewById(R.id.panel_value);  
+		
+		TextView test = (TextView) listView.getAdapter().getView(1, null, null).findViewById(R.id.panel_value);
+		deleteIcon.setTextColor(Color.BLUE);
+		test.setText("list view test");*/
+	}
+
+
+
+
+
+
 	OnClickListener fetchClicked = new OnClickListener()
 	{
 		
@@ -298,7 +341,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "IP address:");
-		map.put("text2", panel==null? "..." : panel.getId());
+		map.put("text2", panel==null? "..." : panel.getIp());
 			
 		listDataSource.add(map);
 		
