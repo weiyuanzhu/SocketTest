@@ -193,9 +193,7 @@ public class DeviceListFragment extends Fragment {
 
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				Toast.makeText(getActivity(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getActivity(),"Loop Expanded",Toast.LENGTH_SHORT).show();
 				
 			}
 			

@@ -150,8 +150,8 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		simpleAdapter = new SimpleAdapter(getActivity(),dataList,R.layout.panel_list_row,
-				new String[]{"location","ip","img"},
-				new int[]{R.id.location,R.id.ip,R.id.img});
+				new String[]{"location","img"},
+				new int[]{R.id.location,R.id.img});
 		setListAdapter(simpleAdapter);
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -227,7 +227,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation());
-			map.put("ip",p.getIp());
+			//map.put("ip",p.getIp());
 			if(p.getOverAllStatus()== Constants.ALL_OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);

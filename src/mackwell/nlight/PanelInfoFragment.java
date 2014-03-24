@@ -297,7 +297,14 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "SerialNumber:");
+		map.put("text1", "IP address:");
+		map.put("text2", panel==null? "..." : panel.getId());
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		
+		map.put("text1", "Serial number:");
 		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
 		listDataSource.add(map);
@@ -313,7 +320,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Contact");
+		map.put("text1", "Contact:");
 		map.put("text2", panel==null? "..." : panel.getContact());
 		
 		listDataSource.add(map);
@@ -332,13 +339,13 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "FirmWare Version:");
+		map.put("text1", "Firmware version:");
 		map.put("text2", panel==null? "..." : panel.getVersion());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Report Usage:");
+		map.put("text1", "Report usage:");
 		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
 		listDataSource.add(map);

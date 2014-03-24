@@ -33,7 +33,7 @@ public class PanelListActivity extends ListActivity {
 		
 		SimpleAdapter adapter = new SimpleAdapter(this,dataList,R.layout.panel_list_row,
 				new String[]{"location","ip","img"},
-				new int[]{R.id.location,R.id.ip,R.id.img});
+				new int[]{R.id.location,R.id.img});
 		setListAdapter(adapter);
 		
 		
