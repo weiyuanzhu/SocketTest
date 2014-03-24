@@ -120,6 +120,23 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		
+		//re-enable buttons
+		demoBtn.setEnabled(true);
+		liveBtn.setEnabled(true);
+		
+		//hide bars
+		progressText.setVisibility(View.INVISIBLE);
+		progressBar.setVisibility(View.INVISIBLE);
+		
+	}
+
+
+	@Override
 	protected void onDestroy() {
 		for(String key : ip_connection_map.keySet())
 		{

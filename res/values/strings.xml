@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">N-Light Android</string>
+    <string name="app_name">N-Light Connect</string>
     <string name="app_version">Beta v 0.4</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
