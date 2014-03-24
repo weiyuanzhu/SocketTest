@@ -24,12 +24,8 @@
       <item
         android:id="@+id/device_stopId"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="StopId"/>
-       <item
-        android:id="@+id/device_seek"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="SeekBar"/>
+        android:showAsAction="never"
+        android:title="Stop Identify"/>
+       
  
 </menu>

@@ -119,9 +119,7 @@ public class DeviceListFragment extends Fragment {
 				case R.id.device_stopId:
 					mListener.stopId(getAddress(position));
 					break;
-				case R.id.device_seek:
-					mListener.seekBar();
-					break;
+				
 				default: break;
 			
 			}
