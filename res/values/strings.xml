@@ -16,7 +16,7 @@
     <string name="title_activity_panel_info">PanelInfo</string>
     <string name="title_activity_device_list">DeviceList</string>
     <string name="title_activity_device_info">DeviceInfoActivity</string>
-    <string name="title_activity_main">N-Light Android</string>
+    <string name="title_activity_main">N-Light Connect</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_device">DeviceActivity</string>
     <string name="title_activity_test">TestActivity</string>
