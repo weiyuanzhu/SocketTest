@@ -110,7 +110,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	
     	Loop loop = (Loop) getGroup(groupPosition);
     	
-        String headerTitle = (String) loop.getLoopName();
+        String headerTitle;
+        
+        if(groupPosition==0)
+        {
+        	headerTitle = "Loop 1";
+        	
+        }else headerTitle = "Loop 2";
+        
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

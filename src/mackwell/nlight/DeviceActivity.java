@@ -145,6 +145,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	@Override
 	protected void onDestroy() {
+		connection.closeConnection();
 		connection = null;
 		super.onDestroy();
 	}
@@ -169,18 +170,22 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	public void ft(int address) {
-		System.out.println("----------ftTest--------");
+		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
-		List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
-		connection.fetchData(commandList);
+		if(isConnected){
+			System.out.println("----------ftTest--------");
+			List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
+			connection.fetchData(commandList);
+		}
 		
 	}
 
 	@Override
 	public void dt(int address) {
-		System.out.println("----------ftTest--------");
+		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
+			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.DT.toggle(address);
 			connection.fetchData(commandList);
 		}
@@ -189,9 +194,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	public void st(int address) {
-		System.out.println("----------ftTest--------");
+		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
+			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.ST.toggle(address);
 			connection.fetchData(commandList);
 		}
@@ -200,9 +206,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	public void id(int address) {
-		System.out.println("----------ftTest--------");
+		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
+			System.out.println("----------ID--------");
 			List<char[] > commandList = ToggleCmdEnum.IDENTIFY.toggle(address);
 			connection.fetchData(commandList);
 		}
@@ -211,9 +218,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	public void stopId(int address) {
-		System.out.println("----------ftTest--------");
+		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
+			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.STOP_IDENTIFY.toggle(address);
 			connection.fetchData(commandList);
 		}
@@ -240,7 +248,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		//update device fragment
 		deviceFragment.updateLocation(location);
 		
-		//send command to 
+		//send command to panel
 		
 		List<Integer> buffer = new ArrayList<Integer>();
 		
@@ -250,7 +258,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
 		connection.fetchData(commandList);
 		
+		//update devicelistFragment
 		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
+		
+		
+		//show a toast
+		Toast.makeText(this, "Device has been named.", Toast.LENGTH_LONG).show();
 		
 	}
 

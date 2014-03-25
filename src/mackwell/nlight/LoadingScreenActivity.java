@@ -195,7 +195,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		 * 
 		 */
 		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-		ipList = new String[] {"192.168.1.24"};
+		ipList = new String[] {"192.168.1.24","192.168.1.23"};
 		
 		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
@@ -314,7 +314,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.1.18");
+		Panel panel = new Panel("192.168.1.24");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
 
