@@ -326,7 +326,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private String getAppVersion(){
 		StringBuilder version = new StringBuilder();
-    	version.append("Mackwell N-Light Android, Version ");
+    	version.append("Mackwell N-Light Connect, Version ");
     	String app_version = getString(R.string.app_version);
     	version.append(app_version);
 		
