@@ -177,7 +177,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 		mCurCheckPosition = position;
 		
-		String ip = (String)dataList.get(position).get("ip");
+		String ip = (String)panelList.get(position).getIp();
     	String location = (String)dataList.get(position).get("location");
 		//System.out.println(position);
 		
