@@ -5,6 +5,7 @@ package weiyuan.models;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -68,19 +69,18 @@ public class Device  implements Parcelable{
 	
 	public Device(int add,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
 	{
-		this();
-		address = 0;
-		location = "test";
-		failureStatus = 0;
-		emergencyStatus = 0;
-		emergencyMode = 0;
-		battery = 0;
-		serialNumber = 0;
+		address = add;
+		location = loc;
+		failureStatus = fs;
+		emergencyStatus = es;
+		emergencyMode = em;
+		battery = bat;
+		serialNumber = sn;
 		dtTime = 0;
 		lampOnTime = 0;
 		lampEmergencyTime = 0;
 		feature = 0;
-		gtinArray = new int[]{0,0,0,0,0,0};
+		gtinArray = gtin;
 		
 	}
 	
@@ -288,7 +288,13 @@ public class Device  implements Parcelable{
 	
 	public String getBatteryLevel()
 	{
-		return battery/254*100 + "%";
+		DecimalFormat df = new DecimalFormat("#.0");
+		double bat = (double) battery/254*100;
+		if(battery==254){
+			
+			return "100 %";
+		}
+		else return df.format(bat) + " %";
 		
 	}
 

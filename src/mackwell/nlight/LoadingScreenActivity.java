@@ -318,11 +318,22 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
 
+		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{0,1,2,3,6,5}));
+		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1294967295,new int[]{1,2,3,4,5,5}));
+		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1424467255,new int[]{2,3,4,5,7,5}));
+		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1524537221,new int[]{2,8,1,6,2,5}));
+		
+		
 		panelList.add(panel);
 	
 		panel = new Panel("192.168.1.19");
 		panel.setPanelLocation("Mackwell L&B 2");
 		panel.setSerialNumber((long)1566884756);
+		
+		panel.getLoop1().addDevice(new Device(0,"LB 5",200,48,0,0,1375167879,new int[]{6,1,2,3,5,5}));
+		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1294967295,new int[]{1,2,3,4,2,5}));
+		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1424967295,new int[]{2,3,4,5,7,5}));
+		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1424967295,new int[]{2,3,4,5,7,5}));
 
 		panelList.add(panel);
 		
