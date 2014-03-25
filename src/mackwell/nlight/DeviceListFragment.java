@@ -130,8 +130,8 @@ public class DeviceListFragment extends Fragment {
 			}
 			
 
-			
-			mode.finish();
+			//close action mode when actions clickeds
+			//mode.finish();
 			return false;
 		}
 	};
@@ -198,7 +198,9 @@ public class DeviceListFragment extends Fragment {
 
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				//Toast.makeText(getActivity(),"Loop Expanded",Toast.LENGTH_SHORT).show();
+				int loop = groupPosition+1;
+				String str = "Loop " + loop + " Expanded";
+			Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
 				
 			}
 			

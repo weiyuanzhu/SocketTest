@@ -64,7 +64,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		//set action bar
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle(panel.getPanelLocation());
+		getActionBar().setTitle("Panel: " + panel.getPanelLocation());
 		
 		this.connection = new Connection(this,panel.getIp());
 		
@@ -152,7 +152,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	private String getAppVersion(){
 		StringBuilder version = new StringBuilder();
-    	version.append("Mackwell N-Light Android, Version ");
+    	version.append("Mackwell N-Light Connect, Version ");
     	String app_version = getString(R.string.app_version);
     	version.append(app_version);
 		
