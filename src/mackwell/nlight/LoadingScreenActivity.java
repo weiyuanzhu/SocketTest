@@ -12,6 +12,7 @@ import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
-	
+	private static final int LOADING = 0;
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
 	
@@ -51,7 +52,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private static int delay = 1000;
 	private Handler mHandler = null;
 	
-	
+	private int panelToLoad = 0; 
 	
 	
 	/*
@@ -66,14 +67,27 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{
-			//connection.closeConnection();
+			panelToLoad --;
 			parse(ip);
+			
+			
+			//update progress with handler
+			Message msg = mHandler.obtainMessage();
+			
+			if(panelToLoad!=0){
+				msg.arg1 = LOADING;
+				
+			}else msg.arg1 = PARSING;
+			
+			
+			mHandler.sendMessage(msg);
 			
 		}
 		
 	}
 
 	
+	@SuppressLint("HandlerLeak")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,6 +109,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			public void handleMessage(Message msg) {
 				
 				switch(msg.arg1){
+					case LOADING:
+						progressText.setText("Loading Panel Data" + " (" + panelToLoad + ")");
 					case PARSING: 
 						progressText.setText("Analysing Panel Data");
 						break;
@@ -195,7 +211,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		 * 
 		 */
 		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-		ipList = new String[] {"192.168.1.18","192.168.1.19"};
+		ipList = new String[] {"192.168.1.23","192.168.1.24"};
 		
 		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
@@ -247,8 +263,9 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		
 		//set isDemo flag
 		isDemo = false;
+		panelToLoad = ipList.length;
 		
-		progressText.setText("Loading Panel Data");
+		progressText.setText("Loading Panel Data" + "(" + panelToLoad + ")");
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
 		
@@ -280,8 +297,8 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		
 		
 		Message msg = mHandler.obtainMessage();
-		msg.arg1 = PARSING;
-		mHandler.sendMessage(msg);
+		//msg.arg1 = PARSING;
+		//mHandler.sendMessage(msg);
 		
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		
@@ -314,7 +331,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.1.24");
+		Panel panel = new Panel("192.168.1.18");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
 
