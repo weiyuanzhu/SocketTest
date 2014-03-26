@@ -339,12 +339,12 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		Panel panel = new Panel("192.168.1.18");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
-		panel.setGtinArray(new int[]{131,1,165,43,154,4});
+		panel.setGtinArray(new int[]{131,1,166,43,154,4});
 
-		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,165,43,154,4}));
-		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1294967295,new int[]{45,2,165,43,154,4}));
-		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1424467255,new int[]{78,3,165,43,154,4}));
-		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1524537221,new int[]{130,4,165,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
 		
 		
 		panelList.add(panel);
@@ -352,12 +352,12 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		panel = new Panel("192.168.1.19");
 		panel.setPanelLocation("Mackwell L&B 2");
 		panel.setSerialNumber((long)1375868516);
-		panel.setGtinArray(new int[]{132,2,165,43,154,4});
+		panel.setGtinArray(new int[]{132,2,166,43,154,4});
 		
-		panel.getLoop1().addDevice(new Device(0,"LB 5",72,48,0,0,1375167879,new int[]{145,5,165,43,154,4}));
-		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1294967295,new int[]{178,5,165,43,154,4}));
-		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1424967295,new int[]{223,3,165,43,154,4}));
-		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1424967295,new int[]{243,4,165,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,"LB 5",72,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1366965291,new int[]{178,5,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1363967292,new int[]{243,4,166,43,154,4}));
 
 		panelList.add(panel);
 		
