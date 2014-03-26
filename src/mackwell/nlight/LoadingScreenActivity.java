@@ -350,7 +350,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		panel.setSerialNumber((long)1375868516);
 		panel.setGtinArray(new int[]{132,2,165,43,154,4});
 		
-		panel.getLoop1().addDevice(new Device(0,"LB 5",200,48,0,0,1375167879,new int[]{145,5,165,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,"LB 5",72,48,0,0,1375167879,new int[]{145,5,165,43,154,4}));
 		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1294967295,new int[]{178,5,165,43,154,4}));
 		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1424967295,new int[]{223,3,165,43,154,4}));
 		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1424967295,new int[]{243,4,165,43,154,4}));
