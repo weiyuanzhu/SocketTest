@@ -158,6 +158,12 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 		connection.setIsClosed(true);
 		
 	}
+
+	@Override
+	public void error() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

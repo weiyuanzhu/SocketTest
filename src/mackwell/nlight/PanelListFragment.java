@@ -294,4 +294,10 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	protected void setPanelList(List<Panel> panelList) {
 		this.panelList = panelList;
 	}
+
+	@Override
+	public void error() {
+		System.out.println("=============Connection ERROR================");
+		
+	}
 }

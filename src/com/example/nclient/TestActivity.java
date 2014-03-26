@@ -132,6 +132,14 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 		System.out.println("callback ------> " + location);
 		
 	}
+
+
+
+	@Override
+	public void error() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 	

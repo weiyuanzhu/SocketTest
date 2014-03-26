@@ -172,7 +172,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void ft(int address) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
-		if(isConnected){
+		if(isConnected && !isDemo){
 			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
 			connection.fetchData(commandList);
@@ -264,6 +264,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		//show a toast
 		Toast.makeText(this, "Device has been named.", Toast.LENGTH_LONG).show();
+		
+	}
+
+	@Override
+	public void error() {
+		// TODO Auto-generated method stub
 		
 	}
 

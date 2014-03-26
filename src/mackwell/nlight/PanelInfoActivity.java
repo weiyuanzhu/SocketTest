@@ -324,4 +324,12 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 		startActivity(intent);
 		
 	}
+
+
+
+	@Override
+	public void error() {
+		// TODO Auto-generated method stub
+		
+	}
 }

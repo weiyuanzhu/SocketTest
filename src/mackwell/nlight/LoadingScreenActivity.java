@@ -33,7 +33,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private final String[] ipList = new String[] {"192.168.1.23","192.168.1.24"};
+	private final String[] ipList = new String[] {"192.168.1.18","192.168.1.19"};
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -336,7 +336,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.1.18");
+		Panel panel = new Panel("192.168.1.24");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
@@ -362,6 +362,13 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		panelList.add(panel);
 		
 		
+	}
+
+
+	@Override
+	public void error() {
+		
+	
 	}
 
 }

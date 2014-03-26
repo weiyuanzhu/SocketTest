@@ -467,6 +467,12 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		listUpdateHandler.sendMessage(msg);
 		
 	}
+
+	@Override
+	public void error() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

@@ -16,7 +16,8 @@ public class Connection {
 	//interface for callback
 		public interface CallBack 
 		{
-				void receive(List<Integer> rx,String ip);
+			public void receive(List<Integer> rx,String ip);
+			public void error();
 		}
 	
 	static final int UART_STOP_BIT_H = 0x5A;
@@ -220,6 +221,7 @@ public class Connection {
 				catch(Exception ex)
 				{
 					ex.printStackTrace();
+					mCallBack.get().error();
 				}
 				finally
 				{		
@@ -238,6 +240,7 @@ public class Connection {
 							
 						} catch (IOException ex) {
 							ex.printStackTrace();
+							mCallBack.get().error();
 						}
 					}
 				}		

@@ -350,4 +350,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		}
 		
 	}
+
+	@Override
+	public void error() {
+		System.out.println("=============Connection ERROR================");
+		
+	}
 }
