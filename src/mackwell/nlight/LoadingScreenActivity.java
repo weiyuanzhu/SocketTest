@@ -112,7 +112,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 				
 				switch(msg.arg1){
 					case LOADING:
-						progressText.setText("Loading Panel Data" + " (" + panelToLoad + ")");
+						progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
 					case PARSING: 
 						progressText.setText("Analysing Panel Data");
 						break;
@@ -266,7 +266,11 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		isDemo = false;
 		panelToLoad = ipList.length;
 		
-		progressText.setText("Loading Panel Data" + "(" + panelToLoad + ")");
+		
+		Message msg = mHandler.obtainMessage();
+		msg.arg1 = LOADING;
+		mHandler.sendMessage(msg);
+
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
 		

@@ -201,7 +201,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			for(int i=0; i<dataList.size(); i++)
 			{
 				commandList = CommandFactory.getOverallStatus();
-				String ip = (String) dataList.get(i).get("ip");
+				String ip = (String) panelList.get(i).getIp();
 				
 				Connection connection = new Connection(currentFragment,ip);
 				connectionList.add(connection);
@@ -227,7 +227,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation());
-			//map.put("ip",p.getIp());
+			map.put("ip",p.getIp());
 			if(p.getOverAllStatus()== Constants.ALL_OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);
