@@ -32,6 +32,9 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
+	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
+	private final String[] ipList = new String[] {"192.168.1.23","192.168.1.24"};
+	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
@@ -43,7 +46,6 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private TextView progressText = null;
 	private ProgressBar progressBar = null;
 	
-	private String[] ipList = null;
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
 	private Map<String,Connection> ip_connection_map = null;
@@ -74,10 +76,10 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			//update progress with handler
 			Message msg = mHandler.obtainMessage();
 			
-			if(panelToLoad!=0){
-				msg.arg1 = LOADING;
+			if(panelToLoad==0){
+				msg.arg1 = PARSING;
 				
-			}else msg.arg1 = PARSING;
+			}else msg.arg1 = LOADING;
 			
 			
 			mHandler.sendMessage(msg);
@@ -210,8 +212,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		 * Initial collections 
 		 * 
 		 */
-		//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-		ipList = new String[] {"192.168.1.23","192.168.1.24"};
+		
 		
 		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
@@ -314,7 +315,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			
 			if(panelList.size()==ipList.length){
 				
-				msg = new Message();
+				//msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
 				mHandler.sendMessage(msg);
 
@@ -334,23 +335,25 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		Panel panel = new Panel("192.168.1.18");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
+		panel.setGtinArray(new int[]{131,1,165,43,154,4});
 
-		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{0,1,2,3,6,5}));
-		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1294967295,new int[]{1,2,3,4,5,5}));
-		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1424467255,new int[]{2,3,4,5,7,5}));
-		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1524537221,new int[]{2,8,1,6,2,5}));
+		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,165,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1294967295,new int[]{45,2,165,43,154,4}));
+		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1424467255,new int[]{78,3,165,43,154,4}));
+		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1524537221,new int[]{130,4,165,43,154,4}));
 		
 		
 		panelList.add(panel);
 	
 		panel = new Panel("192.168.1.19");
 		panel.setPanelLocation("Mackwell L&B 2");
-		panel.setSerialNumber((long)1566884756);
+		panel.setSerialNumber((long)1375868516);
+		panel.setGtinArray(new int[]{132,2,165,43,154,4});
 		
-		panel.getLoop1().addDevice(new Device(0,"LB 5",200,48,0,0,1375167879,new int[]{6,1,2,3,5,5}));
-		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1294967295,new int[]{1,2,3,4,2,5}));
-		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1424967295,new int[]{2,3,4,5,7,5}));
-		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1424967295,new int[]{2,3,4,5,7,5}));
+		panel.getLoop1().addDevice(new Device(0,"LB 5",200,48,0,0,1375167879,new int[]{145,5,165,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1294967295,new int[]{178,5,165,43,154,4}));
+		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1424967295,new int[]{223,3,165,43,154,4}));
+		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1424967295,new int[]{243,4,165,43,154,4}));
 
 		panelList.add(panel);
 		

@@ -252,6 +252,12 @@ public class Panel  implements Parcelable{
 	public int[] getGtinArray() {
 		return gtinArray;
 	}
+	
+	
+
+	public void setGtinArray(int[] gtinArray) {
+		this.gtinArray = gtinArray;
+	}
 
 	public Loop getLoop1() {
 		return loop1;
