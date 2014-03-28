@@ -135,12 +135,5 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 
 
 
-	@Override
-	public void error() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
 	
 }

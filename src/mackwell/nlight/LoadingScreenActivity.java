@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-public class LoadingScreenActivity extends BaseActivity implements CallBack {
+public class LoadingScreenActivity extends BaseActivity{
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
@@ -38,6 +38,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
 	private static final int LOADING_FINISHED = 2;
+	private static final int ERROR = 3;
 	
 	private boolean isLoading = false;
 	
@@ -70,9 +71,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		if(connection.isRxCompleted())
 		{
 			panelToLoad --;
-			parse(ip);
-			
-			
+
 			//update progress with handler
 			Message msg = mHandler.obtainMessage();
 			
@@ -83,6 +82,14 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 			
 			
 			mHandler.sendMessage(msg);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			parse(ip);
 			
 		}
 		
@@ -118,6 +125,12 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 						break;
 					case LOADING_FINISHED:
 						progressText.setText("Finish Loading");
+						break;
+					case ERROR:
+						String ipAdd = (String) msg.obj;
+						progressText.setText("Cannot connect to " + ipAdd + ", please check connection.");
+						progressBar.setVisibility(View.INVISIBLE);
+						liveBtn.setEnabled(true);
 						break;
 					default: break;
 				
@@ -267,10 +280,12 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 		panelToLoad = ipList.length;
 		
 		
-		Message msg = mHandler.obtainMessage();
-		msg.arg1 = LOADING;
-		mHandler.sendMessage(msg);
+		//Message msg = mHandler.obtainMessage();
+		//msg.arg1 = LOADING;
+		//mHandler.sendMessage(msg);
 
+		progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+		
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
 		
@@ -336,7 +351,7 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 	private void prepareDataForDemo()
 	{
 	
-		Panel panel = new Panel("192.168.1.24");
+		Panel panel = new Panel("192.168.1.18");
 		panel.setPanelLocation("Mackwell L&B 1");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
@@ -366,9 +381,20 @@ public class LoadingScreenActivity extends BaseActivity implements CallBack {
 
 
 	@Override
-	public void error() {
+	public void error(String ip) {
+		// TODO Auto-generated method stub
+		super.error(ip);
+		System.out.println("Error: " + ip);
+		ip_connection_map.get(ip).closeConnection();
 		
-	
+		Message msg = mHandler.obtainMessage();
+		msg.arg1 = ERROR;
+		msg.obj = ip;
+		mHandler.sendMessage(msg);
+		
 	}
+
+
+	
 
 }

@@ -469,11 +469,12 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	}
 
 	@Override
-	public void error() {
+	public void error(String ip) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
 	
 
 }

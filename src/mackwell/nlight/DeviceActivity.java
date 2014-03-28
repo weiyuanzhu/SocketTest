@@ -64,7 +64,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		//set action bar
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle("Panel: " + panel.getPanelLocation());
+		
+		//set title with demo
+		String title = isDemo? "Panel: " + panel.getPanelLocation() + " (Demo)" : "Panel: " + panel.getPanelLocation() + " (Live)";
+		getActionBar().setTitle(title);
 		
 		this.connection = new Connection(this,panel.getIp());
 		
@@ -267,11 +270,6 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 
-	@Override
-	public void error() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 	

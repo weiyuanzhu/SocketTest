@@ -1,5 +1,9 @@
 package mackwell.nlight;
 
+import java.util.List;
+
+import weiyuan.socket.Connection.CallBack;
+
 import com.example.nclient.R;
 import com.example.nclient.R.layout;
 import com.example.nclient.R.menu;
@@ -23,7 +27,7 @@ import android.view.MenuItem;
  * to check device connecctivities
  */
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements CallBack {
 	
 	protected static boolean isDemo = false;
 	
@@ -88,6 +92,18 @@ public class BaseActivity extends Activity {
         }
 
     }
+
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void error(String ip) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 

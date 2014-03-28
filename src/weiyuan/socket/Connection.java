@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.ref.WeakReference;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Connection {
 		public interface CallBack 
 		{
 			public void receive(List<Integer> rx,String ip);
-			public void error();
+			public void error(String ip);
 		}
 	
 	static final int UART_STOP_BIT_H = 0x5A;
@@ -221,7 +222,7 @@ public class Connection {
 				catch(Exception ex)
 				{
 					ex.printStackTrace();
-					mCallBack.get().error();
+					mCallBack.get().error(ip);
 				}
 				finally
 				{		
@@ -240,7 +241,7 @@ public class Connection {
 							
 						} catch (IOException ex) {
 							ex.printStackTrace();
-							mCallBack.get().error();
+
 						}
 					}
 				}		

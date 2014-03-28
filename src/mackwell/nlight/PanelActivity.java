@@ -46,6 +46,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private PanelListFragment panelListFragment;
 	
 	private int currentSelected;
+
 	
 	//call back for connection
 	@Override
@@ -81,6 +82,12 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		panelList = intent.getParcelableArrayListExtra("panelList");
 		isDemo = intent.getBooleanExtra(LoadingScreenActivity.DEMO_MODE, true);
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		//set title with demo
+		String title = isDemo? "N-Light Connect (Demo)" :  "N-Light Connect (Live)";
+		getActionBar().setTitle(title);
 		
 		System.out.println("DeomoMode--------> " + isDemo);
 		
@@ -351,9 +358,4 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 
-	@Override
-	public void error() {
-		System.out.println("=============Connection ERROR================");
-		
-	}
 }

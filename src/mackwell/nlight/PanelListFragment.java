@@ -296,7 +296,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	}
 
 	@Override
-	public void error() {
+	public void error(String ip) {
 		System.out.println("=============Connection ERROR================");
 		
 	}

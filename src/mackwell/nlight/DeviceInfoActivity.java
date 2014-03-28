@@ -160,10 +160,11 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 	}
 
 	@Override
-	public void error() {
+	public void error(String ip) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
 
 }
