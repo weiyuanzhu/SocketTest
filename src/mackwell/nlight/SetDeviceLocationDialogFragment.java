@@ -20,6 +20,8 @@ import com.example.nclient.R;
  */
 public class SetDeviceLocationDialogFragment extends DialogFragment{
 	
+	private String location;
+	
 	public interface NoticeDialogListener{
 		public void setLocation(String location);
 		
@@ -53,12 +55,16 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		//create final view with dialog layout
 		final View dialogView = inflater.inflate(R.layout.dialog_setdevice_name, null);
 
-		//get edittext view
+		//get EditText view
 		locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
 		
 		//set max length allowed for edittext
 		InputFilter[] filters = {new InputFilter.LengthFilter(Constants.TEXT_MAX)};  
 		locationEditText.setFilters(filters); 
+		
+		//set TextEdit devault message and set cursor to last position
+		locationEditText.setText(location == null? "Name device:" : location);
+		locationEditText.setSelection(location.length());
 		
 		//set dialog view
 		builder.setView(dialogView);
@@ -96,6 +102,18 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		
 		
 		
+	}
+
+
+
+	public String getLocation() {
+		return location;
+	}
+
+
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 	
