@@ -6,27 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
-
 import weiyuan.models.Device;
 
 import com.example.nclient.R;
-import com.example.nclient.R.layout;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
