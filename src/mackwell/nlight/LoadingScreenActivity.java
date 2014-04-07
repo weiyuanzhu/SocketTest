@@ -33,7 +33,7 @@ public class LoadingScreenActivity extends BaseActivity{
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private final String[] ipList = new String[] {"192.168.1.18","192.168.1.19"};
+	private final String[] ipList = new String[] {"192.168.1.23","192.168.1.24"};
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -358,8 +358,8 @@ public class LoadingScreenActivity extends BaseActivity{
 
 		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
 		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(0,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(1,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(128,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(129,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
 		
 		
 		panelList.add(panel);
@@ -371,8 +371,8 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 		panel.getLoop1().addDevice(new Device(0,"LB 5",72,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
 		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1366965291,new int[]{178,5,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(0,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(1,"LB 8",0,0,0,150,1363967292,new int[]{243,4,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(128,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(129,"LB 8",0,0,0,150,1363967292,new int[]{243,4,166,43,154,4}));
 
 		panelList.add(panel);
 		

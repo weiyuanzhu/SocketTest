@@ -162,8 +162,12 @@ public class DeviceInfoFragment extends ListFragment {
 			
 		Map<String,Object> map = new HashMap<String,Object>();
 			
+		
+		//put correct address for device, -128 if it is on loop2
+		int address = device.getAddress() < 127 ? device.getAddress(): device.getAddress()-128; 
+		
 		map.put("description", "Address");
-		map.put("value", device==null? "n/a" : device.getAddress());
+		map.put("value", device==null? "n/a" : address);
 		
 		listDataSource.add(map);
 		

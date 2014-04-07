@@ -76,6 +76,10 @@ public class DeviceListFragment extends Fragment {
 	private Loop loop1;
 	private Loop loop2;
 	
+	private Device currentSelectedDevice;
+	private Loop currentSelectedLoop;
+	private boolean isLoopSelected;
+	
 	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
 		
 		@Override
@@ -105,23 +109,23 @@ public class DeviceListFragment extends Fragment {
 			switch(item.getItemId())
 			{
 				case R.id.device_ft:
-					mListener.ft(getAddress(position));
+					mListener.ft(getAddress());
 					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
-					mListener.st(getAddress(position));
+					mListener.st(getAddress());
 					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
-					mListener.dt(getAddress(position));
+					mListener.dt(getAddress());
 					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
-					mListener.id(getAddress(position));
+					mListener.id(getAddress());
 					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
-					mListener.stopId(getAddress(position));
+					mListener.stopId(getAddress());
 					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
 					break;
 				
@@ -250,6 +254,29 @@ public class DeviceListFragment extends Fragment {
 				if (mActionMode != null) {
 		            return false;
 		        }
+				
+				//check type and position to decide whether a loop or device is selected and which one
+				
+				if(type==0) {
+					
+					isLoopSelected = true; 
+					if(groupPosition==0){
+						currentSelectedLoop = loop1;
+						
+					}else currentSelectedLoop = loop2;
+				
+				}
+				else {
+					isLoopSelected = false;
+					
+					if(groupPosition==0){
+						currentSelectedDevice = loop1.getDevice(childPosition);
+						
+					}else currentSelectedDevice = loop2.getDevice(childPosition);
+					
+				}
+				
+				
 
 		        // Start the CAB using the ActionMode.Callback defined above
 		        mActionMode = getActivity().startActionMode(deviceActionModeCallback);
@@ -309,30 +336,20 @@ public class DeviceListFragment extends Fragment {
 		
 	}
 	
-	private int getAddress(int position)
+	private int getAddress()
 	{
 		int address = 0; 
-		int temp = loop1.getDeviceNumber()+2;
 		
-		if(position == 0){
-			address = 64;
-		}
-		else if( position > 0 && position<temp)
-		{
-			address = loop1.getDevice(position-1).getAddress();
+		if(isLoopSelected){
 			
+			if(currentSelectedLoop.equals(loop1))
+			{
+				address = 64;
+			}else address = 192;
 		}
-		else if(position == temp)
-		{
-			address = 192;
-			
-		}
-		else {
-			
-			address = loop1.getDevice(position-temp).getAddress();
-		}
+		else address = currentSelectedDevice.getAddress();
 		
-		
+		System.out.println("Device or Loop Address-----------------> " + address);
 		
 		return address;
 		
