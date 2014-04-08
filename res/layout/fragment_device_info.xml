@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="Device Details"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true" 
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="10dp">
         
 
     </ListView>

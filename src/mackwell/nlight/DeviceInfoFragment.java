@@ -207,6 +207,19 @@ public class DeviceInfoFragment extends ListFragment {
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
+		map.put("description", "Last duration test result");
+		map.put("value", device==null? "n/a" : device.getDtTime() + " minutes");
+			
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("description", "Total emgerency lamp operating time");
+		map.put("value", device==null? "n/a" : device.getLampEmergencyTimeText());
+	
+		
+		listDataSource.add(map);
+		
+		map = new HashMap<String,Object>();
 		map.put("description", "Communication status");
 		map.put("value", device==null? "n/a" : "OK");
 			
