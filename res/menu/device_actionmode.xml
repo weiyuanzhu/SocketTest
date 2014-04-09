@@ -4,29 +4,37 @@
      <item
         android:id="@+id/device_ft"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="FT"
        />
      
      <item
         android:id="@+id/device_dt"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="DT"/>
    
       
       <item
         android:id="@+id/device_st"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="ST"/>
       
       <item
         android:id="@+id/device_id"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="ID"
      	/>
+      
+      <item
+        android:id="@+id/device_refresh"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="refresh"/>
+      
       <item
         android:id="@+id/device_stopId"
         android:orderInCategory="100"
