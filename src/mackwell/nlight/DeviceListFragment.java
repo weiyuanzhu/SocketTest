@@ -255,14 +255,6 @@ public class DeviceListFragment extends Fragment {
                 int childPosition = ExpandableListView.getPackedPositionChild(id);  
 				  
 				
-				
-				System.out.println("type: " + type + " group position: " + groupPosition + " childPositon: " + childPosition);
-				if (mActionMode != null) {
-		            return false;
-		        }
-				
-				//check type and position to decide whether a loop or device is selected and which one
-				
 				if(type==0) {
 					
 					isLoopSelected = true; 
@@ -281,6 +273,17 @@ public class DeviceListFragment extends Fragment {
 					}else currentSelectedDevice = loop2.getDevice(childPosition);
 					
 				}
+				
+				System.out.println("type: " + type + " group position: " + groupPosition + " childPositon: " + childPosition);
+				if (mActionMode != null) {
+					mActionMode.finish();
+					
+					mActionMode = getActivity().startActionMode(deviceActionModeCallback);
+		            return true;
+		        }
+				
+				//check type and position to decide whether a loop or device is selected and which one
+				
 				
 				
 
