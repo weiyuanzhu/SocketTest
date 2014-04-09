@@ -260,7 +260,7 @@ public class Device  implements Parcelable{
 		
 		if (esSet.size()==0)
 		{
-			return "FT Done, DT Done";
+			return "-";
 		}
 		else{
 			for(EmergencyStatus es : esSet)

@@ -269,8 +269,10 @@ public class DeviceInfoFragment extends ListFragment {
 		
 	}
 	
-	public void updateDevice(Device device)
-	{
+	/**
+	 * @param device
+	 */
+	public void updateDevice(Device device) {
 		listDataSource = getData(device);
 		
 		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
