@@ -229,10 +229,22 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
-			System.out.println("----------ftTest--------");
+			System.out.println("--------stopId----------");
 			List<char[] > commandList = ToggleCmdEnum.STOP_IDENTIFY.toggle(address);
 			connection.fetchData(commandList);
 		}
+		
+	}
+	
+	public void refreshDevice(int address)
+	{
+		if(isConnected && !isDemo){
+			System.out.println("----------refresh device status--------");
+			List<char[] > commandList = ToggleCmdEnum.REFRESH.toggle(address);
+			connection.fetchData(commandList);
+		}	
+		
+		
 		
 	}
 	

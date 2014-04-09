@@ -58,6 +58,7 @@ public class DeviceListFragment extends Fragment {
 		public void st(int address);
 		public void id(int address);
 		public void stopId(int address);
+		public void refreshDevice(int address);
 		public void seekBar();
 
 	}
@@ -127,6 +128,11 @@ public class DeviceListFragment extends Fragment {
 				case R.id.device_stopId:
 					mListener.stopId(getAddress());
 					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
+					break;
+				case R.id.device_refresh:
+					
+					mListener.refreshDevice(getAddress());
+					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
 					break;
 				
 				default: break;
