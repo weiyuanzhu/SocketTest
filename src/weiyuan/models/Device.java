@@ -108,6 +108,21 @@ public class Device  implements Parcelable{
 		}
 	}
 
+	public void updateDevice(List<Integer> device)
+	{
+		failureStatus = device.get(1);
+		communicationStatus = device.get(2) == 0 ? true : false;
+		emergencyStatus = device.get(3);
+		emergencyMode = device.get(4);
+		battery = device.get(5);		
+		dtTime = device.get(16)*2;
+		lampOnTime = device.get(17);
+		lampEmergencyTime = device.get(18);
+		feature = device.get(19);
+		
+		
+		
+	}
 
 	@Override
 	public String toString() {

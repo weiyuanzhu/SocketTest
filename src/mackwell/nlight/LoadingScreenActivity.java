@@ -296,9 +296,9 @@ public class LoadingScreenActivity extends BaseActivity{
 			System.out.println("clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
-			for(String key : ip_connection_map.keySet()){
+			for(String ip: ipList){
 				
-				Connection conn = (Connection) ip_connection_map.get(key);
+				Connection conn = (Connection) ip_connection_map.get(ip);
 				conn.fetchData(commandList);
 			}
 			

@@ -269,5 +269,12 @@ public class DeviceInfoFragment extends ListFragment {
 		
 	}
 	
+	public void updateDevice(Device device)
+	{
+		listDataSource.get(7).put("value", "0%");
+		mSimpleAdapter.notifyDataSetChanged();
+		
+	}
+	
 
 }

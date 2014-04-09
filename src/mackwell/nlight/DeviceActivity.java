@@ -6,17 +6,14 @@ import java.util.List;
 import mackwell.nlight.DeviceInfoFragment.DeviceSetLocationListener;
 import mackwell.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import mackwell.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+import weiyuan.models.Device;
 import weiyuan.models.Panel;
 import weiyuan.socket.Connection;
-import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.DataParser;
 import weiyuan.util.SetCmdEnum;
 import weiyuan.util.ToggleCmdEnum;
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -24,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import mackwell.nlight.DeviceListFragment;
 
 import com.example.nclient.R;
 
@@ -33,6 +29,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	private Panel panel = null;
+	private Device currentSelectedDevice;
 	private DeviceListFragment deviceListFragment = null;
 	private DeviceInfoFragment deviceFragment = null;
 	
@@ -41,6 +38,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private int currentDeviceAddress;
 	private int currentGroupPosition;
+	
+	//connection.callback interface implementation
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		System.out.println(rx);
+		currentSelectedDevice.updateDevice(rx);
+		deviceFragment.updateDevice(currentSelectedDevice);
+		connection.setIsClosed(true);
+		
+	}
 	
 	
 
@@ -126,12 +133,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		if(groupPosition==0)
 		{
-			deviceFragment = DeviceInfoFragment.newInstance(panel.getLoop1().getDevice(childPosition));
+			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
 		}
 		else {
-			deviceFragment = DeviceInfoFragment.newInstance(panel.getLoop2().getDevice(childPosition));
-			
-			
+			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
 		}
 		
 		
@@ -162,12 +169,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
     	return version.toString();
 	}
 
-	@Override
-	public void receive(List<Integer> rx, String ip) {
-		System.out.println(rx);
-		connection.setIsClosed(true);
-		
-	}
+
 	
 	
 
