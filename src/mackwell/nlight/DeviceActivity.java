@@ -15,6 +15,7 @@ import weiyuan.util.ToggleCmdEnum;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +27,7 @@ import com.example.nclient.R;
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack, 
 															DeviceSetLocationListener,NoticeDialogListener{
-	
+	private Handler mHandler;
 	
 	private Panel panel = null;
 	private Device currentSelectedDevice;
@@ -44,7 +45,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
 		currentSelectedDevice.updateDevice(rx);
-		deviceFragment.updateDevice(currentSelectedDevice);
+		mHandler.post(refreshDevice);
 		connection.setIsClosed(true);
 		
 	}
@@ -55,6 +56,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
+		
+		mHandler = new Handler();
 		
 		checkConnectivity();
 		Intent intent = getIntent();
@@ -274,7 +277,18 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 
 	
+	Runnable refreshDevice = new Runnable()
+	{
+
+		@Override
+		public void run() {
+			
+			deviceFragment.updateDevice(currentSelectedDevice);
+		}
 	
+		
+		
+	};
 	
 
 

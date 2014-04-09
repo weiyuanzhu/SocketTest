@@ -271,7 +271,13 @@ public class DeviceInfoFragment extends ListFragment {
 	
 	public void updateDevice(Device device)
 	{
-		listDataSource.get(7).put("value", "0%");
+		listDataSource = getData(device);
+		
+		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
+				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+		
+		setListAdapter(mSimpleAdapter);
+		
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}

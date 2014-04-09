@@ -64,4 +64,13 @@
         android:layout_centerHorizontal="true" 
         android:visibility="gone"/>
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/loadscreen_logo_imageView"
+        android:layout_alignLeft="@+id/loadscreen_logo_imageView"
+        android:text="Button" 
+        android:onClick="updateDeviceList"/>
+
 </RelativeLayout>

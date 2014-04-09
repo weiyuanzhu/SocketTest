@@ -12,6 +12,7 @@ import weiyuan.socket.Connection;
 import weiyuan.socket.Connection.CallBack;
 import weiyuan.util.CommandFactory;
 import weiyuan.util.DataParser;
+import weiyuan.util.GetCmdEnum;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class LoadingScreenActivity extends BaseActivity{
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private final String[] ipList = new String[] {"192.168.1.23","192.168.1.24"};
+	private final String[] ipList = new String[] {"192.168.1.24"};
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -293,7 +294,7 @@ public class LoadingScreenActivity extends BaseActivity{
 		if(!isLoading){
 			
 			
-			System.out.println("clicked");
+			System.out.println("------------liveMode clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
 			for(String ip: ipList){
@@ -393,7 +394,15 @@ public class LoadingScreenActivity extends BaseActivity{
 		mHandler.sendMessage(msg);
 		
 	}
-
+	
+	public void updateDeviceList (View view)
+	{
+		System.out.println("----------------------getDeviceList--------------------");
+		Connection conn = ip_connection_map.get(ipList[0]);
+		List<char[]> commandList = GetCmdEnum.UPDATE_LIST.get();
+		conn.fetchData(commandList);
+		
+	}
 
 	
 

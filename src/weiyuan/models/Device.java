@@ -110,15 +110,15 @@ public class Device  implements Parcelable{
 
 	public void updateDevice(List<Integer> device)
 	{
-		failureStatus = device.get(1);
-		communicationStatus = device.get(2) == 0 ? true : false;
-		emergencyStatus = device.get(3);
-		emergencyMode = device.get(4);
-		battery = device.get(5);		
-		dtTime = device.get(16)*2;
-		lampOnTime = device.get(17);
-		lampEmergencyTime = device.get(18);
-		feature = device.get(19);
+		failureStatus = device.get(4);
+		communicationStatus = device.get(5) == 0 ? true : false;
+		emergencyStatus = device.get(6);
+		emergencyMode = device.get(7);
+		battery = device.get(8);		
+		dtTime = device.get(19)*2;
+		lampOnTime = device.get(20);
+		lampEmergencyTime = device.get(21);
+		feature = device.get(22);
 		
 		
 		
