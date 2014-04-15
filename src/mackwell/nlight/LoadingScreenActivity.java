@@ -29,6 +29,10 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
+/**
+ * @author weiyuan zhu
+ * 15/04/2014 Starting develop branch
+ */
 public class LoadingScreenActivity extends BaseActivity{
 	
 	public static final String DEMO_MODE = "Demo Mode";
