@@ -414,7 +414,7 @@ public class LoadingScreenActivity extends BaseActivity{
 
 	public void featureBranchTest()
 	{
-		
+		System.out.println("test");
 	}
 	
 
