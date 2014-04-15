@@ -29,6 +29,14 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
+/**
+ * @author weiyuan zhu
+ * 15/04/2014 Starting develop branch
+
+ * test on develop branch
+ * test 2 on feature branch
+ * test 3 on feature branch after rebase
+ */
 public class LoadingScreenActivity extends BaseActivity{
 	
 	public static final String DEMO_MODE = "Demo Mode";
@@ -404,6 +412,17 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 	}
 
+	public void featureBranchTest()
+	{
+		System.out.println("test");
+		
+		System.out.println("new test");
+		
+		
+		System.out.println("no ff test");
+		
+		
+	}
 	
 
 }
