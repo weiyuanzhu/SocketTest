@@ -35,6 +35,7 @@ import com.example.nclient.R;
 
  * test on develop branch
  * test 2 on feature branch
+ * test 3 on feature branch after rebase
  */
 public class LoadingScreenActivity extends BaseActivity{
 	
@@ -411,6 +412,10 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 	}
 
+	public void featureBranchTest()
+	{
+		
+	}
 	
 
 }
