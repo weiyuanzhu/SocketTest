@@ -421,6 +421,8 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 		System.out.println("no ff test");
 		
+		System.out.println("another no ff test for merge.ff=falsue") ;
+		
 		
 	}
 	
