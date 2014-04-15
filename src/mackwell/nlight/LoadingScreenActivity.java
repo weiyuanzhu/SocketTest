@@ -418,6 +418,10 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 		System.out.println("new test");
 		
+		
+		System.out.println("no ff test");
+		
+		
 	}
 	
 
