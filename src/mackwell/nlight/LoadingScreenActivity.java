@@ -32,6 +32,7 @@ import com.example.nclient.R;
 /**
  * @author weiyuan zhu
  * 15/04/2014 Starting develop branch
+ * test on develop branch
  */
 public class LoadingScreenActivity extends BaseActivity{
 	
