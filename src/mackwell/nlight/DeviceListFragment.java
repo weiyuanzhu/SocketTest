@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -203,15 +204,29 @@ public class DeviceListFragment extends Fragment {
 		});
 		
 		deviceListView.setOnGroupExpandListener(new OnGroupExpandListener(){
-
+	
 			@Override
 			public void onGroupExpand(int groupPosition) {
+				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 			Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
 				
 			}
 			
+			
+			
+		});
+		
+		deviceListView.setOnGroupCollapseListener(new OnGroupCollapseListener(){
+
+			@Override
+			public void onGroupCollapse(int arg0) {
+			
+				if (mActionMode != null) {
+					mActionMode.finish();
+		        }
+			}
 			
 			
 		});
@@ -229,6 +244,12 @@ public class DeviceListFragment extends Fragment {
                                         listDataHeader.get(groupPosition)).get(
                                         childPosition), Toast.LENGTH_SHORT)
                         .show();*/
+            	
+				if (mActionMode != null) {
+					mActionMode.finish();
+		        }
+            	
+            	
             	if(groupPosition==0){
             		deviceListView.setItemChecked(childPosition+1, true);
             	}
