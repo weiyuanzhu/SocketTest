@@ -67,10 +67,10 @@ public class LoadingScreenActivity extends BaseActivity{
 	private int panelToLoad = 0; 
 	
 	
-	/*
-	 *	callback function for interface Connection.CallBack
-	 */
 
+	/* (non-Javadoc)
+	 * @see mackwell.nlight.BaseActivity#receive(java.util.List, java.lang.String)
+	 */
 	public void receive(List<Integer> rx, String ip) {
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
