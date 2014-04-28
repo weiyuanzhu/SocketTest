@@ -9,15 +9,13 @@ import java.text.DecimalFormat;
 import java.util.EnumSet;
 import java.util.List;
 
-import messageType.EmergencyMode;
-import messageType.EmergencyModeFlag;
-import messageType.EmergencyStatus;
-import messageType.EmergencyStatusFlag;
-import messageType.FailureStatus;
-import messageType.FailureStatusFlag;
-
+import weiyuan.messageType.EmergencyMode;
+import weiyuan.messageType.EmergencyModeFlag;
+import weiyuan.messageType.EmergencyStatus;
+import weiyuan.messageType.EmergencyStatusFlag;
+import weiyuan.messageType.FailureStatus;
+import weiyuan.messageType.FailureStatusFlag;
 import weiyuan.util.Constants;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
