@@ -19,15 +19,15 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
         <activity
-            android:name="weiyuan.nlight.PanelStatusActivity"
+            android:name="nlight_android.nlight.PanelStatusActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.PanelListActivity"
+            android:name="nlight_android.nlight.PanelListActivity"
             android:label="@string/title_activity_panel_list" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.LoadingScreenActivity"
+            android:name="nlight_android.nlight.LoadingScreenActivity"
             android:label="@string/title_activity_loading_screen"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" 
             android:screenOrientation="landscape">
@@ -39,40 +39,35 @@
             
         </activity>
         <activity
-            android:name="weiyuan.nlight.PanelInfoActivity"
+            android:name="nlight_android.nlight.PanelInfoActivity"
             android:label="@string/title_activity_panel_info" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.DeviceListActivity"
+            android:name="nlight_android.nlight.DeviceListActivity"
             android:label="@string/title_activity_device_list" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.DeviceInfoActivity"
+            android:name="nlight_android.nlight.DeviceInfoActivity"
             android:label="@string/title_activity_device_info" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.PanelActivity"
+            android:name="nlight_android.nlight.PanelActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" 
-            android:parentActivityName="weiyuan.nlight.LoadingScreenActivity">
+            android:parentActivityName="nlight_android.nlight.LoadingScreenActivity">
         </activity>
         <activity
-            android:name="weiyuan.nlight.DeviceActivity"
+            android:name="nlight_android.nlight.DeviceActivity"
             android:label="@string/title_activity_device"
-            android:parentActivityName="weiyuan.nlight.PanelActivity"
-            android:screenOrientation="landscape" >
+            android:parentActivityName="nlight_android.nlight.PanelActivity"
+            android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name="weiyuan.test.TestActivity"
-            android:label="@string/title_activity_test" >
-            
-        </activity>
-        <activity
-            android:name="weiyuan.nlight.BaseActivity"
+            android:name="nlight_android.nlight.BaseActivity"
             android:label="@string/title_activity_base" >
         </activity>
         <activity
-            android:name="weiyuan.nlight.SettingsActivity"
+            android:name="nlight_android.nlight.SettingsActivity"
             android:label="@string/title_activity_settings" >
             
         </activity>
