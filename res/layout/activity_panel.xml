@@ -7,7 +7,7 @@
     android:showDividers="middle">
 
     <fragment
-        android:name="weiyuan.nlight.PanelListFragment"
+        android:name="nlight_android.nlight.PanelListFragment"
         android:tag="panelListFragment"
         android:id="@+id/fragment_panel_list"
         android:layout_width="0dp"
