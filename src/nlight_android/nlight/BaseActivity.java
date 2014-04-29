@@ -20,11 +20,15 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.app.*;
+import nlight_android.socket.Connection.*;
+import nlight_android.socket.*;
+import android.os.*;
+import android.view.*;
+import java.util.*;
 
 /**
- * @author weiyuan zhu
- * a base class for all other activities 
- * to check device connecctivities
+ * @author  weiyuan zhu base class for all other activities  to check device connecctivities
  */
 
 public class BaseActivity extends Activity implements CallBack {
@@ -40,6 +44,8 @@ public class BaseActivity extends Activity implements CallBack {
     protected static boolean mobileConnected = false;
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
+
+	private Connection connection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

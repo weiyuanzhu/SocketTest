@@ -26,6 +26,12 @@ import android.widget.Toast;
 
 import com.example.nclient.R;
 import com.example.nclient.R.drawable;
+import java.util.*;
+import android.widget.*;
+import java.net.*;
+import java.io.*;
+import android.os.*;
+import android.view.*;
 
 public class PanelStatusActivity extends BaseActivity {
 	

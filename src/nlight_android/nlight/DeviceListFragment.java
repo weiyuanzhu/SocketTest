@@ -29,25 +29,24 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
+import android.app.*;
+import nlight_android.nlight.DeviceListFragment.*;
+import android.widget.*;
+import nlight_android.adapter.*;
+import android.view.*;
+import nlight_android.models.*;
+import java.util.*;
+import android.view.ActionMode.*;
+import android.os.*;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
- * contain this fragment must implement the
- * {@link DeviceListFragment.OnDevicdListFragmentListener} interface to handle
- * interaction events.
- * 
+ * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
  */
 public class DeviceListFragment extends Fragment {
 	
 	
 	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
+	 * This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity. <p> See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnDevicdListFragmentListener {
 		// TODO: Update argument type and name

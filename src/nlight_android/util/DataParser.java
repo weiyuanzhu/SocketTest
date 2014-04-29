@@ -3,6 +3,7 @@ package nlight_android.util;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 public class DataParser {
 	

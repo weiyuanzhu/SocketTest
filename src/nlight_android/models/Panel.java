@@ -9,8 +9,13 @@ import java.util.List;
 import nlight_android.util.Constants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.*;
+import nlight_android.*;
+import java.math.*;
+import android.os.Parcelable.*;
+import java.util.*;
 
-public class Panel  implements Parcelable{
+public class Panel  implements Parcelable {
 	
 	public static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
 	

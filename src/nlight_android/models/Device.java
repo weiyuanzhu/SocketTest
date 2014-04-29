@@ -18,6 +18,11 @@ import nlight_android.messageType.FailureStatusFlag;
 import nlight_android.util.Constants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.*;
+import nlight_android.*;
+import java.math.*;
+import android.os.Parcelable.*;
+import java.util.*;
 
 public class Device  implements Parcelable{
 	//05 Feb 2014

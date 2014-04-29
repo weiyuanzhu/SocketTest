@@ -24,6 +24,15 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
+import android.app.*;
+import nlight_android.socket.Connection.*;
+import android.os.*;
+import android.widget.*;
+import java.util.*;
+import nlight_android.socket.*;
+import nlight_android.models.*;
+import android.content.res.*;
+import android.view.*;
 
 public class PanelInfoActivity extends ListActivity  implements Connection.CallBack{
 	
@@ -40,7 +49,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
 	private List<List<List<Integer>>> deviceList = null;	//device list (bytes)
 	
-	private Connection connection = null;	
+	private Connection connection;	
 	
 	private Panel panel = null;
 	

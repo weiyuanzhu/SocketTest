@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nlight_android.util.GetCmdEnum;
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.socket.Connection;
 import nlight_android.socket.Connection.CallBack;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
-import nlight_android.util.GetCmdEnum;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,13 +29,17 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-/**
- * @author weiyuan zhu
- * 15/04/2014 Starting develop branch
+import android.widget.*;
+import nlight_android.models.*;
 
- * test on develop branch
- * test 2 on feature branch
- * test 3 on feature branch after rebase
+import java.util.*;
+
+import nlight_android.socket.*;
+import android.os.*;
+import android.view.*;
+
+/**
+ * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
  */
 public class LoadingScreenActivity extends BaseActivity{
 	

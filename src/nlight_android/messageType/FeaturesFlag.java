@@ -1,6 +1,7 @@
 package nlight_android.messageType;
 
 import java.util.EnumSet;
+import java.util.*;
 
 public class FeaturesFlag extends BitFieldFlag<Features>{
 	/**

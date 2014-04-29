@@ -6,11 +6,16 @@ package nlight_android.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import nlight_android.util.CRC;
+import nlight_android.util.Constants;
+import nlight_android.util.*;
+import java.util.*;
+
 /**
  * @author weiyuan zhu
  *
  */
-public enum GetCmdEnum {
+public enum GetCmdEnum  {
 	
 	GET_INIT(0x21), 
 	GET_FACTORY_RESET(0x23),

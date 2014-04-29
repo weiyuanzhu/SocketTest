@@ -8,10 +8,10 @@ public class Constants {
 	public static final int FAULT = 1;
 	public static final int WARNING = 2;
 	
-	static final int UART_STOP_BIT_H = 0x5A;
-	static final int UART_STOP_BIT_L = 0xA5;
-	static final int UART_NEW_LINE_H = 0x0D;
-	static final int UART_NEW_LINE_L = 0x0A;
+	public static final int UART_STOP_BIT_H = 0x5A;
+	public static final int UART_STOP_BIT_L = 0xA5;
+	public static final int UART_NEW_LINE_H = 0x0D;
+	public static final int UART_NEW_LINE_L = 0x0A;
 	
 	public static final Integer HOST_ID = 0x02;
 	

@@ -6,6 +6,10 @@ import java.util.List;
 import nlight_android.util.Constants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.*;
+import nlight_android.*;
+import java.util.*;
+import android.os.Parcelable.*;
 
 
 /* created by weiyuan
@@ -13,7 +17,7 @@ import android.os.Parcelable;
  * 
  */
  
-public class Loop  implements Parcelable {
+public class Loop  implements Parcelable{
 	
 	
 	private List<Device> deviceList;

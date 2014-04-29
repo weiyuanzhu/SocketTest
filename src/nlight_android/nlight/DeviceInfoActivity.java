@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nlight_android.util.ToggleCmdEnum;
 import nlight_android.models.Device;
 import nlight_android.socket.Connection;
 import nlight_android.util.CommandFactory;
-import nlight_android.util.ToggleCmdEnum;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +17,17 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.nclient.R;
+
+import android.app.*;
+import nlight_android.socket.Connection.*;
+import nlight_android.socket.*;
+import android.widget.*;
+
+import java.util.*;
+
+import nlight_android.models.*;
+import android.os.*;
+import android.view.*;
 
 public class DeviceInfoActivity extends ListActivity implements Connection.CallBack{
 	
