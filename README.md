@@ -15,7 +15,7 @@ v 0.4.4
 ================
 2014-04-21
 
-update: 
+##Update: 
 
 1 (MH 4) Single click on device list or group(both expand and collapse)will close action mode if it exists.
 
@@ -24,7 +24,7 @@ v 0.4.3
 ================
 2014-04-18
 
-Updates
+##Updates
 
 1 (MH 2)Long click on device will now release current action mode and start a new one;
 2  add refresh button for device action bar
@@ -32,7 +32,7 @@ Updates
 4 deviceInfoFragment and device, add DT last time and lamp operation time;
 5 DeviceInfoFragment, device address display for loop2 now displays 0-63 instead of 128-191
 
-fix
+##Fix:
 
 1 Fix  panel order of loading screen panels
 2 (RB 6)DeviceList, loop2 devices FT will crash the app; Re-do the logic for getAddress when an item is long clicked; 
@@ -41,7 +41,7 @@ v 0.4.2
 ================
 2014-04-01 (During L&B)
 
-Updates: 
+##Updates: 
 
 1 name device,current device location will be prompt in the dialog window and cursor is at the last character.
 
@@ -49,7 +49,7 @@ v 0.4.1
 ================
 2014-03-26 (Before L&B)
 
-Add:
+##Add:
 
 1 Demo Mode, will display pre-setup devices and panels;
 2 Set device location for device, (32 chars max);
@@ -57,7 +57,7 @@ Add:
 4 isDemo Flag for BaseActivity to check if it is in demo mode
 5 import messageType package from N-LIght connector (Jie Yin)
 
-Updates: 
+##Updates: 
 
 1 Change GTIN and Serial Number to apply to Mackwell global bar-code
 2 Panel and device list, make text center_vertical
@@ -82,7 +82,7 @@ Updates:
 
 
 
-Fix: 
+##Fix: 
 1 MyExpandableListAdapter to have fixed headerTitle instead of get loop name;
 2 ShowDevices for panels not working;
 3 (RB 4)LoadingScreen demoBtn double click create duplicated panels
@@ -92,7 +92,7 @@ v 0.3
 ==============
 2014-03-06
 
-Add:
+##Add:
 
 1 DeviceList and deviceInfo fragments split view
 2 Device FT ST DT ID functions
@@ -103,7 +103,7 @@ Add:
 7 Constants.java to store all static final value
 8 SetCmdEnum and ToggleCmdEnum
 
-Updates:
+##Updates:
 
 1 Change application theme to blue on white (Theme.Holo.Light)
 2 Device Activity action bar title = panel's name
@@ -125,7 +125,7 @@ Updates:
 18 All panel can be displayed in fragment now with states saved
 19 "n/a" to "..."
 
-Fix
+##Fix
 
 1 Panel and device GTIN array when parsing, gtinArray was not initiated, which will cause null point
 
@@ -135,7 +135,7 @@ v0.2
 ==============
 2014-02-13
 
-Add:
+##Add:
 
 1 PanelList split view
 2 App version on loading screen and main activity
@@ -143,7 +143,7 @@ Add:
 4 Device and Loop object
 5 Basic list view for panel info display
 
-Updates:
+##Updates:
 1 Project name to NLight_Android
 2 List<Connection> to perform multi-threaded fetch
 3 PanelInfo background picture
@@ -161,7 +161,8 @@ Updates:
 	(3) getDeviceList()
 13 Connection update for background listening
 14 Download function Ok
-Fix:
+
+##Fix:
 
 1 SerialNumber and GTIN algorithm
 
