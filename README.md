@@ -1,7 +1,5 @@
-NLight_Android
+WZ-002 App Patch Notes
 ================
-
-NLight Connecter on Android
 
 
 v 0.4.5
@@ -39,7 +37,7 @@ v 0.4.3
 
 v 0.4.2
 ================
-##2014-04-01 (During L&B)
+##2014-04-01
 
 ###Updates: 
 
