@@ -1,4 +1,4 @@
-WZ-002 App Patch Notes
+wz-2013-002 App Patch Notes
 ================
 
 
@@ -142,7 +142,7 @@ v0.2
 - 5 Basic list view for panel info display
 
 ###Updates:
-- 1 Project name to NLight_Android
+- 1 Change project name to wz-2013-002
 - 2 List<Connection> to perform multi-threaded fetch
 - 3 PanelInfo background picture
 - 4 PanelInfoFragment can fetch data from panel now. v0.1
