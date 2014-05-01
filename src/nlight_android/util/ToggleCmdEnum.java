@@ -3,8 +3,10 @@
  */
 package nlight_android.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import nlight_android.util.CRC;
+import nlight_android.util.Constants;
 
 /**
  * @author weiyuan zhu

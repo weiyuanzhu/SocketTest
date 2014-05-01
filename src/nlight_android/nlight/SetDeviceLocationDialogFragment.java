@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.nclient.R;
+import android.app.*;
+import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
+import android.widget.*;
+import android.os.*;
 
 /**
  * @author weiyuan zhu

@@ -19,6 +19,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.SimpleAdapter;
+import android.app.*;
+import nlight_android.models.*;
+import android.widget.*;
+import java.util.*;
+import nlight_android.nlight.DeviceInfoFragment.*;
+import android.widget.AdapterView.*;
+import android.os.*;
+import android.view.*;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -35,13 +43,7 @@ import android.widget.SimpleAdapter;
 public class DeviceInfoFragment extends ListFragment {
 	
 	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
+	 * This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity. <p> See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface DeviceSetLocationListener {
 		

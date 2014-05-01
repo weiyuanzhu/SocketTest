@@ -1,6 +1,7 @@
 package nlight_android.messageType;
 
 import java.util.Set;
+import java.util.*;
 
 public class BitFieldFlag<T extends BitField> {
 	/**

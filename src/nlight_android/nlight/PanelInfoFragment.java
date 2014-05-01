@@ -31,12 +31,18 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.nclient.R;
+import android.app.*;
+import nlight_android.socket.Connection.*;
+import android.widget.*;
+import android.os.*;
+import java.util.*;
+import nlight_android.socket.*;
+import nlight_android.models.*;
+import android.view.View.*;
+import android.view.*;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass. Use the
- * {@link PanelInfoFragment#newInstance} factory method to create an instance of
- * this fragment.
- * 
+ * A simple   {@link android.support.v4.app.Fragment}  subclass. Use the {@link PanelInfoFragment#newInstance}  factory method to create an instance ofthis fragment.
  */
 @SuppressLint("ValidFragment")
 public class PanelInfoFragment extends Fragment implements Connection.CallBack {
@@ -71,7 +77,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
 	private List<List<List<Integer>>> deviceList = null;	//device list (bytes)
 	
-	private Connection connection = null;	
+	private Connection connection;	
 	
 	private Panel panel = null;
 	
@@ -91,14 +97,8 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	
 	
 	/**
-	 * Use this factory method to create a new instance of this fragment using
-	 * the provided parameters.
-	 * 
-	 * @param param1
-	 *            Parameter 1.
-	 * @param param2
-	 *            Parameter 2.
-	 * @return A new instance of fragment PanelInfoFragment.
+	 * Use this factory method to create a new instance of this fragment using the provided parameters.
+	 * @return  A new instance of fragment PanelInfoFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
 	@SuppressLint("ValidFragment")

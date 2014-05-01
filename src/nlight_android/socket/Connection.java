@@ -10,7 +10,15 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.os.Handler;
+import nlight_android.socket.Connection.*;
+import nlight_android.util.Constants;
+
+import java.lang.ref.*;
+import java.net.*;
+import java.util.*;
+import java.io.*;
 
 public class Connection {
 	
@@ -21,11 +29,7 @@ public class Connection {
 			public void error(String ip);
 		}
 	
-	static final int UART_STOP_BIT_H = 0x5A;
-	static final int UART_STOP_BIT_L = 0xA5;
-	static final int UART_NEW_LINE_H = 0x0D;
-	static final int UART_NEW_LINE_L = 0x0A;
-	
+
 	private int panelInfoPackageNo;
 	private boolean rxCompleted;
 	
@@ -172,10 +176,10 @@ public class Connection {
 					while(!isClosed && !socket.isClosed())
 					{	
 						
-						if(in.available()==0 && !rxBuffer.isEmpty() && (data == UART_NEW_LINE_L) && 
-		        				rxBuffer.get(rxBuffer.size() - 2).equals(UART_NEW_LINE_H) &&
-		        				rxBuffer.get(rxBuffer.size() - 3).equals(UART_STOP_BIT_L) &&
-		        				rxBuffer.get(rxBuffer.size() - 4).equals(UART_STOP_BIT_H))   // check finished bit; to be changed 
+						if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
+		        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
+		        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
+		        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
 						{
 							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
 							

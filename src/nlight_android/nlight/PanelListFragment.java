@@ -24,25 +24,25 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
+import android.app.*;
+import nlight_android.socket.Connection.*;
+import nlight_android.models.*;
+import java.util.*;
+import android.os.*;
+import android.widget.*;
+import nlight_android.nlight.PanelListFragment.*;
+import nlight_android.socket.*;
+import android.view.View.*;
+import android.view.*;
 
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
- * contain this fragment must implement the
- * {@link PanelListFragment.OnPanelListItemClickedCallBack} interface to handle
- * interaction events.
- * 
+ * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link PanelListFragment.OnPanelListItemClickedCallBack}  interface to handleinteraction events.
  */
 public class PanelListFragment extends ListFragment implements Connection.CallBack{
 	
 	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
+	 * This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity. <p> See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnPanelListItemClickedCallBack {
 		// TODO: Update argument type and name
@@ -69,7 +69,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	private SimpleAdapter simpleAdapter;
 	private int mCurCheckPosition = 0;
 	
-	private List<Connection> connectionList = null;
+	private List<Connection> connectionList;
 	private List<char[]> commandList;
 
 	public PanelListFragment() {

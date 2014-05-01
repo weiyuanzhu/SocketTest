@@ -3,6 +3,7 @@ package nlight_android.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import nlight_android.util.ToggleCmdEnum;
 import nlight_android.messageType.EmergencyMode;
 import nlight_android.messageType.EmergencyModeFlag;
 import nlight_android.messageType.EmergencyStatus;
@@ -19,7 +20,6 @@ import nlight_android.socket.Connection;
 import nlight_android.socket.Connection.CallBack;
 import nlight_android.util.DataParser;
 import nlight_android.util.SetCmdEnum;
-import nlight_android.util.ToggleCmdEnum;
 
 import com.example.nclient.R;
 
@@ -36,6 +36,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import nlight_android.nlight.*;
+import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
+import nlight_android.socket.Connection.*;
+import nlight_android.socket.*;
+import android.os.*;
+import android.view.*;
+
+import java.util.*;
 
 public class TestActivity extends BaseActivity implements Connection.CallBack,NoticeDialogListener{
 
