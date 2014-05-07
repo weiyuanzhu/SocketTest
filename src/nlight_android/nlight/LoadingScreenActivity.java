@@ -46,7 +46,7 @@ public class LoadingScreenActivity extends BaseActivity{
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private final String[] ipList = new String[] {"192.168.1.17"};
+	private Set<String> ipList = null;
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -238,7 +238,8 @@ public class LoadingScreenActivity extends BaseActivity{
 		 * Initial collections 
 		 * 
 		 */
-		
+		ipList = new HashSet<String>();
+		ipList.add("192.168.1.21");
 		
 		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
@@ -253,11 +254,11 @@ public class LoadingScreenActivity extends BaseActivity{
 		 */
 		
 
-		for(int i =0; i<ipList.length; i++)
+		for(String s : ipList)
 		{
-			Connection connection = new Connection(this, ipList[i]);
-			ip_connection_map.put(ipList[i], connection);
-			rxBufferMap.put(ipList[i], new ArrayList<Integer>());
+			Connection connection = new Connection(this, s);
+			ip_connection_map.put(s, connection);
+			rxBufferMap.put(s, new ArrayList<Integer>());
 			
 		}
 
@@ -290,7 +291,7 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 		//set isDemo flag
 		isDemo = false;
-		panelToLoad = ipList.length;
+		panelToLoad = ipList.size();
 		
 		
 		//Message msg = mHandler.obtainMessage();
@@ -345,7 +346,7 @@ public class LoadingScreenActivity extends BaseActivity{
 			panelMap.put(ip, newPanel);
 			panelList.add(newPanel);
 			
-			if(panelList.size()==ipList.length){
+			if(panelList.size()==ipList.size()){
 				
 				//msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
@@ -407,28 +408,8 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 	}
 	
-	public void updateDeviceList (View view)
-	{
-		System.out.println("----------------------getDeviceList--------------------");
-		Connection conn = ip_connection_map.get(ipList[0]);
-		List<char[]> commandList = GetCmdEnum.UPDATE_LIST.get();
-		conn.fetchData(commandList);
-		
-	}
+	
 
-	public void featureBranchTest()
-	{
-		System.out.println("test");
-		
-		System.out.println("new test");
-		
-		
-		System.out.println("no ff test");
-		
-		System.out.println("another no ff test for merge.ff=falsue") ;
-		
-		
-	}
 	
 
 }
