@@ -46,7 +46,7 @@ public class LoadingScreenActivity extends BaseActivity{
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private final String[] ipList = new String[] {"192.168.1.24"};
+	private final String[] ipList = new String[] {"192.168.1.17"};
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -172,7 +172,7 @@ public class LoadingScreenActivity extends BaseActivity{
 		
 		//re-enable buttons
 		demoBtn.setEnabled(true);
-		liveBtn.setEnabled(false);
+		liveBtn.setEnabled(true);
 		
 		//hide bars
 		progressText.setVisibility(View.INVISIBLE);

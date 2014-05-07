@@ -309,6 +309,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		public void run() {
 			
 			deviceFragment.updateDevice(currentSelectedDevice);
+			deviceListFragment.refershStatus();
 		}
 	
 		

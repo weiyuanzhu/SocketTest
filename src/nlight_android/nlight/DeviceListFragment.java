@@ -393,6 +393,11 @@ public class DeviceListFragment extends Fragment {
 		
 		mAdapter.notifyDataSetChanged();
 	}
+	
+	public void refershStatus()
+	{
+		mAdapter.notifyDataSetChanged();
+	}
 		
 		
 }
