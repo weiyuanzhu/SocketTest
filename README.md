@@ -1,6 +1,13 @@
 Patch Notes
 ================
 
+v0.4.6.1
+
+Updates:
+
+Device refresh status will now refresh device list icon too
+
+
 
 v 0.4.5
 ================
