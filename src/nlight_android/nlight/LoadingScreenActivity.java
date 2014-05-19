@@ -12,6 +12,7 @@ import nlight_android.models.Panel;
 import nlight_android.socket.Connection;
 import nlight_android.socket.Connection.CallBack;
 import nlight_android.util.CommandFactory;
+import nlight_android.util.Constants;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,6 +34,8 @@ import android.widget.*;
 import nlight_android.models.*;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import nlight_android.socket.*;
 import android.os.*;
@@ -64,6 +67,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	private Map<String,Panel> panelMap = null;
 	private Map<String,Connection> ip_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
+	
+	private UDPConnection udpConnection = null;
 	
 	private static int delay = 1000;
 	private Handler mHandler = null;
@@ -158,6 +163,13 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		//init loading panals 
 		init();
 		
+		
+		//send UDP panel search messages
+		udpConnection = new UDPConnection(Constants.FIND_PANELS);
+		
+		ExecutorService exec = Executors.newCachedThreadPool();
+		exec.execute(udpConnection);
+		exec.shutdown();
 		
 		
 	}
@@ -274,9 +286,13 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	}
 	
 	
-	public void loadAllPanels(View v)
+	public void loadAllPanels(View view)
 	{
-		new ListDialogFragment().show(getFragmentManager(), "test");
+		//create a new ListDialogFragment and set its String[] ips to be udp search result
+		ListDialogFragment test = new ListDialogFragment();
+		test.setIps(udpConnection.getIpList());
+		//test.setIps(null); //null test
+		test.show(getFragmentManager(), "test"); //popup dialog
 		
 		
 	}

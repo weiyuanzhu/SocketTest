@@ -11,7 +11,8 @@ import java.util.List;
 
 public class UDPConnection implements Runnable{
 
-	private List<int[]> panelList;
+	private List<int[]> panelUDPDataList;
+	
 	
 	private static final int SERVER_PORT = 1460;
 	private static final int LISTEN_PORT = 5001;
@@ -25,7 +26,7 @@ public class UDPConnection implements Runnable{
 	public UDPConnection(String msg)
 	{
 		super();
-		panelList = new ArrayList<int[]>();
+		panelUDPDataList = new ArrayList<int[]>();
 		this.msg = msg;
 	}
 	
@@ -85,7 +86,7 @@ public class UDPConnection implements Runnable{
 								
 							}*/
 							
-							panelList.add(buffer);
+							panelUDPDataList.add(buffer);
 							
 							
 					
@@ -109,23 +110,33 @@ public class UDPConnection implements Runnable{
 	}	
 
 	
-	public List<String> getIpList(){
+	/**
+	 * Get a list of Panel's IP via UDP broadcast
+	 * @return String[] an array of panel IP
+	 */
+	public String[] getIpList(){
 		List<String> panelIpList = new ArrayList<String>();
 		
-		for(int i=0; i<panelList.size();i++)
+		for(int i=0; i<panelUDPDataList.size();i++)
 		{
 			StringBuilder sb = new StringBuilder();
 			for(int j=11; j<15; j++)
 			{
-				sb.append(panelList.get(i)[j]);
+				sb.append(panelUDPDataList.get(i)[j]);
 				sb.append(".");
 			}
 			sb.deleteCharAt(sb.length()-1);
 			panelIpList.add(sb.toString());
 		}
 		
+		String[] ips = new String[panelIpList.size()]; 
+		for(int i=0; i<ips.length;i++)
+		{
+			ips[i] = panelIpList.get(i);
+			
+		}
 		
-		return panelIpList;
+		return ips;
 		
 	}
 	
@@ -138,7 +149,7 @@ public class UDPConnection implements Runnable{
 	}
 	
 	public List<int[]> getPanelList() {
-		return panelList;
+		return panelUDPDataList;
 	}
 	
 }

@@ -24,26 +24,29 @@ public class ListDialogFragment extends DialogFragment {
 		
 	} 
 	
-	private ListDialogListener mListener;
-	private List<Integer> mSelectedItems = new ArrayList<Integer>();
+	private String[] ips; 												//An array contains panel' IP
+	private ListDialogListener mListener; 								//A callback listener for dialog when button clicked
+	private List<Integer> mSelectedItems = new ArrayList<Integer>(); 	//a list contains item selected
 
 	public ListDialogFragment() {
 		// Required empty public constructor
 	}
+	
+	
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		  // Where we track the selected items
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	    String[] test = new String[] {"192.168.1.1","192.168.1.4"};
+	    
 	    // Set the dialog title
-	    builder.setTitle("Panel List")
+	    builder.setTitle(ips == null? "No panel found in the building " : "Panel List")
 	    
 	    
 	    
-	    // Specify the list array, the items to be selected by default (null for none),
+	    // Specify the ip array, the items to be selected by default (null for none),
 	    // and the listener through which to receive callbacks when items are selected
-	           .setMultiChoiceItems(test, null,
+	           .setMultiChoiceItems(ips, null,
 	                      new DialogInterface.OnMultiChoiceClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int which,
@@ -83,6 +86,18 @@ public class ListDialogFragment extends DialogFragment {
 		//attach mListener to the activity creates this dialog
 		mListener = (ListDialogListener) activity;
 		super.onAttach(activity);
+	}
+
+
+
+	public String[] getIps() {
+		return ips;
+	}
+
+
+
+	public void setIps(String[] ips) {
+		this.ips = ips;
 	}
 
 
