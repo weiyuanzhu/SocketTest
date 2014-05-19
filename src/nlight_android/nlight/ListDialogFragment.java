@@ -19,7 +19,7 @@ import android.os.Bundle;
 public class ListDialogFragment extends DialogFragment {
 	
 	public interface ListDialogListener{
-		public void ok(List<Integer> selected);
+		public void connectPanels(List<Integer> selected);
 
 		
 	} 
@@ -35,11 +35,15 @@ public class ListDialogFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		  // Where we track the selected items
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    String[] test = new String[] {"192.168.1.1","192.168.1.4"};
 	    // Set the dialog title
 	    builder.setTitle("Panel List")
+	    
+	    
+	    
 	    // Specify the list array, the items to be selected by default (null for none),
 	    // and the listener through which to receive callbacks when items are selected
-	           .setMultiChoiceItems(R.array.panelList, null,
+	           .setMultiChoiceItems(test, null,
 	                      new DialogInterface.OnMultiChoiceClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int which,
@@ -54,12 +58,12 @@ public class ListDialogFragment extends DialogFragment {
 	               }
 	           })
 	    // Set the action buttons
-	           .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+	           .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
 	                   // User clicked OK, so save the mSelectedItems results somewhere
 	                   // or return them to the component that opened the dialog
-	            	   mListener.ok(mSelectedItems);
+	            	   mListener.connectPanels(mSelectedItems);
 	            	   
 	                   
 	               }
@@ -76,7 +80,7 @@ public class ListDialogFragment extends DialogFragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
+		//attach mListener to the activity creates this dialog
 		mListener = (ListDialogListener) activity;
 		super.onAttach(activity);
 	}

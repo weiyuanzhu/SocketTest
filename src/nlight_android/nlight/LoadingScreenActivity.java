@@ -365,9 +365,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		panelToLoad	= ipList.size();	
 	}
 
-
+	// implementing ListDialogFragment's ListDialogListener interface
 	@Override
-	public void ok(List<Integer> selected) {
+	public void connectPanels(List<Integer> selected) {
 		for(Integer i: selected)
 	 	   {
 	 		   String item = this.getResources().getStringArray(R.array.panelList)[i];
