@@ -268,7 +268,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 
 	}
 	
-	public void demoMode(View v){
+	public void demoMode(View view){
 		
 		//set isDemo flag
 		demoBtn.setEnabled(false);
@@ -286,7 +286,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	}
 	
 	
-	public void loadAllPanels(View view)
+	public void liveMode(View view)
 	{
 		//create a new ListDialogFragment and set its String[] ips to be udp search result
 		ListDialogFragment test = new ListDialogFragment();
