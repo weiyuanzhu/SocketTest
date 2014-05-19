@@ -41,7 +41,7 @@ import android.view.*;
 /**
  * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
  */
-public class LoadingScreenActivity extends BaseActivity{
+public class LoadingScreenActivity extends BaseActivity implements ListDialogFragment.ListDialogListener{
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
@@ -239,7 +239,7 @@ public class LoadingScreenActivity extends BaseActivity{
 		 * 
 		 */
 		ipList = new HashSet<String>();
-		ipList.add("192.168.1.21");
+		
 		
 		//paneList(Parcable) is for navigation
 		panelList = new ArrayList<Panel>();
@@ -249,18 +249,9 @@ public class LoadingScreenActivity extends BaseActivity{
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
 		
-		/*
-		 *  Initial connections and rxBuffer for each panel
-		 */
 		
-
-		for(String s : ipList)
-		{
-			Connection connection = new Connection(this, s);
-			ip_connection_map.put(s, connection);
-			rxBufferMap.put(s, new ArrayList<Integer>());
-			
-		}
+		//ipList.add("192.168.1.17");
+		
 
 
 	}
@@ -285,43 +276,7 @@ public class LoadingScreenActivity extends BaseActivity{
 	
 	public void loadAllPanels(View v)
 	{
-		
-		//on main thread
-		//show progress bar and text
-		
-		//set isDemo flag
-		isDemo = false;
-		panelToLoad = ipList.size();
-		
-		
-		//Message msg = mHandler.obtainMessage();
-		//msg.arg1 = LOADING;
-		//mHandler.sendMessage(msg);
-
-		progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
-		
-		progressText.setVisibility(View.VISIBLE);
-		progressBar.setVisibility(View.VISIBLE);
-		
-		//check if loading is already in process
-		if(!isLoading){
-			
-			
-			System.out.println("------------liveMode clicked");
-			List<char[]> commandList = CommandFactory.getPanelInfo();
-			
-			for(String ip: ipList){
-				
-				Connection conn = (Connection) ip_connection_map.get(ip);
-				conn.fetchData(commandList);
-			}
-			
-			
-			//set button disable
-			liveBtn.setEnabled(false);
-			isLoading = true;
-			
-		}
+		new ListDialogFragment().show(getFragmentManager(), "test");
 		
 		
 	}
@@ -406,9 +361,76 @@ public class LoadingScreenActivity extends BaseActivity{
 		msg.obj = ip;
 		mHandler.sendMessage(msg);
 		
+		ipList.remove(ip);
+		panelToLoad	= ipList.size();	
+	}
+
+
+	@Override
+	public void ok(List<Integer> selected) {
+		for(Integer i: selected)
+	 	   {
+	 		   String item = this.getResources().getStringArray(R.array.panelList)[i];
+	 		   ipList.add(item);
+	 	   }
+		System.out.println(ipList);
+		
+		/*
+		 *  Initial connections and rxBuffer for each panel
+		 */
+		
+		for(String s : ipList)
+		{
+			Connection connection = new Connection(this, s);
+			ip_connection_map.put(s, connection);
+			rxBufferMap.put(s, new ArrayList<Integer>());
+			
+		}
+		//on main thread
+		//show progress bar and text
+		
+		//set isDemo flag
+		isDemo = false;
+		panelToLoad = ipList.size();
+		
+		
+		//Message msg = mHandler.obtainMessage();
+		//msg.arg1 = LOADING;
+		//mHandler.sendMessage(msg);
+
+		progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+		
+		progressText.setVisibility(View.VISIBLE);
+		progressBar.setVisibility(View.VISIBLE);
+		
+		//check if loading is already in process
+		if(!isLoading){
+			
+			
+			System.out.println("------------liveMode clicked");
+			List<char[]> commandList = CommandFactory.getPanelInfo();
+			
+			for(String ip: ipList){
+				
+				Connection conn = (Connection) ip_connection_map.get(ip);
+				conn.fetchData(commandList);
+			}
+			
+			
+			//set button disable
+			liveBtn.setEnabled(false);
+			isLoading = true;
+			
+		}
+		
 	}
 	
 	
+	public void popUpList(View view)
+	{
+		
+		
+	}
 
 	
 
