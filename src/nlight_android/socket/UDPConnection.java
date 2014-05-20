@@ -20,14 +20,22 @@ public class UDPConnection implements Runnable{
 	private DatagramSocket udpSocket = null;
 	private DatagramPacket udpPacket = null; 
 	private boolean isListen = true;
+	private UDPCallback mCallback;
 	
 	private String msg;
 	
-	public UDPConnection(String msg)
+	public interface UDPCallback{
+		public int addIp(String ip);
+		
+	}
+	
+	
+	public UDPConnection(String msg, UDPCallback callback)
 	{
 		super();
 		panelUDPDataList = new ArrayList<int[]>();
 		this.msg = msg;
+		mCallback = callback;
 	}
 	
 
@@ -87,12 +95,17 @@ public class UDPConnection implements Runnable{
 							}*/
 							
 							panelUDPDataList.add(buffer);
-							
+							mCallback.addIp(getIp(buffer));
 							
 					
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						}
+						finally
+						{
+							if(!isListen && udpSocket!=null) udpSocket.close();
+							
 						}
 						
 					}
@@ -140,6 +153,15 @@ public class UDPConnection implements Runnable{
 		
 	}
 	
+	
+	public  void closeConnection()
+	{
+		setListen(false);
+		udpSocket.close();
+		udpSocket = null;
+		
+	}
+	
 	public boolean isListen() {
 		return isListen;
 	}
@@ -152,4 +174,16 @@ public class UDPConnection implements Runnable{
 		return panelUDPDataList;
 	}
 	
+	private String getIp(int[] buffer)
+	{
+		StringBuilder sb = new StringBuilder();
+		for(int j=11; j<15; j++)
+		{
+			sb.append(buffer[j]);
+			sb.append(".");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		
+		return sb.toString();
+	}
 }

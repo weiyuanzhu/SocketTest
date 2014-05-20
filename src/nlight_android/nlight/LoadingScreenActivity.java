@@ -6,16 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nlight_android.util.GetCmdEnum;
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.socket.Connection;
-import nlight_android.socket.Connection.CallBack;
+import nlight_android.socket.UDPConnection.UDPCallback;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.Constants;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,32 +22,28 @@ import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nclient.R;
 
-import android.widget.*;
-import nlight_android.models.*;
+
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import nlight_android.socket.*;
-import android.os.*;
-import android.view.*;
 
 /**
  * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
  */
-public class LoadingScreenActivity extends BaseActivity implements ListDialogFragment.ListDialogListener{
+public class LoadingScreenActivity extends BaseActivity implements ListDialogFragment.ListDialogListener, UDPCallback{
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private Set<String> ipList = null;
+	private Set<String> ipSet = null;
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -113,6 +107,17 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 
+	public int addIp(String ip)
+	{
+		if(!ipSet.contains(ip))
+		{
+			ipSet.add(ip);
+			return 0;
+		}
+		return 1;
+	}
+	
+	
 	
 	@SuppressLint("HandlerLeak")
 	@Override
@@ -164,9 +169,18 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		init();
 		
 		
-		//send UDP panel search messages
-		udpConnection = new UDPConnection(Constants.FIND_PANELS);
+		//create a new udpConnection instance, if it exist, then close previous udp connnection
+		if(udpConnection == null ){
+			udpConnection = new UDPConnection(Constants.FIND_PANELS, this);
+		}
+		else
+		{
+			udpConnection.closeConnection();
+			udpConnection = new UDPConnection(Constants.FIND_PANELS,this);
+			
+		}
 		
+		//send UDP panel search messages
 		ExecutorService exec = Executors.newCachedThreadPool();
 		exec.execute(udpConnection);
 		exec.shutdown();
@@ -250,7 +264,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		 * Initial collections 
 		 * 
 		 */
-		ipList = new HashSet<String>();
+		ipSet = new HashSet<String>();
 		
 		
 		//paneList(Parcable) is for navigation
@@ -290,7 +304,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	{
 		//create a new ListDialogFragment and set its String[] ips to be udp search result
 		ListDialogFragment test = new ListDialogFragment();
-		test.setIps(udpConnection.getIpList());
+		String[] ipArray = new String[ipSet.size()];
+		ipSet.toArray(ipArray);
+		test.setIps(ipArray);
 		//test.setIps(null); //null test
 		test.show(getFragmentManager(), "test"); //popup dialog
 		
@@ -317,7 +333,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			panelMap.put(ip, newPanel);
 			panelList.add(newPanel);
 			
-			if(panelList.size()==ipList.size()){
+			if(panelList.size()==ipSet.size()){
 				
 				//msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
@@ -377,8 +393,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		msg.obj = ip;
 		mHandler.sendMessage(msg);
 		
-		ipList.remove(ip);
-		panelToLoad	= ipList.size();	
+		ipSet.remove(ip);
+		panelToLoad	= ipSet.size();	
 	}
 
 	// implementing ListDialogFragment's ListDialogListener interface
@@ -387,15 +403,15 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(Integer i: selected)
 	 	   {
 	 		   String item = this.getResources().getStringArray(R.array.panelList)[i];
-	 		   ipList.add(item);
+	 		   ipSet.add(item);
 	 	   }
-		System.out.println(ipList);
+		System.out.println(ipSet);
 		
 		/*
 		 *  Initial connections and rxBuffer for each panel
 		 */
 		
-		for(String s : ipList)
+		for(String s : ipSet)
 		{
 			Connection connection = new Connection(this, s);
 			ip_connection_map.put(s, connection);
@@ -407,7 +423,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//set isDemo flag
 		isDemo = false;
-		panelToLoad = ipList.size();
+		panelToLoad = ipSet.size();
 		
 		
 		//Message msg = mHandler.obtainMessage();
@@ -426,7 +442,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			System.out.println("------------liveMode clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
-			for(String ip: ipList){
+			for(String ip: ipSet){
 				
 				Connection conn = (Connection) ip_connection_map.get(ip);
 				conn.fetchData(commandList);
