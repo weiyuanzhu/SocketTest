@@ -29,6 +29,7 @@ import com.example.nclient.R;
 
 
 
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,6 +45,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
 	private Set<String> ipSet = null;
+	private Set<String> ipSelected = null;
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -188,7 +190,28 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 	
-	
+	//when activity moves to background
+	protected void onStop()
+	{
+		super.onStop();
+		
+		//close UDP connection
+		if(udpConnection!=null)
+		{
+			udpConnection.setListen(false);
+			udpConnection.closeConnection();
+		}
+		
+		//close TCP connections
+		for(String key : ip_connection_map.keySet())
+		{
+			
+			Connection connection = ip_connection_map.get(key);
+			connection.closeConnection();
+			connection = null;
+		}
+		
+	}
 
 	@Override
 	protected void onResume() {
@@ -209,6 +232,17 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 
 	@Override
 	protected void onDestroy() {
+		
+		super.onDestroy();
+		
+		//close UDP connection
+		if(udpConnection!=null)
+		{
+			udpConnection.setListen(false);
+			udpConnection.closeConnection();
+		}
+		
+		//close TCP connections
 		for(String key : ip_connection_map.keySet())
 		{
 			
@@ -216,7 +250,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			connection.closeConnection();
 			connection = null;
 		}
-		super.onDestroy();
+		
 	}
 
 
@@ -265,6 +299,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		 * 
 		 */
 		ipSet = new HashSet<String>();
+		ipSelected = new HashSet<String>();
 		
 		
 		//paneList(Parcable) is for navigation
@@ -304,9 +339,12 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	{
 		//create a new ListDialogFragment and set its String[] ips to be udp search result
 		ListDialogFragment test = new ListDialogFragment();
+		
+		//get a String[] from ipSet and pass to dialog window
 		String[] ipArray = new String[ipSet.size()];
 		ipSet.toArray(ipArray);
 		test.setIps(ipArray);
+		
 		//test.setIps(null); //null test
 		test.show(getFragmentManager(), "test"); //popup dialog
 		
@@ -333,7 +371,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			panelMap.put(ip, newPanel);
 			panelList.add(newPanel);
 			
-			if(panelList.size()==ipSet.size()){
+			if(panelList.size()==ipSelected.size()){
 				
 				//msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
@@ -402,20 +440,20 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public void connectPanels(List<Integer> selected) {
 		for(Integer i: selected)
 	 	   {
-	 		   String item = this.getResources().getStringArray(R.array.panelList)[i];
-	 		   ipSet.add(item);
+	 		   String item = (String) ipSet.toArray()[i];
+	 		   ipSelected.add(item);
 	 	   }
-		System.out.println(ipSet);
+		System.out.println(ipSelected);
 		
 		/*
 		 *  Initial connections and rxBuffer for each panel
 		 */
 		
-		for(String s : ipSet)
+		for(String ip : ipSelected)
 		{
-			Connection connection = new Connection(this, s);
-			ip_connection_map.put(s, connection);
-			rxBufferMap.put(s, new ArrayList<Integer>());
+			Connection connection = new Connection(this, ip);
+			ip_connection_map.put(ip, connection);
+			rxBufferMap.put(ip, new ArrayList<Integer>());
 			
 		}
 		//on main thread
@@ -423,26 +461,26 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//set isDemo flag
 		isDemo = false;
-		panelToLoad = ipSet.size();
+		panelToLoad = ipSelected.size();
 		
 		
 		//Message msg = mHandler.obtainMessage();
 		//msg.arg1 = LOADING;
 		//mHandler.sendMessage(msg);
 
-		progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
 		
-		progressText.setVisibility(View.VISIBLE);
-		progressBar.setVisibility(View.VISIBLE);
 		
-		//check if loading is already in process
-		if(!isLoading){
+		//check if loading is already in process and panel selected not equal to 0
+		if(!isLoading && ipSelected.size()!=0){
+			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
 			
+			progressText.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);	
 			
 			System.out.println("------------liveMode clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
-			for(String ip: ipSet){
+			for(String ip: ipSelected){
 				
 				Connection conn = (Connection) ip_connection_map.get(ip);
 				conn.fetchData(commandList);

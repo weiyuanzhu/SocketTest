@@ -157,8 +157,12 @@ public class UDPConnection implements Runnable{
 	public  void closeConnection()
 	{
 		setListen(false);
-		udpSocket.close();
-		udpSocket = null;
+		
+		if(udpSocket!= null)
+		{
+			udpSocket.close();
+			udpSocket = null;
+		}
 		
 	}
 	
