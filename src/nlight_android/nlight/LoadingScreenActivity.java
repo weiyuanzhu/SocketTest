@@ -170,7 +170,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		//init loading panals 
 		init();
 		
-		
+		/*
 		//create a new udpConnection instance, if it exist, then close previous udp connnection
 		if(udpConnection == null ){
 			udpConnection = new UDPConnection(Constants.FIND_PANELS, this);
@@ -186,7 +186,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ExecutorService exec = Executors.newCachedThreadPool();
 		exec.execute(udpConnection);
 		exec.shutdown();
-		
+		*/
 		
 	}
 	
@@ -502,6 +502,28 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 
+	private void searchUDP(){
+		if(udpConnection == null ){
+			udpConnection = new UDPConnection(Constants.FIND_PANELS, this);
+		}
+		else
+		{
+			udpConnection.closeConnection();
+			udpConnection = new UDPConnection(Constants.FIND_PANELS,this);
+			
+		}
+		
+		//send UDP panel search messages
+		ExecutorService exec = Executors.newCachedThreadPool();
+		exec.execute(udpConnection);
+		exec.shutdown();
+		
+	}
 	
+	public void searchPanelsBtn(View view)
+	{
+		
+		searchUDP();
+	}
 
 }
