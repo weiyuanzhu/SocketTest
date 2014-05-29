@@ -30,6 +30,10 @@ import com.example.nclient.R;
 
 
 
+
+
+
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +43,7 @@ import nlight_android.socket.*;
 /**
  * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
  */
+
 public class LoadingScreenActivity extends BaseActivity implements ListDialogFragment.ListDialogListener, UDPCallback{
 	
 	public static final String DEMO_MODE = "Demo Mode";
@@ -133,6 +138,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		progressText = (TextView) findViewById(R.id.loadscreen_progress_textView);
 		progressBar = (ProgressBar) findViewById(R.id.loadscreen_progressBar);
 		
+		//init loading panals 
+		init();
+		
 		//update connection flags
 		checkConnectivity();
 		
@@ -167,8 +175,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			
 		};
 		
-		//init loading panals 
-		init();
+		
 		
 		/*
 		//create a new udpConnection instance, if it exist, then close previous udp connnection
@@ -337,17 +344,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	public void liveMode(View view)
 	{
-		//create a new ListDialogFragment and set its String[] ips to be udp search result
-		ListDialogFragment test = new ListDialogFragment();
-		
-		//get a String[] from ipSet and pass to dialog window
-		String[] ipArray = new String[ipSet.size()];
-		ipSet.toArray(ipArray);
-		test.setIps(ipArray);
-		
-		//test.setIps(null); //null test
-		test.show(getFragmentManager(), "test"); //popup dialog
-		
+		popDialog();
 		
 	}
 	
@@ -496,10 +493,49 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	}
 	
 	
-	public void popUpList(View view)
+	public void popDialog()
 	{
 		
 		
+		List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();
+		
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("ip", "192.168.1.20");
+		map.put("location","Mackwell R&D");
+		dataList.add(map);
+		
+		map = new HashMap<String,Object>();
+		map.put("ip", "192.168.1.24");
+		map.put("location","Mackwell Special");
+		dataList.add(map);
+		
+		
+		
+		//create a new ListDialogFragment and set its String[] ips to be udp search result
+		
+				ListDialogFragment panelListDialog = new ListDialogFragment();
+				
+				//get a String[] from ipSet and pass to dialog window
+				String[] ipArray = new String[ipSet.size()];
+				ipSet.toArray(ipArray);
+				panelListDialog.setIps(ipArray);
+				panelListDialog.setDataList(dataList);
+				
+				//test.setIps(null); //null test
+				panelListDialog.show(getFragmentManager(), "test"); //popup dialog
+				
+		
+	}
+	
+	/**
+	 * This is when search button clicked on loading screen
+	 * @param view
+	 */
+	public void searchPanelsBtn(View view)
+	{
+		
+		searchUDP();
 	}
 
 	private void searchUDP(){
@@ -520,10 +556,6 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 	
-	public void searchPanelsBtn(View view)
-	{
-		
-		searchUDP();
-	}
+	
 
 }
