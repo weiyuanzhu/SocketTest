@@ -129,7 +129,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	        	
 	            return true;
 	        case R.id.action_settings:
-	            
+	        	Intent setting_intent = new Intent(this,SettingsActivity.class);
+	            startActivity(setting_intent);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
