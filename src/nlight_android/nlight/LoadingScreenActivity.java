@@ -3,22 +3,29 @@ package nlight_android.nlight;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.socket.Connection;
+import nlight_android.socket.UDPConnection;
 import nlight_android.socket.UDPConnection.UDPCallback;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.Constants;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -26,19 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nclient.R;
-
-
-
-
-
-
-
-
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import nlight_android.socket.*;
 
 /**
  * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
@@ -70,6 +64,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
 	private UDPConnection udpConnection = null;
+	List<Map<String, Object>> dataList = null; // datalist for panel list dialog
 	
 	private static int delay = 1000;
 	private Handler mHandler = null;
@@ -78,7 +73,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	
 
-	/* (non-Javadoc)
+	/* (non-Javadoc) implement TCPcallback
 	 * @see mackwell.nlight.BaseActivity#receive(java.util.List, java.lang.String)
 	 */
 	public void receive(List<Integer> rx, String ip) {
@@ -114,17 +109,41 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 
+	/* (non-Javadoc) implementing UDPcallback
+	 * @see nlight_android.socket.UDPConnection.UDPCallback#addIp(java.lang.String)
+	 */
 	public int addIp(String ip)
 	{
+		System.out.println("Received UDP package");
 		if(!ipSet.contains(ip))
 		{
 			ipSet.add(ip);
+			
+			//put ip and location into a map and add to dataList for dialog listview;
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("ip", ip);
+			map.put("location",getPanelLocatinFromPreference(ip));
+			dataList.add(map);
+			
 			return 0;
 		}
 		return 1;
 	}
 	
-	
+	private String getPanelLocatinFromPreference(String ip)
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean isSave = sp.getBoolean(SettingsActivity.PANEL_SAVE, true);
+		
+		if(isSave)
+		{
+			String panelLocation = sp.getString(ip, "");
+			
+			return panelLocation;
+		}
+		
+		return "no save";
+	}
 	
 	@SuppressLint("HandlerLeak")
 	@Override
@@ -316,7 +335,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ip_connection_map = new HashMap<String,Connection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
-		
+		dataList = new ArrayList<Map<String,Object>>();
 		
 		//ipList.add("192.168.1.17");
 		
@@ -386,6 +405,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	private void prepareDataForDemo()
 	{
+		panelList = new ArrayList<Panel>();
 	
 		Panel panel = new Panel("192.168.1.18");
 		panel.setPanelLocation("Mackwell L&B 1");
@@ -432,7 +452,10 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		panelToLoad	= ipSet.size();	
 	}
 
-	// implementing ListDialogFragment's ListDialogListener interface
+	// 
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
+	 */
 	@Override
 	public void connectPanels(List<Integer> selected) {
 		for(Integer i: selected)
@@ -497,10 +520,10 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	{
 		
 		
-		List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();
+		 
 		
 		
-		Map<String, Object> map = new HashMap<String,Object>();
+		/*Map<String, Object> map = new HashMap<String,Object>();
 		map.put("ip", "192.168.1.20");
 		map.put("location","Mackwell R&D");
 		dataList.add(map);
@@ -508,22 +531,22 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		map = new HashMap<String,Object>();
 		map.put("ip", "192.168.1.24");
 		map.put("location","Mackwell Special");
-		dataList.add(map);
+		dataList.add(map);*/
 		
 		
 		
 		//create a new ListDialogFragment and set its String[] ips to be udp search result
 		
-				ListDialogFragment panelListDialog = new ListDialogFragment();
+		ListDialogFragment panelListDialog = new ListDialogFragment();
 				
-				//get a String[] from ipSet and pass to dialog window
-				String[] ipArray = new String[ipSet.size()];
-				ipSet.toArray(ipArray);
-				panelListDialog.setIps(ipArray);
-				panelListDialog.setDataList(dataList);
+		//get a String[] from ipSet and pass to dialog window
+		String[] ipArray = new String[ipSet.size()];
+		ipSet.toArray(ipArray);
+		panelListDialog.setIps(ipArray);
+		panelListDialog.setDataList(dataList);
 				
-				//test.setIps(null); //null test
-				panelListDialog.show(getFragmentManager(), "test"); //popup dialog
+		//test.setIps(null); //null test
+		panelListDialog.show(getFragmentManager(), "test"); //popup dialog
 				
 		
 	}
@@ -556,6 +579,6 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 	
-	
+
 
 }

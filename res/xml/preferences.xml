@@ -3,25 +3,25 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Network Preference"
-        android:key="pref_network">
-    <CheckBoxPreference
-        android:key="pref_panel_save"
-        android:title="Save Selected Panels"
-        android:summary="Save Panel Locations and auto connect next time"
-        android:defaultValue="true"/>
-	</PreferenceCategory>
+        android:title="Panel Data"
+        android:key="pref_key_panel_data">
+	    <CheckBoxPreference
+	        android:key="pref_key_panel_save"
+	        android:title="Save Selected Panels"
+	        android:summary="Save Panel Locations and auto connect next time"
+	        android:defaultValue="true"/>
+		</PreferenceCategory>
 	<PreferenceCategory
 	  	android:title="Synchronization Preference"
-	    android:key="pref_sync">
+	    android:key="pref_key_sync">
 	    <CheckBoxPreference
-	        android:key="pref_refresh"
+	        android:key="pref_key_refresh"
 	        android:title="Auto Refresh Panel/Device Info"
 	        android:summary="sync_summ"
 	        android:defaultValue="true"/>
 	    <ListPreference
-	        android:dependency="pref_refresh"
-	        android:key="pref_syncConnectionType"
+	        android:dependency="pref_key_refresh"
+	        android:key="pref_key_sync_panel"
 	        android:title="Panel Sync Time"
 	        android:dialogTitle="Sync in Minutes"
 	        android:entries="@array/pref_panel_entries"
@@ -29,8 +29,8 @@
 	        >
 	    </ListPreference>
 	    <ListPreference
-	        android:dependency="pref_refresh"
-	        android:key="pref_syncConnectionType"
+	        android:dependency="pref_key_refresh"
+	        android:key="pref_key_sync_device"
 	        android:title="Device Sync Time"
 	        android:dialogTitle="Sync in seconds"
 	        android:entries="@array/pref_device_entries"

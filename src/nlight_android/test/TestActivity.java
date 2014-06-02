@@ -54,6 +54,8 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		preference();
+		
 		
 		setContentView(R.layout.activity_test);
 		
@@ -144,6 +146,11 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 	}
 
 
-
+	private void preference()
+	{
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		//boolean save = sharedPref.
+		
+	}
 	
 }

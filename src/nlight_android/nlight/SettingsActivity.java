@@ -12,6 +12,8 @@ import android.os.*;
 import android.view.*;
 
 public class SettingsActivity extends Activity {
+	
+	public static final String PANEL_SAVE = "pref_key_panel_save";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

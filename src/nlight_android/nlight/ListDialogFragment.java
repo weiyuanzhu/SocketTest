@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -108,8 +109,10 @@ public class ListDialogFragment extends DialogFragment {
 	               public void onClick(DialogInterface dialog, int id) {
 	                   // User clicked OK, so save the mSelectedItems results somewhere
 	                   // or return them to the component that opened the dialog
-	            	   //mListener.connectPanels(mSelectedItems);
-	            	   System.out.println(listView.getCheckedItemPositions());
+	            	   
+	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert map to list
+	            	   mListener.connectPanels(mSelectedItems);
+	            	   System.out.println(getCheckedItemsList(listView.getCheckedItemPositions()).toString());
 	                   
 	               }
 	           });
@@ -130,7 +133,30 @@ public class ListDialogFragment extends DialogFragment {
 		super.onAttach(activity);
 	}
 
-
+	/**
+	 * Convert a SparseBooleanArray to an arraylist
+	 * @param checkedItems a SparseBooleanArray of items checked
+	 * @return an arraylist that contains items checked
+	 */
+	private ArrayList<Integer> getCheckedItemsList(SparseBooleanArray checkedItems){
+		ArrayList<Integer> selected = new ArrayList<Integer>();
+		int n = listView.getAdapter().getCount();
+		
+		for(int i = 0; i<n; i++)
+		{
+			System.out.println(i + " : " + checkedItems.get(i));
+			if (checkedItems.get(i))
+			{
+				selected.add(i);
+				
+			}
+			
+		}
+		
+		return selected;
+		
+		
+	}
 
 	public String[] getIps() {
 		return ips;
