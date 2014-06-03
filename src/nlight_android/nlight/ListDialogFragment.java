@@ -53,6 +53,7 @@ public class ListDialogFragment extends DialogFragment {
 		
 		listView.setAdapter(mAdapter);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -74,6 +75,8 @@ public class ListDialogFragment extends DialogFragment {
 			
 			
 		});
+		
+		//listView.setItemChecked(0, true);
 		// Where we track the selected items
 		
 		
@@ -110,7 +113,7 @@ public class ListDialogFragment extends DialogFragment {
 	                   // User clicked OK, so save the mSelectedItems results somewhere
 	                   // or return them to the component that opened the dialog
 	            	   
-	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert map to list
+	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
 	            	   mListener.connectPanels(mSelectedItems);
 	            	   System.out.println(getCheckedItemsList(listView.getCheckedItemPositions()).toString());
 	                   
@@ -122,7 +125,7 @@ public class ListDialogFragment extends DialogFragment {
 	                   
 	               }
 	           });
-
+	    
 	    return builder.create();
 	}
 
@@ -130,6 +133,7 @@ public class ListDialogFragment extends DialogFragment {
 	public void onAttach(Activity activity) {
 		//attach mListener to the activity creates this dialog
 		mListener = (ListDialogListener) activity;
+		
 		super.onAttach(activity);
 	}
 

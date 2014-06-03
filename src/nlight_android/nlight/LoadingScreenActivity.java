@@ -43,7 +43,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public static final String DEMO_MODE = "Demo Mode";
 	
 	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private Set<String> ipSet = null;
+	private ArrayList<String> ipList = null;
 	private Set<String> ipSelected = null;
 	
 	private static final int LOADING = 0;
@@ -115,14 +115,14 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public int addIp(String ip)
 	{
 		System.out.println("Received UDP package");
-		if(!ipSet.contains(ip))
+		if(!ipList.contains(ip))
 		{
-			ipSet.add(ip);
+			ipList.add(ip);
 			
 			//put ip and location into a map and add to dataList for dialog listview;
 			Map<String, Object> map = new HashMap<String,Object>();
 			map.put("ip", ip);
-			map.put("location",getPanelLocatinFromPreference(ip));
+			map.put("location",getPanelLocationFromPreference(ip));
 			dataList.add(map);
 			
 			return 0;
@@ -130,7 +130,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		return 1;
 	}
 	
-	private String getPanelLocatinFromPreference(String ip)
+	private String getPanelLocationFromPreference(String ip)
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean isSave = sp.getBoolean(SettingsActivity.PANEL_SAVE, true);
@@ -324,7 +324,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		 * Initial collections 
 		 * 
 		 */
-		ipSet = new HashSet<String>();
+		ipList = new ArrayList<String>();
 		ipSelected = new HashSet<String>();
 		
 		
@@ -448,8 +448,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		msg.obj = ip;
 		mHandler.sendMessage(msg);
 		
-		ipSet.remove(ip);
-		panelToLoad	= ipSet.size();	
+		ipList.remove(ip);
+		panelToLoad	= ipList.size();	
 	}
 
 	// 
@@ -460,7 +460,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public void connectPanels(List<Integer> selected) {
 		for(Integer i: selected)
 	 	   {
-	 		   String item = (String) ipSet.toArray()[i];
+	 		   String item = ipList.get(i);
 	 		   ipSelected.add(item);
 	 	   }
 		System.out.println(ipSelected);
@@ -540,8 +540,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ListDialogFragment panelListDialog = new ListDialogFragment();
 				
 		//get a String[] from ipSet and pass to dialog window
-		String[] ipArray = new String[ipSet.size()];
-		ipSet.toArray(ipArray);
+		String[] ipArray = new String[ipList.size()];
+		ipList.toArray(ipArray);
 		panelListDialog.setIps(ipArray);
 		panelListDialog.setDataList(dataList);
 				

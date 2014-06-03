@@ -7,8 +7,14 @@
         android:key="pref_key_panel_data">
 	    <CheckBoxPreference
 	        android:key="pref_key_panel_save"
+	        android:title="Save Panels Location"
+	        android:summary="Save panel's location when loading panel data for the first time "
+	        android:defaultValue="true"/>
+		
+		<CheckBoxPreference
+	        android:key="pref_key_save_checked"
 	        android:title="Save Selected Panels"
-	        android:summary="Save Panel Locations and auto connect next time"
+	        android:summary="Save your selection for panels and make it default for next time"
 	        android:defaultValue="true"/>
 		</PreferenceCategory>
 	<PreferenceCategory
