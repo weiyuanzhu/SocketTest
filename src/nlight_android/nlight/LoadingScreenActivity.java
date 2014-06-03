@@ -133,9 +133,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	private String getPanelLocationFromPreference(String ip)
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean isSave = sp.getBoolean(SettingsActivity.PANEL_SAVE, true);
+		boolean savePanelLocation = sp.getBoolean(SettingsActivity.SAVE_PANEL_LOCATION, true);
 		
-		if(isSave)
+		if(savePanelLocation)
 		{
 			String panelLocation = sp.getString(ip, "");
 			
@@ -451,6 +451,19 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ipList.remove(ip);
 		panelToLoad	= ipList.size();	
 	}
+	
+	
+	
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#cancelDialog(java.util.List)
+	 */
+	@Override
+	public void cancelDialog(List<Integer> selected) {
+		
+		putSelected(selected);	
+		saveCheckedStats();
+		
+	}
 
 	// 
 	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
@@ -458,12 +471,16 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	 */
 	@Override
 	public void connectPanels(List<Integer> selected) {
-		for(Integer i: selected)
-	 	   {
-	 		   String item = ipList.get(i);
-	 		   ipSelected.add(item);
-	 	   }
+		
+		//save checkBox status
+		
+		putSelected(selected);
+		
+		
 		System.out.println(ipSelected);
+		
+		saveCheckedStats();
+		
 		
 		/*
 		 *  Initial connections and rxBuffer for each panel
@@ -518,10 +535,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	public void popDialog()
 	{
-		
-		
-		 
-		
+	
 		
 		/*Map<String, Object> map = new HashMap<String,Object>();
 		map.put("ip", "192.168.1.20");
@@ -579,6 +593,45 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	}
 	
+	/**
+	 * save checked status to SharedPreference
+	 */
+	private void saveCheckedStats()
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean saveChecked = sp.getBoolean(SettingsActivity.SAVE_CHECKED, true);
+		SharedPreferences.Editor editor = sp.edit();
+		
+		if(saveChecked)
+		{
+			System.out.println("Save checked");
+			
+			for(String ip : ipList)
+			{
+				StringBuilder sb = new StringBuilder(ip);
+				sb.append(" ");
+				String ip_ = sb.toString();
+				
+				System.out.println(ip_);
+				editor.putBoolean(ip_, ipSelected.contains(ip)? true: false);
+				editor.commit();
+			
+				
+			}
+		
+		}
+		
+		// clear selected IP list 
+		ipSelected.clear();
+	}
 
+	private void putSelected(List<Integer> selected)
+	{
+		for(Integer i: selected)
+		{
+			String item = ipList.get(i);
+			ipSelected.add(item);
+		}
+	}
 
 }

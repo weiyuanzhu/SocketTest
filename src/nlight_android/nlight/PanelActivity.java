@@ -360,7 +360,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private void savePanelToPreference()
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean isSave = sp.getBoolean(SettingsActivity.PANEL_SAVE, true);
+		boolean isSave = sp.getBoolean(SettingsActivity.SAVE_PANEL_LOCATION, true);
 		if(isSave)
 		{
 			for(Panel panel : panelList)
