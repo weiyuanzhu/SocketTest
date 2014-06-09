@@ -18,9 +18,11 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -29,7 +31,7 @@ import com.example.nclient.R;
  * @author weiyuan zhu
  *
  */
-public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, Connection.CallBack{
+public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, Connection.CallBack, PopupMenu.OnMenuItemClickListener{
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
@@ -140,18 +142,44 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	        	Toast.makeText(this, "Refreshing panel status...", Toast.LENGTH_LONG).show();
 	        	panelListFragment.refreshStatus(isDemo, isConnected);
 	        	return true;
-	        case R.id.action_show_device_list:
-	        	if(currentDisplayingPanel != null){
-	        		showDevices();
-	        	}
-	        	
+	    
+	        case R.id.action_show_devices:
+	        	View menuItemView = findViewById(R.id.action_show_devices);
+	        	showDropDownMenu(menuItemView);
 	        	return true;
+	        
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
 
+	/* (non-Javadoc) callback for pupupMenu items
+	 * @see android.widget.PopupMenu.OnMenuItemClickListener#onMenuItemClick(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		switch(item.getItemId())
+		{
+			case R.id.action_show_loops:
+				System.out.println("Show Loops");
+				if(currentDisplayingPanel != null){
+					showDevices();
+				}
+				return true;
+			case R.id.action_show_faulty_devices:
+				System.out.println("Show Faulty Devices");
 
+				return true;
+        	
+			default:
+	            return false;
+		
+		}
+	}
+
+
+
+	
 
 	@Override
 	protected void onDestroy() {
@@ -375,4 +403,18 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		
 	}
+	
+	public void showDropDownMenu(View item)
+	{
+		
+		System.out.println("Drop Down Menu");
+		PopupMenu popup = new PopupMenu(this, item);
+		popup.setOnMenuItemClickListener(this);
+	    MenuInflater inflater = popup.getMenuInflater();
+	    inflater.inflate(R.menu.show_devices, popup.getMenu());
+	    popup.show();
+		
+		
+	}
+		
 }

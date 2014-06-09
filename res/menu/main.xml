@@ -11,16 +11,25 @@
         android:showAsAction="never"
         android:title="@string/action_about"/>
      
-     <item
-        android:id="@+id/action_show_device_list"
-        android:orderInCategory="102"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_showDeviceList"/>
+     
+     
+	<item
+	        android:id="@+id/action_show_devices"
+	        android:orderInCategory="102"
+	        android:showAsAction="ifRoom"
+	        android:icon="@drawable/ic_action_about"
+	        android:title="@string/action_showDeviceList"
+	        />     
+     
      <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="102"
+        android:orderInCategory="103"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/action_refresh_status"/>
 
+     
+     
+     
+     
 </menu>
