@@ -23,6 +23,7 @@
       
       <item
         android:id="@+id/device_id"
+        android:icon="@drawable/identify_device_blue"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="ID"

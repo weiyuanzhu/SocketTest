@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nlight_android.adapter.DeviceInfoListAdapter;
 import nlight_android.models.Device;
 
 import com.example.nclient.R;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -50,7 +52,7 @@ public class DeviceInfoFragment extends ListFragment {
 	private Device device;
 	private SimpleAdapter mSimpleAdapter;
 	private List<Map<String,Object>> listDataSource;
-	
+	private TextView deviceName;
 
 	@SuppressWarnings("unused")
 	private DeviceSetLocationListener mListener;
@@ -80,8 +82,14 @@ public class DeviceInfoFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
+		
+		
+		
 		if (getArguments() != null) {
 			device = getArguments().getParcelable(ARG_DEVICE);
+			
 		}
 		
 		if(device.getGtinArray()!=null)
@@ -115,13 +123,16 @@ public class DeviceInfoFragment extends ListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		deviceName = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
+		deviceName.setText(device.getLocation()); // set device name textView text
+		
 		System.out.println(device.toString());
-		mSimpleAdapter = new SimpleAdapter(getActivity(), getData(device), R.layout.device_info_row, 
+		mSimpleAdapter = new DeviceInfoListAdapter(getActivity(), getData(device), R.layout.device_info_row, 
 				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
 		setListAdapter(mSimpleAdapter);
 		
-		getListView().setOnItemLongClickListener(longClickListener);
+		//getListView().setOnItemLongClickListener(longClickListener);
 
 
 	}
@@ -163,12 +174,16 @@ public class DeviceInfoFragment extends ListFragment {
 		map.put("value", device==null? "n/a" : device.getGTIN());
 			
 		listDataSource.add(map);
-		map = new HashMap<String,Object>();
+		/*
+		 * map = new HashMap<String,Object>();
+		 * map.put("description", "Location");
+			map.put("value", device==null? "n/a" : device.getLocation());
 		
-		map.put("description", "Location");
-		map.put("value", device==null? "n/a" : device.getLocation());
+			listDataSource.add(map);
+		 * 
+		 */
 		
-		listDataSource.add(map);
+		
 		map = new HashMap<String,Object>();
 		
 		map.put("description", "Emergency mode");
