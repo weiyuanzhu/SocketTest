@@ -1,17 +1,15 @@
 package nlight_android.nlight;
 
 import com.example.nclient.R;
-import com.example.nclient.R.layout;
-import com.example.nclient.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import android.app.*;
-import android.os.*;
-import android.view.*;
 
 public class SettingsActivity extends Activity {
+	
+	public static final String SAVE_PANEL_LOCATION = "pref_key_panel_save";
+	public static final String SAVE_CHECKED = "pref_key_save_checked";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

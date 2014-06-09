@@ -18,17 +18,6 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-import android.app.*;
-import nlight_android.socket.Connection.*;
-import nlight_android.socket.*;
-import android.widget.*;
-
-import java.util.*;
-
-import nlight_android.models.*;
-import android.os.*;
-import android.view.*;
-
 public class DeviceInfoActivity extends ListActivity implements Connection.CallBack{
 	
 	

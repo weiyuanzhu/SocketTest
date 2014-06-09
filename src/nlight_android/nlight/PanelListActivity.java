@@ -16,11 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
-import android.app.*;
-import java.util.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
 
 public class PanelListActivity extends ListActivity {
 	

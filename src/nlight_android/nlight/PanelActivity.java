@@ -9,31 +9,21 @@ import java.util.Map;
 import nlight_android.models.Panel;
 import nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack;
 import nlight_android.socket.Connection;
-import nlight_android.socket.Connection.CallBack;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
-import nlight_android.socket.Connection.*;
-import nlight_android.nlight.PanelListFragment.*;
-import nlight_android.models.*;
-import java.util.*;
-import nlight_android.socket.*;
-import android.widget.*;
-import android.os.*;
-import android.view.*;
 
 /**
  * @author weiyuan zhu
@@ -53,7 +43,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 
 	private PanelListFragment panelListFragment;
 	
-	private int currentSelected;
+	//private int currentSelected;
 
 	
 	//call back for connection
@@ -120,7 +110,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			panelListFragment.setPanelList(panelList);
 		}
 		
-		
+		savePanelToPreference();
 		//panelListFragment.refreshStatus(isDemo, isConnected);
 
 		
@@ -143,7 +133,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	        	
 	            return true;
 	        case R.id.action_settings:
-	            
+	            Intent intent = new Intent(this,SettingsActivity.class);
+	            startActivity(intent);
 	            return true;
 	        case R.id.action_refresh:
 	        	Toast.makeText(this, "Refreshing panel status...", Toast.LENGTH_LONG).show();
@@ -366,4 +357,22 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 
+	private void savePanelToPreference()
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean isSave = sp.getBoolean(SettingsActivity.SAVE_PANEL_LOCATION, true);
+		if(isSave)
+		{
+			for(Panel panel : panelList)
+			{
+				SharedPreferences.Editor editor = sp.edit();
+				editor.putString(panel.getIp(), panel.getPanelLocation());
+				editor.commit();
+			}
+			
+		};
+		
+		
+		
+	}
 }

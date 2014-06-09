@@ -2,10 +2,47 @@
 
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="pref_sync"
-        android:title="sync"
-        android:summary="sync_summ"
-        android:defaultValue="true"/>
+    <PreferenceCategory
+        android:title="Panel Data"
+        android:key="pref_key_panel_data">
+	    <CheckBoxPreference
+	        android:key="pref_key_panel_save"
+	        android:title="Save Panels Location"
+	        android:summary="Save panel's location when loading panel data for the first time "
+	        android:defaultValue="true"/>
+		
+		<CheckBoxPreference
+	        android:key="pref_key_save_checked"
+	        android:title="Save Panel Selection"
+	        android:summary="Save your selection for panels and make it default for next time"
+	        android:defaultValue="true"/>
+		</PreferenceCategory>
+	<PreferenceCategory
+	  	android:title="Synchronization Preference"
+	    android:key="pref_key_sync">
+	    <CheckBoxPreference
+	        android:key="pref_key_refresh"
+	        android:title="Auto Refresh Panel/Device Info"
+	        android:summary="sync_summ"
+	        android:defaultValue="true"/>
+	    <ListPreference
+	        android:dependency="pref_key_refresh"
+	        android:key="pref_key_sync_panel"
+	        android:title="Panel Sync Time"
+	        android:dialogTitle="Sync in Minutes"
+	        android:entries="@array/pref_panel_entries"
+	        android:entryValues="@array/pref_panel_values"
+	        >
+	    </ListPreference>
+	    <ListPreference
+	        android:dependency="pref_key_refresh"
+	        android:key="pref_key_sync_device"
+	        android:title="Device Sync Time"
+	        android:dialogTitle="Sync in seconds"
+	        android:entries="@array/pref_device_entries"
+	        android:entryValues="@array/pref_device_entries"
+	        >
+	    </ListPreference>
+	</PreferenceCategory>
     
 </PreferenceScreen>

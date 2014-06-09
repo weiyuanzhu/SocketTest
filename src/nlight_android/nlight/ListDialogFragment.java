@@ -8,15 +8,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.nclient.R;
 
@@ -28,6 +35,7 @@ public class ListDialogFragment extends DialogFragment {
 	
 	public interface ListDialogListener{
 		public void connectPanels(List<Integer> selected);
+		public void cancelDialog(List<Integer> selected);
 
 		
 	} 
@@ -41,17 +49,88 @@ public class ListDialogFragment extends DialogFragment {
 		// Required empty public constructor
 	}
 	
+	private class MyAdapter extends SimpleAdapter{
+		
+		
+		Context mContext;
+		List<? extends Map<String,?>> dataList;
+		int resource;
+		String[] from;
+		int[] to;
+
+		public MyAdapter(Context context, List<? extends Map<String, ?>> data,
+				int resource, String[] from, int[] to) {
+			super(context, data, resource, from, to);
+			this.mContext = context;
+			this.resource = resource;
+			this.dataList = data;
+			this.from = from;
+			this.to = to;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			
+			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			View rowView = inflater.inflate(resource, parent, false);
+			
+			TextView ip = (TextView) rowView.findViewById(to[0]);
+			CheckedTextView location = (CheckedTextView) rowView.findViewById(to[1]);
+			
+			String ipText = (String) dataList.get(position).get(from[0]);
+			ip.setText(ipText);
+			
+			String locationText = (String) dataList.get(position).get(from[1]);
+			location.setText(locationText);
+			
+			
+			
+			if(checkBox(ipText))
+			{
+				location.setChecked(true);
+			
+				listView.setItemChecked(position, true);
+			}
+			
+			if(position==0)
+			{
+				location.setTextColor(Color.GREEN);
+			}
+			
+			return rowView;
+			
+		}
+		
+		
+		
+		
+	}
 	
+	boolean checkBox(String ip)
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		boolean save_checked = sp.getBoolean(SettingsActivity.SAVE_CHECKED, false);
+		
+		StringBuilder sb = new StringBuilder(ip);
+		sb.append(" ");
+		String ip_ = sb.toString();
+		boolean check = sp.getBoolean(ip_, false);
+		if(save_checked && check )
+			return true;
+		else return false;
+		
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		
 		listView = new ListView(getActivity());
 		
-		SimpleAdapter mAdapter = new SimpleAdapter(getActivity(), getDataList(), R.layout.panel_list_row2, new String[]{"ip","location"},new int[]{R.id.ip_textview,R.id.location_checkedtextview});
+		SimpleAdapter mAdapter = new MyAdapter(getActivity(), getDataList(), R.layout.panel_list_row2, new String[]{"ip","location"},new int[]{R.id.ip_textview,R.id.location_checkedtextview});
 		
 		listView.setAdapter(mAdapter);
-		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -66,13 +145,16 @@ public class ListDialogFragment extends DialogFragment {
 				
 			}
 
-		
+	
 			
 			
 			
 			
 			
 		});
+		
+
+		//listView.setItemChecked(0, true);
 		// Where we track the selected items
 		
 		
@@ -108,18 +190,21 @@ public class ListDialogFragment extends DialogFragment {
 	               public void onClick(DialogInterface dialog, int id) {
 	                   // User clicked OK, so save the mSelectedItems results somewhere
 	                   // or return them to the component that opened the dialog
-	            	   //mListener.connectPanels(mSelectedItems);
-	            	   System.out.println(listView.getCheckedItemPositions());
+	            	   
+	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
+	            	   mListener.connectPanels(mSelectedItems);
+	            	   System.out.println(getCheckedItemsList(listView.getCheckedItemPositions()).toString());
 	                   
 	               }
 	           });
 	           builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
-	                   
+	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
+	            	   mListener.cancelDialog(mSelectedItems);            	   
 	               }
 	           });
-
+	    
 	    return builder.create();
 	}
 
@@ -127,10 +212,34 @@ public class ListDialogFragment extends DialogFragment {
 	public void onAttach(Activity activity) {
 		//attach mListener to the activity creates this dialog
 		mListener = (ListDialogListener) activity;
+		
 		super.onAttach(activity);
 	}
 
-
+	/**
+	 * Convert a SparseBooleanArray to an arraylist
+	 * @param checkedItems a SparseBooleanArray of items checked
+	 * @return an arraylist that contains items checked
+	 */
+	private ArrayList<Integer> getCheckedItemsList(SparseBooleanArray checkedItems){
+		ArrayList<Integer> selected = new ArrayList<Integer>();
+		int n = listView.getAdapter().getCount();
+		
+		for(int i = 0; i<n; i++)
+		{
+			System.out.println(i + " : " + checkedItems.get(i));
+			if (checkedItems.get(i))
+			{
+				selected.add(i);
+				
+			}
+			
+		}
+		
+		return selected;
+		
+		
+	}
 
 	public String[] getIps() {
 		return ips;

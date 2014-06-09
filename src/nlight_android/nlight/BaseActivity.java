@@ -5,27 +5,14 @@ import java.util.List;
 import nlight_android.socket.Connection.CallBack;
 
 import com.example.nclient.R;
-import com.example.nclient.R.layout;
-import com.example.nclient.R.menu;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.app.*;
-import nlight_android.socket.Connection.*;
 import nlight_android.socket.*;
-import android.os.*;
-import android.view.*;
-import java.util.*;
 
 /**
  * @author  weiyuan zhu base class for all other activities  to check device connecctivities
@@ -45,6 +32,7 @@ public class BaseActivity extends Activity implements CallBack {
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
 
+	@SuppressWarnings("unused")
 	private Connection connection;
 
 	@Override
