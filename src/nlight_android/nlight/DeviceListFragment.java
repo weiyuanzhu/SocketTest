@@ -29,15 +29,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.nlight.DeviceListFragment.*;
-import android.widget.*;
-import nlight_android.adapter.*;
-import android.view.*;
-import nlight_android.models.*;
-import java.util.*;
-import android.view.ActionMode.*;
-import android.os.*;
 
 /**
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.

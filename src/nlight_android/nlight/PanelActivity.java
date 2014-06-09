@@ -43,7 +43,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 
 	private PanelListFragment panelListFragment;
 	
-	private int currentSelected;
+	//private int currentSelected;
 
 	
 	//call back for connection

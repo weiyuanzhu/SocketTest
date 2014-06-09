@@ -25,18 +25,7 @@ import android.widget.Toast;
 
 import com.example.nclient.R;
 
-import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
-import nlight_android.nlight.DeviceInfoFragment.*;
-import nlight_android.socket.Connection.*;
-import nlight_android.nlight.DeviceListFragment.*;
-import android.os.*;
-import nlight_android.models.*;
-import android.widget.*;
-import nlight_android.socket.*;
 
-import java.util.*;
-
-import android.view.*;
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack, 
 															DeviceSetLocationListener,NoticeDialogListener{

@@ -11,12 +11,12 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -92,6 +92,12 @@ public class ListDialogFragment extends DialogFragment {
 			
 				listView.setItemChecked(position, true);
 			}
+			
+			if(position==0)
+			{
+				location.setTextColor(Color.GREEN);
+			}
+			
 			return rowView;
 			
 		}

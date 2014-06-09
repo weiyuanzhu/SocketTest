@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nlight_android.models.Loop;
 import nlight_android.models.Panel;
 import nlight_android.socket.Connection;
 import nlight_android.util.CommandFactory;
@@ -24,15 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.socket.Connection.*;
-import android.os.*;
-import android.widget.*;
-import java.util.*;
-import nlight_android.socket.*;
-import nlight_android.models.*;
-import android.content.res.*;
-import android.view.*;
 
 public class PanelInfoActivity extends ListActivity  implements Connection.CallBack{
 	

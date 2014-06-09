@@ -130,6 +130,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		return 1;
 	}
 	
+	/**
+	 * This function takes an ip for the panel and return it's location in the SharedPreference 
+	 * @param ip IP address for the panel
+	 * @return location for the panel, return "" if not save
+	 */
 	private String getPanelLocationFromPreference(String ip)
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -142,7 +147,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			return panelLocation;
 		}
 		
-		return "no save";
+		return "";
 	}
 	
 	@SuppressLint("HandlerLeak")
@@ -460,7 +465,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	@Override
 	public void cancelDialog(List<Integer> selected) {
 		
-		putSelected(selected);	
+		savePanelSelection(selected);	
 		saveCheckedStats();
 		
 	}
@@ -474,7 +479,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//save checkBox status
 		
-		putSelected(selected);
+		savePanelSelection(selected);
 		
 		
 		System.out.println(ipSelected);
@@ -625,7 +630,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ipSelected.clear();
 	}
 
-	private void putSelected(List<Integer> selected)
+	/**
+	 * Go thought all IP list and put selected ip in the ipSelected set 
+	 * @param selected a list of position that panels selected in the multi selection dialog
+	 */
+	private void savePanelSelection(List<Integer> selected)
 	{
 		for(Integer i: selected)
 		{

@@ -24,16 +24,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.socket.Connection.*;
-import nlight_android.models.*;
-import java.util.*;
-import android.os.*;
-import android.widget.*;
-import nlight_android.nlight.PanelListFragment.*;
-import nlight_android.socket.*;
-import android.view.View.*;
-import android.view.*;
 
 
 /**
@@ -59,7 +49,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 
 	private Handler statusUpdateHandler;
 	
-	private Button refreshBtn;
+	//private Button refreshBtn;
 	private Button getAllPanelsBtn;
 	private Button passTest;
 
@@ -133,7 +123,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
+		//refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
 		//refreshBtn.setOnClickListener(refreshClicked);
 		passTest = (Button) getActivity().findViewById(R.id.panelList_passTest);
 		

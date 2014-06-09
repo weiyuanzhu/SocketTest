@@ -6,19 +6,12 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.ref.WeakReference;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Handler;
-import nlight_android.socket.Connection.*;
 import nlight_android.util.Constants;
 
-import java.lang.ref.*;
-import java.net.*;
-import java.util.*;
-import java.io.*;
 
 public class Connection {
 	

@@ -10,11 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.models.*;
-import android.widget.*;
-import android.os.*;
-import android.view.*;
 
 public class DeviceListActivity extends ListActivity {
 	

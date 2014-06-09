@@ -1,15 +1,10 @@
 package nlight_android.nlight;
 
 import com.example.nclient.R;
-import com.example.nclient.R.layout;
-import com.example.nclient.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import android.app.*;
-import android.os.*;
-import android.view.*;
 
 public class SettingsActivity extends Activity {
 	

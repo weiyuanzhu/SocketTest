@@ -13,9 +13,7 @@ import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +21,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -31,15 +28,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.socket.Connection.*;
-import android.widget.*;
-import android.os.*;
-import java.util.*;
-import nlight_android.socket.*;
-import nlight_android.models.*;
-import android.view.View.*;
-import android.view.*;
 
 /**
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Use the {@link PanelInfoFragment#newInstance}  factory method to create an instance ofthis fragment.

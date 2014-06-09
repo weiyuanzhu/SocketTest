@@ -13,7 +13,7 @@
 		
 		<CheckBoxPreference
 	        android:key="pref_key_save_checked"
-	        android:title="Save Selected Panels"
+	        android:title="Save Panel Selection"
 	        android:summary="Save your selection for panels and make it default for next time"
 	        android:defaultValue="true"/>
 		</PreferenceCategory>
