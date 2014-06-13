@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nlight_android.util.Constants;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.*;
 import nlight_android.*;
+
 import java.math.*;
+
 import android.os.Parcelable.*;
+
 import java.util.*;
 
 public class Panel  implements Parcelable {
@@ -288,19 +289,10 @@ public class Panel  implements Parcelable {
 	
 
 	public int getFaultDeviceNo() {
-		int temp = 0;
+		int faultDeviceNo = 0;
 		
-		for(Device d: loop1.getDeviceList())
-		{
-			if(d.getEmergencyStatus()!=0) temp++;
-			
-		}
-		
-		for(Device d: loop2.getDeviceList())
-		{
-			if(d.getEmergencyStatus()!=0) temp++;
-			
-		}
+		faultDeviceNo += loop1.getFaultyDevicesNo();
+		faultDeviceNo += loop2.getFaultyDevicesNo();
 		
 		return faultDeviceNo;
 	}
@@ -365,9 +357,28 @@ public class Panel  implements Parcelable {
 		return overAllStatus;
 	}
 
-
+	private void removeFaultyDevices()
+	{
+		if(loop1 !=null) loop1.setDeviceList(loop1.removeGoodDevices());
+		if(loop2 !=null) loop2.setDeviceList(loop2.removeGoodDevices());
+		
+	}
 	
+	public static Panel getPanelWithFaulty(Panel panel) 
+	{
+		
+		
+		
+		Panel newPanel = panel;
 	
+		newPanel.removeFaultyDevices();
+		
+		
+		return newPanel;
+		
+		
+		
+	}
 	
 	
 	

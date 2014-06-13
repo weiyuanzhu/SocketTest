@@ -5,9 +5,11 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.example.nclient.R;
 
@@ -63,8 +65,18 @@ public class DeviceListActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.device_list, menu);
+		
+		//get menu item for Search action button 
+		MenuItem searchItem = menu.findItem(R.id.action_search_device);
+		
+		//get SearchView
+		SearchView searchView = (SearchView) searchItem.getActionView();
+
+		
+		
 		return true;
 	}
+
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {

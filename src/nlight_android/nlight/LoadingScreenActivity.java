@@ -156,6 +156,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading_screen);
 		
+		searchUDP();
+		
 		//init all view items
 		liveBtn = (Button) findViewById(R.id.loadscreen_live_imageBtn);
 		demoBtn = (Button) findViewById(R.id.loadscreen_demo_imageBtn);
@@ -368,7 +370,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	public void liveMode(View view)
 	{
+		
 		popDialog();
+		
 		
 	}
 	

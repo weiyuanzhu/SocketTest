@@ -11,6 +11,14 @@ import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+/**
+ * A custom adapter extends SimpleAdapter for displaying device information
+ * Device Failure status will display "RED" if device has error
+ * 
+ * 
+ * @author weiyuan zhu
+ * @
+ */
 public class DeviceInfoListAdapter extends SimpleAdapter {
 	
 	private Context mContext;
@@ -54,7 +62,7 @@ public class DeviceInfoListAdapter extends SimpleAdapter {
 		
 		if(descriptionString.equals("Failure status"))
 		{
-			content.setTextColor(contentString.equals("All OK")? Color.GREEN : Color.RED);
+			content.setTextColor(contentString.equals("All OK")? Color.BLACK : Color.RED);
 			
 		}
 		

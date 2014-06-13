@@ -61,6 +61,12 @@
             android:label="@string/title_activity_device"
             android:parentActivityName="nlight_android.nlight.PanelActivity"
             android:screenOrientation="landscape">
+            <intent-filter>
+            	<action android:name="android.intent.action.SEARCH" />
+       		</intent-filter>
+            <meta-data android:name="android.app.searchable"
+                   android:resource="@xml/searchable"/>
+            
         </activity>
         <activity
             android:name="nlight_android.nlight.BaseActivity"

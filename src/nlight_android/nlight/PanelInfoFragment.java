@@ -143,7 +143,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		
 		locationTextView = (TextView) getActivity().findViewById(R.id.panel_location);
 
-		locationTextView.setText(location);
+		locationTextView.setText(location + " (" + panel.getFaultDeviceNo() + ")");
 		
 		progressHandler = new Handler()
 		{
@@ -321,10 +321,10 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 			
 		Map<String,Object> map = new HashMap<String,Object>();
 			
-		map.put("text1", "Location");
+		/*map.put("text1", "Location");
 		map.put("text2", panel==null? "..." : panel.getPanelLocation());
 		
-		listDataSource.add(map);
+		listDataSource.add(map);*/
 		
 		map = new HashMap<String,Object>();
 		

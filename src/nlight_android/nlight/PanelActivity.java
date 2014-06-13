@@ -41,6 +41,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private List<PanelInfoFragment> fragmentList = null;
 	
 	private Panel currentDisplayingPanel;
+	private Panel panelWithFaulyDevices;
 	private ImageView panelInfoImage;
 
 	private PanelListFragment panelListFragment;
@@ -163,12 +164,15 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			case R.id.action_show_loops:
 				System.out.println("Show Loops");
 				if(currentDisplayingPanel != null){
-					showDevices();
+					showDevices(currentDisplayingPanel);
 				}
 				return true;
 			case R.id.action_show_faulty_devices:
 				System.out.println("Show Faulty Devices");
-
+				if(currentDisplayingPanel != null){
+					panelWithFaulyDevices = Panel.getPanelWithFaulty(currentDisplayingPanel);
+					showDevices(panelWithFaulyDevices);
+				}
 				return true;
         	
 			default:
@@ -367,17 +371,17 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
     	return version.toString();
 	}
 	
-	private void showDevices(){
+	private void showDevices(Panel panel){
 		System.out.println("Get Device List");
 		
 		Intent intent = new Intent(this, DeviceActivity.class);
 
-		if(currentDisplayingPanel!=null){
+		if(panel!=null){
 			
-			intent.putExtra("location", currentDisplayingPanel.getPanelLocation());
-			intent.putExtra("panel", currentDisplayingPanel);
-			intent.putExtra("loop1",currentDisplayingPanel.getLoop1());
-			intent.putExtra("loop2",currentDisplayingPanel.getLoop2());
+			intent.putExtra("location", panel.getPanelLocation());
+			intent.putExtra("panel", panel);
+			intent.putExtra("loop1",panel.getLoop1());
+			intent.putExtra("loop2",panel.getLoop2());
 			intent.putExtra(LoadingScreenActivity.DEMO_MODE, isDemo);
 			startActivity(intent);
 			
@@ -404,11 +408,11 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 	
-	public void showDropDownMenu(View item)
+	public void showDropDownMenu(View view)
 	{
 		
 		System.out.println("Drop Down Menu");
-		PopupMenu popup = new PopupMenu(this, item);
+		PopupMenu popup = new PopupMenu(this, view);
 		popup.setOnMenuItemClickListener(this);
 	    MenuInflater inflater = popup.getMenuInflater();
 	    inflater.inflate(R.menu.show_devices, popup.getMenu());

@@ -22,10 +22,14 @@ public class Loop  implements Parcelable{
 	
 	private List<Device> deviceList;
 	
+	
+
+	
+
 	private int status;
 	private int deviceNumber; 
 	private String loopName;
-	
+	private int faultyDevicesNo = 0;
 	
 	
 	public Loop()
@@ -160,13 +164,15 @@ public class Loop  implements Parcelable{
 		
 		for(Device d: deviceList)
 		{
-			if (d.getFailureStatus()!=0)
+			if (d.isFailed())
 			{
 				status = Constants.FAULT;
+				
 			}
 			
+			
 		}
-		
+		System.out.println(getLoopName() + " faulty device no: " + faultyDevicesNo);
 		return status;
 	}
 
@@ -188,12 +194,40 @@ public class Loop  implements Parcelable{
 		this.loopName = loopName;
 	};
 	
+	public List<Device> removeGoodDevices()
+	{
+		
+		List<Device> tempList = new ArrayList<Device>();
+		for(int i = deviceList.size()-1; i >=0 ;i--)
+		{
+			if(deviceList.get(i).isFailed()) tempList.add(deviceList.get(i));
+		}
+		return tempList;
+	}
 	
 	
-	
+	public void setDeviceList(List<Device> deviceList) {
+		this.deviceList = deviceList;
+	}
 
-
-
+	public int getFaultyDevicesNo() {
+		
+		faultyDevicesNo = 0;
+		
+		for(Device d: deviceList)
+		{
+			if (d.isFailed())
+			{
+				faultyDevicesNo++;
+				
+			}
+			
+			
+		}
+		
+		
+		return faultyDevicesNo;
+	}
 	
 	
 }

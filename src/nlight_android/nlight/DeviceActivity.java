@@ -3,7 +3,6 @@ package nlight_android.nlight;
 import java.util.ArrayList;
 import java.util.List;
 
-import nlight_android.util.ToggleCmdEnum;
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.nlight.DeviceInfoFragment.DeviceSetLocationListener;
@@ -12,6 +11,7 @@ import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListene
 import nlight_android.socket.Connection;
 import nlight_android.util.DataParser;
 import nlight_android.util.SetCmdEnum;
+import nlight_android.util.ToggleCmdEnum;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -41,6 +42,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private int currentDeviceAddress;
 	private int currentGroupPosition;
+	
+	
+	private SearchView searchView= null; //search view for search button on the action bar
 	
 	//connection.callback interface implementation
 	@Override
@@ -95,11 +99,32 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		deviceListFragment.setLoop2(panel.getLoop2());
 		
 	}
+	
+	
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		System.out.println("New INtent Received");
+		super.onNewIntent(intent);
+		
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.device, menu);
+		
+		
+		//get search view  and set the Hint message for it
+		MenuItem searchItem = menu.findItem(R.id.action_search_device);
+		
+		 searchView = (SearchView) searchItem.getActionView();
+		
+		 //searchView.setQueryHint("Search Devices");		
+		
+		
 		return true;
 	}
 	
@@ -111,11 +136,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	    		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    		NavUtils.navigateUpTo(this, intent);
 	    		return true;
-	       
 	    	case R.id.action_about:
-	        	
 	        	Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
-	        	
 	            return true;
 	        case R.id.action_settings:
 	        	Intent setting_intent = new Intent(this,SettingsActivity.class);
@@ -125,6 +147,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	
+	
+	
+	
 
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {

@@ -45,7 +45,7 @@ public class Device  implements Parcelable{
 	private int lampEmergencyTime;
 	private int feature;
 	
-	
+	private boolean isFailed;
 	
 	public Device(Parcel source) {
 		this();
@@ -399,6 +399,22 @@ public class Device  implements Parcelable{
 			//System.out.print(temp[i]);
 		}
 		return temp;
+	}
+
+	/**
+	 * @return the isFailed
+	 */
+	public boolean isFailed() {
+		
+		if(failureStatus==0) return false;
+		return true;
+	}
+
+	/**
+	 * @param isFailed the isFailed to set
+	 */
+	public void setFailed(boolean isFailed) {
+		this.isFailed = isFailed;
 	}
 
 	//generic method for get status text
