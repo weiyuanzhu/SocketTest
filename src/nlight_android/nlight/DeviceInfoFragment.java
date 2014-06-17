@@ -16,6 +16,7 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -124,6 +125,25 @@ public class DeviceInfoFragment extends ListFragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		deviceName = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
+		deviceName.setLongClickable(true);
+		deviceName.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				//display dialog
+				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				
+				dialog.setLocation(device.getLocation());
+				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
+				return true;
+			}
+			
+			
+			
+			
+		});
+		
+		
 		deviceName.setText(device.getLocation()); // set device name textView text
 		
 		System.out.println(device.toString());
@@ -268,7 +288,7 @@ public class DeviceInfoFragment extends ListFragment {
 	public void updateLocation(String location)
 	{
 		//update listDataSource
-		listDataSource.get(3).put("value", location);
+		deviceName.setText(location);
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}

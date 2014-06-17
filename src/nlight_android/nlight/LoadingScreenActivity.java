@@ -84,7 +84,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{
-			panelToLoad --;
+			panelToLoad--;
 
 			//update progress with handler
 			Message msg = mHandler.obtainMessage();

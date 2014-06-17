@@ -62,7 +62,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	Device device = (Device) getChild(groupPosition, childPosition);
     	
     	int address = device.getAddress() < 128 ?  device.getAddress() : device.getAddress() - 128;
-        final String childText = (String) "Device " + address;
+    	
+    	String location = device.getLocation();
+    	String childText = null;
+    	
+    	if(location==null || location.equals("?")){
+    		childText = (String) "Device " + address;
+    	}
+    	else childText = "";
  
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -80,6 +87,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.devicelist_child_address_textView);
  
+        
         txtListChild.setText(childText);
         
         TextView deviceLocation = (TextView) convertView
@@ -121,7 +129,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         {
         	headerTitle = "Loop 1";
         	
-        }else headerTitle = "Loop 2";
+        }
+        else headerTitle = "Loop 2";
         
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext

@@ -9,6 +9,7 @@ import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import nlight_android.util.Constants;
 
@@ -201,19 +202,22 @@ public class TCPConnection {
 						
 						else
 						{
-							Thread.sleep(0,100);
-						}				
+							TimeUnit.MILLISECONDS.sleep(100);;
+						}	
+						
+						/*for(int j=0; j<rxBuffer.size();j+=1033)
+						{
+							System.out.println("------------------------Package " + j + "---------------------------");
+							for(int k = j; i < j+1033;k++)
+							{		
+								System.out.print(rxBuffer.get(k)+ " ");
+							}
+							System.out.println();
+						}*/
+						
 					}
 				
-					/*for(int j=0; j<rxBuffer.size();j+=1033)
-					{
-						System.out.println("------------------------Package " + j + "---------------------------");
-						for(int i = j; i < j+1033;i++)
-						{		
-							System.out.print(rxBuffer.get(i)+ " ");
-						}
-						System.out.println();
-					}*/
+					
 			
 				}
 				catch(Exception ex)

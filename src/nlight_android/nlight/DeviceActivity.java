@@ -40,8 +40,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private ImageView image = null;
 	private TCPConnection connection;
 	
-	private int currentDeviceAddress;
-	private int currentGroupPosition;
+	private int currentDeviceAddress = 0;
+	private int currentGroupPosition = 0;
 	
 	
 	private SearchView searchView= null; //search view for search button on the action bar
@@ -81,8 +81,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		//set action bar
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		//set title with demo
-		String title = isDemo? "Panel: " + panel.getPanelLocation() + " (Demo)" : "Panel: " + panel.getPanelLocation() + " (Live)";
+		//set title with mode
+		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + " (Demo)" : "Panel: " + panel.getPanelLocation().trim() + " (Live)";
 		getActionBar().setTitle(title);
 		
 		this.connection = new TCPConnection(this,panel.getIp());
@@ -349,19 +349,24 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			fragmentTransaction.commit();
 		}
 		
+		image.setVisibility(View.VISIBLE);
+		
+		//reset image according to loop faulty status
 		switch(groupPosition)
 		{
 			case 0: 
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
-				}else image.setImageResource(R.drawable.greentick);
+				}
+				else image.setImageResource(R.drawable.greentick);
 				break;
 			case 1: 
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
-				}else image.setImageResource(R.drawable.greentick);
+				}
+				else image.setImageResource(R.drawable.greentick);
 				break;
 				
 			default: 
