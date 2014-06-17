@@ -650,7 +650,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(Integer i: selected)
 		{
 			String item = ipListAll.get(i);
-			ipListSelected.add(item);
+			if(!ipListSelected.contains(item)){
+				ipListSelected.add(item);
+			}
 		}
 	}
 

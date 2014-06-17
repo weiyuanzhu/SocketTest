@@ -42,6 +42,7 @@ public class DeviceListFragment extends Fragment {
 	public interface OnDevicdListFragmentListener {
 		// TODO: Update argument type and name
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
+		public void onGroupExpandOrCollapse(int groupPosition);
 		public void ft(int address);
 		public void dt(int address);
 		public void st(int address);
@@ -200,22 +201,25 @@ public class DeviceListFragment extends Fragment {
 				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
-			Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
-				
+				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
+				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
 			
+				
 			
 		});
 		
 		deviceListView.setOnGroupCollapseListener(new OnGroupCollapseListener(){
 
 			@Override
-			public void onGroupCollapse(int arg0) {
+			public void onGroupCollapse(int groupPosition) {
 			
 				if (mActionMode != null) {
 					mActionMode.finish();
 		        }
+				
+				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
 			

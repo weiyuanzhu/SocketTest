@@ -58,6 +58,15 @@
          android:layout_alignParentRight="true" 
          android:visibility="gone"/>
 
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentLeft="true"
+         android:text="Last Refreshed"
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </RelativeLayout>
 
 </FrameLayout>

@@ -216,7 +216,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			Panel p = panelList.get(i);
 			
 			map = new HashMap<String, Object>();
-			map.put("location",p.getPanelLocation());
+			map.put("location",p.getPanelLocation().trim());
 			map.put("ip",p.getIp());
 			if(p.getOverAllStatus()== Constants.ALL_OK){
 				map.put("img", R.drawable.greentick);

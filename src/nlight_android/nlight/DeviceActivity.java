@@ -332,8 +332,46 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 	};
-	
 
+	/* implements device list group open/close listener, 
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onGroupExpandOrCollapse(int)
+	 * @param int groupPosition that indicates which loop
+	 */
+	@Override
+	public void onGroupExpandOrCollapse(int groupPosition) {
+		System.out.println("GroupOpen/Close Test " + groupPosition);
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		//remove DeviceInfo Fragment
+		if(deviceFragment != null){
+			fragmentTransaction.remove(deviceFragment);
+			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			fragmentTransaction.commit();
+		}
+		
+		switch(groupPosition)
+		{
+			case 0: 
+				if(panel.getLoop1().getFaultyDevicesNo()!=0)
+				{
+					image.setImageResource(R.drawable.redcross);		
+				}else image.setImageResource(R.drawable.greentick);
+				break;
+			case 1: 
+				if(panel.getLoop2().getFaultyDevicesNo()!=0)
+				{
+					image.setImageResource(R.drawable.redcross);		
+				}else image.setImageResource(R.drawable.greentick);
+				break;
+				
+			default: 
+				break;
+		
+		
+		}
+		
+	}
+	
 
 	
 }
