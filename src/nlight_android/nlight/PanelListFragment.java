@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import nlight_android.models.Panel;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.Constants;
 import android.annotation.SuppressLint;
@@ -29,7 +29,7 @@ import com.example.nclient.R;
 /**
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link PanelListFragment.OnPanelListItemClickedCallBack}  interface to handleinteraction events.
  */
-public class PanelListFragment extends ListFragment implements Connection.CallBack{
+public class PanelListFragment extends ListFragment implements TCPConnection.CallBack{
 	
 	/**
 	 * This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity. <p> See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with Other Fragments</a> for more information.
@@ -59,7 +59,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 	private SimpleAdapter simpleAdapter;
 	private int mCurCheckPosition = 0;
 	
-	private List<Connection> connectionList;
+	private List<TCPConnection> connectionList;
 	private List<char[]> commandList;
 
 	public PanelListFragment() {
@@ -184,7 +184,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 			
 		if(!isDemo && isConnected){
 			
-			connectionList = new ArrayList<Connection>();
+			connectionList = new ArrayList<TCPConnection>();
 			
 			PanelListFragment currentFragment= (PanelListFragment)getFragmentManager().findFragmentByTag("panelListFragment");
 			
@@ -193,7 +193,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 				commandList = CommandFactory.getOverallStatus();
 				String ip = (String) panelList.get(i).getIp();
 				
-				Connection connection = new Connection(currentFragment,ip);
+				TCPConnection connection = new TCPConnection(currentFragment,ip);
 				connectionList.add(connection);
 				
 				connection.fetchData(commandList);
@@ -242,7 +242,7 @@ public class PanelListFragment extends ListFragment implements Connection.CallBa
 
 		statusUpdateHandler.sendMessage(msg);
 		
-		for(Connection c: connectionList){
+		for(TCPConnection c: connectionList){
 			
 			if(c.getIp().equals(ip))
 			{

@@ -8,7 +8,7 @@ import nlight_android.models.Panel;
 import nlight_android.nlight.DeviceInfoFragment.DeviceSetLocationListener;
 import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.DataParser;
 import nlight_android.util.SetCmdEnum;
 import nlight_android.util.ToggleCmdEnum;
@@ -28,7 +28,7 @@ import com.example.nclient.R;
 
 
 
-public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,Connection.CallBack, 
+public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
 															DeviceSetLocationListener,NoticeDialogListener{
 	private Handler mHandler;
 	
@@ -38,7 +38,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private DeviceInfoFragment deviceFragment = null;
 	
 	private ImageView image = null;
-	private Connection connection;
+	private TCPConnection connection;
 	
 	private int currentDeviceAddress;
 	private int currentGroupPosition;
@@ -85,7 +85,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		String title = isDemo? "Panel: " + panel.getPanelLocation() + " (Demo)" : "Panel: " + panel.getPanelLocation() + " (Live)";
 		getActionBar().setTitle(title);
 		
-		this.connection = new Connection(this,panel.getIp());
+		this.connection = new TCPConnection(this,panel.getIp());
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		

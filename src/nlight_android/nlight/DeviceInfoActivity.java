@@ -7,7 +7,7 @@ import java.util.Map;
 
 import nlight_android.util.ToggleCmdEnum;
 import nlight_android.models.Device;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -18,10 +18,10 @@ import android.widget.TextView;
 
 import com.example.nclient.R;
 
-public class DeviceInfoActivity extends ListActivity implements Connection.CallBack{
+public class DeviceInfoActivity extends ListActivity implements TCPConnection.CallBack{
 	
 	
-	private Connection connection;
+	private TCPConnection connection;
 	private TextView title;
 	
 	private SimpleAdapter simpleAdapter;
@@ -135,7 +135,7 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		 List<char[] > commandList = ToggleCmdEnum.FT.toggle(64);
 		
-		Connection connection = new Connection (this,"192.168.1.24");
+		TCPConnection connection = new TCPConnection (this,"192.168.1.24");
 		connection.fetchData(commandList);
 		
 	}
@@ -145,7 +145,7 @@ public class DeviceInfoActivity extends ListActivity implements Connection.CallB
 		System.out.println("----------ftTest--------");
 		List<char[] > commandList = CommandFactory.stopTest(device.getAddress());
 		
-		Connection connection = new Connection (this, "192.168.1.24");
+		TCPConnection connection = new TCPConnection (this, "192.168.1.24");
 		connection.fetchData(commandList);
 		
 	}

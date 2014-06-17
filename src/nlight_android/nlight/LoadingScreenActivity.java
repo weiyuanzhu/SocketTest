@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.socket.UDPConnection;
 import nlight_android.socket.UDPConnection.UDPCallback;
 import nlight_android.util.CommandFactory;
@@ -42,9 +42,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
-	//ipList = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
-	private ArrayList<String> ipList = null;
-	private Set<String> ipSelected = null;
+	//ipListAll = new String[] {"192.168.1.17","192.168.1.20","192.168.1.21","192.168.1.23","192.168.1.24"};
+	private ArrayList<String> ipListAll = null;
+	private ArrayList<String> ipListSelected = null;
 	
 	private static final int LOADING = 0;
 	private static final int PARSING = 1;
@@ -60,7 +60,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
-	private Map<String,Connection> ip_connection_map = null;
+	private Map<String,TCPConnection> ip_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
 	private UDPConnection udpConnection = null;
@@ -79,7 +79,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public void receive(List<Integer> rx, String ip) {
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
-		Connection connection = ip_connection_map.get(ip);
+		TCPConnection connection = ip_connection_map.get(ip);
 		connection.setIsClosed(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
@@ -115,9 +115,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	public int addIp(String ip)
 	{
 		System.out.println("Received UDP package");
-		if(!ipList.contains(ip))
+		if(!ipListAll.contains(ip))
 		{
-			ipList.add(ip);
+			ipListAll.add(ip);
 			
 			//put ip and location into a map and add to dataList for dialog listview;
 			Map<String, Object> map = new HashMap<String,Object>();
@@ -165,7 +165,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		progressBar = (ProgressBar) findViewById(R.id.loadscreen_progressBar);
 		
 		//init loading panals 
-		init();
+		initializeFields();
 		
 		//update connection flags
 		checkConnectivity();
@@ -239,7 +239,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(String key : ip_connection_map.keySet())
 		{
 			
-			Connection connection = ip_connection_map.get(key);
+			TCPConnection connection = ip_connection_map.get(key);
 			connection.closeConnection();
 			connection = null;
 		}
@@ -279,7 +279,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(String key : ip_connection_map.keySet())
 		{
 			
-			Connection connection = ip_connection_map.get(key);
+			TCPConnection connection = ip_connection_map.get(key);
 			connection.closeConnection();
 			connection = null;
 		}
@@ -316,6 +316,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			startActivity(intent);
 			
 			
+			
+			//clear ipSelected list 
+			ipListSelected.clear();
+			
+			
 			//finish this activity to prevent back navi
 			//finish();
 			
@@ -324,22 +329,22 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 	};
 	
-	public void init()
+	public void initializeFields()
 	{
 		
 		/*
 		 * Initial collections 
 		 * 
 		 */
-		ipList = new ArrayList<String>();
-		ipSelected = new HashSet<String>();
+		ipListAll = new ArrayList<String>();
+		ipListSelected = new ArrayList<String>();
 		
 		
-		//paneList(Parcable) is for navigation
+		//paneList(Parcelable) is for navigation
 		panelList = new ArrayList<Panel>();
 		
 		panelMap = new HashMap<String,Panel>();
-		ip_connection_map = new HashMap<String,Connection>();
+		ip_connection_map = new HashMap<String,TCPConnection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
 		dataList = new ArrayList<Map<String,Object>>();
@@ -396,7 +401,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			panelMap.put(ip, newPanel);
 			panelList.add(newPanel);
 			
-			if(panelList.size()==ipSelected.size()){
+			if(panelList.size()==ipListSelected.size()){
 				
 				//msg = new Message();
 				msg.arg1 = LOADING_FINISHED;
@@ -457,8 +462,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		msg.obj = ip;
 		mHandler.sendMessage(msg);
 		
-		ipList.remove(ip);
-		panelToLoad	= ipList.size();	
+		ipListAll.remove(ip);
+		panelToLoad	= ipListAll.size();	
 	}
 	
 	
@@ -469,8 +474,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	@Override
 	public void cancelDialog(List<Integer> selected) {
 		
-		savePanelSelection(selected);	
-		saveCheckedStats();
+		savePanelSelectionToIpLIstSelected(selected);	
+		saveCheckedStatsToPreference();
 		
 	}
 
@@ -483,21 +488,21 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//save checkBox status
 		
-		savePanelSelection(selected);
+		savePanelSelectionToIpLIstSelected(selected);
 		
 		
-		System.out.println(ipSelected);
+		System.out.println(ipListSelected);
 		
-		saveCheckedStats();
+		
 		
 		
 		/*
 		 *  Initial connections and rxBuffer for each panel
 		 */
 		
-		for(String ip : ipSelected)
+		for(String ip : ipListSelected)
 		{
-			Connection connection = new Connection(this, ip);
+			TCPConnection connection = new TCPConnection(this, ip);
 			ip_connection_map.put(ip, connection);
 			rxBufferMap.put(ip, new ArrayList<Integer>());
 			
@@ -507,7 +512,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//set isDemo flag
 		isDemo = false;
-		panelToLoad = ipSelected.size();
+		panelToLoad = ipListSelected.size();
 		
 		
 		//Message msg = mHandler.obtainMessage();
@@ -517,7 +522,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		
 		//check if loading is already in process and panel selected not equal to 0
-		if(!isLoading && ipSelected.size()!=0){
+		if(!isLoading && ipListSelected.size()!=0){
 			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
 			
 			progressText.setVisibility(View.VISIBLE);
@@ -526,9 +531,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			System.out.println("------------liveMode clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
 			
-			for(String ip: ipSelected){
+			for(String ip: ipListSelected){
 				
-				Connection conn = (Connection) ip_connection_map.get(ip);
+				TCPConnection conn = (TCPConnection) ip_connection_map.get(ip);
 				conn.fetchData(commandList);
 			}
 			
@@ -538,6 +543,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			isLoading = true;
 			
 		}
+		
+		saveCheckedStatsToPreference();
 		
 	}
 	
@@ -563,8 +570,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		ListDialogFragment panelListDialog = new ListDialogFragment();
 				
 		//get a String[] from ipSet and pass to dialog window
-		String[] ipArray = new String[ipList.size()];
-		ipList.toArray(ipArray);
+		String[] ipArray = new String[ipListAll.size()];
+		ipListAll.toArray(ipArray);
 		panelListDialog.setIps(ipArray);
 		panelListDialog.setDataList(dataList);
 				
@@ -605,7 +612,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	/**
 	 * save checked status to SharedPreference
 	 */
-	private void saveCheckedStats()
+	private void saveCheckedStatsToPreference()
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean saveChecked = sp.getBoolean(SettingsActivity.SAVE_CHECKED, true);
@@ -615,14 +622,14 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		{
 			System.out.println("Save checked");
 			
-			for(String ip : ipList)
+			for(String ip : ipListAll)
 			{
 				StringBuilder sb = new StringBuilder(ip);
 				sb.append(" ");
 				String ip_ = sb.toString();
 				
 				System.out.println(ip_);
-				editor.putBoolean(ip_, ipSelected.contains(ip)? true: false);
+				editor.putBoolean(ip_, ipListSelected.contains(ip)? true: false);
 				editor.commit();
 			
 				
@@ -631,19 +638,19 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		}
 		
 		// clear selected IP list 
-		ipSelected.clear();
+		//ipSelected.clear();
 	}
 
 	/**
 	 * Go thought all IP list and put selected ip in the ipSelected set 
-	 * @param selected a list of position that panels selected in the multi selection dialog
+	 * @param selected list of position that panels selected in the multi selection dialog
 	 */
-	private void savePanelSelection(List<Integer> selected)
+	private void savePanelSelectionToIpLIstSelected(List<Integer> selected)
 	{
 		for(Integer i: selected)
 		{
-			String item = ipList.get(i);
-			ipSelected.add(item);
+			String item = ipListAll.get(i);
+			ipListSelected.add(item);
 		}
 	}
 

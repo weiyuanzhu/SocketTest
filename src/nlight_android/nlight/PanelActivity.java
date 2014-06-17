@@ -8,7 +8,7 @@ import java.util.Map;
 
 import nlight_android.models.Panel;
 import nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
 import android.app.FragmentTransaction;
@@ -31,11 +31,11 @@ import com.example.nclient.R;
  * @author weiyuan zhu
  *
  */
-public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, Connection.CallBack, PopupMenu.OnMenuItemClickListener{
+public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, TCPConnection.CallBack, PopupMenu.OnMenuItemClickListener{
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
-	private Map<String,Connection> panel_connection_map = null;
+	private Map<String,TCPConnection> panel_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
 	private List<PanelInfoFragment> fragmentList = null;
@@ -54,7 +54,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	public void receive(List<Integer> rx, String ip) {
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
-		Connection connection = panel_connection_map.get(ip);
+		TCPConnection connection = panel_connection_map.get(ip);
 		connection.setIsClosed(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
@@ -192,7 +192,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			for(String key : panelMap.keySet())
 			{
 				
-				Connection connection = panel_connection_map.get(key);
+				TCPConnection connection = panel_connection_map.get(key);
 				if(connection!=null){
 					connection.closeConnection();
 					connection = null;
@@ -242,7 +242,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		for(String key : panelMap.keySet()){
 			
-			Connection connection = new Connection(this, key);
+			TCPConnection connection = new TCPConnection(this, key);
 			
 			panel_connection_map.put(key, connection);
 			
@@ -254,7 +254,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		for(String key : panelMap.keySet()){
 			
-			Connection conn = (Connection) panel_connection_map.get(key);
+			TCPConnection conn = (TCPConnection) panel_connection_map.get(key);
 			conn.fetchData(commandList);
 		}
 		
@@ -325,7 +325,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	{
 		panelList = new ArrayList<Panel>();
 		panelMap = new HashMap<String,Panel>();
-		panel_connection_map = new HashMap<String,Connection>();
+		panel_connection_map = new HashMap<String,TCPConnection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
 		String ip1 = "192.168.1.17";

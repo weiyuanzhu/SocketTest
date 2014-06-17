@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import nlight_android.models.Panel;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
@@ -33,7 +33,7 @@ import com.example.nclient.R;
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Use the {@link PanelInfoFragment#newInstance}  factory method to create an instance ofthis fragment.
  */
 @SuppressLint("ValidFragment")
-public class PanelInfoFragment extends Fragment implements Connection.CallBack {
+public class PanelInfoFragment extends Fragment implements TCPConnection.CallBack {
 	
 	
 
@@ -65,7 +65,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
 	private List<List<List<Integer>>> deviceList = null;	//device list (bytes)
 	
-	private Connection connection;	
+	private TCPConnection connection;	
 	
 	private Panel panel = null;
 	
@@ -280,7 +280,7 @@ public class PanelInfoFragment extends Fragment implements Connection.CallBack {
 		
 		
 		PanelInfoFragment currentFragment= (PanelInfoFragment)getFragmentManager().findFragmentByTag("tagTest");
-		connection = new Connection(currentFragment,ip);
+		connection = new TCPConnection(currentFragment,ip);
 		connection.fetchData(commandList);
 		}
 		

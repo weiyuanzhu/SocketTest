@@ -2,7 +2,7 @@ package nlight_android.nlight;
 
 import java.util.List;
 
-import nlight_android.socket.Connection.CallBack;
+import nlight_android.socket.TCPConnection.CallBack;
 
 import com.example.nclient.R;
 
@@ -33,7 +33,7 @@ public class BaseActivity extends Activity implements CallBack {
     public static boolean refreshDisplay = true;
 
 	@SuppressWarnings("unused")
-	private Connection connection;
+	private TCPConnection connection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -13,7 +13,7 @@ import java.util.List;
 import nlight_android.util.Constants;
 
 
-public class Connection {
+public class TCPConnection {
 	
 	//interface for callback
 		public interface CallBack 
@@ -29,7 +29,7 @@ public class Connection {
 	
 	
 	
-	//private fields
+	//callback for TCP Connection
 	private WeakReference<CallBack> mCallBack;
 	
 	private int port;
@@ -51,7 +51,7 @@ public class Connection {
 	
 	
 	//Constructor , requires a delegation object for callback
-	public Connection(CallBack callBack, String ip)
+	public TCPConnection(CallBack callBack, String ip)
 	{
 		this.ip = ip;
 		this.isClosed = false;

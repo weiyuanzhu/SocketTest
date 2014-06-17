@@ -16,8 +16,8 @@ import nlight_android.nlight.SetDeviceLocationDialogFragment;
 import nlight_android.nlight.SettingsActivity;
 import nlight_android.nlight.SettingsFragment;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
-import nlight_android.socket.Connection;
-import nlight_android.socket.Connection.CallBack;
+import nlight_android.socket.TCPConnection;
+import nlight_android.socket.TCPConnection.CallBack;
 import nlight_android.util.DataParser;
 import nlight_android.util.SetCmdEnum;
 
@@ -38,16 +38,16 @@ import android.view.View;
 import android.widget.Toast;
 import nlight_android.nlight.*;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
-import nlight_android.socket.Connection.*;
+import nlight_android.socket.TCPConnection.*;
 import nlight_android.socket.*;
 import android.os.*;
 import android.view.*;
 
 import java.util.*;
 
-public class TestActivity extends BaseActivity implements Connection.CallBack,NoticeDialogListener{
+public class TestActivity extends BaseActivity implements TCPConnection.CallBack,NoticeDialogListener{
 
-	Connection connection;
+	TCPConnection connection;
 	final String ip = "192.168.1.24";
 
 	@Override
@@ -59,7 +59,7 @@ public class TestActivity extends BaseActivity implements Connection.CallBack,No
 		
 		setContentView(R.layout.activity_test);
 		
-		connection = new Connection(this, ip);
+		connection = new TCPConnection(this, ip);
 	}
 	
 	

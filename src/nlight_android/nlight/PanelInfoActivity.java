@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import nlight_android.models.Panel;
-import nlight_android.socket.Connection;
+import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
 import android.annotation.SuppressLint;
@@ -24,7 +24,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.nclient.R;
 
-public class PanelInfoActivity extends ListActivity  implements Connection.CallBack{
+public class PanelInfoActivity extends ListActivity  implements TCPConnection.CallBack{
 	
 	private Handler progressHandler;
 	private Handler listUpdateHandler;
@@ -39,7 +39,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 	private List<List<Integer>> eepRom = null;		//panel eeprom data (bytes)
 	private List<List<List<Integer>>> deviceList = null;	//device list (bytes)
 	
-	private Connection connection;	
+	private TCPConnection connection;	
 	
 	private Panel panel = null;
 	
@@ -235,7 +235,7 @@ public class PanelInfoActivity extends ListActivity  implements Connection.CallB
 		commandList = CommandFactory.getPanelInfo();
 		//commandList.add(getPackage1);
 		
-		connection = new Connection(this, "192.168.1.24");
+		connection = new TCPConnection(this, "192.168.1.24");
 		connection.fetchData(commandList);
 		
 	}
