@@ -140,8 +140,8 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		simpleAdapter = new SimpleAdapter(getActivity(),dataList,R.layout.panel_list_row,
-				new String[]{"location","img"},
-				new int[]{R.id.location,R.id.img});
+				new String[]{"location","img","faultyNo"},
+				new int[]{R.id.location,R.id.img,R.id.faulty_no});
 		setListAdapter(simpleAdapter);
 		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -221,7 +221,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			if(p.getOverAllStatus()== Constants.ALL_OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);
-			
+			map.put("faultyNo", "("+p.getFaultDeviceNo()+")");
 			list.add(map);
 	
 		}

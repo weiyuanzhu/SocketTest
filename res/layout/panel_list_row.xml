@@ -15,17 +15,29 @@
     <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" 
+	    android:orientation="horizontal" 
 	    android:layout_marginLeft="10dp"
 	    android:layout_gravity="center_vertical"
 	    >
     
 	    <TextView
 	        android:id="@+id/location"
+	        android:text="location"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
+		<TextView
+	        android:id="@+id/faulty_no"
+	        android:text="(0)"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:layout_marginLeft="10dip"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+		
+	    
 	</LinearLayout>
 
 </LinearLayout>
