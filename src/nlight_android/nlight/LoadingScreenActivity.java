@@ -55,6 +55,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	private Button demoBtn = null;
 	private TextView progressText = null;
 	private ProgressBar progressBar = null;
+	private int progress = 0;
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
@@ -71,10 +72,19 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	
 
-	/* (non-Javadoc) implement TCPcallback
+	/* (non-Javadoc) implement TCPcallback, receiving data package
 	 * @see mackwell.nlight.BaseActivity#receive(java.util.List, java.lang.String)
 	 */
 	public void receive(List<Integer> rx, String ip) {
+		
+		Message msg = mHandler.obtainMessage();
+		progress++;
+		
+		msg.arg1 = LOADING;
+		msg.arg2 = progress;
+		
+		
+		
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
 		TCPConnection connection = ip_connection_map.get(ip);
@@ -85,15 +95,15 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			panelToLoad--;
 
 			//update progress with handler
-			Message msg = mHandler.obtainMessage();
+			
 			
 			if(panelToLoad==0){
 				msg.arg1 = PARSING;
 				
-			}else msg.arg1 = LOADING;
+			}
 			
 			
-			mHandler.sendMessage(msg);
+			//mHandler.sendMessage(msg);
 			
 			try {
 				Thread.sleep(1000);
@@ -104,6 +114,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			parse(ip);
 			
 		}
+		
+		mHandler.sendMessage(msg);
 		
 	}
 
@@ -168,15 +180,18 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		//update connection flags
 		checkConnectivity();
 		
-		//handler for deal with ui update and navigation
+		//handler for deal with UI update and navigation
 		mHandler = new Handler(){
 
 			@Override
 			public void handleMessage(Message msg) {
 				
+				progressBar.setProgress(msg.arg2);
+				
 				switch(msg.arg1){
 					case LOADING:
 						progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+						break;
 					case PARSING: 
 						progressText.setText("Analysing Panel Data");
 						break;
@@ -189,7 +204,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 						progressBar.setVisibility(View.INVISIBLE);
 						liveBtn.setEnabled(true);
 						break;
-					default: break;
+					default: 
+						
+						break;
+					
+					
 				
 				}
 				
@@ -249,6 +268,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		// TODO Auto-generated method stub
 		super.onResume();
 		
+		//reset progress bar and progress
+		progress = 0;
+		progressBar.setVisibility(View.INVISIBLE);
 		
 		//re-enable buttons
 		demoBtn.setEnabled(true);
@@ -256,7 +278,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		//hide bars
 		progressText.setVisibility(View.INVISIBLE);
-		progressBar.setVisibility(View.INVISIBLE);
+		//progressBar.setVisibility(View.INVISIBLE);
 		
 	}
 
@@ -488,6 +510,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		savePanelSelectionToIpLIstSelected(selected);
 		
+		progressBar.setMax(16*ipListSelected.size());
+		
 		
 		System.out.println(ipListSelected);
 		
@@ -524,7 +548,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
 			
 			progressText.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.VISIBLE);	
+			progressBar.setVisibility(View.VISIBLE);
+			
 			
 			System.out.println("------------liveMode clicked");
 			List<char[]> commandList = CommandFactory.getPanelInfo();
