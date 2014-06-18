@@ -3,7 +3,6 @@
  */
 package nlight_android.adapter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.*;
-import android.content.*;
-import nlight_android.models.*;
-import java.util.*;
-import android.view.*;
 
 /**
  * @author weiyuan zhu

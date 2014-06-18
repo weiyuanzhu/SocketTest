@@ -26,6 +26,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -53,8 +54,10 @@ public class DeviceListFragment extends Fragment {
 
 	}
 	
+	
 
 	private OnDevicdListFragmentListener mListener;
+	
 	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;

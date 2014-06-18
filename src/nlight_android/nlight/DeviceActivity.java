@@ -1,7 +1,10 @@
 package nlight_android.nlight;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
@@ -53,10 +56,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
-		currentSelectedDevice.updateDevice(rx);
-		mHandler.post(refreshDevice);
-		connection.setIsClosed(true);
-		
+		if(rx.get(1)==160){
+			currentSelectedDevice.updateDevice(rx);
+			mHandler.post(refreshDevice);
+			mHandler.post(new RefreshTest());
+			connection.setIsClosed(true);
+		}
 	}
 	
 	
@@ -104,6 +109,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
 		deviceListFragment.setLoop2(panel.getLoop2());
+		
+		
+		mHandler.postDelayed(new RefreshTest(),1000);
 		
 	}
 	
@@ -160,6 +168,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 
+	/* (non-Javadoc) implements DeviceListFragment listener, on single device clicked
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onDeviceItemClicked(int, int)
+	 */
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
 		
@@ -275,13 +286,18 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	@Override
 	public void refreshDevice(int address)
 	{
 		if(isConnected && !isDemo){
 			System.out.println("----------refresh device status--------");
 			List<char[] > commandList = ToggleCmdEnum.REFRESH.toggle(address);
 			connection.fetchData(commandList);
-		}	
+		}
+		else {
+			
+			mHandler.post(refreshDevice);
+		}
 		
 		
 		
@@ -377,6 +393,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				
 				faultyDeviceNo.setText("Loop2 Faulty Number: " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
+					
 				{
 					image.setImageResource(R.drawable.redcross);		
 				}
@@ -391,6 +408,26 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	private class RefreshTest implements Runnable{
 
+		@Override
+		public void run() {
+			System.out.println("---------------auto refresh test----------------");
+			//refreshDevice(0);
+			
+			
+			mHandler.postDelayed(new RefreshTest(), TimeUnit.SECONDS.toMillis(30));
+			//get current time, using Calendar.getInstance();
+			Calendar cal = Calendar.getInstance();
+	    	cal.getTime();
+	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+	    	System.out.println( "Last updated: " + sdf.format(cal.getTime()));
+		
+	    	//deviceFragment.updateStampTextView.setText("Last updated: " + sdf.format( cal.getTime()));
+			//mHandler.postDelayed(new RefreshTest(), TimeUnit.SECONDS.toMillis(5));
+		}
+		
+		
+	}
 	
 }

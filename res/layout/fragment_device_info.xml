@@ -30,5 +30,14 @@
     </ListView>
         
     </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/deviceList_stamp_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="10dip"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </FrameLayout>

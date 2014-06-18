@@ -1,7 +1,9 @@
 package nlight_android.nlight;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,10 @@ public class DeviceInfoFragment extends ListFragment {
 	}
 	
 
+	public TextView updateStampTextView;
+	
+	private Calendar cal;
+	
 	private static final String ARG_DEVICE = "device";
 
 
@@ -124,6 +130,8 @@ public class DeviceInfoFragment extends ListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		updateStampTextView = (TextView) getActivity().findViewById(R.id.deviceList_stamp_textView);
+		
 		deviceName = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
 		deviceName.setLongClickable(true);
 		deviceName.setOnLongClickListener(new OnLongClickListener(){
@@ -154,6 +162,7 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		//getListView().setOnItemLongClickListener(longClickListener);
 
+		updateTimeStamp();
 
 	}
 
@@ -297,6 +306,9 @@ public class DeviceInfoFragment extends ListFragment {
 	 * @param device
 	 */
 	public void updateDevice(Device device) {
+		
+		updateTimeStamp();
+		
 		listDataSource = getData(device);
 		
 		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
@@ -307,6 +319,11 @@ public class DeviceInfoFragment extends ListFragment {
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
-	
+	private void updateTimeStamp(){
+		
+		cal = device.getCal();
+    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		updateStampTextView.setText("Last updated: " + sdf.format(cal.getTime()));
+	}
 
 }
