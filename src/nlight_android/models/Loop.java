@@ -73,11 +73,11 @@ public class Loop  implements Parcelable{
 		{
 			Device d = new Device(dl.get(i),eepRom);
 			deviceList.add(d);
-			if(d.getFailureStatus()!=0) 
+			/*if(d.getFailureStatus()!=0) 
 			{
 				setStatus(1);
 				
-			}
+			}*/
 			System.out.println(d.toString());
 	
 		}		

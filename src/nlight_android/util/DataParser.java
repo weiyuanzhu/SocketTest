@@ -64,6 +64,7 @@ public class DataParser {
 			
 		}
 		
+		System.out.println("===============Getting EEPRom======================");
 		System.out.println("EEPROM size: " + eepRom.size());
 		return eepRom;
 		
@@ -93,7 +94,7 @@ public class DataParser {
 		}
 		
 		
-		
+		System.out.println("===============Getting Device List======================");
 		System.out.println("Device Number: " + (deviceList.get(0).size()+deviceList.get(1).size()));
 		return deviceList;
 		

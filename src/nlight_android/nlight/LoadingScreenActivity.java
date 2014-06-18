@@ -395,7 +395,10 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	public void liveMode(View view)
 	{
-		
+		if(ipListAll.size()==0){
+			
+			searchUDP();
+		}
 		popDialog();
 		
 		
