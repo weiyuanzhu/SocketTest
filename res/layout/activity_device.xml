@@ -21,23 +21,32 @@
         android:layout_weight="2"
         >
 
+        
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
         <ImageView
             android:id="@+id/deviceInfo_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/mackwell_logo" 
-            android:layout_gravity="center"
-            android:contentDescription="@string/title_activity_panel_info"/>
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/title_activity_panel_info"
+            android:src="@drawable/mackwell_logo" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/device_faultyNo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/deviceInfo_image"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
             android:text="Faulty device no: "
-            android:gravity="center_horizontal"
-            android:layout_marginTop="300dp"
-            android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </RelativeLayout>
 
     </FrameLayout>
 

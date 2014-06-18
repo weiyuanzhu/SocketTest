@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -38,6 +39,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private DeviceInfoFragment deviceFragment = null;
 	
 	private ImageView image = null;
+	private TextView faultyDeviceNo;
+	
 	private TCPConnection connection;
 	
 	private int currentDeviceAddress = 0;
@@ -88,11 +91,15 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		this.connection = new TCPConnection(this,panel.getIp());
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
+		this.faultyDeviceNo = (TextView) findViewById(R.id.device_faultyNo_text);
+		faultyDeviceNo.setText("Panel Faulty Number: " + panel.getFaultDeviceNo());
+		
 		
 		if(panel.getOverAllStatus()!=0)
 		{
 			image.setImageResource(R.drawable.redcross);		
-		}else image.setImageResource(R.drawable.greentick);
+		}
+		else image.setImageResource(R.drawable.greentick);
 		
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
@@ -162,6 +169,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		System.out.println("current device:-------------->" + currentDeviceAddress);
 		
 		image.setVisibility(View.INVISIBLE);
+		faultyDeviceNo.setVisibility(View.INVISIBLE);
+		
 		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
 		
 		if(groupPosition==0)
@@ -350,11 +359,14 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		}
 		
 		image.setVisibility(View.VISIBLE);
+		faultyDeviceNo.setVisibility(View.VISIBLE);
+		
 		
 		//reset image according to loop faulty status
 		switch(groupPosition)
 		{
 			case 0: 
+				faultyDeviceNo.setText("Loop1 Faulty Number: " + panel.getLoop1().getFaultyDevicesNo());
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
@@ -362,6 +374,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				else image.setImageResource(R.drawable.greentick);
 				break;
 			case 1: 
+				
+				faultyDeviceNo.setText("Loop2 Faulty Number: " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		

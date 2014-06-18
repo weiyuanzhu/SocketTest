@@ -140,6 +140,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         
         ImageView groupImage = (ImageView) convertView
                 .findViewById(R.id.groupImage);
+        TextView allDevicesNo = (TextView) convertView.findViewById(R.id.loopDeviceNo);
         
         if(loop.getStatus()==0){
         	groupImage.setImageResource(R.drawable.greentick);
@@ -149,6 +150,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
+        
+        allDevicesNo.setText("(" + loop.getDeviceNumber() + ")");
  
         return convertView;
     }
