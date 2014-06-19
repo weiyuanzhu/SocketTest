@@ -3,6 +3,8 @@
  */
 package nlight_android.adapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,8 @@ import android.widget.TextView;
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
+	
+	private boolean mNotifyChanged = true;
 	private Context mContext;
     private List<Loop> listDataHeader; // header titles
     // child data in format of header title, child title
@@ -158,6 +162,17 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+    
+    public void sort(Comparator<Device> comparator)
+    {
+    	
+    	Loop l1 = listDataHeader.get(0);
+    	Loop l2 = listDataHeader.get(1);
+    	Collections.sort(this.listDataChild.get(l1),comparator);
+    	Collections.sort(this.listDataChild.get(l2),comparator);
+    	
+    	if(mNotifyChanged) notifyDataSetChanged();
     }
 
 }

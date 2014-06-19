@@ -3,6 +3,7 @@ package nlight_android.nlight;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +35,10 @@ import com.example.nclient.R;
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
 															DeviceSetLocationListener,NoticeDialogListener{
+	
+	
+	
+	
 	private Handler mHandler;
 	
 	private Panel panel = null;
@@ -158,6 +163,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	        	Intent setting_intent = new Intent(this,SettingsActivity.class);
 	            startActivity(setting_intent);
 	            return true;
+	            
+	        case R.id.action_sort:
+	        	deviceListFragment.sort();
+	        	
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
