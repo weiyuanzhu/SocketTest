@@ -3,10 +3,12 @@
  */
 package nlight_android.adapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 
 import nlight_android.models.Device;
 import nlight_android.models.Loop;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +31,7 @@ import android.widget.TextView;
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
-	
+	private MyFilter mFilter;
 	private boolean mNotifyChanged = true;
 	private Context mContext;
     private List<Loop> listDataHeader; // header titles
@@ -174,5 +177,34 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	
     	if(mNotifyChanged) notifyDataSetChanged();
     }
+    
+    class MyFilter extends Filter{
+
+		@Override
+		protected FilterResults performFiltering(CharSequence arg0) {
+			//System.out.println("Filter Test");
+			
+			FilterResults results = new FilterResults();
+			
+		
+			return results;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void publishResults(CharSequence query, FilterResults results) {
+			 //mDataList = (List<? extends Map<String,?>>) results.values;
+	            if (results.count > 0) {
+	                notifyDataSetChanged();
+	            } else {
+	                notifyDataSetInvalidated();
+	            }
+			
+		}
+		
+		
+	}
+    
+    
 
 }

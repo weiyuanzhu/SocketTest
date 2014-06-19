@@ -17,6 +17,8 @@ import nlight_android.util.DataParser;
 import nlight_android.util.SetCmdEnum;
 import nlight_android.util.ToggleCmdEnum;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +36,7 @@ import com.example.nclient.R;
 
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
-															DeviceSetLocationListener,NoticeDialogListener{
+															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener{
 	
 	
 	
@@ -124,7 +126,15 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		System.out.println("New INtent Received");
+		System.out.println("OnNewIntent");
+		setIntent(intent);
+		Intent newIntent = getIntent();
+	    if (Intent.ACTION_SEARCH.equals(newIntent.getAction())) {
+	      String query = newIntent.getStringExtra(SearchManager.QUERY);
+	      System.out.println(query);
+	    }
+		
+		
 		super.onNewIntent(intent);
 		
 	}
@@ -137,12 +147,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		getMenuInflater().inflate(R.menu.device, menu);
 		
 		
-		//get search view  and set the Hint message for it
-		MenuItem searchItem = menu.findItem(R.id.action_search_device);
-		
-		 searchView = (SearchView) searchItem.getActionView();
-		
-		 //searchView.setQueryHint("Search Devices");		
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search_device).getActionView();
+	    
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName())); // add searchable.xml configure file to searchView
+	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+	    searchView.setQueryHint("Search Device");
+	    searchView.setOnQueryTextListener(this);
 		
 		
 		return true;
@@ -438,6 +449,21 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		}
 		
 		
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		System.out.println(newText);
+		deviceListFragment.search(newText);
+		return false;
+	}
+
+
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

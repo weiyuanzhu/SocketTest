@@ -36,7 +36,7 @@ import com.example.nclient.R;
 /**
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
  */
-public class DeviceListFragment extends Fragment implements SearchView.OnQueryTextListener{
+public class DeviceListFragment extends Fragment {
 	
 	
 	/**
@@ -62,7 +62,7 @@ public class DeviceListFragment extends Fragment implements SearchView.OnQueryTe
 		public int compare(Device lhs, Device rhs) {
 			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
 			
-			return (faultComp == 0 ? rhs.getAddress() - lhs.getAddress(): faultComp);
+			return (faultComp == 0 ? (rhs.getAddress() - lhs.getAddress()): faultComp);
 		}
 		
 		
@@ -418,16 +418,10 @@ public class DeviceListFragment extends Fragment implements SearchView.OnQueryTe
 		
 	}
 
-	@Override
-	public boolean onQueryTextChange(String query) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-		return false;
+	public void search(String query){
+		System.out.println(query);
+		
+		
 	}
 		
 }
