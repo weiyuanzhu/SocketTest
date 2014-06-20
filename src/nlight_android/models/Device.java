@@ -42,6 +42,8 @@ public class Device  implements Parcelable{
 	private int lampEmergencyTime;
 	private int feature;
 	
+	private int currentStatus;
+	
 	private boolean isFailed;
 	
 	public Device(Parcel source) {
@@ -108,6 +110,7 @@ public class Device  implements Parcelable{
 		}
 		
 		cal = Calendar.getInstance();
+		currentStatus = 0;
 	}
 
 	public void updateDevice(List<Integer> device)
@@ -123,6 +126,7 @@ public class Device  implements Parcelable{
 		feature = device.get(22);
 		
 		cal = Calendar.getInstance();
+		currentStatus = 0;
 		
 		
 		
@@ -160,6 +164,8 @@ public class Device  implements Parcelable{
 		dest.writeInt(feature);
 		dest.writeIntArray(gtinArray);
 		
+		dest.writeInt(currentStatus);
+		
 		
 		
 		
@@ -181,7 +187,7 @@ public class Device  implements Parcelable{
 		feature = source.readInt();
 		source.readIntArray(gtinArray);
 		cal = Calendar.getInstance();
-
+		currentStatus = source.readInt();
 	}
 	
 	public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>() {
@@ -424,6 +430,14 @@ public class Device  implements Parcelable{
 
 	public void setCal(Calendar cal) {
 		this.cal = cal;
+	}
+
+	public int getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(int currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 
 	

@@ -38,6 +38,20 @@ public class TCPConnection {
 	
 	private boolean isClosed; // a flag for stop the background listening 
 	
+	public synchronized boolean  isClosed() {
+		return isClosed;
+	}
+
+
+	
+	
+	//set this.isClosed
+	public synchronized void setClosed(boolean isClosed)
+	{
+		this.isClosed = isClosed;
+	}
+
+
 	private Socket socket;
 	
 	private List<Integer> rxBuffer; //buffer for receive data
@@ -64,11 +78,7 @@ public class TCPConnection {
 	}
 
 	
-	//set this.isClosed
-	public void setIsClosed(boolean bool)
-	{
-		this.isClosed = bool;
-	}
+	
 	
 	/*	function for pull data from panel
 	 *  this function will start a new background thread to receive data from panel

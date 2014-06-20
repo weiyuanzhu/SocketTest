@@ -80,10 +80,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
  
         ImageView childImage = (ImageView) convertView
                 .findViewById(R.id.childImage);
+        ImageView status = (ImageView) convertView.findViewById(R.id.devicelist_child_status_imageView);
         
         if(device.getFailureStatus()==0){
         	childImage.setImageResource(R.drawable.greentick);
         }else childImage.setImageResource(R.drawable.redcross);
+        
+        if(device.getCurrentStatus()==0)
+        {
+        	status.setVisibility(View.INVISIBLE);
+        }
+        else {
+        	status.setVisibility(View.VISIBLE);
+        	status.setImageResource(R.drawable.ic_action_refresh);
+        }
         
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.devicelist_child_address_textView);

@@ -55,7 +55,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
 		TCPConnection connection = panel_connection_map.get(ip);
-		connection.setIsClosed(true);
+		connection.setClosed(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{
@@ -167,13 +167,13 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					showDevices(currentDisplayingPanel);
 				}
 				return true;
-			case R.id.action_show_faulty_devices:
+			/*case R.id.action_show_faulty_devices:
 				System.out.println("Show Faulty Devices");
 				if(currentDisplayingPanel != null){
 					panelWithFaulyDevices = Panel.getPanelWithFaulty(currentDisplayingPanel);
 					showDevices(panelWithFaulyDevices);
 				}
-				return true;
+				return true;*/
         	
 			default:
 	            return false;

@@ -40,7 +40,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	
-	
+	private boolean isAutoFresh = true;
 	private Handler mHandler;
 	
 	private Panel panel = null;
@@ -66,8 +66,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(rx.get(1)==160){
 			currentSelectedDevice.updateDevice(rx);
 			mHandler.post(refreshDevice);
-			mHandler.post(new RefreshTest());
-			connection.setIsClosed(true);
+			//mHandler.post(new RefreshTest());
+			connection.setClosed(true);
+			//deviceListFragment.updateProgressIcon(0);
 		}
 	}
 	
@@ -373,9 +374,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			
 			deviceFragment.updateDevice(currentSelectedDevice);
 			deviceListFragment.refershStatus();
+			deviceListFragment.updateProgressIcon(1);
 		}
 	
-		
 		
 	};
 
@@ -434,7 +435,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			System.out.println("---------------auto refresh test----------------");
-			//refreshDevice(0);
+			if(isAutoFresh){
+				
+				
+					refreshDevice(0);
+				
+			}
 			
 			
 			mHandler.postDelayed(new RefreshTest(), TimeUnit.SECONDS.toMillis(30));

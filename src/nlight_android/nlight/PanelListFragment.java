@@ -246,7 +246,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			
 			if(c.getIp().equals(ip))
 			{
-				c.setIsClosed(true);
+				c.setClosed(true);
 				
 			}
 			

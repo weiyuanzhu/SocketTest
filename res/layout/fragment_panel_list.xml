@@ -64,7 +64,7 @@
          android:layout_height="wrap_content"
          android:layout_alignParentBottom="true"
          android:layout_alignParentLeft="true"
-         android:text="Last Refreshed"
+         android:text="Last Updated:"
          android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>

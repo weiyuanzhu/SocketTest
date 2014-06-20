@@ -48,7 +48,7 @@ import java.util.*;
 public class TestActivity extends BaseActivity implements TCPConnection.CallBack,NoticeDialogListener{
 
 	TCPConnection connection;
-	final String ip = "192.168.1.24";
+	final String ip = "192.168.1.20";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +133,7 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
-		connection.setIsClosed(true);
+		connection.setClosed(true);
 		
 	}
 

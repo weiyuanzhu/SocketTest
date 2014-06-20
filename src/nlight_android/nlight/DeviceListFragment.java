@@ -62,7 +62,7 @@ public class DeviceListFragment extends Fragment {
 		public int compare(Device lhs, Device rhs) {
 			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
 			
-			return (faultComp == 0 ? (rhs.getAddress() - lhs.getAddress()): faultComp);
+			return (faultComp == 0 ? (lhs.getAddress() - rhs.getAddress()): faultComp);
 		}
 		
 		
@@ -407,7 +407,9 @@ public class DeviceListFragment extends Fragment {
 	
 	public void refershStatus()
 	{
+		updateProgressIcon(0);
 		mAdapter.notifyDataSetChanged();
+		
 	}
 		
 	
@@ -421,6 +423,13 @@ public class DeviceListFragment extends Fragment {
 	public void search(String query){
 		System.out.println(query);
 		
+		
+	}
+	
+	public void updateProgressIcon(int status){
+		
+		listDataChild.get(loop1).get(0).setCurrentStatus(1);
+		mAdapter.notifyDataSetChanged();
 		
 	}
 		
