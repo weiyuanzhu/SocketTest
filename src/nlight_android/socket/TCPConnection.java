@@ -36,10 +36,10 @@ public class TCPConnection {
 	private int port;
 	private String ip;
 	
-	private boolean isClosed; // a flag for stop the background listening 
+	private boolean isListening; // a flag for keep/stop the socket listening 
 	
 	public synchronized boolean  isClosed() {
-		return isClosed;
+		return isListening;
 	}
 
 
@@ -48,7 +48,7 @@ public class TCPConnection {
 	//set this.isClosed
 	public synchronized void setClosed(boolean isClosed)
 	{
-		this.isClosed = isClosed;
+		this.isListening = isClosed;
 	}
 
 
@@ -69,7 +69,7 @@ public class TCPConnection {
 	public TCPConnection(CallBack callBack, String ip)
 	{
 		this.ip = ip;
-		this.isClosed = false;
+		this.isListening = false;
 		this.rxCompleted = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
@@ -99,7 +99,7 @@ public class TCPConnection {
 
 	public void closeConnection()
 	{
-		isClosed = true;
+		isListening = true;
 		try {
 			if(socket != null)  
 			{		
@@ -138,7 +138,7 @@ public class TCPConnection {
 				try {
 					// init socket and in/out stream
 					
-					isClosed = false;
+					isListening = false;
 					
 					if(socket == null ||  socket.isClosed())
 					{
@@ -177,7 +177,7 @@ public class TCPConnection {
 					int data = 0;
 					
 					
-					while(!isClosed && !socket.isClosed())
+					while(!isListening && !socket.isClosed())
 					{	
 						//checks if a package is complete
 						//and call callback

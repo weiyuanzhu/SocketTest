@@ -19,7 +19,7 @@ public class UDPConnection implements Runnable{
 	
 	private DatagramSocket udpSocket = null;
 	private DatagramPacket udpPacket = null; 
-	private boolean isListen = true;
+	private boolean isListening = true; // a flag for keep/stop listening on socket
 	private UDPCallback mCallback;
 	
 	private String msg;
@@ -73,7 +73,7 @@ public class UDPConnection implements Runnable{
 					System.out.println("---------------receiving udp packages------------");
 					byte[] buf = new byte[1024];
 					udpPacket = new DatagramPacket(buf, buf.length);
-					while(isListen)
+					while(isListening)
 					{
 						try {
 							udpSocket.receive(udpPacket);
@@ -102,7 +102,7 @@ public class UDPConnection implements Runnable{
 						}
 						finally
 						{
-							if(!isListen && udpSocket!=null && !udpSocket.isClosed()){
+							if(!isListening && udpSocket!=null && !udpSocket.isClosed()){
 								udpSocket.close();
 							}
 							
@@ -167,11 +167,11 @@ public class UDPConnection implements Runnable{
 	}
 	
 	public synchronized boolean isListen() {
-		return isListen;
+		return isListening;
 	}
 
 	public synchronized void setListen(boolean isListen) {
-		this.isListen = isListen;
+		this.isListening = isListen;
 	}
 	
 	public List<int[]> getPanelList() {
