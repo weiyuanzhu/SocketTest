@@ -404,7 +404,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		rxBuffer.addAll(rx);
 
-		connection.setClosed(true);
+		connection.setListening(true);
 				
 		/*if(this.rxBuffer.size() > 15000)
 		{		

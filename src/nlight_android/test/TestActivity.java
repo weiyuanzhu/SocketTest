@@ -1,54 +1,40 @@
 package nlight_android.test;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import nlight_android.util.ToggleCmdEnum;
-import nlight_android.messageType.EmergencyMode;
-import nlight_android.messageType.EmergencyModeFlag;
-import nlight_android.messageType.EmergencyStatus;
-import nlight_android.messageType.EmergencyStatusFlag;
-import nlight_android.messageType.FailureStatus;
-import nlight_android.messageType.FailureStatusFlag;
 import nlight_android.nlight.BaseActivity;
 import nlight_android.nlight.SeekBarDialogFragment;
-import nlight_android.nlight.SetDeviceLocationDialogFragment;
-import nlight_android.nlight.SettingsActivity;
-import nlight_android.nlight.SettingsFragment;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+import nlight_android.nlight.SettingsActivity;
 import nlight_android.socket.TCPConnection;
-import nlight_android.socket.TCPConnection.CallBack;
-import nlight_android.util.DataParser;
-import nlight_android.util.SetCmdEnum;
-
-import com.example.nclient.R;
-
-import android.app.Activity;
-import android.content.Context;
+import nlight_android.util.GetCmdEnum;
+import nlight_android.util.ToggleCmdEnum;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-import nlight_android.nlight.*;
-import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
-import nlight_android.socket.TCPConnection.*;
-import nlight_android.socket.*;
-import android.os.*;
-import android.view.*;
 
-import java.util.*;
+import com.example.nclient.R;
 
 public class TestActivity extends BaseActivity implements TCPConnection.CallBack,NoticeDialogListener{
 
-	TCPConnection connection;
+	TCPConnection tcpConnection;
 	final String ip = "192.168.1.20";
+	ExecutorService exec = null;
+	
+	@Override
+	public void receive(List<Integer> rx, String ip) {
+		System.out.println(rx);
+		//tcpConnection.setListening(false);
+		//refreshTest();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +45,8 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		
 		setContentView(R.layout.activity_test);
 		
-		connection = new TCPConnection(this, ip);
+		tcpConnection = new TCPConnection(this, ip);
+		exec = Executors.newSingleThreadExecutor();
 	}
 	
 	
@@ -82,18 +69,46 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 
 	
 	
-	public void test(View v)
+	public void tcpTest(View v)
 	{
-		List<Integer> buffer = new ArrayList<Integer>();
+		/*List<Integer> buffer = new ArrayList<Integer>();
 		buffer.add(00);		
 		buffer.addAll(DataParser.convertString("test123"));
 		System.out.println(buffer);
 		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
-		connection.fetchData(commandList);
 		
+		commandList = ToggleCmdEnum.REFRESH.toggle(0);
+		
+		
+		
+		
+		System.out.println("---------------" + Thread.currentThread().toString());
+		
+		
+		for(int i=0; i<5;i++)
+		{
+			exec.execute(refreshTest);
+			
+		}*/
+			refreshTest();
+	}
+		
+	private void refreshTest(){
+
+			tcpConnection.closeConnection();
+			
+			List<char[] > commandList = GetCmdEnum.GET_INIT.get();
+			//commandList = ToggleCmdEnum.REFRESH.toggle(1);
+			
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+			System.out.println("---------------" + Thread.currentThread().toString() + "Refreshed Time:  " + sdf.format(cal.getTime()));
+			
+			tcpConnection.fetchData(commandList);
+			
+
 		
 	}
-	
 	
 	
 	@Override
@@ -130,12 +145,7 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		
 	}
 
-	@Override
-	public void receive(List<Integer> rx, String ip) {
-		System.out.println(rx);
-		connection.setClosed(true);
-		
-	}
+	
 
 
 

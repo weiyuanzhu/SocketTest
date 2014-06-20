@@ -165,7 +165,7 @@ public class PanelInfoActivity extends ListActivity  implements TCPConnection.Ca
 		
 		rxBuffer.addAll(rx);
 
-		connection.setClosed(true);
+		connection.setListening(true);
 				
 		/*if(this.rxBuffer.size() > 15000)
 		{		

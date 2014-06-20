@@ -38,7 +38,7 @@ public class TCPConnection {
 	
 	private boolean isListening; // a flag for keep/stop the socket listening 
 	
-	public synchronized boolean  isClosed() {
+	public synchronized boolean  isListening() {
 		return isListening;
 	}
 
@@ -46,9 +46,9 @@ public class TCPConnection {
 	
 	
 	//set this.isClosed
-	public synchronized void setClosed(boolean isClosed)
+	public synchronized void setListening(boolean isListening)
 	{
-		this.isListening = isClosed;
+		this.isListening = isListening;
 	}
 
 
@@ -92,14 +92,14 @@ public class TCPConnection {
 		
 		this.commandList = commandList;
 		new Thread(fetch).start();
-		System.out.println("connection started ");
+		System.out.println("Connection started on thread:-------> " );
 		
 		
 	}
 
 	public void closeConnection()
 	{
-		isListening = true;
+		isListening = false;
 		try {
 			if(socket != null)  
 			{		
@@ -126,7 +126,7 @@ public class TCPConnection {
 		@Override
 		public void run() {
 			panelInfoPackageNo = 0;
-			System.out.println("Slaver is doing job on a new thread.");
+			System.out.println(Thread.currentThread().toString() + "Slayver starts");
 			
 			//char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
 			//char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
@@ -138,7 +138,7 @@ public class TCPConnection {
 				try {
 					// init socket and in/out stream
 					
-					isListening = false;
+					isListening = true;
 					
 					if(socket == null ||  socket.isClosed())
 					{
@@ -176,8 +176,8 @@ public class TCPConnection {
 					
 					int data = 0;
 					
-					
-					while(!isListening && !socket.isClosed())
+					TimeUnit.SECONDS.sleep(3);
+					while(isListening && !socket.isClosed())
 					{	
 						//checks if a package is complete
 						//and call callback
@@ -193,11 +193,12 @@ public class TCPConnection {
 							panelInfoPackageNo ++ ;
 							
 							if(panelInfoPackageNo == commandList.size()){
-								System.out.println(" Recieve task completed");
+								System.out.println(" All packages received");
 								rxCompleted = true;
 							}
 							
 							mCallBack.get().receive(rxBuffer,ip);
+							System.out.println("rxBuffer size: " + rxBuffer.size());
 							rxBuffer.clear();
 						}
 						
@@ -213,7 +214,7 @@ public class TCPConnection {
 						
 						else
 						{
-							TimeUnit.MILLISECONDS.sleep(100);;
+							TimeUnit.MILLISECONDS.sleep(100);
 						}	
 						
 						/*for(int j=0; j<rxBuffer.size();j+=1033)
@@ -241,7 +242,7 @@ public class TCPConnection {
 					
 					
 					if(panelInfoPackageNo == commandList.size()){
-						System.out.println(" Recieve task completed");
+						System.out.println("Finally: closing socket");
 						rxCompleted = true;
 						try {
 							if(socket != null && !socket.isClosed())  

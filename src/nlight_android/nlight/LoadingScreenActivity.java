@@ -88,7 +88,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
 		TCPConnection connection = ip_connection_map.get(ip);
-		connection.setClosed(true);
+		connection.setListening(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{

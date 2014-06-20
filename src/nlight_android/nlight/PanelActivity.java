@@ -55,7 +55,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
 		TCPConnection connection = panel_connection_map.get(ip);
-		connection.setClosed(true);
+		connection.setListening(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{

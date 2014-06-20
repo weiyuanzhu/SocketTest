@@ -21,8 +21,8 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="16dp"
-        android:text="Button"
-        android:onClick="test" />
+        android:text="TCPCOnnection Test"
+        android:onClick="tcpTest" />
 
     <Button
         android:id="@+id/button2"

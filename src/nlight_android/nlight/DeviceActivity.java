@@ -67,7 +67,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			currentSelectedDevice.updateDevice(rx);
 			mHandler.post(refreshDevice);
 			//mHandler.post(new RefreshTest());
-			connection.setClosed(true);
+			connection.setListening(true);
 			//deviceListFragment.updateProgressIcon(0);
 		}
 	}
