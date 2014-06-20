@@ -57,10 +57,8 @@ public class UDPConnection implements Runnable{
 			
 			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -104,7 +102,9 @@ public class UDPConnection implements Runnable{
 						}
 						finally
 						{
-							if(!isListen && udpSocket!=null) udpSocket.close();
+							if(!isListen && udpSocket!=null && !udpSocket.isClosed()){
+								udpSocket.close();
+							}
 							
 						}
 						
@@ -158,7 +158,7 @@ public class UDPConnection implements Runnable{
 	{
 		setListen(false);
 		
-		if(udpSocket!= null)
+		if(udpSocket!= null && !udpSocket.isClosed())
 		{
 			udpSocket.close();
 			udpSocket = null;
@@ -166,11 +166,11 @@ public class UDPConnection implements Runnable{
 		
 	}
 	
-	public boolean isListen() {
+	public synchronized boolean isListen() {
 		return isListen;
 	}
 
-	public void setListen(boolean isListen) {
+	public synchronized void setListen(boolean isListen) {
 		this.isListen = isListen;
 	}
 	

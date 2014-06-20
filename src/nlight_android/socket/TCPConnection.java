@@ -179,7 +179,8 @@ public class TCPConnection {
 					
 					while(!isClosed && !socket.isClosed())
 					{	
-						
+						//checks if a package is complete
+						//and call callback
 						if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
 		        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
 		        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
@@ -200,7 +201,7 @@ public class TCPConnection {
 							rxBuffer.clear();
 						}
 						
-						
+						//reading data from stream
 						if(in.available()>0)
 						{
 							data = in.read();
@@ -243,7 +244,7 @@ public class TCPConnection {
 						System.out.println(" Recieve task completed");
 						rxCompleted = true;
 						try {
-							if(socket != null)  
+							if(socket != null && !socket.isClosed())  
 							{		
 								out.close();
 								in.close();

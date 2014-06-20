@@ -509,6 +509,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	@Override
 	public void connectPanels(List<Integer> selected) {
 		
+		//connecting to panels, and close UDP socket
+		udpConnection.closeConnection();
+		
 		//save checkBox status
 		
 		savePanelSelectionToIpLIstSelected(selected);
