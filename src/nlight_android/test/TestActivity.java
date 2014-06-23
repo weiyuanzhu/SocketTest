@@ -11,6 +11,7 @@ import nlight_android.nlight.SeekBarDialogFragment;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import nlight_android.nlight.SettingsActivity;
 import nlight_android.socket.TCPConnection;
+import nlight_android.util.CommandFactory;
 import nlight_android.util.GetCmdEnum;
 import nlight_android.util.ToggleCmdEnum;
 import android.content.Intent;
@@ -27,7 +28,6 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 
 	TCPConnection tcpConnection;
 	final String ip = "192.168.1.20";
-	ExecutorService exec = null;
 	
 	@Override
 	public void receive(List<Integer> rx, String ip) {
@@ -46,7 +46,6 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		setContentView(R.layout.activity_test);
 		
 		tcpConnection = new TCPConnection(this, ip);
-		exec = Executors.newSingleThreadExecutor();
 	}
 	
 	
@@ -95,9 +94,9 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		
 	private void refreshTest(){
 
-			tcpConnection.closeConnection();
+			//tcpConnection.closeConnection();
 			
-			List<char[] > commandList = GetCmdEnum.GET_INIT.get();
+			List<char[] > commandList = CommandFactory.getPanelInfo();
 			//commandList = ToggleCmdEnum.REFRESH.toggle(1);
 			
 			Calendar cal = Calendar.getInstance();
