@@ -172,8 +172,8 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		simpleAdapter = new SimpleAdapter(getActivity(),dataList,R.layout.panel_list_row,
-				new String[]{"location","img","faultyNo"},
-				new int[]{R.id.location,R.id.img,R.id.faulty_no});
+				new String[]{"location","img"},
+				new int[]{R.id.location,R.id.img});
 		setListAdapter(simpleAdapter);
 		
 		

@@ -152,7 +152,7 @@ public class DeviceInfoFragment extends ListFragment {
 		});
 		
 		
-		deviceName.setText(device.getLocation()); // set device name textView text
+		deviceName.setText(device.getLocation().startsWith("?")? "Device Name" : device.getLocation()); // set device name textView text
 		
 		System.out.println(device.toString());
 		mSimpleAdapter = new DeviceInfoListAdapter(getActivity(), getData(device), R.layout.device_info_row, 

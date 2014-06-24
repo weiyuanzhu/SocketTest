@@ -112,7 +112,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		this.faultyDeviceNo = (TextView) findViewById(R.id.device_faultyNo_text);
-		faultyDeviceNo.setText("Panel Faulty Number: " + panel.getFaultDeviceNo());
+		faultyDeviceNo.setText("Panel Fault(s): " + panel.getFaultDeviceNo());
 		
 		
 		if(panel.getOverAllStatus()!=0)
@@ -414,7 +414,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		switch(groupPosition)
 		{
 			case 0: 
-				faultyDeviceNo.setText("Loop1 Faulty Number: " + panel.getLoop1().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop1().getFaultyDevicesNo());
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
@@ -423,7 +423,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				break;
 			case 1: 
 				
-				faultyDeviceNo.setText("Loop2 Faulty Number: " + panel.getLoop2().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
 					
 				{

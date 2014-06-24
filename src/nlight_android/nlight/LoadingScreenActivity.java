@@ -447,11 +447,11 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panelList = new ArrayList<Panel>();
 	
 		Panel panel = new Panel("192.168.1.18");
-		panel.setPanelLocation("Mackwell L&B 1");
+		panel.setPanelLocation("Mackwell L&B 1   ");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
 
-		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,"?LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
 		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(128,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(129,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
@@ -460,7 +460,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panelList.add(panel);
 	
 		panel = new Panel("192.168.1.19");
-		panel.setPanelLocation("Mackwell L&B 2");
+		panel.setPanelLocation("Mackwell L&B 2    ");
 		panel.setSerialNumber((long)1375868516);
 		panel.setGtinArray(new int[]{132,2,166,43,154,4});
 		

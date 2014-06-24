@@ -34,7 +34,7 @@ public class Panel  implements Parcelable {
 	private String id;
 	private String passcode;
 	
-
+	private long reportUsageLong;
 	private String reportUsage;
 	
 	private Long serialNumber;
@@ -65,6 +65,7 @@ public class Panel  implements Parcelable {
 		version = "V 1.3.0";
 		id = "test";
 		passcode= "1111";
+		reportUsageLong = 3024000;
 		reportUsage = "1%";
 		serialNumber = (long) 1234567;
 		gtinArray = new int[]{6,5,4,3,2,1};
@@ -118,10 +119,11 @@ public class Panel  implements Parcelable {
 		
 		this.passcode = String.valueOf(eepRom.get(51).get(0) * 256 + eepRom.get(51).get(1));
 		
-		long reportUsage = eepRom.get(15).get(3) + eepRom.get(15).get(4) * 256 + eepRom.get(15).get(5) * 65536 + 
+		reportUsageLong = eepRom.get(15).get(3) + eepRom.get(15).get(4) * 256 + eepRom.get(15).get(5) * 65536 + 
 				eepRom.get(15).get(6) * 16777216L;
 		
-		this.reportUsage = (new DecimalFormat("#.#####").format(reportUsage / FLASH_MEMORY) +"%"); // update report usage
+		//this.reportUsage = (new DecimalFormat("#.#####").format(reportUsage / FLASH_MEMORY) +"%"); // update report usage
+		this.reportUsage = (new DecimalFormat("#.#####").format(reportUsageLong / FLASH_MEMORY) +"%"); // update report usage
 		
 		System.out.println("================Panel Info========================");
 		System.out.println(this.toString());
@@ -233,7 +235,13 @@ public class Panel  implements Parcelable {
 
 
 	public String getReportUsage() {
-		return reportUsage;
+		double r = (reportUsageLong / FLASH_MEMORY) * 100;
+		int a = (int) Math.round(r) + 1;
+		StringBuilder sb = new StringBuilder();
+		sb.append("< ");
+		sb.append(a);
+		sb.append("%");
+		return sb.toString();
 	}
 
 
@@ -315,6 +323,7 @@ public class Panel  implements Parcelable {
 		dest.writeString(version);
 		dest.writeString(id);
 		dest.writeString(passcode);
+		dest.writeLong(reportUsageLong);
 		dest.writeString(reportUsage);
 		
 		
@@ -337,6 +346,7 @@ public class Panel  implements Parcelable {
 		version  = source.readString();
 		id  = source.readString();
 		passcode  = source.readString();
+		reportUsageLong = source.readLong();
 		reportUsage = source.readString();
 		
 		serialNumber = source.readLong();
