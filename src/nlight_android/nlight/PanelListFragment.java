@@ -205,8 +205,9 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		System.out.println("------------PanelListFragment onPause---------");
 		
 		for(TCPConnection tcp: connectionList){
-			
-			tcp.setListening(false);
+			if(tcp!=null){
+				tcp.setListening(false);
+			}
 		}
 		
 		super.onPause();

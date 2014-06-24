@@ -214,7 +214,7 @@ public class DeviceListFragment extends Fragment {
 	
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				
+				deviceListView.setItemChecked(groupPosition, true);
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
@@ -231,6 +231,8 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 			
+				deviceListView.clearChoices();
+				
 				if (mActionMode != null) {
 					mActionMode.finish();
 		        }

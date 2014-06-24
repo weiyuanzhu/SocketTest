@@ -14,6 +14,7 @@ import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.DataParser;
+import nlight_android.util.GetCmdEnum;
 import nlight_android.util.SetCmdEnum;
 import nlight_android.util.ToggleCmdEnum;
 import android.app.FragmentTransaction;
@@ -63,13 +64,19 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
-		if(rx.get(1)==160){
-			currentSelectedDevice.updateDevice(rx);
-			mHandler.post(refreshDevice);
+		if(rx.get(1)==160 && rx.get(2)==39){
+			
+			/*if(currentSelectedDevice!=null){
+				currentSelectedDevice.updateDevice(rx);
+			}
+			
+			mHandler.post(refreshDevice);*/
 			//mHandler.post(new RefreshTest());
-			connection.setListening(true);
+			
+			//connection.setListening(true);
 			//deviceListFragment.updateProgressIcon(0);
 		}
+		
 	}
 	
 	
@@ -120,7 +127,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 		//start auto refresh
-		//mHandler.postDelayed(new RefreshTest(),1000);
+		mHandler.postDelayed(refreshTest,1000);
 		
 	}
 	
@@ -178,7 +185,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	            return true;
 	            
 	        case R.id.action_sort:
-	        	deviceListFragment.sort();
+	        	refreshAllDevices();
+	        	//deviceListFragment.sort();
 	        	
 	        	return true;
 	        default:
@@ -233,6 +241,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	protected void onDestroy() {
 		connection.closeConnection();
 		connection = null;
+		mHandler.removeCallbacks(refreshTest);
 		super.onDestroy();
 	}
 
@@ -431,20 +440,19 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
-	private class RefreshTest implements Runnable{
+	Runnable refreshTest = new Runnable(){
 
 		@Override
 		public void run() {
 			System.out.println("---------------auto refresh test----------------");
 			if(isAutoFresh){
 				
-				
-					refreshDevice(0);
+				refreshAllDevices();
 				
 			}
 			
 			
-			mHandler.postDelayed(new RefreshTest(), TimeUnit.SECONDS.toMillis(30));
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(30));
 			//get current time, using Calendar.getInstance();
 			Calendar cal = Calendar.getInstance();
 	    	cal.getTime();
@@ -456,7 +464,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		}
 		
 		
-	}
+	};
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
@@ -472,5 +480,23 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	/**
+	 * Send out update all device command GetCmdEnum.UpdateList
+	 */
+	private void refreshAllDevices(){
+		if(connection!=null){
+			List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
+		
+			System.out.println(connection.isListening());
+			if(connection.isListening())
+			{
+				connection.fetchData(commandList);
+			}
+		}
+		
+		
+	}
+	
 	
 }
