@@ -223,7 +223,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		// TODO Auto-generated method stub
 		super.onStart();
 		
-		System.out.println("---------onStart-----------");
+		//System.out.println("---------onStart-----------");
 		//TextView deleteIcon = (TextView) listView.getChildAt(1).findViewById(R.id.panel_value);  
 		
 		//TextView test = (TextView) listView.getAdapter().getView(1, null, null).findViewById(R.id.panel_value);

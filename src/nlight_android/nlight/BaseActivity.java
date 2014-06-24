@@ -18,7 +18,7 @@ import nlight_android.socket.*;
  * @author  weiyuan zhu base class for all other activities  to check device connecctivities
  */
 
-public class BaseActivity extends Activity implements CallBack {
+public class BaseActivity extends Activity implements CallBack{
 	
 	protected static boolean isDemo = false;
 	

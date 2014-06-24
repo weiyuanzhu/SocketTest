@@ -35,6 +35,11 @@
             android:label="@string/title_activity_loading_screen"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" 
             android:screenOrientation="landscape">
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="nlight_android.nlight.PanelInfoActivity"
@@ -79,11 +84,7 @@
 		<activity
 		    android:name="nlight_android.test.TestActivity"
 		    android:label="@string/app_name">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+       
 		</activity>            
         
         

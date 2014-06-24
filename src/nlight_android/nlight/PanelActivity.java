@@ -74,7 +74,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
 
-		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list);
+		
 	
 		//update connection flags
 		checkConnectivity();
@@ -84,6 +84,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		panelList = intent.getParcelableArrayListExtra("panelList");
 		isDemo = intent.getBooleanExtra(LoadingScreenActivity.DEMO_MODE, true);
 		
+		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); //get listfragmetn
+		Bundle args = panelListFragment.getArguments(); // fragment is already created, so cannot use setArgument, can only get the existing one and put new values
+		//args.putBoolean("demo", isDemo);  null at this point
+		//args.putBoolean("connection", isConnected);
+		
+		//pass isDemo and isConnected to panelListFragment
+		panelListFragment.setDemo(isDemo);
+		panelListFragment.setConnected(isConnected);
+		
+		//set home bar back navigation to display
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//set title with demo

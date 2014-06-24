@@ -119,7 +119,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		deviceListFragment.setLoop2(panel.getLoop2());
 		
 		
-		mHandler.postDelayed(new RefreshTest(),1000);
+		//start auto refresh
+		//mHandler.postDelayed(new RefreshTest(),1000);
 		
 	}
 	

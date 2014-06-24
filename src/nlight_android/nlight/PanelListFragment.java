@@ -61,10 +61,41 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	
 	private List<TCPConnection> connectionList;
 	private List<char[]> commandList;
+	
+	private boolean isDemo; 
+	private boolean isConnected;
+	
 
+	/* (non-Javadoc) implementing TCPConnection callback for retreive data from another thread
+	 * @see nlight_android.socket.TCPConnection.CallBack#receive(java.util.List, java.lang.String)
+	 */
+	@Override
+	public void receive(List<Integer> rx,String ip) {
+		System.out.println(rx);
+		
+		Message msg = statusUpdateHandler.obtainMessage();
+		msg.arg1 = rx.get(3);
+		msg.obj = ip;
+
+		statusUpdateHandler.sendMessage(msg);
+		
+		for(TCPConnection c: connectionList){
+			
+			if(c.getIp().equals(ip))
+			{
+				c.setListening(true);
+				
+			}
+			
+		}
+		
+	}
+	
+	
 	public PanelListFragment() {
 		// Required empty public constructor
 	}
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,6 +154,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		
 		super.onActivityCreated(savedInstanceState);
 		
+	
 		//refreshBtn = (Button) getActivity().findViewById(R.id.panelList_refreshButton);
 		//refreshBtn.setOnClickListener(refreshClicked);
 		passTest = (Button) getActivity().findViewById(R.id.panelList_passTest);
@@ -144,11 +176,49 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 				new int[]{R.id.location,R.id.img,R.id.faulty_no});
 		setListAdapter(simpleAdapter);
 		
-		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
+		//create TCPConnection for each panel and open rx threads for listening
+		if(!isDemo && isConnected){
+			
+			connectionList = new ArrayList<TCPConnection>();
+			
+			//find this fragment itself so it can be passed to TCPConnection constructor as a Callback
+			PanelListFragment currentFragment= (PanelListFragment)getFragmentManager().findFragmentByTag("panelListFragment");
+			
+			for(int i=0; i<dataList.size(); i++)
+			{
+				commandList = CommandFactory.getOverallStatus();
+				String ip = (String) panelList.get(i).getIp();
+				
+				TCPConnection connection = new TCPConnection(currentFragment,ip);
+				connectionList.add(connection);
+			
+			}
+		}
 		
 		
 		
 	}
+
+	@Override
+	public void onPause() {
+		System.out.println("------------PanelListFragment onPause---------");
+		
+		for(TCPConnection tcp: connectionList){
+			
+			tcp.setListening(false);
+		}
+		
+		super.onPause();
+	}
+
+
+	@Override
+	public void onStop() {
+		System.out.println("------------PanelListFragment onPause---------");
+		super.onStop();
+	}
+
 
 	@Override
 	public void onDetach() {
@@ -184,19 +254,12 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			
 		if(!isDemo && isConnected){
 			
-			connectionList = new ArrayList<TCPConnection>();
 			
-			PanelListFragment currentFragment= (PanelListFragment)getFragmentManager().findFragmentByTag("panelListFragment");
 			
-			for(int i=0; i<dataList.size(); i++)
+			for(TCPConnection tcp : connectionList )
 			{
 				commandList = CommandFactory.getOverallStatus();
-				String ip = (String) panelList.get(i).getIp();
-				
-				TCPConnection connection = new TCPConnection(currentFragment,ip);
-				connectionList.add(connection);
-				
-				connection.fetchData(commandList);
+				tcp.fetchData(commandList);
 			}
 		}
 	}
@@ -232,27 +295,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	
 	
 	
-	@Override
-	public void receive(List<Integer> rx,String ip) {
-		System.out.println(rx);
-		
-		Message msg = statusUpdateHandler.obtainMessage();
-		msg.arg1 = rx.get(3);
-		msg.obj = ip;
 
-		statusUpdateHandler.sendMessage(msg);
-		
-		for(TCPConnection c: connectionList){
-			
-			if(c.getIp().equals(ip))
-			{
-				c.setListening(true);
-				
-			}
-			
-		}
-		
-	}
 
 	OnClickListener getAllPanelsListener = new OnClickListener()
 	{
@@ -287,7 +330,43 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 
 	@Override
 	public void error(String ip) {
-		System.out.println("=============Connection ERROR================");
+		System.out.println("=============PanelListFragment Connection ERROR================");
 		
+	}
+
+
+
+	/**
+	 * @return the isDemo
+	 */
+	public boolean isDemo() {
+		return isDemo;
+	}
+
+
+
+	/**
+	 * @param isDemo the isDemo to set
+	 */
+	public void setDemo(boolean isDemo) {
+		this.isDemo = isDemo;
+	}
+
+
+
+	/**
+	 * @return the isConnected
+	 */
+	public boolean isConnected() {
+		return isConnected;
+	}
+
+
+
+	/**
+	 * @param isConnected the isConnected to set
+	 */
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 }
