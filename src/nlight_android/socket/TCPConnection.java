@@ -79,8 +79,9 @@ public class TCPConnection {
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
 		this.mCallBack = new WeakReference<CallBack>(callBack);
-		exec = Executors.newCachedThreadPool();
-		exec.execute(rx);
+		exec = Executors.newSingleThreadExecutor();
+		Thread t = new Thread(rx);
+		t.start();
 	}
 
 	
@@ -161,6 +162,9 @@ public class TCPConnection {
 					// send command to panel
 					out.print(command);
 					out.flush();
+					
+					TimeUnit.SECONDS.sleep(1);
+					
 	
 					/*
 					 *   Receive bytes from panel and put in rxBuffer arrayList
@@ -205,7 +209,7 @@ public class TCPConnection {
 				finally
 				{		
 
-					System.out.println("tx complete: closing socket");
+					System.out.println("Tx: complete (finally)");
 						
 					
 				}		
@@ -245,7 +249,7 @@ public class TCPConnection {
 					//and call callback
 					
 					
-					if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
+					/*if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
 	        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
 	        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
 	        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
@@ -264,14 +268,35 @@ public class TCPConnection {
 						mCallBack.get().receive(rxBuffer,ip);
 						System.out.println("rxBuffer size: " + rxBuffer.size());
 						rxBuffer.clear();
-					}
+					}*/
 					
 					//reading data from stream
 					if(in.available()>0)
 					{
 						data = in.read();
 						rxBuffer.add(data);
-	
+						
+						if(!rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
+		        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
+		        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
+		        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
+						{
+							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
+							
+							//mCallback.get() to get mCallBack instance, for it is  weakReference
+							
+							panelInfoPackageNo++ ;
+							
+							if(panelInfoPackageNo == commandList.size()){
+								System.out.println(" All packages received");
+								rxCompleted = true;
+							}
+							
+							mCallBack.get().receive(rxBuffer,ip);
+							System.out.println("rxBuffer size: " + rxBuffer.size());
+							rxBuffer.clear();
+						
+						}
 					}
 					
 					//keep listening while available until isClosed flag is set to true
@@ -294,7 +319,7 @@ public class TCPConnection {
 				e.printStackTrace();
 			}
 			finally{
-				System.out.println("Finally: closing socket");
+				System.out.println("Finally, RX: closing thread");
 					
 				try {
 					if(socket != null && !socket.isClosed())  

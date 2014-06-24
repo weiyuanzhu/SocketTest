@@ -1,19 +1,16 @@
 package nlight_android.test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import nlight_android.nlight.BaseActivity;
 import nlight_android.nlight.SeekBarDialogFragment;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import nlight_android.nlight.SettingsActivity;
 import nlight_android.socket.TCPConnection;
-import nlight_android.util.CommandFactory;
 import nlight_android.util.GetCmdEnum;
-import nlight_android.util.ToggleCmdEnum;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,10 +25,13 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 
 	TCPConnection tcpConnection;
 	final String ip = "192.168.1.20";
+	private ArrayList<Integer> rxData = null;
 	
 	@Override
-	public void receive(List<Integer> rx, String ip) {
-		System.out.println(rx);
+	public void receive(List<Integer> rx, String ip){
+		
+		rxData.addAll(rx);
+		System.out.println("rxData size: " + rxData.size());
 		//tcpConnection.setListening(false);
 		//refreshTest();
 	}
@@ -42,7 +42,7 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		
 		preference();
 		
-		
+		rxData = new ArrayList<Integer>();
 		setContentView(R.layout.activity_test);
 		
 		tcpConnection = new TCPConnection(this, ip);
@@ -95,8 +95,8 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 	private void refreshTest(){
 
 			//tcpConnection.closeConnection();
-			
-			List<char[] > commandList = CommandFactory.getPanelInfo();
+			rxData.clear();
+			List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
 			//commandList = ToggleCmdEnum.REFRESH.toggle(1);
 			
 			Calendar cal = Calendar.getInstance();
