@@ -177,7 +177,8 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		setListAdapter(simpleAdapter);
 		
 		
-		//create TCPConnection for each panel and open rx threads for listening
+		//create TCPConnection for each panel and open rx threads for listening 
+		//if it is in live mode
 		if(!isDemo && isConnected){
 			
 			connectionList = new ArrayList<TCPConnection>();
@@ -204,9 +205,12 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	public void onPause() {
 		System.out.println("------------PanelListFragment onPause---------");
 		
-		for(TCPConnection tcp: connectionList){
-			if(tcp!=null){
-				tcp.setListening(false);
+		if(connectionList!=null){
+			for(TCPConnection tcp: connectionList){
+			
+				if(tcp!=null){
+					tcp.setListening(false);
+				}
 			}
 		}
 		
