@@ -13,7 +13,7 @@
         android:title="@string/action_about"/>
     <item 
         android:id="@+id/action_sort"
-        android:title="sort"
+        android:title="Sort Device By"
         android:showAsAction="ifRoom"
         />
         
