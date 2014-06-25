@@ -40,7 +40,7 @@
 	        android:title="Device Sync Time"
 	        android:dialogTitle="Sync in seconds"
 	        android:entries="@array/pref_device_entries"
-	        android:entryValues="@array/pref_device_entries"
+	        android:entryValues="@array/pref_device_values"
 	        >
 	    </ListPreference>
 	</PreferenceCategory>

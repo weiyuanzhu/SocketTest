@@ -229,6 +229,17 @@ public class Loop  implements Parcelable{
 		return faultyDevicesNo;
 	}
 	
-	
+	public int upDateDeviceByAddress(int address,List<Integer> device){
+		
+		for(Device d : deviceList){
+			if(d.getAddress() == address){
+				d.updateDevice(device);
+				return 1;
+			}
+			
+		}
+		
+		return 0;
+	}
 }
 

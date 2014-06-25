@@ -42,7 +42,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	
-	private boolean isAutoRefresh = true;
+	private boolean isAutoRefresh = false;
+	private String refreshDuration = "";
+	
 	private Handler mHandler;
 	
 	private Panel panel = null;
@@ -61,11 +63,29 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private SearchView searchView= null; //search view for search button on the action bar
 	
-	public boolean getAutoRefresh() {
+	public boolean isAutoRefresh() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean autoFresh = sp.getBoolean("pref_key_refresh", false);
-		return autoFresh;
+		isAutoRefresh = sp.getBoolean("pref_key_refresh", false);
+		return isAutoRefresh;
 	}
+
+
+
+	/**
+	 * @return the refreshDuration
+	 */
+	public String getRefreshDuration() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		refreshDuration = sp.getString("pref_key_sync_device", "160");
+		return refreshDuration;
+	}
+
+
+
+
+
+
 
 
 
@@ -75,11 +95,14 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		System.out.println(rx);
 		if(rx.get(1)==160 && rx.get(2)==39){
 			
+			int address = rx.get(3);
+			
+			panel.upDateDeviceByAddress(address, rx);
 			/*if(currentSelectedDevice!=null){
 				currentSelectedDevice.updateDevice(rx);
-			}
+			}*/
 			
-			mHandler.post(refreshDevice);*/
+			mHandler.post(refreshDevice);
 			//mHandler.post(new RefreshTest());
 			
 			//connection.setListening(true);
@@ -227,11 +250,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(groupPosition==0)
 		{
 			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, getAutoRefresh());
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
 		}
 		else {
 			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,getAutoRefresh());
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
 		}
 		
 		
@@ -248,8 +271,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	@Override
 	protected void onDestroy() {
-		connection.closeConnection();
-		connection = null;
+		if(connection!=null){
+			connection.closeConnection();
+			connection = null;
+		}
 		mHandler.removeCallbacks(refreshTest);
 		super.onDestroy();
 	}
@@ -391,9 +416,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			
-			deviceFragment.updateDevice(currentSelectedDevice, getAutoRefresh());
-			deviceListFragment.refershStatus();
-			deviceListFragment.updateProgressIcon(1);
+			if(currentSelectedDevice != null){
+				deviceFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
+			}
+			
+			
+			//deviceListFragment.refershStatus();
+			//deviceListFragment.updateProgressIcon(1);
 		}
 	
 		
@@ -454,15 +483,17 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			System.out.println("---------------auto refresh test----------------");
-			System.out.println("AutoFresh: " + getAutoRefresh());
-			if(!isDemo && isAutoRefresh){
+			System.out.println("AutoFresh: " + isAutoRefresh());
+			System.out.println("refresh time: " + getRefreshDuration());
+			
+			if(!isDemo && isAutoRefresh()){
 				
 				refreshAllDevices();
 				
 			}
 			
-			
-			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(30));
+			int frequency= Integer.parseInt(getRefreshDuration());
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(frequency));
 			//get current time, using Calendar.getInstance();
 			Calendar cal = Calendar.getInstance();
 	    	cal.getTime();

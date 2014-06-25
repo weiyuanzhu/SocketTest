@@ -62,7 +62,7 @@ public class DeviceInfoFragment extends ListFragment {
 
 	private SimpleAdapter mSimpleAdapter;
 	private List<Map<String,Object>> listDataSource;
-	private TextView deviceName;
+	private TextView deviceName_textView;
 
 	@SuppressWarnings("unused")
 	private DeviceSetLocationListener mListener;
@@ -136,9 +136,9 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		updateStampTextView = (TextView) getActivity().findViewById(R.id.deviceList_stamp_textView);
 		
-		deviceName = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
-		deviceName.setLongClickable(true);
-		deviceName.setOnLongClickListener(new OnLongClickListener(){
+		deviceName_textView = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
+		deviceName_textView.setLongClickable(true);
+		deviceName_textView.setOnLongClickListener(new OnLongClickListener(){
 
 			@Override
 			public boolean onLongClick(View arg0) {
@@ -156,17 +156,14 @@ public class DeviceInfoFragment extends ListFragment {
 		});
 		
 		
-		deviceName.setText(device.getLocation().startsWith("?")? "Device Name" : device.getLocation()); // set device name textView text
+		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name" : device.getLocation()); // set device name textView text
 		
 		System.out.println(device.toString());
-		mSimpleAdapter = new DeviceInfoListAdapter(getActivity(), getData(device), R.layout.device_info_row, 
-				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
-		setListAdapter(mSimpleAdapter);
 		
 		//getListView().setOnItemLongClickListener(longClickListener);
 
-		updateTimeStamp(isAutoRefresh);
+		updateDevice(device,isAutoRefresh);
 
 	}
 
@@ -301,7 +298,7 @@ public class DeviceInfoFragment extends ListFragment {
 	public void updateLocation(String location)
 	{
 		//update listDataSource
-		deviceName.setText(location);
+		deviceName_textView.setText(location);
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
@@ -311,8 +308,18 @@ public class DeviceInfoFragment extends ListFragment {
 	 */
 	public void updateDevice(Device device, boolean autoRefresh) {
 		
-		updateTimeStamp(autoRefresh);
+		//update refresh data stamp
+		Calendar deviceCal = device.getCal();
+    	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+    	
+    	String on = autoRefresh? "On" : "Off";
+    	
+		updateStampTextView.setText("AutoFresh: " + on + " , Last Refreshed: " + sdf.format(deviceCal.getTime()));
 		
+		
+		
+		
+		//update deviceInfo ListView
 		listDataSource = getData(device);
 		
 		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
@@ -323,14 +330,5 @@ public class DeviceInfoFragment extends ListFragment {
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
-	private void updateTimeStamp(boolean autoFresh){
-		
-		cal = device.getCal();
-    	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
-    	
-    	String on = autoFresh? "On" : "Off";
-    	
-		updateStampTextView.setText("AutoFresh: " + on + " ,Last Refreshed: " + sdf.format(cal.getTime()));
-	}
-
+	
 }
