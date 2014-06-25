@@ -19,7 +19,7 @@ public class UDPConnection implements Runnable{
 	
 	private DatagramSocket udpSocket = null;
 	private DatagramPacket udpPacket = null; 
-	private boolean isListen = true;
+	private boolean isListening = true; // a flag for keep/stop listening on socket
 	private UDPCallback mCallback;
 	
 	private String msg;
@@ -57,10 +57,8 @@ public class UDPConnection implements Runnable{
 			
 			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -75,7 +73,7 @@ public class UDPConnection implements Runnable{
 					System.out.println("---------------receiving udp packages------------");
 					byte[] buf = new byte[1024];
 					udpPacket = new DatagramPacket(buf, buf.length);
-					while(isListen)
+					while(isListening)
 					{
 						try {
 							udpSocket.receive(udpPacket);
@@ -104,7 +102,9 @@ public class UDPConnection implements Runnable{
 						}
 						finally
 						{
-							if(!isListen && udpSocket!=null) udpSocket.close();
+							if(!isListening && udpSocket!=null && !udpSocket.isClosed()){
+								udpSocket.close();
+							}
 							
 						}
 						
@@ -158,7 +158,7 @@ public class UDPConnection implements Runnable{
 	{
 		setListen(false);
 		
-		if(udpSocket!= null)
+		if(udpSocket!= null && !udpSocket.isClosed())
 		{
 			udpSocket.close();
 			udpSocket = null;
@@ -166,12 +166,12 @@ public class UDPConnection implements Runnable{
 		
 	}
 	
-	public boolean isListen() {
-		return isListen;
+	public synchronized boolean isListen() {
+		return isListening;
 	}
 
-	public void setListen(boolean isListen) {
-		this.isListen = isListen;
+	public synchronized void setListen(boolean isListen) {
+		this.isListening = isListen;
 	}
 	
 	public List<int[]> getPanelList() {

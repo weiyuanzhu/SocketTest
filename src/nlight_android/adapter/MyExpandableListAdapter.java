@@ -3,9 +3,12 @@
  */
 package nlight_android.adapter;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 
 import nlight_android.models.Device;
 import nlight_android.models.Loop;
@@ -18,13 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.*;
-import android.content.*;
-import nlight_android.models.*;
-import java.util.*;
-import android.view.*;
 
 /**
  * @author weiyuan zhu
@@ -32,6 +31,8 @@ import android.view.*;
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
+	private MyFilter mFilter;
+	private boolean mNotifyChanged = true;
 	private Context mContext;
     private List<Loop> listDataHeader; // header titles
     // child data in format of header title, child title
@@ -79,10 +80,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
  
         ImageView childImage = (ImageView) convertView
                 .findViewById(R.id.childImage);
+        ImageView status = (ImageView) convertView.findViewById(R.id.devicelist_child_status_imageView);
         
         if(device.getFailureStatus()==0){
         	childImage.setImageResource(R.drawable.greentick);
         }else childImage.setImageResource(R.drawable.redcross);
+        
+        if(device.getCurrentStatus()==0)
+        {
+        	status.setVisibility(View.INVISIBLE);
+        }
+        else {
+        	status.setVisibility(View.VISIBLE);
+        	status.setImageResource(R.drawable.ic_action_refresh);
+        }
         
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.devicelist_child_address_textView);
@@ -165,5 +176,45 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+    
+    public void sort(Comparator<Device> comparator)
+    {
+    	
+    	Loop l1 = listDataHeader.get(0);
+    	Loop l2 = listDataHeader.get(1);
+    	Collections.sort(this.listDataChild.get(l1),comparator);
+    	Collections.sort(this.listDataChild.get(l2),comparator);
+    	
+    	if(mNotifyChanged) notifyDataSetChanged();
+    }
+    
+    class MyFilter extends Filter{
+
+		@Override
+		protected FilterResults performFiltering(CharSequence arg0) {
+			//System.out.println("Filter Test");
+			
+			FilterResults results = new FilterResults();
+			
+		
+			return results;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void publishResults(CharSequence query, FilterResults results) {
+			 //mDataList = (List<? extends Map<String,?>>) results.values;
+	            if (results.count > 0) {
+	                notifyDataSetChanged();
+	            } else {
+	                notifyDataSetInvalidated();
+	            }
+			
+		}
+		
+		
+	}
+    
+    
 
 }

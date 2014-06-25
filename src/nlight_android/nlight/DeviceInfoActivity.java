@@ -155,7 +155,7 @@ public class DeviceInfoActivity extends ListActivity implements TCPConnection.Ca
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
-		connection.setIsClosed(true);
+		connection.setListening(true);
 		
 	}
 

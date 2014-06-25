@@ -1,7 +1,9 @@
 package nlight_android.nlight;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,14 +48,21 @@ public class DeviceInfoFragment extends ListFragment {
 	}
 	
 
+	public TextView updateStampTextView;
+	
+	private Calendar cal;
+	
 	private static final String ARG_DEVICE = "device";
+	private static final String ARG_REFRESH = "autoRefresh";
 
 
 	
 	private Device device;
+	private boolean isAutoRefresh;
+
 	private SimpleAdapter mSimpleAdapter;
 	private List<Map<String,Object>> listDataSource;
-	private TextView deviceName;
+	private TextView deviceName_textView;
 
 	@SuppressWarnings("unused")
 	private DeviceSetLocationListener mListener;
@@ -66,10 +75,11 @@ public class DeviceInfoFragment extends ListFragment {
 	 * @param device An instance of a device object
 	 * @return A new instance of fragment DeviceInfoFragment.
 	 */
-	public static DeviceInfoFragment newInstance(Device device) {
+	public static DeviceInfoFragment newInstance(Device device,boolean autoRefresh) {
 		DeviceInfoFragment fragment = new DeviceInfoFragment();
 		Bundle args = new Bundle();
 		args.putParcelable(ARG_DEVICE, device);
+		args.putBoolean(ARG_REFRESH, autoRefresh);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -90,7 +100,7 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		if (getArguments() != null) {
 			device = getArguments().getParcelable(ARG_DEVICE);
-			
+			isAutoRefresh = getArguments().getBoolean(ARG_REFRESH);
 		}
 		
 		if(device.getGtinArray()!=null)
@@ -124,9 +134,11 @@ public class DeviceInfoFragment extends ListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		deviceName = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
-		deviceName.setLongClickable(true);
-		deviceName.setOnLongClickListener(new OnLongClickListener(){
+		updateStampTextView = (TextView) getActivity().findViewById(R.id.deviceList_stamp_textView);
+		
+		deviceName_textView = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
+		deviceName_textView.setLongClickable(true);
+		deviceName_textView.setOnLongClickListener(new OnLongClickListener(){
 
 			@Override
 			public boolean onLongClick(View arg0) {
@@ -144,16 +156,14 @@ public class DeviceInfoFragment extends ListFragment {
 		});
 		
 		
-		deviceName.setText(device.getLocation()); // set device name textView text
+		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name" : device.getLocation()); // set device name textView text
 		
 		System.out.println(device.toString());
-		mSimpleAdapter = new DeviceInfoListAdapter(getActivity(), getData(device), R.layout.device_info_row, 
-				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
-		setListAdapter(mSimpleAdapter);
 		
 		//getListView().setOnItemLongClickListener(longClickListener);
 
+		updateDevice(device,isAutoRefresh);
 
 	}
 
@@ -288,7 +298,7 @@ public class DeviceInfoFragment extends ListFragment {
 	public void updateLocation(String location)
 	{
 		//update listDataSource
-		deviceName.setText(location);
+		deviceName_textView.setText(location);
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
@@ -296,7 +306,20 @@ public class DeviceInfoFragment extends ListFragment {
 	/**
 	 * @param device
 	 */
-	public void updateDevice(Device device) {
+	public void updateDevice(Device device, boolean autoRefresh) {
+		
+		//update refresh data stamp
+		Calendar deviceCal = device.getCal();
+    	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+    	
+    	String on = autoRefresh? "On" : "Off";
+    	
+		updateStampTextView.setText("AutoFresh: " + on + " , Last Refreshed: " + sdf.format(deviceCal.getTime()));
+		
+		
+		
+		
+		//update deviceInfo ListView
 		listDataSource = getData(device);
 		
 		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
@@ -308,5 +331,4 @@ public class DeviceInfoFragment extends ListFragment {
 		
 	}
 	
-
 }

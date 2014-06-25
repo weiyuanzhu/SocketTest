@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.socket.TCPConnection;
+import nlight_android.socket.PanelConnection;
 import nlight_android.socket.UDPConnection;
 import nlight_android.socket.UDPConnection.UDPCallback;
 import nlight_android.util.CommandFactory;
@@ -36,7 +37,7 @@ import com.example.nclient.R;
  * @author  weiyuan zhu15/04/2014 Starting develop branch test on develop branch test 2 on feature branch test 3 on feature branch after rebase
  */
 
-public class LoadingScreenActivity extends BaseActivity implements ListDialogFragment.ListDialogListener, UDPCallback{
+public class LoadingScreenActivity extends BaseActivity implements PanelConnection.CallBack,ListDialogFragment.ListDialogListener, UDPCallback{
 	
 	public static final String DEMO_MODE = "Demo Mode";
 	
@@ -59,10 +60,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
-	private Map<String,TCPConnection> ip_connection_map = null;
+	private Map<String,PanelConnection> ip_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
 	
 	private UDPConnection udpConnection = null;
+	private PanelConnection panelConnection = null;
 	List<Map<String, Object>> dataList = null; // datalist for panel list dialog
 	
 	private static int delay = 1000;
@@ -87,8 +89,8 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
-		TCPConnection connection = ip_connection_map.get(ip);
-		connection.setIsClosed(true);
+		PanelConnection connection = ip_connection_map.get(ip);
+		connection.setListening(false);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{
@@ -256,7 +258,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(String key : ip_connection_map.keySet())
 		{
 			
-			TCPConnection connection = ip_connection_map.get(key);
+			PanelConnection connection = ip_connection_map.get(key);
 			connection.closeConnection();
 			connection = null;
 		}
@@ -299,7 +301,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		for(String key : ip_connection_map.keySet())
 		{
 			
-			TCPConnection connection = ip_connection_map.get(key);
+			PanelConnection connection = ip_connection_map.get(key);
 			connection.closeConnection();
 			connection = null;
 		}
@@ -364,7 +366,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		panelList = new ArrayList<Panel>();
 		
 		panelMap = new HashMap<String,Panel>();
-		ip_connection_map = new HashMap<String,TCPConnection>();
+		ip_connection_map = new HashMap<String,PanelConnection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
 		dataList = new ArrayList<Map<String,Object>>();
@@ -445,11 +447,11 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		panelList = new ArrayList<Panel>();
 	
 		Panel panel = new Panel("192.168.1.18");
-		panel.setPanelLocation("Mackwell L&B 1");
+		panel.setPanelLocation("Mackwell L&B 1   ");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
 
-		panel.getLoop1().addDevice(new Device(0,"LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,"?LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
 		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(128,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(129,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
@@ -458,7 +460,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		panelList.add(panel);
 	
 		panel = new Panel("192.168.1.19");
-		panel.setPanelLocation("Mackwell L&B 2");
+		panel.setPanelLocation("Mackwell L&B 2    ");
 		panel.setSerialNumber((long)1375868516);
 		panel.setGtinArray(new int[]{132,2,166,43,154,4});
 		
@@ -509,6 +511,9 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 	@Override
 	public void connectPanels(List<Integer> selected) {
 		
+		//connecting to panels, and close UDP socket
+		udpConnection.closeConnection();
+		
 		//save checkBox status
 		
 		savePanelSelectionToIpLIstSelected(selected);
@@ -527,7 +532,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 		
 		for(String ip : ipListSelected)
 		{
-			TCPConnection connection = new TCPConnection(this, ip);
+			PanelConnection connection = new PanelConnection(this, ip);
 			ip_connection_map.put(ip, connection);
 			rxBufferMap.put(ip, new ArrayList<Integer>());
 			
@@ -559,7 +564,7 @@ public class LoadingScreenActivity extends BaseActivity implements ListDialogFra
 			
 			for(String ip: ipListSelected){
 				
-				TCPConnection conn = (TCPConnection) ip_connection_map.get(ip);
+				PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
 				conn.fetchData(commandList);
 			}
 			

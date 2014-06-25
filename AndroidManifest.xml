@@ -18,6 +18,10 @@
         android:icon="@drawable/mackwell_logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
+        <meta-data
+     		android:name="android.app.default_searchable"
+      	 	android:value="nlight_android.nlight.DeviceActivity" />
+        
         <activity
             android:name="nlight_android.nlight.PanelStatusActivity"
             android:label="@string/app_name" >
@@ -31,12 +35,11 @@
             android:label="@string/title_activity_loading_screen"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" 
             android:screenOrientation="landscape">
-            <intent-filter>
+             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
         <activity
             android:name="nlight_android.nlight.PanelInfoActivity"
@@ -75,8 +78,16 @@
         <activity
             android:name="nlight_android.nlight.SettingsActivity"
             android:label="@string/title_activity_settings" >
-            
         </activity>
+        
+        
+		<activity
+		    android:name="nlight_android.test.TestActivity"
+		    android:label="@string/app_name">
+       
+		</activity>            
+        
+        
     </application>
 
 </manifest>

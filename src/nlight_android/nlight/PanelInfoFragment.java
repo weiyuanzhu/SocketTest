@@ -122,7 +122,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		setRetainInstance(true);
 		if (getArguments() != null) {
 			ip = getArguments().getString(ARG_IP);
-			location = getArguments().getString(ARG_LOCATION);
+			location = getArguments().getString(ARG_LOCATION).trim();
 		}
 	}
 
@@ -223,7 +223,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		// TODO Auto-generated method stub
 		super.onStart();
 		
-		System.out.println("---------onStart-----------");
+		//System.out.println("---------onStart-----------");
 		//TextView deleteIcon = (TextView) listView.getChildAt(1).findViewById(R.id.panel_value);  
 		
 		//TextView test = (TextView) listView.getAdapter().getView(1, null, null).findViewById(R.id.panel_value);
@@ -328,14 +328,14 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "IP address:");
+		map.put("text1", "IP address");
 		map.put("text2", panel==null? "..." : panel.getIp());
 			
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Serial number:");
+		map.put("text1", "Serial number");
 		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
 		listDataSource.add(map);
@@ -345,7 +345,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		
 		
-		map.put("text1", "GTIN:");
+		map.put("text1", "GTIN");
 		map.put("text2", panel==null? "..." : panel.getGtin());
 			
 		listDataSource.add(map);
@@ -376,7 +376,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Report usage:");
+		map.put("text1", "Memory Used");
 		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
 		listDataSource.add(map);
@@ -404,7 +404,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		rxBuffer.addAll(rx);
 
-		connection.setIsClosed(true);
+		connection.setListening(true);
 				
 		/*if(this.rxBuffer.size() > 15000)
 		{		

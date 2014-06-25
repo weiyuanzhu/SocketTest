@@ -19,13 +19,13 @@
     
   	<string-array name = "pref_device_entries">
         <item>30 secs</item>
-        <item>1 minute</item>
-        <item>3 minutes</item>
+        <item>60 secs</item>
+        <item>120 secs</item>
     </string-array>
   	<string-array name = "pref_device_values">
-        <item>5</item>
-        <item>10</item>
         <item>30</item>
+        <item>60</item>
+        <item>120</item>
     </string-array>    
     
 </resources>

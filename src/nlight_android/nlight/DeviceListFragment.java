@@ -1,6 +1,7 @@
 package nlight_android.nlight;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -53,8 +56,21 @@ public class DeviceListFragment extends Fragment {
 
 	}
 	
+	public static final Comparator<Device> SORT = new Comparator<Device>(){
+
+		@Override
+		public int compare(Device lhs, Device rhs) {
+			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
+			
+			return (faultComp == 0 ? (lhs.getAddress() - rhs.getAddress()): faultComp);
+		}
+		
+		
+		
+	};	
 
 	private OnDevicdListFragmentListener mListener;
+	
 	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
@@ -199,6 +215,16 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupExpand(int groupPosition) {
 				
+				// determine which position to highlight 
+				int position =0;
+				if(deviceListView.isGroupExpanded(0) ){
+					position = groupPosition ==0 ? groupPosition : groupPosition + listDataChild.get(loop1).size();	
+				}
+				else {
+					 position = groupPosition;
+				}
+				deviceListView.setItemChecked(position, true);
+				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
@@ -215,6 +241,8 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 			
+				deviceListView.clearChoices();
+				
 				if (mActionMode != null) {
 					mActionMode.finish();
 		        }
@@ -391,9 +419,31 @@ public class DeviceListFragment extends Fragment {
 	
 	public void refershStatus()
 	{
+		updateProgressIcon(0);
 		mAdapter.notifyDataSetChanged();
+		
 	}
 		
+	
+	public void sort(){
+		System.out.println("sort");
+		
+		mAdapter.sort(SORT);
+		
+	}
+
+	public void search(String query){
+		System.out.println(query);
+		
+		
+	}
+	
+	public void updateProgressIcon(int status){
+		
+		listDataChild.get(loop1).get(0).setCurrentStatus(1);
+		mAdapter.notifyDataSetChanged();
+		
+	}
 		
 }
 

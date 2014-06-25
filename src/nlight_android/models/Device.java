@@ -18,15 +18,12 @@ import nlight_android.messageType.FailureStatusFlag;
 import nlight_android.util.Constants;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.*;
-import nlight_android.*;
-import java.math.*;
-import android.os.Parcelable.*;
 import java.util.*;
 
 public class Device  implements Parcelable{
 	//05 Feb 2014
 	
+	private Calendar cal;
 	
 	private int address;
 	
@@ -44,6 +41,8 @@ public class Device  implements Parcelable{
 	private int lampOnTime;
 	private int lampEmergencyTime;
 	private int feature;
+	
+	private int currentStatus;
 	
 	private boolean isFailed;
 	
@@ -84,7 +83,7 @@ public class Device  implements Parcelable{
 		lampEmergencyTime = 0;
 		feature = 0;
 		gtinArray = gtin;
-		
+		cal = Calendar.getInstance();
 	}
 	
 	public Device(List<Integer> device,List<List<Integer>> eepRom)
@@ -109,6 +108,9 @@ public class Device  implements Parcelable{
 			int temp = 15-i;
 			gtinArray[i] = device.get(temp);
 		}
+		
+		cal = Calendar.getInstance();
+		currentStatus = 0;
 	}
 
 	public void updateDevice(List<Integer> device)
@@ -122,6 +124,9 @@ public class Device  implements Parcelable{
 		lampOnTime = device.get(20);
 		lampEmergencyTime = device.get(21);
 		feature = device.get(22);
+		
+		cal = Calendar.getInstance();
+		currentStatus = 0;
 		
 		
 		
@@ -159,6 +164,8 @@ public class Device  implements Parcelable{
 		dest.writeInt(feature);
 		dest.writeIntArray(gtinArray);
 		
+		dest.writeInt(currentStatus);
+		
 		
 		
 		
@@ -179,8 +186,8 @@ public class Device  implements Parcelable{
 		lampEmergencyTime = source.readInt();
 		feature = source.readInt();
 		source.readIntArray(gtinArray);
-	
-
+		cal = Calendar.getInstance();
+		currentStatus = source.readInt();
 	}
 	
 	public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>() {
@@ -417,6 +424,24 @@ public class Device  implements Parcelable{
 		this.isFailed = isFailed;
 	}
 
+	public Calendar getCal() {
+		return cal;
+	}
+
+	public void setCal(Calendar cal) {
+		this.cal = cal;
+	}
+
+	public int getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(int currentStatus) {
+		this.currentStatus = currentStatus;
+	}
+
+	
+	
 	//generic method for get status text
 	
 	//todo

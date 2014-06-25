@@ -69,8 +69,9 @@ public enum GetCmdEnum  {
 			
 		}
 		
-		commandList.add(command);
 		
+		commandList.add(command);
+		System.out.println(txBuffer);
 		return commandList;
 		
 		

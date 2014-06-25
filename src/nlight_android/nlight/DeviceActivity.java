@@ -1,7 +1,10 @@
 package nlight_android.nlight;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
@@ -10,12 +13,17 @@ import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.DataParser;
+import nlight_android.util.GetCmdEnum;
 import nlight_android.util.SetCmdEnum;
 import nlight_android.util.ToggleCmdEnum;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +38,13 @@ import com.example.nclient.R;
 
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
-															DeviceSetLocationListener,NoticeDialogListener{
+															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener{
+	
+	
+	
+	private boolean isAutoRefresh = false;
+	private String refreshDuration = "";
+	
 	private Handler mHandler;
 	
 	private Panel panel = null;
@@ -49,13 +63,51 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private SearchView searchView= null; //search view for search button on the action bar
 	
+	public boolean isAutoRefresh() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		isAutoRefresh = sp.getBoolean("pref_key_refresh", false);
+		return isAutoRefresh;
+	}
+
+
+
+	/**
+	 * @return the refreshDuration
+	 */
+	public String getRefreshDuration() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		refreshDuration = sp.getString("pref_key_sync_device", "160");
+		return refreshDuration;
+	}
+
+
+
+
+
+
+
+
+
 	//connection.callback interface implementation
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
-		currentSelectedDevice.updateDevice(rx);
-		mHandler.post(refreshDevice);
-		connection.setIsClosed(true);
+		if(rx.get(1)==160 && rx.get(2)==39){
+			
+			int address = rx.get(3);
+			
+			panel.upDateDeviceByAddress(address, rx);
+			/*if(currentSelectedDevice!=null){
+				currentSelectedDevice.updateDevice(rx);
+			}*/
+			
+			mHandler.post(refreshDevice);
+			//mHandler.post(new RefreshTest());
+			
+			//connection.setListening(true);
+			//deviceListFragment.updateProgressIcon(0);
+		}
 		
 	}
 	
@@ -88,11 +140,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + " (Demo)" : "Panel: " + panel.getPanelLocation().trim() + " (Live)";
 		getActionBar().setTitle(title);
 		
-		this.connection = new TCPConnection(this,panel.getIp());
+		if(!isDemo) this.connection = new TCPConnection(this,panel.getIp());
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		this.faultyDeviceNo = (TextView) findViewById(R.id.device_faultyNo_text);
-		faultyDeviceNo.setText("Panel Faulty Number: " + panel.getFaultDeviceNo());
+		faultyDeviceNo.setText("Panel Fault(s): " + panel.getFaultDeviceNo());
 		
 		
 		if(panel.getOverAllStatus()!=0)
@@ -105,13 +157,25 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		deviceListFragment.setLoop1(panel.getLoop1());
 		deviceListFragment.setLoop2(panel.getLoop2());
 		
+		
+		//start auto refresh
+		mHandler.postDelayed(refreshTest,1000);
+		
 	}
 	
 	
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		System.out.println("New INtent Received");
+		System.out.println("OnNewIntent");
+		setIntent(intent);
+		Intent newIntent = getIntent();
+	    if (Intent.ACTION_SEARCH.equals(newIntent.getAction())) {
+	      String query = newIntent.getStringExtra(SearchManager.QUERY);
+	      System.out.println(query);
+	    }
+		
+		
 		super.onNewIntent(intent);
 		
 	}
@@ -124,12 +188,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		getMenuInflater().inflate(R.menu.device, menu);
 		
 		
-		//get search view  and set the Hint message for it
-		MenuItem searchItem = menu.findItem(R.id.action_search_device);
-		
-		 searchView = (SearchView) searchItem.getActionView();
-		
-		 //searchView.setQueryHint("Search Devices");		
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search_device).getActionView();
+	    
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName())); // add searchable.xml configure file to searchView
+	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+	    searchView.setQueryHint("Search Device");
+	    searchView.setOnQueryTextListener(this);
 		
 		
 		return true;
@@ -150,6 +215,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	        	Intent setting_intent = new Intent(this,SettingsActivity.class);
 	            startActivity(setting_intent);
 	            return true;
+	            
+	        case R.id.action_sort:
+	        	refreshAllDevices();
+	        	//deviceListFragment.sort();
+	        	
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -160,6 +231,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 
+	/* (non-Javadoc) implements DeviceListFragment listener, on single device clicked
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onDeviceItemClicked(int, int)
+	 */
 	@Override
 	public void onDeviceItemClicked(int groupPosition, int childPosition) {
 		
@@ -176,11 +250,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(groupPosition==0)
 		{
 			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
 		}
 		else {
 			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
 		}
 		
 		
@@ -197,8 +271,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	@Override
 	protected void onDestroy() {
-		connection.closeConnection();
-		connection = null;
+		if(connection!=null){
+			connection.closeConnection();
+			connection = null;
+		}
+		mHandler.removeCallbacks(refreshTest);
 		super.onDestroy();
 	}
 
@@ -275,13 +352,18 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	@Override
 	public void refreshDevice(int address)
 	{
 		if(isConnected && !isDemo){
 			System.out.println("----------refresh device status--------");
 			List<char[] > commandList = ToggleCmdEnum.REFRESH.toggle(address);
 			connection.fetchData(commandList);
-		}	
+		}
+		else {
+			
+			mHandler.post(refreshDevice);
+		}
 		
 		
 		
@@ -334,11 +416,15 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			
-			deviceFragment.updateDevice(currentSelectedDevice);
-			deviceListFragment.refershStatus();
+			if(currentSelectedDevice != null){
+				deviceFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
+			}
+			
+			
+			//deviceListFragment.refershStatus();
+			//deviceListFragment.updateProgressIcon(1);
 		}
 	
-		
 		
 	};
 
@@ -366,7 +452,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		switch(groupPosition)
 		{
 			case 0: 
-				faultyDeviceNo.setText("Loop1 Faulty Number: " + panel.getLoop1().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop1().getFaultyDevicesNo());
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
@@ -375,8 +461,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				break;
 			case 1: 
 				
-				faultyDeviceNo.setText("Loop2 Faulty Number: " + panel.getLoop2().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
+					
 				{
 					image.setImageResource(R.drawable.redcross);		
 				}
@@ -391,6 +478,68 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	Runnable refreshTest = new Runnable(){
 
+		@Override
+		public void run() {
+			System.out.println("---------------auto refresh test----------------");
+			System.out.println("AutoFresh: " + isAutoRefresh());
+			System.out.println("refresh time: " + getRefreshDuration());
+			
+			if(!isDemo && isAutoRefresh()){
+				
+				refreshAllDevices();
+				
+			}
+			
+			int frequency= Integer.parseInt(getRefreshDuration());
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(frequency));
+			//get current time, using Calendar.getInstance();
+			Calendar cal = Calendar.getInstance();
+	    	cal.getTime();
+	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+	    	System.out.println( "Last updated: " + sdf.format(cal.getTime()));
+		
+	    	//deviceFragment.updateStampTextView.setText("Last updated: " + sdf.format( cal.getTime()));
+			//mHandler.postDelayed(new RefreshTest(), TimeUnit.SECONDS.toMillis(5));
+		}
+		
+		
+	};
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		System.out.println(newText);
+		deviceListFragment.search(newText);
+		return false;
+	}
+
+
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * Send out update all device command GetCmdEnum.UpdateList
+	 */
+	private void refreshAllDevices(){
+		if(connection!=null){
+			List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
+		
+			System.out.println(connection.isListening());
+			if(connection.isListening())
+			{
+				connection.fetchData(commandList);
+			}
+		}
+		
+		
+	}
+	
+	
+	
 	
 }

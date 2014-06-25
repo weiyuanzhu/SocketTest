@@ -9,6 +9,8 @@ import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import nlight_android.util.Constants;
@@ -23,7 +25,8 @@ public class TCPConnection {
 			public void error(String ip);
 		}
 	
-
+	private ExecutorService exec;
+		
 	private int panelInfoPackageNo;
 	private boolean rxCompleted;
 	
@@ -36,15 +39,31 @@ public class TCPConnection {
 	private int port;
 	private String ip;
 	
-	private boolean isClosed; // a flag for stop the background listening 
+	private boolean isListening = false; // a flag for keep/stop the socket listening 
 	
-	private Socket socket;
+	public synchronized boolean  isListening() {
+		return isListening;
+	}
+
+
+	
+	
+	//set this.isClosed
+	public synchronized void setListening(boolean isListening)
+	{
+		this.isListening = isListening;
+	}
+
+
+	
 	
 	private List<Integer> rxBuffer; //buffer for receive data
 	
 
 	private List<char[]> commandList;
 
+	
+	private Socket socket;
 	private PrintWriter out;
 	private InputStream in; 
 	
@@ -55,20 +74,18 @@ public class TCPConnection {
 	public TCPConnection(CallBack callBack, String ip)
 	{
 		this.ip = ip;
-		this.isClosed = false;
+		this.isListening = false;
 		this.rxCompleted = false;
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
 		this.mCallBack = new WeakReference<CallBack>(callBack);
-		
+		exec = Executors.newSingleThreadExecutor();
+		Thread t = new Thread(rx);
+		t.start();
 	}
 
 	
-	//set this.isClosed
-	public void setIsClosed(boolean bool)
-	{
-		this.isClosed = bool;
-	}
+	
 	
 	/*	function for pull data from panel
 	 *  this function will start a new background thread to receive data from panel
@@ -81,15 +98,15 @@ public class TCPConnection {
 	public void fetchData(List<char[]> commandList){
 		
 		this.commandList = commandList;
-		new Thread(fetch).start();
-		System.out.println("connection started ");
+		exec.execute(tx);
+		System.out.println("Connection started on thread:-------> " );
 		
 		
 	}
 
 	public void closeConnection()
 	{
-		isClosed = true;
+		isListening = false;
 		try {
 			if(socket != null)  
 			{		
@@ -111,12 +128,12 @@ public class TCPConnection {
 	 *	and then calls its delegate to 
 	 * 
 	*/
-	Runnable fetch = new Runnable(){
+	Runnable tx = new Runnable(){
 
 		@Override
 		public void run() {
 			panelInfoPackageNo = 0;
-			System.out.println("Slaver is doing job on a new thread.");
+			System.out.println(Thread.currentThread().toString() + "Tx thread starts");
 			
 			//char[] getPackageTest = new char[] {2, 165, 64, 15, 96, 0,0x5A,0xA5,0x0D,0x0A};
 			//char[] getConfig = new char[] {0x02,0xA0,0x21,0x68,0x18,0x5A,0xA5,0x0D,0x0A};
@@ -128,7 +145,7 @@ public class TCPConnection {
 				try {
 					// init socket and in/out stream
 					
-					isClosed = false;
+					
 					
 					if(socket == null ||  socket.isClosed())
 					{
@@ -145,6 +162,9 @@ public class TCPConnection {
 					// send command to panel
 					out.print(command);
 					out.flush();
+					
+					TimeUnit.SECONDS.sleep(1);
+					
 	
 					/*
 					 *   Receive bytes from panel and put in rxBuffer arrayList
@@ -164,46 +184,7 @@ public class TCPConnection {
 	
 					*/
 					
-					int data = 0;
 					
-					
-					while(!isClosed && !socket.isClosed())
-					{	
-						
-						if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
-		        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
-		        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
-		        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
-						{
-							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
-							
-							//mCallback.get() to get mCallBack instance, for it is  weakReference
-							
-							panelInfoPackageNo ++ ;
-							
-							if(panelInfoPackageNo == commandList.size()){
-								System.out.println(" Recieve task completed");
-								rxCompleted = true;
-							}
-							
-							mCallBack.get().receive(rxBuffer,ip);
-							rxBuffer.clear();
-						}
-						
-						
-						if(in.available()>0)
-						{
-							data = in.read();
-							rxBuffer.add(data);
-		
-						}
-						
-						//keep listening while available until isClosed flag is set to true
-						
-						else
-						{
-							TimeUnit.MILLISECONDS.sleep(100);;
-						}	
 						
 						/*for(int j=0; j<rxBuffer.size();j+=1033)
 						{
@@ -215,11 +196,11 @@ public class TCPConnection {
 							System.out.println();
 						}*/
 						
-					}
+				}
 				
 					
 			
-				}
+				
 				catch(Exception ex)
 				{
 					ex.printStackTrace();
@@ -227,29 +208,140 @@ public class TCPConnection {
 				}
 				finally
 				{		
-					
-					
-					if(panelInfoPackageNo == commandList.size()){
-						System.out.println(" Recieve task completed");
-						rxCompleted = true;
-						try {
-							if(socket != null)  
-							{		
-								out.close();
-								in.close();
-								socket.close();			
-							}
-							
-						} catch (IOException ex) {
-							ex.printStackTrace();
 
-						}
-					}
+					System.out.println("Tx: complete (finally)");
+						
+					
 				}		
 		
 			}
 		}
 	
+	};
+	
+	
+	Runnable rx = new Runnable(){
+
+		@Override
+		public void run() {
+			int data = 0;
+			
+			// TimeUnit.SECONDS.sleep(3); get all panel data test
+			try{
+				
+				if(socket == null ||  socket.isClosed())
+				{
+					socket = new Socket(ip,port);	
+					
+					isListening = true;
+					
+					socket.setSoTimeout(500);
+					socket.setReceiveBufferSize(20000);
+					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"ISO8859_1")),false);
+					in = socket.getInputStream();
+					
+					System.out.println("\nConnected to: " + socket.getInetAddress() + ": "+  socket.getPort());
+				}
+				
+				while(isListening && !socket.isClosed())
+				{	
+					//checks if a package is complete
+					//and call callback
+					
+					
+					/*if(in.available()==0 && !rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
+	        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
+	        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
+	        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
+					{
+						//System.out.println(rxBuffer.get(rxBuffer.size()-23));
+						
+						//mCallback.get() to get mCallBack instance, for it is  weakReference
+						
+						panelInfoPackageNo++ ;
+						
+						if(panelInfoPackageNo == commandList.size()){
+							System.out.println(" All packages received");
+							rxCompleted = true;
+						}
+						
+						mCallBack.get().receive(rxBuffer,ip);
+						System.out.println("rxBuffer size: " + rxBuffer.size());
+						rxBuffer.clear();
+					}*/
+					
+					//reading data from stream
+					if(in.available()>0)
+					{
+						data = in.read();
+						rxBuffer.add(data);
+						
+						if(!rxBuffer.isEmpty() && (data == Constants.UART_NEW_LINE_L) && 
+		        				rxBuffer.get(rxBuffer.size() - 2).equals(Constants.UART_NEW_LINE_H) &&
+		        				rxBuffer.get(rxBuffer.size() - 3).equals(Constants.UART_STOP_BIT_L) &&
+		        				rxBuffer.get(rxBuffer.size() - 4).equals(Constants.UART_STOP_BIT_H))   // check finished bit; to be changed 
+						{
+							//System.out.println(rxBuffer.get(rxBuffer.size()-23));
+							
+							//mCallback.get() to get mCallBack instance, for it is  weakReference
+							
+							panelInfoPackageNo++ ;
+							
+							if(panelInfoPackageNo == commandList.size()){
+								System.out.println(" All packages received");
+								rxCompleted = true;
+							}
+							
+							mCallBack.get().receive(rxBuffer,ip);
+							System.out.println("rxBuffer size: " + rxBuffer.size());
+							rxBuffer.clear();
+						
+						}
+					}
+					
+					//keep listening while available until isClosed flag is set to true
+					
+					else
+					{
+						try {
+							TimeUnit.SECONDS.sleep(3);
+							System.out.println("Rx thread keep listening");
+							//System.out.println("rx thread is Listening");
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}	
+			
+				
+				}
+			}
+			catch(IOException e){
+				e.printStackTrace();
+			}
+			finally{
+				System.out.println("Finally, RX: closing thread");
+					
+				try {
+					if(socket != null && !socket.isClosed())  
+					{		
+						out.close();
+						in.close();
+						socket.close();			
+					}
+						
+				} catch (IOException ex) {
+					ex.printStackTrace();
+
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		
 	};
 
 	public String getIp() {
