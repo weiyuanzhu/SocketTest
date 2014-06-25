@@ -3,7 +3,6 @@ package nlight_android.nlight;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -21,8 +20,10 @@ import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	
-	private boolean isAutoFresh = true;
+	private boolean isAutoRefresh = true;
 	private Handler mHandler;
 	
 	private Panel panel = null;
@@ -60,6 +61,14 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private SearchView searchView= null; //search view for search button on the action bar
 	
+	public boolean getAutoRefresh() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean autoFresh = sp.getBoolean("pref_key_refresh", false);
+		return autoFresh;
+	}
+
+
+
 	//connection.callback interface implementation
 	@Override
 	public void receive(List<Integer> rx, String ip) {
@@ -108,7 +117,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + " (Demo)" : "Panel: " + panel.getPanelLocation().trim() + " (Live)";
 		getActionBar().setTitle(title);
 		
-		this.connection = new TCPConnection(this,panel.getIp());
+		if(!isDemo) this.connection = new TCPConnection(this,panel.getIp());
 		
 		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
 		this.faultyDeviceNo = (TextView) findViewById(R.id.device_faultyNo_text);
@@ -218,11 +227,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(groupPosition==0)
 		{
 			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, getAutoRefresh());
 		}
 		else {
 			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice);
+			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,getAutoRefresh());
 		}
 		
 		
@@ -382,7 +391,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			
-			deviceFragment.updateDevice(currentSelectedDevice);
+			deviceFragment.updateDevice(currentSelectedDevice, getAutoRefresh());
 			deviceListFragment.refershStatus();
 			deviceListFragment.updateProgressIcon(1);
 		}
@@ -445,7 +454,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			System.out.println("---------------auto refresh test----------------");
-			if(isAutoFresh){
+			System.out.println("AutoFresh: " + getAutoRefresh());
+			if(!isDemo && isAutoRefresh){
 				
 				refreshAllDevices();
 				
@@ -497,6 +507,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 	}
+	
+	
 	
 	
 }

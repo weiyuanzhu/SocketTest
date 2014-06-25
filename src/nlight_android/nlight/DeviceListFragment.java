@@ -214,7 +214,17 @@ public class DeviceListFragment extends Fragment {
 	
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				deviceListView.setItemChecked(groupPosition, true);
+				
+				// determine which position to highlight 
+				int position =0;
+				if(deviceListView.isGroupExpanded(0) ){
+					position = groupPosition ==0 ? groupPosition : groupPosition + listDataChild.get(loop1).size();	
+				}
+				else {
+					 position = groupPosition;
+				}
+				deviceListView.setItemChecked(position, true);
+				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();

@@ -53,10 +53,13 @@ public class DeviceInfoFragment extends ListFragment {
 	private Calendar cal;
 	
 	private static final String ARG_DEVICE = "device";
+	private static final String ARG_REFRESH = "autoRefresh";
 
 
 	
 	private Device device;
+	private boolean isAutoRefresh;
+
 	private SimpleAdapter mSimpleAdapter;
 	private List<Map<String,Object>> listDataSource;
 	private TextView deviceName;
@@ -72,10 +75,11 @@ public class DeviceInfoFragment extends ListFragment {
 	 * @param device An instance of a device object
 	 * @return A new instance of fragment DeviceInfoFragment.
 	 */
-	public static DeviceInfoFragment newInstance(Device device) {
+	public static DeviceInfoFragment newInstance(Device device,boolean autoRefresh) {
 		DeviceInfoFragment fragment = new DeviceInfoFragment();
 		Bundle args = new Bundle();
 		args.putParcelable(ARG_DEVICE, device);
+		args.putBoolean(ARG_REFRESH, autoRefresh);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -96,7 +100,7 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		if (getArguments() != null) {
 			device = getArguments().getParcelable(ARG_DEVICE);
-			
+			isAutoRefresh = getArguments().getBoolean(ARG_REFRESH);
 		}
 		
 		if(device.getGtinArray()!=null)
@@ -162,7 +166,7 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		//getListView().setOnItemLongClickListener(longClickListener);
 
-		updateTimeStamp();
+		updateTimeStamp(isAutoRefresh);
 
 	}
 
@@ -305,9 +309,9 @@ public class DeviceInfoFragment extends ListFragment {
 	/**
 	 * @param device
 	 */
-	public void updateDevice(Device device) {
+	public void updateDevice(Device device, boolean autoRefresh) {
 		
-		updateTimeStamp();
+		updateTimeStamp(autoRefresh);
 		
 		listDataSource = getData(device);
 		
@@ -319,11 +323,14 @@ public class DeviceInfoFragment extends ListFragment {
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
-	private void updateTimeStamp(){
+	private void updateTimeStamp(boolean autoFresh){
 		
 		cal = device.getCal();
-    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		updateStampTextView.setText("Last updated: " + sdf.format(cal.getTime()));
+    	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+    	
+    	String on = autoFresh? "On" : "Off";
+    	
+		updateStampTextView.setText("AutoFresh: " + on + " ,Last Refreshed: " + sdf.format(cal.getTime()));
 	}
 
 }
