@@ -26,9 +26,11 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +40,7 @@ import com.example.nclient.R;
 
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
-															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener{
+															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
 	
 	
 	
@@ -217,7 +219,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	            return true;
 	            
 	        case R.id.action_sort:
-	        	refreshAllDevices();
+	        	View menuItemView = findViewById(R.id.action_sort);
+	        	showDropDownMenu(menuItemView);
+	        	//refreshAllDevices();
 	        	//deviceListFragment.sort();
 	        	
 	        	return true;
@@ -226,7 +230,28 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	    }
 	}
 	
-	
+	/**
+	 * when drop down(popup) menu item clicked 
+	 * @param popup menu item
+	 * @return true for handled, false for default
+	 */
+	@Override
+	public boolean onMenuItemClick(MenuItem arg0) {
+		switch(arg0.getItemId()){
+			case R.id.action_sort_by_faulty:
+				System.out.println("---------Sort by faulty-------");
+				return true;
+			case R.id.action_sort_by_alphabet:
+				return true;
+			case R.id.action_sort_by_unnamed:
+				return true;
+			default: return false;
+		}
+		
+		
+		
+		
+	}
 	
 	
 	
@@ -538,6 +563,27 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 	}
+	
+	/**
+	 * A function for popup a PopupMenu below menu item
+	 * @param view menuItem
+	 */
+	public void showDropDownMenu(View view)
+	{
+		
+		System.out.println("Panel Drop Down Menu");
+		PopupMenu popup = new PopupMenu(this, view);
+		popup.setOnMenuItemClickListener(this);
+	    MenuInflater inflater = popup.getMenuInflater();
+	    inflater.inflate(R.menu.sort_devicelist, popup.getMenu());
+	    popup.show();
+		
+		
+	}
+
+
+
+	
 	
 	
 	

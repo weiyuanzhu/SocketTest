@@ -9,6 +9,9 @@
     <string name="action_showDeviceList">Show Loops</string>
     <string name="action_showLoops">Show Loops</string>
     <string name="action_showFaultyDevices">Show Faulty Devices</string>
+    <string name="action_sort_by_faulty">Sort by faulty</string>
+    <string name="action_sort_by_alphabet">Sort by alphabet</string>
+    <string name="action_sort_by_unnamed">Sort by unnamed</string>
     <string name="action_refresh_status">RefreshPanelStatus</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_panel_list">N-Light</string>

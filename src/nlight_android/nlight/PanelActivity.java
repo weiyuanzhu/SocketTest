@@ -421,7 +421,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	public void showDropDownMenu(View view)
 	{
 		
-		System.out.println("Drop Down Menu");
+		System.out.println("Panel Drop Down Menu");
 		PopupMenu popup = new PopupMenu(this, view);
 		popup.setOnMenuItemClickListener(this);
 	    MenuInflater inflater = popup.getMenuInflater();
