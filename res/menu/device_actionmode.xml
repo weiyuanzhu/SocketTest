@@ -12,6 +12,7 @@
         android:id="@+id/device_dt"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/duration_test"
         android:title="DT"/>
    
       

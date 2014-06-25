@@ -56,18 +56,7 @@ public class DeviceListFragment extends Fragment {
 
 	}
 	
-	public static final Comparator<Device> SORT = new Comparator<Device>(){
-
-		@Override
-		public int compare(Device lhs, Device rhs) {
-			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
-			
-			return (faultComp == 0 ? (lhs.getAddress() - rhs.getAddress()): faultComp);
-		}
-		
-		
-		
-	};	
+	
 
 	private OnDevicdListFragmentListener mListener;
 	
@@ -425,10 +414,10 @@ public class DeviceListFragment extends Fragment {
 	}
 		
 	
-	public void sort(){
+	public void sort(Comparator<Device> comparator){
 		System.out.println("sort");
 		
-		mAdapter.sort(SORT);
+		mAdapter.sort(comparator);
 		
 	}
 

@@ -3,6 +3,7 @@ package nlight_android.nlight;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,43 @@ import com.example.nclient.R;
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
 															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
 	
+	public static final Comparator<Device> SORT_BY_FAULTY = new Comparator<Device>(){
+		@Override
+		public int compare(Device lhs, Device rhs) {
+			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
+			return (faultComp == 0 ? (lhs.getAddress() - rhs.getAddress()): faultComp);
+		}
+
+	};	
 	
+	public static final Comparator<Device> SORT_BY_UNNAMED = new Comparator<Device>(){
+		@Override
+		public int compare(Device lhs, Device rhs) {
+			int nameComp = lhs.getLocation().toLowerCase().compareTo(rhs.getLocation().toLowerCase());
+			return (nameComp == 0 ? (lhs.getAddress() - rhs.getAddress()): nameComp);
+		}
+
+	};
+	
+	public static final Comparator<Device> SORT_BY_ALPHABET = new Comparator<Device>(){
+		@Override
+		public int compare(Device lhs, Device rhs) {
+			
+			if(lhs.getLocation().startsWith("?") && !rhs.getLocation().startsWith("?")){
+				return 1;
+				
+			}
+			else if(rhs.getLocation().startsWith("?") && !lhs.getLocation().startsWith("?")){
+				return -1;
+			}
+			else{
+				int nameComp = lhs.getLocation().toLowerCase().compareTo(rhs.getLocation().toLowerCase());
+				return (nameComp == 0 ? (lhs.getAddress() - rhs.getAddress()): nameComp);
+		
+			}
+		}
+
+	};
 	
 	private boolean isAutoRefresh = false;
 	private String refreshDuration = "";
@@ -79,7 +116,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public String getRefreshDuration() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		refreshDuration = sp.getString("pref_key_sync_device", "160");
+		refreshDuration = sp.getString("pref_key_sync_device", "30");
 		return refreshDuration;
 	}
 
@@ -221,7 +258,6 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	        case R.id.action_sort:
 	        	View menuItemView = findViewById(R.id.action_sort);
 	        	showDropDownMenu(menuItemView);
-	        	//refreshAllDevices();
 	        	//deviceListFragment.sort();
 	        	
 	        	return true;
@@ -239,11 +275,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public boolean onMenuItemClick(MenuItem arg0) {
 		switch(arg0.getItemId()){
 			case R.id.action_sort_by_faulty:
+				deviceListFragment.sort(SORT_BY_FAULTY);
 				System.out.println("---------Sort by faulty-------");
 				return true;
 			case R.id.action_sort_by_alphabet:
+				
+				deviceListFragment.sort(SORT_BY_ALPHABET);
 				return true;
 			case R.id.action_sort_by_unnamed:
+				
+				deviceListFragment.sort(SORT_BY_UNNAMED);
 				return true;
 			default: return false;
 		}
