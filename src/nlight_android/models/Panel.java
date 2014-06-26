@@ -390,7 +390,7 @@ public class Panel  implements Parcelable {
 		
 	}
 	
-	public int upDateDeviceByAddress(int address, List<Integer> device){
+	public int updateDeviceByAddress(int address, List<Integer> device){
 		
 		if(address<64){
 			

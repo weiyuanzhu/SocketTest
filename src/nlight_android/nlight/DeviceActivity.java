@@ -82,19 +82,19 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	};
 	
 	private boolean isAutoRefresh = false;
-	private String refreshDuration = "";
+	private String refreshDuration = null;
 	
-	private Handler mHandler;
+	private Handler mHandler = null;
 	
 	private Panel panel = null;
-	private Device currentSelectedDevice;
+	private Device currentSelectedDevice = null;
 	private DeviceListFragment deviceListFragment = null;
-	private DeviceInfoFragment deviceFragment = null;
+	private DeviceInfoFragment deviceInfoFragment = null;
 	
 	private ImageView image = null;
-	private TextView faultyDeviceNo;
+	private TextView faultyDeviceNo = null;
 	
-	private TCPConnection connection;
+	private TCPConnection connection = null;
 	
 	private int currentDeviceAddress = 0;
 	private int currentGroupPosition = 0;
@@ -136,7 +136,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			
 			int address = rx.get(3);
 			
-			panel.upDateDeviceByAddress(address, rx);
+			panel.updateDeviceByAddress(address, rx);
 			/*if(currentSelectedDevice!=null){
 				currentSelectedDevice.updateDevice(rx);
 			}*/
@@ -319,17 +319,17 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(groupPosition==0)
 		{
 			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
 		}
 		else {
 			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
 		}
 		
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
-		fragmentTransaction.replace(R.id.device_detail_container, deviceFragment,"device_detail_fragment");
+		fragmentTransaction.replace(R.id.device_detail_container, deviceInfoFragment,"device_detail_fragment");
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
 		
@@ -456,7 +456,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	@Override
 	public void setLocation(String location) {
 		//update device fragment
-		deviceFragment.updateLocation(location);
+		deviceInfoFragment.updateLocation(location);
 		
 		//send command to panel
 		
@@ -486,7 +486,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		public void run() {
 			
 			if(currentSelectedDevice != null){
-				deviceFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
+				deviceInfoFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
 			}
 			
 			
@@ -507,8 +507,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
 		//remove DeviceInfo Fragment
-		if(deviceFragment != null){
-			fragmentTransaction.remove(deviceFragment);
+		if(deviceInfoFragment != null){
+			fragmentTransaction.remove(deviceInfoFragment);
 			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			fragmentTransaction.commit();
 		}
@@ -552,7 +552,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			System.out.println("---------------auto refresh test----------------");
-			System.out.println("AutoFresh: " + isAutoRefresh());
+			System.out.println("AutoRresh: " + isAutoRefresh());
 			System.out.println("refresh time: " + getRefreshDuration());
 			
 			if(!isDemo && isAutoRefresh()){

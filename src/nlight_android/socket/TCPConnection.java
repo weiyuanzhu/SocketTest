@@ -163,7 +163,8 @@ public class TCPConnection {
 					out.print(command);
 					out.flush();
 					
-					TimeUnit.SECONDS.sleep(1);
+					Thread.yield();
+					//TimeUnit.SECONDS.sleep(1);
 					
 	
 					/*
@@ -233,7 +234,7 @@ public class TCPConnection {
 				{
 					socket = new Socket(ip,port);	
 					
-					isListening = true;
+					setListening(true);
 					
 					socket.setSoTimeout(500);
 					socket.setReceiveBufferSize(20000);
@@ -243,7 +244,7 @@ public class TCPConnection {
 					System.out.println("\nConnected to: " + socket.getInetAddress() + ": "+  socket.getPort());
 				}
 				
-				while(isListening && !socket.isClosed())
+				while(isListening() && !socket.isClosed())
 				{	
 					//checks if a package is complete
 					//and call callback

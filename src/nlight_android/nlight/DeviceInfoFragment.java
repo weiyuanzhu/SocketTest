@@ -61,7 +61,7 @@ public class DeviceInfoFragment extends ListFragment {
 	private boolean isAutoRefresh;
 
 	private SimpleAdapter mSimpleAdapter;
-	private List<Map<String,Object>> listDataSource;
+	private List<Map<String,Object>> dataList;
 	private TextView deviceName_textView;
 
 	@SuppressWarnings("unused")
@@ -163,6 +163,13 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		//getListView().setOnItemLongClickListener(longClickListener);
 
+		dataList = getData(device);
+		
+		mSimpleAdapter = new SimpleAdapter(getActivity(), dataList, R.layout.device_info_row, 
+				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+		
+		setListAdapter(mSimpleAdapter);
+		
 		updateDevice(device,isAutoRefresh);
 
 	}
@@ -178,7 +185,7 @@ public class DeviceInfoFragment extends ListFragment {
 	public List<Map<String,Object>> getData(Device device)
 	{
 		
-		listDataSource = new ArrayList<Map<String,Object>>();
+		if(dataList==null) dataList = new ArrayList<Map<String,Object>>();
 		
 			
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -190,20 +197,20 @@ public class DeviceInfoFragment extends ListFragment {
 		map.put("description", "Address");
 		map.put("value", device==null? "n/a" : address);
 		
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
 		map.put("description", "Serial number:");
 		map.put("value", device==null? "n/a" : device.getSerialNumber());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("description", "GTIN:");
 		map.put("value", device==null? "n/a" : device.getGTIN());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		/*
 		 * map = new HashMap<String,Object>();
 		 * map.put("description", "Location");
@@ -219,47 +226,47 @@ public class DeviceInfoFragment extends ListFragment {
 		map.put("description", "Emergency mode");
 		map.put("value", device==null? "n/a" : device.getEmergencyModeText());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("description", "Emergency status");
 		map.put("value", device==null? "n/a" : device.getEmergencyStatusText());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("description", "Failure status");
 		map.put("value", device==null? "n/a" : device.getFailureStatusText());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", "Battery level");
 		map.put("value", device==null? "n/a" : device.getBatteryLevel());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", "Last duration test result");
 		map.put("value", device==null? "n/a" : device.getDtTime() + " minutes");
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", "Total emgerency lamp operating time");
 		map.put("value", device==null? "n/a" : device.getLampEmergencyTimeText());
 	
 		
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", "Communication status");
 		map.put("value", device==null? "n/a" : "OK");
 			
-		listDataSource.add(map);
+		dataList.add(map);
 	
-		return listDataSource;
+		return dataList;
 	}
 
 	
@@ -308,6 +315,8 @@ public class DeviceInfoFragment extends ListFragment {
 	 */
 	public void updateDevice(Device device, boolean autoRefresh) {
 		
+		
+		
 		//update refresh data stamp
 		Calendar deviceCal = device.getCal();
     	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
@@ -316,17 +325,10 @@ public class DeviceInfoFragment extends ListFragment {
     	
 		updateStampTextView.setText("AutoFresh: " + on + " , Last Refreshed: " + sdf.format(deviceCal.getTime()));
 		
-		
-		
-		
 		//update deviceInfo ListView
-		listDataSource = getData(device);
-		
-		mSimpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.device_info_row, 
-				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
-		
-		setListAdapter(mSimpleAdapter);
-		
+		dataList.clear();
+		dataList = getData(device);
+			
 		mSimpleAdapter.notifyDataSetChanged();
 		
 	}
