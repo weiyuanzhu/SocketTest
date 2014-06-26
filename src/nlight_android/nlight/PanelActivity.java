@@ -147,7 +147,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	            return true;
 	        case R.id.action_settings:
 	            Intent intent = new Intent(this,SettingsActivity.class);
-	            startActivity(intent);
+	            startActivityForResult(intent, 0);
 	            return true;
 	        case R.id.action_refresh:
 	        	Toast.makeText(this, "Refreshing panel status...", Toast.LENGTH_LONG).show();
@@ -194,6 +194,13 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 
 
 	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		System.out.println("-----------PanelActivity onActivityResult------------");
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	@Override
 	protected void onDestroy() {

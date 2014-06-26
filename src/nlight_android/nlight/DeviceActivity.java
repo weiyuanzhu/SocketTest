@@ -246,6 +246,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	    		Intent intent = NavUtils.getParentActivityIntent(this);
 	    		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    		NavUtils.navigateUpTo(this, intent);
+	    		
+	    		
+	    		
 	    		return true;
 	    	case R.id.action_about:
 	        	Toast.makeText(this, getAppVersion(), Toast.LENGTH_SHORT).show();
