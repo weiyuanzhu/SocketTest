@@ -60,7 +60,7 @@ public class DeviceInfoFragment extends ListFragment {
 	private Device device;
 	private boolean isAutoRefresh;
 
-	private SimpleAdapter mSimpleAdapter;
+	private SimpleAdapter mAdapter;
 	private List<Map<String,Object>> dataList;
 	private TextView deviceName_textView;
 
@@ -165,10 +165,10 @@ public class DeviceInfoFragment extends ListFragment {
 
 		dataList = getData(device);
 		
-		mSimpleAdapter = new SimpleAdapter(getActivity(), dataList, R.layout.device_info_row, 
+		mAdapter = new DeviceInfoListAdapter(getActivity(), dataList, R.layout.device_info_row, 
 				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
 		
-		setListAdapter(mSimpleAdapter);
+		setListAdapter(mAdapter);
 		
 		updateDevice(device,isAutoRefresh);
 
@@ -306,7 +306,7 @@ public class DeviceInfoFragment extends ListFragment {
 	{
 		//update listDataSource
 		deviceName_textView.setText(location);
-		mSimpleAdapter.notifyDataSetChanged();
+		mAdapter.notifyDataSetChanged();
 		
 	}
 	
@@ -323,13 +323,13 @@ public class DeviceInfoFragment extends ListFragment {
     	
     	String on = autoRefresh? "On" : "Off";
     	
-		updateStampTextView.setText("AutoFresh: " + on + " , Last Refreshed: " + sdf.format(deviceCal.getTime()));
+		updateStampTextView.setText("AutoRefresh: " + on + " , Last refreshed: " + sdf.format(deviceCal.getTime()));
 		
 		//update deviceInfo ListView
 		dataList.clear();
 		dataList = getData(device);
 			
-		mSimpleAdapter.notifyDataSetChanged();
+		mAdapter.notifyDataSetChanged();
 		
 	}
 	

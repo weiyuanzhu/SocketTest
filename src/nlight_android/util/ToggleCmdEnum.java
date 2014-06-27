@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package nlight_android.util;
 
 import java.util.*;
