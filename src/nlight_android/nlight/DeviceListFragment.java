@@ -246,7 +246,8 @@ public class DeviceListFragment extends Fragment {
 			 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
-                    int groupPosition, int childPosition, long id) {
+                    int groupPosition, int childPosition, long id)
+            {
                 /*Toast.makeText(
                         getActivity(),
                         listDataHeader.get(groupPosition)

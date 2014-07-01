@@ -201,13 +201,13 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "Serial number:");
+		map.put("description", "Serial number");
 		map.put("value", device==null? "n/a" : device.getSerialNumber());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "GTIN:");
+		map.put("description", "GTIN");
 		map.put("value", device==null? "n/a" : device.getGTIN());
 			
 		dataList.add(map);

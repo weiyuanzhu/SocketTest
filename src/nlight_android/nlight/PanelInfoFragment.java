@@ -351,26 +351,26 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Contact:");
+		map.put("text1", "Contact");
 		map.put("text2", panel==null? "..." : panel.getContact());
 		
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Tel:");
+		map.put("text1", "Tel");
 		map.put("text2", panel==null? "..." : panel.getTel());
 			
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Mobile:");
+		map.put("text1", "Mobile");
 		map.put("text2", panel==null? "..." : panel.getMobile());
 			
 		listDataSource.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Firmware version:");
+		map.put("text1", "Firmware version");
 		map.put("text2", panel==null? "..." : panel.getVersion());
 			
 		listDataSource.add(map);
@@ -382,7 +382,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		listDataSource.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Passcode:");
+		map.put("text1", "Passcode");
 		map.put("text2", panel==null? "..." : panel.getPasscode());
 			
 		listDataSource.add(map);
