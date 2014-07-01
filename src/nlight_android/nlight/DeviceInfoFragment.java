@@ -156,7 +156,7 @@ public class DeviceInfoFragment extends ListFragment {
 		});
 		
 		
-		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name" : device.getLocation()); // set device name textView text
+		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name: ? [Click and hold to rename device]" : device.getLocation() + " [Click and hold to rename device]"); // set device name textView text
 		
 		System.out.println(device.toString());
 		
@@ -318,12 +318,17 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		
 		//update refresh data stamp
-		Calendar deviceCal = device.getCal();
+		
+		//Calendar deviceCal = device.getCal();
+		
+		//demo cal
+		Calendar deviceCal = Calendar.getInstance();
+		
     	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
     	
     	String on = autoRefresh? "On" : "Off";
     	
-		updateStampTextView.setText("AutoRefresh: " + on + " , Last refreshed: " + sdf.format(deviceCal.getTime()));
+		updateStampTextView.setText("Auto refresh: " + on + " , Last refreshed: " + sdf.format(deviceCal.getTime()));
 		
 		//update deviceInfo ListView
 		dataList.clear();

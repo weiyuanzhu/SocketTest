@@ -81,6 +81,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	};
 	
+	public static final int REFRESH_FEQUENCY = 60;
+	
 	private boolean isAutoRefresh = false;
 	private String refreshDuration = null;
 	
@@ -555,14 +557,14 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			System.out.println("AutoRresh: " + isAutoRefresh());
 			System.out.println("refresh time: " + getRefreshDuration());
 			
-			if(!isDemo && isAutoRefresh()){
+			if(isAutoRefresh()){
 				
 				refreshAllDevices();
 				
 			}
 			
 			int frequency= Integer.parseInt(getRefreshDuration());
-			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(frequency));
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(REFRESH_FEQUENCY));
 			//get current time, using Calendar.getInstance();
 			Calendar cal = Calendar.getInstance();
 	    	cal.getTime();
@@ -592,10 +594,14 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 	
 	/**
-	 * Send out update all device command GetCmdEnum.UpdateList
+	 * Send out update all device command GetCmdEnum.UpdateList if it is live
+	 * and just update label if it is in demo
 	 */
 	private void refreshAllDevices(){
-		if(connection!=null){
+		
+		
+		
+		if(!isDemo && connection!=null){
 			List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
 		
 			System.out.println(connection.isListening());
@@ -603,6 +609,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			{
 				connection.fetchData(commandList);
 			}
+		}
+		else{
+			mHandler.post(refreshDevice);
 		}
 		
 		
