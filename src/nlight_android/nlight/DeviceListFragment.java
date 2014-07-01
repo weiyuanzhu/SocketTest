@@ -176,11 +176,13 @@ public class DeviceListFragment extends Fragment {
 		
 		deviceListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView_deviceList);
 		
-		
-		
 		initListData();
 		
 		mAdapter = new MyExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+				
+		//Sort by faults -- default sort
+        sort(DeviceActivity.SORT_BY_FAULTY);
+		
 		deviceListView.setAdapter(mAdapter);
 		
 		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -356,7 +358,6 @@ public class DeviceListFragment extends Fragment {
 		listDataHeader = new ArrayList<Loop>();
         listDataChild = new HashMap<Loop, List<Device>>();
  
-        // Adding child data
        
 
         // Adding child data
@@ -371,8 +372,7 @@ public class DeviceListFragment extends Fragment {
         	 listDataChild.put(loop2, loop2.getDeviceList());
        }
 
-
-		
+        
 		
 	}
 	
