@@ -459,6 +459,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void setLocation(String location) {
 		//update device fragment
 		deviceInfoFragment.updateLocation(location);
+		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
 		
 		//send command to panel
 		
@@ -471,7 +472,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		connection.fetchData(commandList);
 		
 		//update devicelistFragment
-		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
+		
 		
 		
 		//show a toast

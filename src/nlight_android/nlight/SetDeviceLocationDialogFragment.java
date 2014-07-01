@@ -74,7 +74,7 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		builder.setView(dialogView);
 		
 		//set title and buttons
-		builder.setMessage("Name Device Location")
+		builder.setMessage("Enter Location")
 				.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
 			
 					@Override

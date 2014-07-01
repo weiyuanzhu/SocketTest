@@ -8,6 +8,7 @@ import java.util.Map;
 
 import nlight_android.models.Panel;
 import nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack;
+import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
@@ -31,7 +32,7 @@ import com.example.nclient.R;
  * @author weiyuan zhu
  *
  */
-public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, TCPConnection.CallBack, PopupMenu.OnMenuItemClickListener{
+public class PanelActivity extends BaseActivity implements OnPanelListItemClickedCallBack, TCPConnection.CallBack, PopupMenu.OnMenuItemClickListener, NoticeDialogListener{
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
@@ -41,6 +42,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private List<PanelInfoFragment> fragmentList = null;
 	
 	private Panel currentDisplayingPanel;
+	private int panelPosition = 0;
+	
 	private Panel panelWithFaulyDevices;
 	private ImageView panelInfoImage;
 
@@ -220,8 +223,13 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		super.onDestroy();
 	}
 
+	/* (non-Javadoc)
+	 * @see nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack#onListItemClicked(java.lang.String, java.lang.String, int)
+	 */
 	@Override
 	public void onListItemClicked(String ip, String location, int index) {
+		
+		panelPosition = index;
 		
 		currentDisplayingPanel = panelMap.get(ip);
 		
@@ -435,6 +443,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	    inflater.inflate(R.menu.show_devices, popup.getMenu());
 	    popup.show();
 		
+		
+	}
+
+	@Override
+	public void setLocation(String location) {
+		System.out.println("Panel location: " + location);
+		fragmentList.get(panelPosition).updatePanelLocation(location);
+		currentDisplayingPanel.setPanelLocation(location);
+		
+		panelListFragment.updateList(panelPosition, location);
 		
 	}
 		

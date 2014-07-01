@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -144,6 +145,24 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		locationTextView = (TextView) getActivity().findViewById(R.id.panel_location);
 
 		locationTextView.setText(location + " (" + panel.getFaultDeviceNo() + ")");
+		locationTextView.setLongClickable(true);
+		locationTextView.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				//display dialog
+				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				
+				dialog.setLocation(panel.getPanelLocation());
+				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
+				return true;
+			}
+			
+			
+			
+		
+		});
+		
 		
 		progressHandler = new Handler()
 		{
@@ -462,7 +481,11 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 	}
 
-
+	public int updatePanelLocation(String location)
+	{
+		locationTextView.setText(location + " (" + panel.getFaultDeviceNo() + ")");
+		return 1;
+	}
 	
 
 }

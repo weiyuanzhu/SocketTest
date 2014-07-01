@@ -177,6 +177,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		setListAdapter(simpleAdapter);
 		
 		
+		
 		//create TCPConnection for each panel and open rx threads for listening 
 		//if it is in live mode
 		if(!isDemo && isConnected){
@@ -373,5 +374,13 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	 */
 	public void setConnected(boolean isConnected) {
 		this.isConnected = isConnected;
+	}
+	
+	public void updateList(int position, String location){
+		
+		dataList.get(position).put("location", location);
+		simpleAdapter.notifyDataSetChanged();
+		
+		
 	}
 }
