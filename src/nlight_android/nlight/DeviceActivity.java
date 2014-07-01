@@ -116,7 +116,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public String getRefreshDuration() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		refreshDuration = sp.getString("pref_key_sync_device", "30");
+		refreshDuration = sp.getString("pref_key_sync_device", "60");
 		return refreshDuration;
 	}
 
@@ -521,7 +521,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		switch(groupPosition)
 		{
 			case 0: 
-				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop1().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Number of faulty device(s): " + panel.getLoop1().getFaultyDevicesNo());
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
 					image.setImageResource(R.drawable.redcross);		
@@ -530,7 +530,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				break;
 			case 1: 
 				
-				faultyDeviceNo.setText("Loop fault(s): " + panel.getLoop2().getFaultyDevicesNo());
+				faultyDeviceNo.setText("Number of faulty device(s): " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
 					
 				{
