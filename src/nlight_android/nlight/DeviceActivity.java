@@ -463,13 +463,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		//send command to panel
 		
-		List<Integer> buffer = new ArrayList<Integer>();
+		if(!isDemo && connection != null){
+			List<Integer> buffer = new ArrayList<Integer>();
 		
-		buffer.add(currentDeviceAddress);		
-		buffer.addAll(DataParser.convertString(location));
-		System.out.println(buffer);
-		List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
-		connection.fetchData(commandList);
+		
+			buffer.add(currentDeviceAddress);		
+			buffer.addAll(DataParser.convertString(location));
+			System.out.println(buffer);
+			List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
+			connection.fetchData(commandList);
+		}
 		
 		//update devicelistFragment
 		
