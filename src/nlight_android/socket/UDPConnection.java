@@ -53,6 +53,9 @@ public class UDPConnection implements Runnable{
 			
 			udpPacket = new DatagramPacket(msg.getBytes(),msg_len,address,SERVER_PORT);
 			
+			udpSocket.send(udpPacket);
+			
+			
 			
 			
 			
@@ -60,10 +63,12 @@ public class UDPConnection implements Runnable{
 			e.printStackTrace();
 		} catch (SocketException e) {
 			e.printStackTrace();
+		} catch (IOException e){
+			e.printStackTrace();
 		}
 		
-		try {
-			udpSocket.send(udpPacket);
+		
+			
 			Runnable receive= new Runnable()
 			{
 
@@ -73,9 +78,11 @@ public class UDPConnection implements Runnable{
 					System.out.println("---------------receiving udp packages------------");
 					byte[] buf = new byte[1024];
 					udpPacket = new DatagramPacket(buf, buf.length);
-					while(isListening)
-					{
-						try {
+					
+					try{
+						while(isListening)
+						{
+						
 							udpSocket.receive(udpPacket);
 							int[] buffer = new int[buf.length];
 							int i = 0;
@@ -95,31 +102,31 @@ public class UDPConnection implements Runnable{
 							panelUDPDataList.add(buffer);
 							mCallback.addIp(getIp(buffer));
 							
-					
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
-						finally
-						{
-							if(!isListening && udpSocket!=null && !udpSocket.isClosed()){
-								udpSocket.close();
-							}
-							
-						}
-						
 					}
+					catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					finally
+					{
+							
+						if(udpSocket!=null && !udpSocket.isClosed()){
+							System.out.println("Finally -- > UDP Socket Closing");
+							udpSocket.close();
+						}
+							
+					}
+						
 				}
+				
 
 
 
 			};
 			Thread t = new Thread(receive);
 			t.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	}	
 
 	

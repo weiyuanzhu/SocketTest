@@ -251,7 +251,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		if(udpConnection!=null)
 		{
 			udpConnection.setListen(false);
-			udpConnection.closeConnection();
+			//udpConnection.closeConnection();
 		}
 		
 		//close TCP connections
@@ -516,10 +516,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
 	 */
 	@Override
-	public void connectPanels(List<Integer> selected) {
+	public void connectToPanels(List<Integer> selected) {
 		
 		//connecting to panels, and close UDP socket
-		udpConnection.closeConnection();
+		udpConnection.setListen(false);
 		
 		//save checkBox status
 		

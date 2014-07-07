@@ -34,7 +34,7 @@ import com.example.nclient.R;
 public class ListDialogFragment extends DialogFragment {
 	
 	public interface ListDialogListener{
-		public void connectPanels(List<Integer> selected);
+		public void connectToPanels(List<Integer> selected);
 		public void cancelDialog(List<Integer> selected);
 
 		
@@ -192,7 +192,7 @@ public class ListDialogFragment extends DialogFragment {
 	                   // or return them to the component that opened the dialog
 	            	   
 	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
-	            	   mListener.connectPanels(mSelectedItems);
+	            	   mListener.connectToPanels(mSelectedItems);
 	            	   System.out.println(getCheckedItemsList(listView.getCheckedItemPositions()).toString());
 	                   
 	               }

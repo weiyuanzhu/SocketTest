@@ -305,8 +305,8 @@ public class TCPConnection {
 					else
 					{
 						try {
-							TimeUnit.SECONDS.sleep(3);
-							System.out.println("Rx thread keep listening");
+							TimeUnit.MILLISECONDS.sleep(10);
+							//System.out.println("Rx thread keep listening");
 							//System.out.println("rx thread is Listening");
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block

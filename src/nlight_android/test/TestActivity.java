@@ -24,13 +24,14 @@ import com.example.nclient.R;
 public class TestActivity extends BaseActivity implements TCPConnection.CallBack,NoticeDialogListener{
 
 	TCPConnection tcpConnection;
-	final String ip = "192.168.1.20";
+	final String ip = "192.168.1.22";
 	private ArrayList<Integer> rxData = null;
 	
 	@Override
 	public void receive(List<Integer> rx, String ip){
 		
 		rxData.addAll(rx);
+		System.out.println(rx);
 		System.out.println("rxData size: " + rxData.size());
 		//tcpConnection.setListening(false);
 		//refreshTest();
@@ -96,7 +97,7 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 
 			//tcpConnection.closeConnection();
 			rxData.clear();
-			List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
+			List<char[] > commandList = GetCmdEnum.GET_REPORT.get();
 			//commandList = ToggleCmdEnum.REFRESH.toggle(1);
 			
 			Calendar cal = Calendar.getInstance();
