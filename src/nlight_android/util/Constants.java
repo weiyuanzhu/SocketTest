@@ -3,6 +3,7 @@ package nlight_android.util;
 public class Constants {
 	
 	public static final int TEXT_MAX = 32;
+	public static final int PASSCODE_MAX = 4;
 	
 	public static final int ALL_OK = 0;
 	public static final int FAULT = 1;

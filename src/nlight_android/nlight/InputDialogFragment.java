@@ -89,7 +89,7 @@ public class InputDialogFragment extends DialogFragment{
 		inputEditText.setFilters(filters); 
 		
 		//set TextEdit devault message and set cursor to last position
-		inputEditText.setText(hint == null? "Name device:" : hint);
+		inputEditText.setText(hint == null? "User input:" : hint);
 		inputEditText.setSelection(hint.length());
 		
 		//set dialog view
@@ -158,6 +158,8 @@ public class InputDialogFragment extends DialogFragment{
 			case PANEL_MOBILE: title = "Enter Mobile Number";
 					break;
 			case PANEL_PASSCODE: title = "Enter Passcode";
+					InputFilter[] filters = {new InputFilter.LengthFilter(Constants.PASSCODE_MAX)};  
+					inputEditText.setFilters(filters);
 					break;
 			default: title = "Enter Information";
 					break;
