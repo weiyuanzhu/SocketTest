@@ -22,11 +22,13 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.example.nclient.R;
 
@@ -190,7 +192,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 				InputDialogFragment dialog = new InputDialogFragment();
 				
 				//setup dialog title and input hint
-				dialog.setType(1);
+				dialog.setType(InputDialogFragment.PANEL_NAME);
 				dialog.setHint(panel.getPanelLocation());
 				dialog.show(getFragmentManager(), "UserInputDialog");
 				return true;
@@ -266,6 +268,10 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		
 		listView.setAdapter(simpleAdapter);
+		
+		
+		//setup list item long click listener
+		listView.setOnItemLongClickListener (longClickListener);
 		
 		
 		
@@ -492,5 +498,50 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		return 1;
 	}
 	
+	
+	OnItemLongClickListener longClickListener = new OnItemLongClickListener(){
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+				int position, long id) {
+			
+			InputDialogFragment dialog = new InputDialogFragment();
+			
+			// if locaion long clicked
+			switch(position){
+				case 3: dialog.setHint(panel.getContact());
+						dialog.setType(InputDialogFragment.PANEL_CONTACT);
+						dialog.show(getFragmentManager(), "inputDialog");
+						break;
+				case 4: dialog.setHint(panel.getTel());
+						dialog.setType(InputDialogFragment.PANEL_TEL);
+						dialog.show(getFragmentManager(), "inputDialog");	
+						break;
+				case 5: dialog.setHint(panel.getMobile());
+						dialog.show(getFragmentManager(), "inputDialog");
+						dialog.setType(InputDialogFragment.PANEL_MOBILE);
+						break;
+				case 8: dialog.setHint(panel.getPasscode());
+						dialog.setType(InputDialogFragment.PANEL_PASSCODE);
+						dialog.show(getFragmentManager(), "inputDialog");
+						break;
+				default: break;
+						 
+					
+				//display dialog
+				
+				
+				
+				
+				
+			}
+	
+			
+			return true;
+		}
+		
+		
+		
+	};
 
 }

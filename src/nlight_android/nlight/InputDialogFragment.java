@@ -24,6 +24,16 @@ import android.os.*;
  */
 public class InputDialogFragment extends DialogFragment{
 	
+	
+	
+	public static final int DEVICE_NAME = 0;
+	public static final int PANEL_NAME = 1;
+	public static final int PANEL_CONTACT = 2;
+	public static final int PANEL_TEL = 3;
+	public static final int PANEL_MOBILE = 4;
+	public static final int PANEL_PASSCODE = 5;
+	
+	
 	//Dialog title
 	private String title;
 	
@@ -143,9 +153,17 @@ public class InputDialogFragment extends DialogFragment{
 	public String getTitle() {
 		
 		switch(type){
-			case 0: title = "Name Device";
+			case DEVICE_NAME: title = "Name Device";
 					break;
-			case 1: title = "Name Panel";
+			case PANEL_NAME: title = "Name Panel";
+					break;
+			case PANEL_CONTACT: title = "Enter Contact";
+					break;
+			case PANEL_TEL: title = "Enter Telphone Number";
+					break;
+			case PANEL_MOBILE: title = "Enter Mobile Number";
+					break;
+			case PANEL_PASSCODE: title = "Enter Passcode";
 					break;
 			default: title = "Enter Information";
 					break;
