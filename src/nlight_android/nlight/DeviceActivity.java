@@ -456,7 +456,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 
 	@Override
-	public void setLocation(String location) {
+	public void setInformation(String location) {
 		//update device fragment
 		deviceInfoFragment.updateLocation(location);
 		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);

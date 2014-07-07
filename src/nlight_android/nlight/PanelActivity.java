@@ -447,7 +447,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	}
 
 	@Override
-	public void setLocation(String location) {
+	public void setInformation(String location) {
 		System.out.println("Panel location: " + location);
 		fragmentList.get(panelPosition).updatePanelLocation(location);
 		currentDisplayingPanel.setPanelLocation(location);

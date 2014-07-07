@@ -190,7 +190,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 				InputDialogFragment dialog = new InputDialogFragment();
 				
 				//setup dialog title and input hint
-				dialog.setTitle("Name Panel");
+				dialog.setType(1);
 				dialog.setHint(panel.getPanelLocation());
 				dialog.show(getFragmentManager(), "UserInputDialog");
 				return true;

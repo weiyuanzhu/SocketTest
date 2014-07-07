@@ -27,6 +27,15 @@ public class InputDialogFragment extends DialogFragment{
 	//Dialog title
 	private String title;
 	
+	/*dialog type: 0 = Device Name
+	 * 			   1 = Panel Name
+	 * 			   2 = Contact
+	 * 			   3 = Tel
+	 * 			   4 = Mobile
+	 * 			   5 = Passcode
+	 */
+	private int type = 0;
+	
 	//hint for user input
 	private String hint;
 	
@@ -34,10 +43,10 @@ public class InputDialogFragment extends DialogFragment{
 	private NoticeDialogListener mListener= null;
 	
 	//EditText for user input
-	private EditText locationEditText = null;
+	private EditText inputEditText = null;
 	
 	public interface NoticeDialogListener{
-		public void setLocation(String location);
+		public void setInformation(String userInput);
 		
 	}
 	
@@ -69,21 +78,21 @@ public class InputDialogFragment extends DialogFragment{
 		final View dialogView = inflater.inflate(R.layout.dialog_setdevice_name, null);
 
 		//get EditText view
-		locationEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
+		inputEditText = (EditText) dialogView.findViewById(R.id.device_dialog_location);
 		
 		//set max length allowed for edittext
 		InputFilter[] filters = {new InputFilter.LengthFilter(Constants.TEXT_MAX)};  
-		locationEditText.setFilters(filters); 
+		inputEditText.setFilters(filters); 
 		
 		//set TextEdit devault message and set cursor to last position
-		locationEditText.setText(hint == null? "Name device:" : hint);
-		locationEditText.setSelection(hint.length());
+		inputEditText.setText(hint == null? "Name device:" : hint);
+		inputEditText.setSelection(hint.length());
 		
 		//set dialog view
 		builder.setView(dialogView);
 		
 		//set title and buttons
-		builder.setMessage(title == null? "Enter Input" : title)
+		builder.setMessage(getTitle())
 				.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
 			
 					@Override
@@ -91,9 +100,9 @@ public class InputDialogFragment extends DialogFragment{
 
 						//pass location back to activity via callback
 						
-						mListener.setLocation(locationEditText.getText().toString());
+						mListener.setInformation(inputEditText.getText().toString());
 						
-						System.out.println("device location-----> " + locationEditText.getText().toString());
+						System.out.println("device location-----> " + inputEditText.getText().toString());
 						
 					}
 				})
@@ -132,6 +141,18 @@ public class InputDialogFragment extends DialogFragment{
 
 
 	public String getTitle() {
+		
+		switch(type){
+			case 0: title = "Name Device";
+					break;
+			case 1: title = "Name Panel";
+					break;
+			default: title = "Enter Information";
+					break;
+		
+		
+		}
+		
 		return title;
 	}
 
@@ -139,6 +160,18 @@ public class InputDialogFragment extends DialogFragment{
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+
+
+	public int getType() {
+		return type;
+	}
+
+
+
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 	
