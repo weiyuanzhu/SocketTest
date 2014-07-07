@@ -158,10 +158,15 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#setInformation(java.lang.String)
 	 */
 	@Override
-	public void setInformation(String location) {
-		//update both device fragment and device list
-		deviceInfoFragment.updateLocation(location);
-		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
+	public void setInformation(String input, int type) {
+		
+		//update current selected device
+		currentSelectedDevice.setLocation(input);
+		
+		
+		//update both device fragment and device list display
+		deviceInfoFragment.updateLocation();
+		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, input);
 		
 		//send command to panel if not in demo mode
 		
@@ -170,7 +175,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 			buffer.add(currentDeviceAddress);		
-			buffer.addAll(DataParser.convertString(location));
+			buffer.addAll(DataParser.convertString(input));
 			System.out.println(buffer);
 			List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
 			connection.fetchData(commandList);

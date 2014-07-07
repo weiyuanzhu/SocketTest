@@ -60,7 +60,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 
 	
 	
-	private List<Map<String,Object>>  listDataSource; //data for listview
+	private List<Map<String,Object>>  dataList; //data for listview
 	
 	private List<Integer> rxBuffer = null;  //raw data pull from panel
 	
@@ -72,7 +72,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	
 	private Panel panel = null;
 	
-	private SimpleAdapter simpleAdapter;
+	private SimpleAdapter mSimpleAdapter;
 	
 	private List<char[]> commandList;
 	
@@ -237,12 +237,12 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 					e.printStackTrace();
 				}
 				
-				listDataSource = getData(panel);
+				dataList = getDataList(panel);
 				
-				simpleAdapter = new SimpleAdapter(getActivity(), listDataSource, R.layout.panel_info_row, 
+				mSimpleAdapter = new SimpleAdapter(getActivity(), dataList, R.layout.panel_info_row, 
 						new String[] {"text1","text2"}, new int[] {R.id.panel_description,R.id.panel_value});
 				
-				listView.setAdapter(simpleAdapter);
+				listView.setAdapter(mSimpleAdapter);
 			
 			}
 			
@@ -263,11 +263,11 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		listView = (ListView) getActivity().findViewById(R.id.panelInfo_listView);
 		//setup list view
 		
-		simpleAdapter = new SimpleAdapter(getActivity(), getData(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.panel_description,R.id.panel_value});
+		mSimpleAdapter = new SimpleAdapter(getActivity(), getDataList(panel), R.layout.panel_info_row, new String[] {"text1","text2"}, new int[] {R.id.panel_description,R.id.panel_value});
 		
 		
 		
-		listView.setAdapter(simpleAdapter);
+		listView.setAdapter(mSimpleAdapter);
 		
 		
 		//setup list item long click listener
@@ -376,12 +376,17 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 	};
 	
-	public List<Map<String,Object>> getData(Panel panel)
+	public List<Map<String,Object>> getDataList(Panel panel)
 	{
+		//create new ArrayList
+		if(dataList == null) {
+			dataList = new ArrayList<Map<String,Object>>();
+		}
 		
-		listDataSource = new ArrayList<Map<String,Object>>();
+		//clear the list
+		dataList.clear();
 		
-			
+		//create new datalist or update current datalist
 		Map<String,Object> map = new HashMap<String,Object>();
 			
 		/*map.put("text1", "Location");
@@ -394,14 +399,14 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		map.put("text1", "IP address");
 		map.put("text2", panel==null? "..." : panel.getIp());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Serial number");
 		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		
@@ -411,46 +416,46 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		map.put("text1", "GTIN");
 		map.put("text2", panel==null? "..." : panel.getGtin());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Contact");
 		map.put("text2", panel==null? "..." : panel.getContact());
 		
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Tel");
 		map.put("text2", panel==null? "..." : panel.getTel());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Mobile");
 		map.put("text2", panel==null? "..." : panel.getMobile());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("text1", "Firmware version");
 		map.put("text2", panel==null? "..." : panel.getVersion());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Memory Used");
 		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("text1", "Passcode");
 		map.put("text2", panel==null? "..." : panel.getPasscode());
 			
-		listDataSource.add(map);
+		dataList.add(map);
 	
-		return listDataSource;
+		return dataList;
 	}
 
 	
@@ -499,6 +504,15 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	}
 	
 	
+	public int updatePanelInfo(Panel panel){
+		
+		getDataList(panel);
+		
+		mSimpleAdapter.notifyDataSetChanged();
+		return 1;
+	}
+	
+	
 	OnItemLongClickListener longClickListener = new OnItemLongClickListener(){
 
 		@Override
@@ -525,17 +539,9 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 						dialog.setType(InputDialogFragment.PANEL_PASSCODE);
 						dialog.show(getFragmentManager(), "inputDialog");
 						break;
-				default: break;
-						 
-					
-				//display dialog
-				
-				
-				
-				
+				default: return false;
 				
 			}
-	
 			
 			return true;
 		}

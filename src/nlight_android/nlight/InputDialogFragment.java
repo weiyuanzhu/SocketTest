@@ -37,14 +37,8 @@ public class InputDialogFragment extends DialogFragment{
 	//Dialog title
 	private String title;
 	
-	/*dialog type: 0 = Device Name
-	 * 			   1 = Panel Name
-	 * 			   2 = Contact
-	 * 			   3 = Tel
-	 * 			   4 = Mobile
-	 * 			   5 = Passcode
-	 */
-	private int type = 0;
+	//Dialog type see finals for detail
+	private int type = -1;
 	
 	//hint for user input
 	private String hint;
@@ -56,7 +50,7 @@ public class InputDialogFragment extends DialogFragment{
 	private EditText inputEditText = null;
 	
 	public interface NoticeDialogListener{
-		public void setInformation(String userInput);
+		public void setInformation(String userInput, int type);
 		
 	}
 	
@@ -110,7 +104,7 @@ public class InputDialogFragment extends DialogFragment{
 
 						//pass location back to activity via callback
 						
-						mListener.setInformation(inputEditText.getText().toString());
+						mListener.setInformation(inputEditText.getText().toString(),type);
 						
 						System.out.println("device location-----> " + inputEditText.getText().toString());
 						

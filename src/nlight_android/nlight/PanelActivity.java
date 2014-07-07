@@ -52,7 +52,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	//private int currentSelected;
 
 	
-	//call back for connection
+	
+	/* (non-Javadoc)callback for connection
+	 * @see nlight_android.nlight.BaseActivity#receive(java.util.List, java.lang.String)
+	 */
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
@@ -67,6 +70,39 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			
 		}
 	}
+	
+	/* (non-Javadoc) callback for when input dialog Enter button clicked
+	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#setInformation(java.lang.String)
+	 */
+	@Override
+	public void setInformation(String input, int type) {
+		System.out.println("Input information: " + input);
+		
+		switch(type){
+			case InputDialogFragment.PANEL_NAME: 
+					currentDisplayingPanel.setPanelLocation(input);
+					fragmentList.get(panelPosition).updatePanelLocation(input);
+					panelListFragment.updateList(panelPosition, input);
+					break;
+			case InputDialogFragment.PANEL_CONTACT: 
+					currentDisplayingPanel.setContact(input);
+					break;
+			case InputDialogFragment.PANEL_TEL: 
+					currentDisplayingPanel.setTel(input);
+					break;
+			case InputDialogFragment.PANEL_MOBILE: 
+					currentDisplayingPanel.setMobile(input);
+					break;
+			case InputDialogFragment.PANEL_PASSCODE: 
+					currentDisplayingPanel.setPasscode(input);
+					break;
+			default: break;
+		
+		}
+		fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+		
+	}
+	
 	
 	//activity life circle
 
@@ -231,7 +267,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		panelPosition = index;
 		
-		currentDisplayingPanel = panelMap.get(ip);
+		
 		
 		panelInfoImage.setVisibility(View.INVISIBLE);
 		System.out.println(location + " " +  ip + "positon: " + index);
@@ -240,12 +276,17 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		{
 			panelMap.put(ip, new Panel(ip));
 		}
+		
+		currentDisplayingPanel = panelMap.get(ip);
+		
 		if(fragmentList.get(index) == null)
 		{
 			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelMap.get(ip));
 			
 			fragmentList.set(index, panelFragment);
 		}
+		
+		
 		
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -446,14 +487,6 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 
-	@Override
-	public void setInformation(String location) {
-		System.out.println("Panel location: " + location);
-		fragmentList.get(panelPosition).updatePanelLocation(location);
-		currentDisplayingPanel.setPanelLocation(location);
-		
-		panelListFragment.updateList(panelPosition, location);
-		
-	}
+	
 		
 }

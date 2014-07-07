@@ -150,8 +150,8 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 
 
 	@Override
-	public void setInformation(String location) {
-		System.out.println("callback ------> " + location);
+	public void setInformation(String input,int type) {
+		System.out.println("callback ------> " + input);
 		
 	}
 

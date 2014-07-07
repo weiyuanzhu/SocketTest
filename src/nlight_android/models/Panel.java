@@ -190,6 +190,11 @@ public class Panel  implements Parcelable {
 	}
 
 
+	
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
 	public String getTel() {
 		return tel;
 	}
@@ -286,6 +291,26 @@ public class Panel  implements Parcelable {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+	
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
+	}
+
+	public void setReportUsage(String reportUsage) {
+		this.reportUsage = reportUsage;
+	}
+
+	public void setOverAllStatus(int overAllStatus) {
+		this.overAllStatus = overAllStatus;
 	}
 
 	@Override

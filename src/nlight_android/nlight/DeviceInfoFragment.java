@@ -147,7 +147,7 @@ public class DeviceInfoFragment extends ListFragment {
 		});
 		
 		
-		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name: ? [Click and hold to rename device]" : device.getLocation() + " [Click and hold to rename device]"); // set device name textView text
+		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name: ? [Click and hold to rename device]" : device.getLocation()); // set device name textView text
 		
 		System.out.println(device.toString());
 		
@@ -293,10 +293,10 @@ public class DeviceInfoFragment extends ListFragment {
 	/**
 	 * @param location
 	 */
-	public void updateLocation(String location)
+	public void updateLocation()
 	{
 		//update listDataSource
-		deviceName_textView.setText(location);
+		deviceName_textView.setText(device.getLocation());
 		mAdapter.notifyDataSetChanged();
 		
 	}
