@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import nlight_android.models.Device;
 import nlight_android.models.Panel;
-import nlight_android.nlight.DeviceInfoFragment.DeviceSetLocationListener;
 import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
@@ -41,7 +40,7 @@ import com.example.nclient.R;
 
 
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
-															DeviceSetLocationListener,NoticeDialogListener, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
+															NoticeDialogListener, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
 	
 	public static final Comparator<Device> SORT_BY_FAULTY = new Comparator<Device>(){
 		@Override
@@ -130,7 +129,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 
 
-	//connection.callback interface implementation
+	
+	/* (non-Javadoc)connection.callback interface implementation
+	 * @see nlight_android.nlight.BaseActivity#receive(java.util.List, java.lang.String)
+	 */
 	@Override
 	public void receive(List<Integer> rx, String ip) {
 		System.out.println(rx);
@@ -149,6 +151,72 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			//connection.setListening(true);
 			//deviceListFragment.updateProgressIcon(0);
 		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#setInformation(java.lang.String)
+	 */
+	@Override
+	public void setInformation(String location) {
+		//update both device fragment and device list
+		deviceInfoFragment.updateLocation(location);
+		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
+		
+		//send command to panel if not in demo mode
+		
+		if(!isDemo && connection != null){
+			List<Integer> buffer = new ArrayList<Integer>();
+		
+		
+			buffer.add(currentDeviceAddress);		
+			buffer.addAll(DataParser.convertString(location));
+			System.out.println(buffer);
+			List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
+			connection.fetchData(commandList);
+		}
+		
+		//update devicelistFragment
+		
+		
+		
+		//show a toast
+		Toast.makeText(this, "Device has been named.", Toast.LENGTH_LONG).show();
+		
+	}
+	
+	/* (non-Javadoc) implements DeviceListFragment listener, on single device clicked
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onDeviceItemClicked(int, int)
+	 */
+	@Override
+	public void onDeviceItemClicked(int groupPosition, int childPosition) {
+		
+		currentDeviceAddress = childPosition;
+		currentGroupPosition = groupPosition;
+		
+		System.out.println("current device:-------------->" + currentDeviceAddress);
+		
+		image.setVisibility(View.INVISIBLE);
+		faultyDeviceNo.setVisibility(View.INVISIBLE);
+		
+		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
+		
+		if(groupPosition==0)
+		{
+			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
+		}
+		else {
+			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
+		}
+		
+		
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		fragmentTransaction.replace(R.id.device_detail_container, deviceInfoFragment,"device_detail_fragment");
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.commit();
 		
 	}
 	
@@ -293,51 +361,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				return true;
 			default: return false;
 		}
-		
-		
-		
-		
+	
 	}
-	
-	
-	
-
-	/* (non-Javadoc) implements DeviceListFragment listener, on single device clicked
-	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onDeviceItemClicked(int, int)
-	 */
-	@Override
-	public void onDeviceItemClicked(int groupPosition, int childPosition) {
-		
-		currentDeviceAddress = childPosition;
-		currentGroupPosition = groupPosition;
-		
-		System.out.println("current device:-------------->" + currentDeviceAddress);
-		
-		image.setVisibility(View.INVISIBLE);
-		faultyDeviceNo.setVisibility(View.INVISIBLE);
-		
-		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
-		
-		if(groupPosition==0)
-		{
-			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
-		}
-		else {
-			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
-		}
-		
-		
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-		
-		fragmentTransaction.replace(R.id.device_detail_container, deviceInfoFragment,"device_detail_fragment");
-		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		fragmentTransaction.commit();
-		
-	}
-	
-	
 	
 	
 	@Override
@@ -350,6 +375,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		super.onDestroy();
 	}
 
+	
+	
+	
+	
 	private String getAppVersion(){
 		StringBuilder version = new StringBuilder();
     	version.append("Mackwell N-Light Connect, Version ");
@@ -387,6 +416,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#st(int)
+	 */
 	@Override
 	public void st(int address) {
 		
@@ -446,42 +478,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		dialog.show(getFragmentManager(), "SetLocation");	
 	}
 	
-	@Override
-	public void setDeviceLocation(String location) {
-		//display dialog
-		
-		InputDialogFragment dialog = new InputDialogFragment();
-		dialog.show(getFragmentManager(), "setDeviceLocationDialog");
-		
-	}
 
-	@Override
-	public void setInformation(String location) {
-		//update device fragment
-		deviceInfoFragment.updateLocation(location);
-		deviceListFragment.updateLocation(currentGroupPosition,currentDeviceAddress, location);
-		
-		//send command to panel
-		
-		if(!isDemo && connection != null){
-			List<Integer> buffer = new ArrayList<Integer>();
-		
-		
-			buffer.add(currentDeviceAddress);		
-			buffer.addAll(DataParser.convertString(location));
-			System.out.println(buffer);
-			List<char[] > commandList = SetCmdEnum.SET_DEVICE_NAME.set(buffer);
-			connection.fetchData(commandList);
-		}
-		
-		//update devicelistFragment
-		
-		
-		
-		//show a toast
-		Toast.makeText(this, "Device has been named.", Toast.LENGTH_LONG).show();
-		
-	}
+
+
 
 
 	

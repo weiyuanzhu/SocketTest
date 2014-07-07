@@ -38,15 +38,7 @@ import android.widget.TextView;
  *
  */
 public class DeviceInfoFragment extends ListFragment {
-	
-	/**
-	 * This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity. <p> See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface DeviceSetLocationListener {
-		
-		public void setDeviceLocation(String location);
-	}
-	
+
 
 	public TextView updateStampTextView;
 	
@@ -64,8 +56,6 @@ public class DeviceInfoFragment extends ListFragment {
 	private List<Map<String,Object>> dataList;
 	private TextView deviceName_textView;
 
-	@SuppressWarnings("unused")
-	private DeviceSetLocationListener mListener;
 
 
 	/**
@@ -125,7 +115,7 @@ public class DeviceInfoFragment extends ListFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		mListener = (DeviceSetLocationListener) activity;
+		//mListener = (DeviceSetLocationListener) activity;
 		
 	}
 
@@ -178,7 +168,7 @@ public class DeviceInfoFragment extends ListFragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		//mListener = null;
 	}
 
 	
