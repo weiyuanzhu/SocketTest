@@ -78,7 +78,43 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	
 	
 	
-	
+	/* (non-Javadoc)
+	 * @see nlight_android.socket.TCPConnection.CallBack#receive(java.util.List, java.lang.String)
+	 */
+	@Override
+	public void receive(List<Integer> rx,String ip) {
+
+
+		packageCount += 1 ;
+		
+		Message msg = progressHandler.obtainMessage();
+		msg.arg1 = packageCount;
+		
+		progressHandler.sendMessage(msg);
+		
+		
+		rxBuffer.addAll(rx);
+
+		connection.setListening(true);
+				
+		/*if(this.rxBuffer.size() > 15000)
+		{		
+			connection.setIsClosed(true);		
+		}*/
+		
+		
+		if(packageCount == 16)
+		{
+			connection.closeConnection();
+			connection = null;
+			//progressBar.setVisibility(View.INVISIBLE);
+			
+			parse();
+		
+		}
+		System.out.println("Actual bytes received: " + rxBuffer.size());
+		
+	}
 	
 	
 	
@@ -151,10 +187,12 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 			@Override
 			public boolean onLongClick(View arg0) {
 				//display dialog
-				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				InputDialogFragment dialog = new InputDialogFragment();
 				
-				dialog.setLocation(panel.getPanelLocation());
-				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
+				//setup dialog title and input hint
+				dialog.setTitle("Name Panel");
+				dialog.setHint(panel.getPanelLocation());
+				dialog.show(getFragmentManager(), "UserInputDialog");
 				return true;
 			}
 			
@@ -409,40 +447,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		return listDataSource;
 	}
 
-	@Override
-	public void receive(List<Integer> rx,String ip) {
-
-
-		packageCount += 1 ;
-		
-		Message msg = progressHandler.obtainMessage();
-		msg.arg1 = packageCount;
-		
-		progressHandler.sendMessage(msg);
-		
-		
-		rxBuffer.addAll(rx);
-
-		connection.setListening(true);
-				
-		/*if(this.rxBuffer.size() > 15000)
-		{		
-			connection.setIsClosed(true);		
-		}*/
-		
-		
-		if(packageCount == 16)
-		{
-			connection.closeConnection();
-			connection = null;
-			//progressBar.setVisibility(View.INVISIBLE);
-			
-			parse();
-		
-		}
-		System.out.println("Actual bytes received: " + rxBuffer.size());
-		
-	}
+	
 	
 	public void parse()
 	{

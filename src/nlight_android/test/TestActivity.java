@@ -7,7 +7,7 @@ import java.util.List;
 
 import nlight_android.nlight.BaseActivity;
 import nlight_android.nlight.SeekBarDialogFragment;
-import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.nlight.SettingsActivity;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.GetCmdEnum;

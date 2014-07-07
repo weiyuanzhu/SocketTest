@@ -143,9 +143,10 @@ public class DeviceInfoFragment extends ListFragment {
 			@Override
 			public boolean onLongClick(View arg0) {
 				//display dialog
-				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				InputDialogFragment dialog = new InputDialogFragment();
 				
-				dialog.setLocation(device.getLocation());
+				dialog.setTitle("Name Device");
+				dialog.setHint(device.getLocation());
 				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
 				return true;
 			}
@@ -283,9 +284,9 @@ public class DeviceInfoFragment extends ListFragment {
 			{
 		
 				//display dialog
-				SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+				InputDialogFragment dialog = new InputDialogFragment();
 				
-				dialog.setLocation(device.getLocation());
+				dialog.setHint(device.getLocation());
 				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
 				
 			}

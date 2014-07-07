@@ -11,7 +11,7 @@ import nlight_android.models.Device;
 import nlight_android.models.Panel;
 import nlight_android.nlight.DeviceInfoFragment.DeviceSetLocationListener;
 import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
-import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.DataParser;
 import nlight_android.util.GetCmdEnum;
@@ -450,7 +450,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void setDeviceLocation(String location) {
 		//display dialog
 		
-		SetDeviceLocationDialogFragment dialog = new SetDeviceLocationDialogFragment();
+		InputDialogFragment dialog = new InputDialogFragment();
 		dialog.show(getFragmentManager(), "setDeviceLocationDialog");
 		
 	}

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import nlight_android.models.Panel;
 import nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack;
-import nlight_android.nlight.SetDeviceLocationDialogFragment.NoticeDialogListener;
+import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;

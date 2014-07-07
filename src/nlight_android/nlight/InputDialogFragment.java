@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.example.nclient.R;
 import android.app.*;
-import nlight_android.nlight.SetDeviceLocationDialogFragment.*;
+import nlight_android.nlight.InputDialogFragment.*;
 import android.widget.*;
 import android.os.*;
 
@@ -22,9 +22,19 @@ import android.os.*;
  * @author weiyuan zhu
  *
  */
-public class SetDeviceLocationDialogFragment extends DialogFragment{
+public class InputDialogFragment extends DialogFragment{
 	
-	private String location;
+	//Dialog title
+	private String title;
+	
+	//hint for user input
+	private String hint;
+	
+	//dialog listener for callback
+	private NoticeDialogListener mListener= null;
+	
+	//EditText for user input
+	private EditText locationEditText = null;
 	
 	public interface NoticeDialogListener{
 		public void setLocation(String location);
@@ -32,8 +42,7 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 	}
 	
 	
-	private NoticeDialogListener mListener= null;
-	private EditText locationEditText = null;
+	
 
 	
 	
@@ -67,14 +76,14 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		locationEditText.setFilters(filters); 
 		
 		//set TextEdit devault message and set cursor to last position
-		locationEditText.setText(location == null? "Name device:" : location);
-		locationEditText.setSelection(location.length());
+		locationEditText.setText(hint == null? "Name device:" : hint);
+		locationEditText.setSelection(hint.length());
 		
 		//set dialog view
 		builder.setView(dialogView);
 		
 		//set title and buttons
-		builder.setMessage("Enter Location")
+		builder.setMessage(title == null? "Enter Input" : title)
 				.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
 			
 					@Override
@@ -108,16 +117,28 @@ public class SetDeviceLocationDialogFragment extends DialogFragment{
 		
 	}
 
+	//getters and setters
 
-
-	public String getLocation() {
-		return location;
+	public String getHint() {
+		return hint;
 	}
 
 
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setHint(String hint) {
+		this.hint = hint;
+	}
+
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	
