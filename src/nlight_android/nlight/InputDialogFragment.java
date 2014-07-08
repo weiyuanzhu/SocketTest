@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -170,6 +171,9 @@ public class InputDialogFragment extends DialogFragment{
 					
 					//input type is number only
 					inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+					
+					//setup password mask
+					inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 					
 					break;
 			default: title = "Enter Information";
