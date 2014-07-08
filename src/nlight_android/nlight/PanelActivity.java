@@ -80,7 +80,11 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	public void setInformation(String input, int type) {
 		System.out.println("Input information: " + input);
 		
+		//reset commandList
+		commandList = null;
+		
 		//create buffer for input
+		
 		List<Integer> buffer = new ArrayList<Integer>();
 		buffer.addAll(DataParser.convertString(input));
 		System.out.println(buffer);
@@ -114,6 +118,13 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					commandList = SetCmdEnum.SET_PASSCODE.set(buffer);
 					currentDisplayingPanel.setPasscode(input);
 					break;
+			case InputDialogFragment.ENTER_PASSCODE:
+					if (input.equals(currentDisplayingPanel.getPasscode()))
+					{
+						panelInfoFragmentTransation(panelPosition);
+					}
+					break;
+					
 			default: break;
 		
 		}
@@ -124,6 +135,38 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack#onListItemClicked(java.lang.String, java.lang.String, int)
+	 */
+	@Override
+	public void onListItemClicked(String ip, String location, int index) {
+		
+		System.out.println(location + " " +  ip + "positon: " + index);
+		
+		currentDisplayingPanel = panelMap.get(ip);
+		panelPosition = index;
+		
+		//test for pass code dialog
+		if(isDemo){
+			InputDialogFragment dialog = new InputDialogFragment();
+			
+			//dialog.setHint("Enter passcode");
+			dialog.setType(InputDialogFragment.ENTER_PASSCODE);
+			dialog.show(getFragmentManager(), "inputDialog");
+		} else{
+			
+			panelInfoFragmentTransation(index);
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
 	
 	
 	//activity life circle
@@ -301,46 +344,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		super.onDestroy();
 	}
 
-	/* (non-Javadoc)
-	 * @see nlight_android.nlight.PanelListFragment.OnPanelListItemClickedCallBack#onListItemClicked(java.lang.String, java.lang.String, int)
-	 */
-	@Override
-	public void onListItemClicked(String ip, String location, int index) {
-		
-		panelPosition = index;
-		
-		
-		
-		panelInfoImage.setVisibility(View.INVISIBLE);
-		System.out.println(location + " " +  ip + "positon: " + index);
-		
-		if(panelMap.get(ip)==null)
-		{
-			panelMap.put(ip, new Panel(ip));
-		}
-		
-		currentDisplayingPanel = panelMap.get(ip);
-		
-		if(fragmentList.get(index) == null)
-		{
-			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, location,panelMap.get(ip));
-			
-			fragmentList.set(index, panelFragment);
-		}
-		
-		
-		
-		
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-		
-		fragmentTransaction.replace(R.id.panel_detail_container, fragmentList.get(index),"tagTest");
-		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
-		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		fragmentTransaction.commit();
-		
-
-		
-	}
+	
 
 
 	public void getAllPanels() {
@@ -550,11 +554,41 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		String ip = currentDisplayingPanel.getIp();
 		TCPConnection conn = ip_connection_map.get(ip);
 				
-		if(!isDemo &&  conn != null){
+		if(!isDemo &&  conn != null && commandList != null){
 			conn.fetchData(commandList);
 		}
 		
 		commandList = null;
+		
+	}
+	
+	private void panelInfoFragmentTransation(int index){
+		panelInfoImage.setVisibility(View.INVISIBLE);
+		
+		String ip = currentDisplayingPanel.getIp();
+		if(panelMap.get(ip)==null)
+		{
+			panelMap.put(ip, new Panel(ip));
+		}
+		
+		
+		
+		if(fragmentList.get(index) == null)
+		{
+			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(ip, currentDisplayingPanel.getPanelLocation(),panelMap.get(ip));
+			
+			fragmentList.set(index, panelFragment);
+		}
+		
+		
+		
+		
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		fragmentTransaction.replace(R.id.panel_detail_container, fragmentList.get(index),"tagTest");
+		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.commit();
 		
 	}
 		

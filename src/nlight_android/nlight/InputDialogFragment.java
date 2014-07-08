@@ -35,6 +35,7 @@ public class InputDialogFragment extends DialogFragment{
 	public static final int PANEL_TEL = 3;
 	public static final int PANEL_MOBILE = 4;
 	public static final int PANEL_PASSCODE = 5;
+	public static final int ENTER_PASSCODE = 6;
 	
 	
 	//Dialog title
@@ -93,7 +94,11 @@ public class InputDialogFragment extends DialogFragment{
 		
 		//set TextEdit devault message and set cursor to last position
 		inputEditText.setText(hint == null? "User input:" : hint);
-		inputEditText.setSelection(hint.length());
+		inputEditText.setSelection(hint == null ? 0: hint.length());
+		
+		//setup password mask
+		//inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+		//inputEditText.setHint("Please enter passcode");
 		
 		//set dialog view
 		builder.setView(dialogView);
@@ -150,19 +155,19 @@ public class InputDialogFragment extends DialogFragment{
 	public String getTitle() {
 		
 		switch(type){
-			case DEVICE_NAME: title = "Name Device";
+			case DEVICE_NAME: title = "Name device";
 					break;
-			case PANEL_NAME: title = "Name Panel";
+			case PANEL_NAME: title = "Name panel";
 					break;
-			case PANEL_CONTACT: title = "Enter Contact";
+			case PANEL_CONTACT: title = "Update contact name ";
 					break;
-			case PANEL_TEL: title = "Enter Telphone Number";
+			case PANEL_TEL: title = "Update Telphone Number";
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
 					break;
-			case PANEL_MOBILE: title = "Enter Mobile Number";
+			case PANEL_MOBILE: title = "Update Mobile Number";
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
 					break;
-			case PANEL_PASSCODE: title = "Enter Passcode";
+			case PANEL_PASSCODE: title = "Update Passcode";
 					
 					//set filter for EditText
 					
@@ -177,6 +182,22 @@ public class InputDialogFragment extends DialogFragment{
 					inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 					
 					break;
+			case ENTER_PASSCODE: title = "Please enter passcode for the panel";
+			
+				//set filter for EditText
+				
+				//Max length
+				InputFilter[] filters2 = {new InputFilter.LengthFilter(Constants.PASSCODE_MAX)};  
+				inputEditText.setFilters(filters2);
+				
+				//input type is number only
+				inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+				inputEditText.setText("");
+				inputEditText.setHint("Hint test");
+				
+				
+			
+				break;
 			default: title = "Enter Information";
 					break;
 		
