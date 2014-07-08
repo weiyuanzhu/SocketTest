@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -154,12 +155,22 @@ public class InputDialogFragment extends DialogFragment{
 			case PANEL_CONTACT: title = "Enter Contact";
 					break;
 			case PANEL_TEL: title = "Enter Telphone Number";
+					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
 					break;
 			case PANEL_MOBILE: title = "Enter Mobile Number";
+					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
 					break;
 			case PANEL_PASSCODE: title = "Enter Passcode";
+					
+					//set filter for EditText
+					
+					//Max length
 					InputFilter[] filters = {new InputFilter.LengthFilter(Constants.PASSCODE_MAX)};  
 					inputEditText.setFilters(filters);
+					
+					//input type is number only
+					inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+					
 					break;
 			default: title = "Enter Information";
 					break;
