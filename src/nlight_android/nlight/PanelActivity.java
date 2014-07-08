@@ -101,22 +101,27 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					//update both list and info fragments
 					fragmentList.get(panelPosition).updatePanelLocation(input);
 					panelListFragment.updateList(panelPosition, input);
+					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_CONTACT: 
 				commandList = SetCmdEnum.SET_CONTACT_NAME.set(buffer);
 					currentDisplayingPanel.setContact(input);
+					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_TEL: 
 					commandList = SetCmdEnum.SET_CONTACT_NUMBER.set(buffer);
 					currentDisplayingPanel.setTel(input);
+					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_MOBILE:
 					commandList = SetCmdEnum.SET_CONTACT_MOBILE.set(buffer);
 					currentDisplayingPanel.setMobile(input);
+					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_PASSCODE:
 					commandList = SetCmdEnum.SET_PASSCODE.set(buffer);
 					currentDisplayingPanel.setPasscode(input);
+					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.ENTER_PASSCODE:
 					if (input.equals(currentDisplayingPanel.getPasscode()))
@@ -132,7 +137,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		//send command to panel
 		setRemotePanel();
 		
-		fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+		
 		
 	}
 	
