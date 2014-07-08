@@ -12,6 +12,7 @@ import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
 import nlight_android.util.CommandFactory;
 import nlight_android.util.DataParser;
+import nlight_android.util.SetCmdEnum;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,15 +37,15 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private List<Panel> panelList = null;
 	private Map<String,Panel> panelMap = null;
-	private Map<String,TCPConnection> panel_connection_map = null;
+	private Map<String,TCPConnection> ip_connection_map = null;
 	private Map<String,List<Integer>> rxBufferMap = null;
+	private List<char[] > commandList = null;
 	
 	private List<PanelInfoFragment> fragmentList = null;
 	
 	private Panel currentDisplayingPanel;
 	private int panelPosition = 0;
 	
-	private Panel panelWithFaulyDevices;
 	private ImageView panelInfoImage;
 
 	private PanelListFragment panelListFragment;
@@ -60,15 +61,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	public void receive(List<Integer> rx, String ip) {
 		List<Integer> rxBuffer = rxBufferMap.get(ip);
 		rxBuffer.addAll(rx);
-		TCPConnection connection = panel_connection_map.get(ip);
+		TCPConnection connection = ip_connection_map.get(ip);
 		connection.setListening(true);
 		System.out.println(ip + " received package: " + connection.getPanelInfoPackageNo() + " rxBuffer size: " + rxBuffer.size());
 		if(connection.isRxCompleted())
 		{
 			//connection.closeConnection();
-			parse(ip);
+			//parse(ip);
 			
 		}
+		rxBuffer.clear();
 	}
 	
 	/* (non-Javadoc) callback for when input dialog Enter button clicked
@@ -78,27 +80,47 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	public void setInformation(String input, int type) {
 		System.out.println("Input information: " + input);
 		
+		//create buffer for input
+		List<Integer> buffer = new ArrayList<Integer>();
+		buffer.addAll(DataParser.convertString(input));
+		System.out.println(buffer);
+		
 		switch(type){
 			case InputDialogFragment.PANEL_NAME: 
+					//set current panel location and also update shared preference
 					currentDisplayingPanel.setPanelLocation(input);
+					savePanelToPreference();
+					
+					//update commandList with current buffer
+					commandList = SetCmdEnum.SET_PANEL_NAME.set(buffer);
+					
+					//update both list and info fragments
 					fragmentList.get(panelPosition).updatePanelLocation(input);
 					panelListFragment.updateList(panelPosition, input);
 					break;
 			case InputDialogFragment.PANEL_CONTACT: 
+				commandList = SetCmdEnum.SET_CONTACT_NAME.set(buffer);
 					currentDisplayingPanel.setContact(input);
 					break;
 			case InputDialogFragment.PANEL_TEL: 
+					commandList = SetCmdEnum.SET_CONTACT_NUMBER.set(buffer);
 					currentDisplayingPanel.setTel(input);
 					break;
-			case InputDialogFragment.PANEL_MOBILE: 
+			case InputDialogFragment.PANEL_MOBILE:
+					commandList = SetCmdEnum.SET_CONTACT_MOBILE.set(buffer);
 					currentDisplayingPanel.setMobile(input);
 					break;
-			case InputDialogFragment.PANEL_PASSCODE: 
+			case InputDialogFragment.PANEL_PASSCODE:
+					commandList = SetCmdEnum.SET_PASSCODE.set(buffer);
 					currentDisplayingPanel.setPasscode(input);
 					break;
 			default: break;
 		
 		}
+		
+		//send command to panel
+		setRemotePanel();
+		
 		fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
 		
 	}
@@ -111,23 +133,39 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_panel);
 		
-		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
+		
 
 		
 	
 		//update connection flags
 		checkConnectivity();
 		
+		//get panelList from intent
 		Intent intent = getIntent();
-		
 		panelList = intent.getParcelableArrayListExtra("panelList");
 		isDemo = intent.getBooleanExtra(LoadingScreenActivity.DEMO_MODE, true);
 		
-		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); //get listfragmetn
-		Bundle args = panelListFragment.getArguments(); // fragment is already created, so cannot use setArgument, can only get the existing one and put new values
-		//args.putBoolean("demo", isDemo);  null at this point
-		//args.putBoolean("connection", isConnected);
+		//check panelList
+		if(panelList==null){
+					//create demo panels if no panel list is passed in
+			createDummyPanels();
+						
+		}
+				
+		//initial panel related fields
+		initialFields();
 		
+		// save panel name to shared preference
+		savePanelToPreference();
+		
+		
+		//set panel fragments
+		
+		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
+		
+		
+		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); 
+				
 		//pass isDemo and isConnected to panelListFragment
 		panelListFragment.setDemo(isDemo);
 		panelListFragment.setConnected(isConnected);
@@ -142,28 +180,15 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		System.out.println("DeomoMode--------> " + isDemo);
 		
 		
-		//check panelList
-		if(panelList!=null){
-			panelListFragment.setPanelList(panelList);
 		
-			fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
-
-			System.out.println("All panel get: " + panelList.size());
-			
-			//init
-			initPanelMap();
-		}
-		else 
-		{
-			//if panelList exist, init FragmentList and pass panelList to PanelListFragment
-			fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
-			
-			initPanel();
-			panelListFragment.setPanelList(panelList);
-		}
 		
-		savePanelToPreference();
-		//panelListFragment.refreshStatus(isDemo, isConnected);
+		System.out.println("All panel get: " + panelList.size());
+		
+		
+		//if panelList exist, init FragmentList and pass panelList to PanelListFragment
+		panelListFragment.setPanelList(panelList);
+		
+		
 
 		
 	}
@@ -230,10 +255,6 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		}
 	}
 
-
-
-	
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
@@ -241,15 +262,36 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	
+	
 	@Override
-	protected void onDestroy() {
+	protected void onStop() {
 		
-		if(panelMap!=null && panel_connection_map!=null){
+		if(panelMap!=null && ip_connection_map!=null){
 			for(String key : panelMap.keySet())
 			{
 				
-				TCPConnection connection = panel_connection_map.get(key);
+				TCPConnection connection = ip_connection_map.get(key);
 				if(connection!=null){
+					connection.setListening(false);
+					connection.closeConnection();
+					connection = null;
+				}
+			}
+		}
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		
+		if(panelMap!=null && ip_connection_map!=null){
+			for(String key : panelMap.keySet())
+			{
+				
+				TCPConnection connection = ip_connection_map.get(key);
+				if(connection!=null){
+					connection.setListening(false);
 					connection.closeConnection();
 					connection = null;
 				}
@@ -310,17 +352,17 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			
 			TCPConnection connection = new TCPConnection(this, key);
 			
-			panel_connection_map.put(key, connection);
+			ip_connection_map.put(key, connection);
 			
 		}
 		
-		System.out.println(panel_connection_map);
+		System.out.println(ip_connection_map);
 		
 		List<char[]> commandList = CommandFactory.getPanelInfo();
 		
 		for(String key : panelMap.keySet()){
 			
-			TCPConnection conn = (TCPConnection) panel_connection_map.get(key);
+			TCPConnection conn = (TCPConnection) ip_connection_map.get(key);
 			conn.fetchData(commandList);
 		}
 		
@@ -329,15 +371,29 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 
 	
-	public void initPanelMap()
+	public void initialFields()
 	{	
 		panelMap = new HashMap<String,Panel>();
+		fragmentList = new ArrayList<PanelInfoFragment>(panelList.size());
+		ip_connection_map = new HashMap<String,TCPConnection>();
+		rxBufferMap = new HashMap<String,List<Integer>>();
+		
 		
 		for(int i=0; i<panelList.size();i++)
 		{
-			panelMap.put(panelList.get(i).getIp(), panelList.get(i));	
+			String ip = panelList.get(i).getIp();
+			panelMap.put(ip, panelList.get(i));	
 			PanelInfoFragment panelFragment = PanelInfoFragment.newInstance(panelList.get(i).getIp(), panelList.get(i).getPanelLocation(),panelList.get(i));
 			fragmentList.add(panelFragment);
+			
+			
+			//create connection for panels if is not in demo mode
+			if(!isDemo)
+			{
+				ip_connection_map.put(ip, new TCPConnection(this, ip));
+				rxBufferMap.put(ip, new ArrayList<Integer>());
+				
+			}
 			
 		}
 			
@@ -387,11 +443,11 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		startActivity(intent);
 	}
 	
-	private void initPanel()
+	private void createDummyPanels()
 	{
 		panelList = new ArrayList<Panel>();
 		panelMap = new HashMap<String,Panel>();
-		panel_connection_map = new HashMap<String,TCPConnection>();
+		ip_connection_map = new HashMap<String,TCPConnection>();
 		rxBufferMap = new HashMap<String,List<Integer>>();
 		
 		String ip1 = "192.168.1.17";
@@ -476,17 +532,30 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	public void showDropDownMenu(View view)
 	{
-		
 		System.out.println("Panel Drop Down Menu");
 		PopupMenu popup = new PopupMenu(this, view);
 		popup.setOnMenuItemClickListener(this);
 	    MenuInflater inflater = popup.getMenuInflater();
 	    inflater.inflate(R.menu.show_devices, popup.getMenu());
 	    popup.show();
-		
-		
 	}
 
-	
+	/**
+	 *  Send command to live panel, if it is in live mode
+	 */
+	private void setRemotePanel(){
+		
+		checkConnectivity();
+		
+		String ip = currentDisplayingPanel.getIp();
+		TCPConnection conn = ip_connection_map.get(ip);
+				
+		if(!isDemo &&  conn != null){
+			conn.fetchData(commandList);
+		}
+		
+		commandList = null;
+		
+	}
 		
 }

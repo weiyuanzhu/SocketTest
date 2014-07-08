@@ -59,7 +59,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	private SimpleAdapter simpleAdapter;
 	private int mCurCheckPosition = 0;
 	
-	private List<TCPConnection> connectionList;
+	//private List<TCPConnection> connectionList;
 	private List<char[]> commandList;
 	
 	private boolean isDemo; 
@@ -73,7 +73,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	public void receive(List<Integer> rx,String ip) {
 		System.out.println(rx);
 		
-		Message msg = statusUpdateHandler.obtainMessage();
+		/*Message msg = statusUpdateHandler.obtainMessage();
 		msg.arg1 = rx.get(3);
 		msg.obj = ip;
 
@@ -87,7 +87,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 				
 			}
 			
-		}
+		}*/
 		
 	}
 	
@@ -180,7 +180,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		
 		//create TCPConnection for each panel and open rx threads for listening 
 		//if it is in live mode
-		if(!isDemo && isConnected){
+		/*if(!isDemo && isConnected){
 			
 			connectionList = new ArrayList<TCPConnection>();
 			
@@ -196,7 +196,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 				connectionList.add(connection);
 			
 			}
-		}
+		}*/
 		
 		
 		
@@ -206,14 +206,14 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	public void onPause() {
 		System.out.println("------------PanelListFragment onPause---------");
 		
-		if(connectionList!=null){
+		/*if(connectionList!=null){
 			for(TCPConnection tcp: connectionList){
 			
 				if(tcp!=null){
 					tcp.setListening(false);
 				}
 			}
-		}
+		}*/
 		
 		super.onPause();
 	}
@@ -258,7 +258,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			
 			//check connectivity and demo mode flag
 			
-		if(!isDemo && isConnected){
+		/*if(!isDemo && isConnected){
 			
 			
 			
@@ -267,7 +267,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 				commandList = CommandFactory.getOverallStatus();
 				tcp.fetchData(commandList);
 			}
-		}
+		}*/
 	}
 		
 

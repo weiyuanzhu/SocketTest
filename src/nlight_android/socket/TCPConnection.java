@@ -25,7 +25,7 @@ public class TCPConnection {
 			public void error(String ip);
 		}
 	
-	private ExecutorService exec;
+	private ExecutorService txExec;
 		
 	private int panelInfoPackageNo;
 	private boolean rxCompleted;
@@ -70,7 +70,7 @@ public class TCPConnection {
 
 	
 	
-	//Constructor , requires a delegation object for callback
+	//Constructor , requires a delegation(callback) object for callback
 	public TCPConnection(CallBack callBack, String ip)
 	{
 		this.ip = ip;
@@ -79,9 +79,13 @@ public class TCPConnection {
 		this.rxBuffer = new ArrayList<Integer>();
 		this.port = 500;
 		this.mCallBack = new WeakReference<CallBack>(callBack);
-		exec = Executors.newSingleThreadExecutor();
-		Thread t = new Thread(rx);
-		t.start();
+		
+		//create a single thread pool for tx
+		txExec = Executors.newSingleThreadExecutor();
+		
+		//create a separate thread for rx only, this thread will block
+		Thread rxThread = new Thread(rx);
+		rxThread.start();
 	}
 
 	
@@ -98,8 +102,8 @@ public class TCPConnection {
 	public void fetchData(List<char[]> commandList){
 		
 		this.commandList = commandList;
-		exec.execute(tx);
-		System.out.println("Connection started on thread:-------> " );
+		txExec.execute(tx);
+		System.out.println("-------------------Connection started on thread:-------> " );
 		
 		
 	}
