@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ import android.widget.Toast;
 import com.example.nclient.R;
 
 /**
- * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
+ * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities that contain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
  */
 public class DeviceListFragment extends Fragment {
 	
@@ -76,7 +77,7 @@ public class DeviceListFragment extends Fragment {
 	private Loop currentSelectedLoop;
 	private boolean isLoopSelected;
 	
-	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
+	private class MyActionModeCallback implements AbsListView.MultiChoiceModeListener {
 		
 		View actionModeView = null;
 		TextView counterTextView = null;
@@ -152,6 +153,13 @@ public class DeviceListFragment extends Fragment {
 			//mode.finish();
 			return false;
 		}
+
+		@Override
+		public void onItemCheckedStateChanged(ActionMode arg0, int arg1,
+				long arg2, boolean arg3) {
+			// TODO Auto-generated method stub
+			
+		}
 	};
 	
 	
@@ -198,7 +206,8 @@ public class DeviceListFragment extends Fragment {
 		
 		deviceListView.setAdapter(mAdapter);
 		
-		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		deviceListView.setMultiChoiceModeListener(new MyActionModeCallback());
 		
 		
 		
@@ -208,7 +217,7 @@ public class DeviceListFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
-				deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);
 				System.out.println(position + " clicked");
 				
 			}
@@ -277,19 +286,19 @@ public class DeviceListFragment extends Fragment {
 		        }
             	
             	
-            	if(groupPosition==0){
+            	/*if(groupPosition==0){
             		deviceListView.setItemChecked(childPosition+1, true);
             	}
             	else {
             		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
             		deviceListView.setItemChecked(pos, true);
-            	}
+            	}*/
                 mListener.onDeviceItemClicked(groupPosition, childPosition);
-                return false;
+                return true;
             }
         });
 		
-		deviceListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+		/*deviceListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -340,11 +349,8 @@ public class DeviceListFragment extends Fragment {
 				
 
 			}
-			
-			
-			
-			
 		});
+		*/
 		
 		super.onActivityCreated(savedInstanceState);
 	}

@@ -8,13 +8,13 @@
         android:id="@+id/deviceListFragment_counter_description_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selected: "
+        android:text="@string/device_selected_description"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
         android:id="@+id/deviceListFragment_counter_number_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="@string/device_selected_number"
         android:layout_marginLeft="5dip"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
