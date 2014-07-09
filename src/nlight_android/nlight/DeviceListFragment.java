@@ -78,6 +78,9 @@ public class DeviceListFragment extends Fragment {
 	
 	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
 		
+		View actionModeView = null;
+		TextView counterTextView = null;
+		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			// TODO Auto-generated method stub
@@ -93,6 +96,16 @@ public class DeviceListFragment extends Fragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 	        inflater.inflate(R.menu.device_actionmode, menu);
+	        
+	        actionModeView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_devicelist,null);
+			
+			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
+			
+			counterTextView.setText("0");
+			
+			mode.setCustomView(actionModeView);
+	        
+	        
 	        return true;
 		
 		}
