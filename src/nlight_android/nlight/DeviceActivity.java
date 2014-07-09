@@ -123,13 +123,6 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 
 
-
-
-
-
-
-
-	
 	/* (non-Javadoc)connection.callback interface implementation
 	 * @see nlight_android.nlight.BaseActivity#receive(java.util.List, java.lang.String)
 	 */

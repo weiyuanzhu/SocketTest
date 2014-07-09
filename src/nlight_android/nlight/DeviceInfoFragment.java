@@ -126,7 +126,9 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		updateStampTextView = (TextView) getActivity().findViewById(R.id.deviceList_stamp_textView);
 		
-		deviceName_textView = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
+		
+		//device name textview
+		/*deviceName_textView = (TextView) getActivity().findViewById(R.id.fragment_device_info_name);
 		deviceName_textView.setLongClickable(true);
 		deviceName_textView.setOnLongClickListener(new OnLongClickListener(){
 
@@ -146,13 +148,14 @@ public class DeviceInfoFragment extends ListFragment {
 			
 		});
 		
-		
 		deviceName_textView.setText(device.getLocation().startsWith("?")? "Device Name: ? [Click and hold to rename device]" : device.getLocation()); // set device name textView text
+		*/
+		
 		
 		System.out.println(device.toString());
 		
-		
-		//getListView().setOnItemLongClickListener(longClickListener);
+		//setup listener for item long click
+		getListView().setOnItemLongClickListener(longClickListener);
 
 		dataList = getData(device);
 		
@@ -175,13 +178,31 @@ public class DeviceInfoFragment extends ListFragment {
 	
 	public List<Map<String,Object>> getData(Device device)
 	{
+		//initial dataList
+		if(dataList==null) {
+			dataList = new ArrayList<Map<String,Object>>();
+		}
 		
-		if(dataList==null) dataList = new ArrayList<Map<String,Object>>();
+		dataList.clear();
 		
-			
 		Map<String,Object> map = new HashMap<String,Object>();
-			
 		
+		
+		//device name	
+		
+		String location = device.getLocation();
+		String name = location.startsWith("?")? location + "[Click and hold to name device]" : location;
+		
+		
+		map.put("description", "Device name");
+		map.put("value", device==null? "n/a" : name);
+			
+		dataList.add(map);
+		
+		
+		//device address
+		map = new HashMap<String,Object>();
+					
 		//put correct address for device, -128 if it is on loop2
 		int address = device.getAddress() < 127 ? device.getAddress(): device.getAddress()-128; 
 		
@@ -270,18 +291,17 @@ public class DeviceInfoFragment extends ListFragment {
 				int position, long id) {
 			
 			// if locaion long clicked
-			if(position==3)
+			if(position==0)
 			{
 		
 				//display dialog
 				InputDialogFragment dialog = new InputDialogFragment();
-				
 				dialog.setHint(device.getLocation());
-				dialog.show(getFragmentManager(), "setDeviceLocationDialog");
-				
+				dialog.setType(InputDialogFragment.DEVICE_NAME);
+				dialog.show(getFragmentManager(), "inputDialog");
 			}
 	
-			return false;
+			return true;
 		}
 		
 		
@@ -296,7 +316,8 @@ public class DeviceInfoFragment extends ListFragment {
 	public void updateLocation()
 	{
 		//update listDataSource
-		deviceName_textView.setText(device.getLocation());
+		//deviceName_textView.setText(device.getLocation());
+		dataList = getData(device);
 		mAdapter.notifyDataSetChanged();
 		
 	}
