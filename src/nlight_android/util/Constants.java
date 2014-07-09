@@ -5,6 +5,10 @@ public class Constants {
 	public static final int TEXT_MAX = 32;
 	public static final int PASSCODE_MAX = 4;
 	
+	public static final int ALL_DEVICES_AUTO_REFRESH_FREQUENCY = 60;
+	public static final int SELECTED_DEVICE_AUTO_REFRESH_FREQUENCY = 5;
+	
+	
 	public static final int ALL_OK = 0;
 	public static final int FAULT = 1;
 	public static final int WARNING = 2;

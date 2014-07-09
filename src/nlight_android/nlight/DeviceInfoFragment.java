@@ -340,7 +340,7 @@ public class DeviceInfoFragment extends ListFragment {
     	
     	String on = autoRefresh? "On" : "Off";
     	
-		updateStampTextView.setText("Auto refresh: " + on + " , Last refreshed: " + sdf.format(deviceCal.getTime()));
+		updateStampTextView.setText("Auto refresh: " + on + ", Device last refreshed: " + sdf.format(deviceCal.getTime()));
 		
 		//update deviceInfo ListView
 		dataList.clear();

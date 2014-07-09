@@ -22,9 +22,38 @@
 	    android:key="pref_key_sync">
 	    <CheckBoxPreference
 	        android:key="pref_key_refresh"
-	        android:title="Auto Refresh Panel/Device Info"
-	        android:summary="sync_summ"
+	        android:title="Auto Refresh Panel/Device"
+	        android:summary="Sychronizing panel and device information"
 	        android:defaultValue="true"/>
+	    <CheckBoxPreference
+	        android:key="pref_auto_refresh_selected_device" 
+	        android:dependency="pref_key_refresh"
+	        android:title="Auto refresh selected device"
+	        android:summary="Every 5 seconds"
+	        android:defaultValue="false"/>
+	    
+	    <!--  
+	    <ListPreference
+	        android:dependency="pref_auto_sync_device"
+	        android:key="pref_key_sync_device"
+	        android:title="Device Sync Time"
+	        android:dialogTitle="Sync in seconds"
+	        android:entries="@array/pref_device_entries"
+	        android:entryValues="@array/pref_device_values"
+	        >
+	    </ListPreference>
+	    -->
+	    
+	    
+	    <CheckBoxPreference
+	        android:key="pref_auto_refresh_all_devices" 
+	        android:dependency="pref_key_refresh"
+	        android:title="Auto refresh all devices"
+	        android:summary="Every 60 seconds"
+	        android:defaultValue="false"/>
+	    
+	    
+	    <!--  
 	    <ListPreference
 	        android:dependency="pref_key_refresh"
 	        android:key="pref_key_sync_panel"
@@ -34,15 +63,9 @@
 	        android:entryValues="@array/pref_panel_values"
 	        >
 	    </ListPreference>
-	    <ListPreference
-	        android:dependency="pref_key_refresh"
-	        android:key="pref_key_sync_device"
-	        android:title="Device Sync Time"
-	        android:dialogTitle="Sync in seconds"
-	        android:entries="@array/pref_device_entries"
-	        android:entryValues="@array/pref_device_values"
-	        >
-	    </ListPreference>
+	    -->
+	    
+	    
 	</PreferenceCategory>
     
 </PreferenceScreen>

@@ -12,6 +12,7 @@ import nlight_android.models.Panel;
 import nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener;
 import nlight_android.nlight.InputDialogFragment.NoticeDialogListener;
 import nlight_android.socket.TCPConnection;
+import nlight_android.util.Constants;
 import nlight_android.util.DataParser;
 import nlight_android.util.GetCmdEnum;
 import nlight_android.util.SetCmdEnum;
@@ -42,6 +43,7 @@ import com.example.nclient.R;
 public class DeviceActivity extends BaseActivity implements OnDevicdListFragmentListener,TCPConnection.CallBack, 
 															NoticeDialogListener, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
 	
+	//Comparators
 	public static final Comparator<Device> SORT_BY_FAULTY = new Comparator<Device>(){
 		@Override
 		public int compare(Device lhs, Device rhs) {
@@ -80,10 +82,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	};
 	
-	public static final int REFRESH_FEQUENCY = 60;
+	//Fields and Properties
 	
-	private boolean isAutoRefresh = false;
-	private String refreshDuration = null;
+	
+	private boolean autoRefresh = false;
+	private boolean autoRefreshAllDevices = false;
+	private boolean autoRefreshSelectedDevice = false;
+
 	
 	private Handler mHandler = null;
 	
@@ -103,23 +108,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	private SearchView searchView= null; //search view for search button on the action bar
 	
-	public boolean isAutoRefresh() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		isAutoRefresh = sp.getBoolean("pref_key_refresh", false);
-		return isAutoRefresh;
-	}
-
-
-
-	/**
-	 * @return the refreshDuration
-	 */
-	public String getRefreshDuration() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		refreshDuration = sp.getString("pref_key_sync_device", "60");
-		return refreshDuration;
-	}
+	private SharedPreferences sharedPreferences = null;
 
 
 
@@ -138,7 +127,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 				currentSelectedDevice.updateDevice(rx);
 			}*/
 			
-			mHandler.post(refreshDevice);
+			mHandler.post(updateDeviceInfoFragmentUI);
 			//mHandler.post(new RefreshTest());
 			
 			//connection.setListening(true);
@@ -202,11 +191,11 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		if(groupPosition==0)
 		{
 			currentSelectedDevice = panel.getLoop1().getDevice(childPosition);
-			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefresh());
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice, isAutoRefreshAllDevices());
 		}
 		else {
 			currentSelectedDevice = panel.getLoop2().getDevice(childPosition);
-			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefresh());
+			deviceInfoFragment = DeviceInfoFragment.newInstance(currentSelectedDevice,isAutoRefreshAllDevices());
 		}
 		
 		
@@ -219,11 +208,58 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 	
 	
+	
+	//Setters and Getterso
+	
+	/**
+	 * @return the autoRefresh
+	 */
+	public boolean isAutoRefresh() {
+		
+		autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false);
+		return autoRefresh;
+	}
+
+
+	
+	private String getAppVersion(){
+		StringBuilder version = new StringBuilder();
+    	version.append("Mackwell N-Light Connect, Version ");
+    	String app_version = getString(R.string.app_version);
+    	version.append(app_version);
+		
+    	return version.toString();
+	}
+	
+	
+	/**
+	 * @return the autoRefreshAllDevices
+	 */
+	public boolean isAutoRefreshAllDevices() {
+		autoRefreshAllDevices = sharedPreferences.getBoolean("pref_auto_refresh_all_devices", false);
+		return autoRefreshAllDevices;
+	}
+
+	/**
+	 * @return the autoRefreshSelectedDevice
+	 */
+	public boolean isAutoRefreshSelectedDevice() {
+		autoRefreshSelectedDevice = sharedPreferences.getBoolean("pref_auto_refresh_selected_device", false);
+		return autoRefreshSelectedDevice;
+	}
+
+	
+
+	
+	
+	//Activity live circle
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
+		
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		mHandler = new Handler();
 		
@@ -266,7 +302,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 		//start auto refresh
-		mHandler.postDelayed(refreshTest,1000);
+		mHandler.post(auroRefreshAllDevices);
+		mHandler.postDelayed(autoRefreshCurrentDevice,TimeUnit.SECONDS.toMillis(1));
 		
 	}
 	
@@ -362,6 +399,22 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	}
 	
+	//search callbacks
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		System.out.println(newText);
+		deviceListFragment.search(newText);
+		return false;
+	}
+
+
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	
 	@Override
 	protected void onDestroy() {
@@ -369,7 +422,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			connection.closeConnection();
 			connection = null;
 		}
-		mHandler.removeCallbacks(refreshTest);
+		
+		//stop all repeating tasks
+		mHandler.removeCallbacks(auroRefreshAllDevices);
+		mHandler.removeCallbacks(autoRefreshCurrentDevice);
 		super.onDestroy();
 	}
 
@@ -377,14 +433,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	
-	private String getAppVersion(){
-		StringBuilder version = new StringBuilder();
-    	version.append("Mackwell N-Light Connect, Version ");
-    	String app_version = getString(R.string.app_version);
-    	version.append(app_version);
-		
-    	return version.toString();
-	}
+	
 
 
 	
@@ -453,52 +502,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
-	@Override
-	public void refreshDevice(int address)
-	{
-		if(isConnected && !isDemo){
-			System.out.println("----------refresh device status--------");
-			List<char[] > commandList = ToggleCmdEnum.REFRESH.toggle(address);
-			connection.fetchData(commandList);
-		}
-		else {
-			
-			mHandler.post(refreshDevice);
-		}
-		
-		
-		
-	}
 	
-	@Override
-	public void seekBar() {
-		SeekBarDialogFragment dialog = new SeekBarDialogFragment();
-		dialog.show(getFragmentManager(), "SetLocation");	
-	}
-	
-
-
-
-
-
-	
-	Runnable refreshDevice = new Runnable()
-	{
-
-		@Override
-		public void run() {
-			
-			if(currentSelectedDevice != null){
-				deviceInfoFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
-			}
-			
-			
-			//deviceListFragment.refershStatus();
-			//deviceListFragment.updateProgressIcon(1);
-		}
-	
-		
-	};
 
 	/* implements device list group open/close listener, 
 	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onGroupExpandOrCollapse(int)
@@ -550,22 +554,73 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
-	Runnable refreshTest = new Runnable(){
+	@Override
+	public void refreshDevice(int address)
+	{
+		if(isConnected && !isDemo){
+			System.out.println("----------refresh device status--------");
+			List<char[] > commandList = ToggleCmdEnum.REFRESH.toggle(address);
+			connection.fetchData(commandList);
+		}
+		else {
+			
+			mHandler.post(updateDeviceInfoFragmentUI);
+		}
+	
+		
+	}
+	
+	Runnable updateDeviceInfoFragmentUI = new Runnable()
+	{
 
 		@Override
 		public void run() {
-			System.out.println("---------------auto refresh test----------------");
-			System.out.println("AutoRresh: " + isAutoRefresh());
-			System.out.println("refresh time: " + getRefreshDuration());
 			
-			if(isAutoRefresh()){
-				
-				refreshAllDevices();
-				
+			if(currentSelectedDevice != null){
+				deviceInfoFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
 			}
 			
-			int frequency= Integer.parseInt(getRefreshDuration());
-			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(REFRESH_FEQUENCY));
+			
+			//deviceListFragment.refershStatus();
+			//deviceListFragment.updateProgressIcon(1);
+		}
+	
+		
+	};
+	
+	Runnable autoRefreshCurrentDevice = new Runnable(){
+
+		@Override
+		public void run() {
+			
+			System.out.println("---------------auto refresh current selected device----------------");
+			System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
+			
+			if(currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
+				refreshDevice(currentSelectedDevice.getAddress());
+			}
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(Constants.SELECTED_DEVICE_AUTO_REFRESH_FREQUENCY));
+			
+		}
+		
+		
+	};
+	
+	Runnable auroRefreshAllDevices = new Runnable(){
+
+		@Override
+		public void run() {
+			System.out.println("---------------auto refresh all devices----------------");
+			System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
+			
+			
+			if(isAutoRefreshAllDevices()){
+				refreshAllDevices();
+			}
+			//setup refresh frequency
+			//int frequency= Integer.parseInt(getRefreshDuration());
+			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(Constants.ALL_DEVICES_AUTO_REFRESH_FREQUENCY));
+			
 			//get current time, using Calendar.getInstance();
 			Calendar cal = Calendar.getInstance();
 	    	cal.getTime();
@@ -579,20 +634,6 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	};
 
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		System.out.println(newText);
-		deviceListFragment.search(newText);
-		return false;
-	}
-
-
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	/**
 	 * Send out update all device command GetCmdEnum.UpdateList if it is live
@@ -612,7 +653,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			}
 		}
 		else{
-			mHandler.post(refreshDevice);
+			mHandler.post(updateDeviceInfoFragmentUI);
 		}
 		
 		
@@ -634,8 +675,18 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 	}
+	
+	@Override
+	public void seekBar() {
+		SeekBarDialogFragment dialog = new SeekBarDialogFragment();
+		dialog.show(getFragmentManager(), "SetLocation");	
+	}
 
+	
 
+	
+
+	
 
 	
 	
