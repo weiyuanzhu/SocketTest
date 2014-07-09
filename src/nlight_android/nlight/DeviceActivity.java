@@ -589,8 +589,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			
-			System.out.println("---------------auto refresh current selected device----------------");
-			System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
+			//System.out.println("---------------auto refresh current selected device----------------");
+			//System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
 			
 			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
 				refreshDevice(currentSelectedDevice.getAddress());
@@ -609,8 +609,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 		@Override
 		public void run() {
-			System.out.println("---------------auto refresh all devices----------------");
-			System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
+			//System.out.println("---------------auto refresh all devices----------------");
+			//System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
 			
 			
 			if( isAutoRefresh() && isAutoRefreshAllDevices()){

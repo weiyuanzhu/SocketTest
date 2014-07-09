@@ -33,5 +33,8 @@
     <string name="btn_contact_engineer">Contact engineer</string>
     <string name="btn_engineer_mode">Engineer mode</string>
     
+    <string name="device_selected_description">Selected: </string>
+    <string name="device_selected_number">0</string>
+
 
 </resources>
