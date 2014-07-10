@@ -44,7 +44,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private List<PanelInfoFragment> fragmentList = null;
 	
 	private Panel currentDisplayingPanel;
-	private int panelPosition = 0;
+	private int panelPosition = -1;
+	private int previousPanelPosition = -1;
 	
 	private ImageView panelInfoImage;
 
@@ -138,7 +139,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					{
 						panelInfoFragmentTransation(panelPosition);
 					}
-					else currentDisplayingPanel = null;
+					else{
+						currentDisplayingPanel = null;
+						panelListFragment.clearSelection();
+					}
 					break;
 					
 			default: break;
@@ -158,10 +162,17 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	@Override
 	public void onListItemClicked(String ip, String location, int index) {
 		
+		
+		
 		System.out.println(location + " " +  ip + "positon: " + index);
 		
 		currentDisplayingPanel = panelMap.get(ip);
+		
+		previousPanelPosition = panelPosition==-1? -1 : panelPosition;
 		panelPosition = index;
+		
+		clearPanelInfoFragment();
+		
 		
 		//test for pass code dialog
 		if(isDemo){
@@ -603,6 +614,20 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
 		fragmentTransaction.replace(R.id.panel_detail_container, fragmentList.get(index),"tagTest");
+		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.commit();
+		
+	}
+	
+	private void clearPanelInfoFragment(){
+		panelInfoImage.setVisibility(View.VISIBLE);
+		
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+		if(previousPanelPosition!=-1) {
+			fragmentTransaction.remove(fragmentList.get(previousPanelPosition));
+		}
 		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
