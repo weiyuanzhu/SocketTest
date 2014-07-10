@@ -73,6 +73,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		rxBuffer.clear();
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#cancel()
+	 */
+	@Override
+	public void cancel() {
+		panelListFragment.clearSelection();
+		
+	}
+	
 	/* (non-Javadoc) callback for when input dialog Enter button clicked
 	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#setInformation(java.lang.String)
 	 */
@@ -128,6 +138,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					{
 						panelInfoFragmentTransation(panelPosition);
 					}
+					else currentDisplayingPanel = null;
 					break;
 					
 			default: break;
@@ -555,15 +566,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private void setRemotePanel(){
 		
 		checkConnectivity();
-		
-		String ip = currentDisplayingPanel.getIp();
-		TCPConnection conn = ip_connection_map.get(ip);
+		if(currentDisplayingPanel!=null){
+			String ip = currentDisplayingPanel.getIp();
+			TCPConnection conn = ip_connection_map.get(ip);
 				
-		if(!isDemo &&  conn != null && commandList != null){
-			conn.fetchData(commandList);
-		}
+			if(!isDemo &&  conn != null && commandList != null){
+				conn.fetchData(commandList);
+			}
 		
-		commandList = null;
+			commandList = null;
+		}
 		
 	}
 	
@@ -596,5 +608,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		fragmentTransaction.commit();
 		
 	}
+
+	
 		
 }

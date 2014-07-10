@@ -55,6 +55,7 @@ public class InputDialogFragment extends DialogFragment{
 	
 	public interface NoticeDialogListener{
 		public void setInformation(String userInput, int type);
+		public void cancel();
 		
 	}
 	
@@ -122,10 +123,11 @@ public class InputDialogFragment extends DialogFragment{
 					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
+						mListener.cancel();
 						
 					}
 				})
+				
 		
 		
 		;

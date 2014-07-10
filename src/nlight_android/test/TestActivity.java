@@ -36,6 +36,12 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		//tcpConnection.setListening(false);
 		//refreshTest();
 	}
+	
+	@Override
+	public void cancel() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,5 +168,7 @@ public class TestActivity extends BaseActivity implements TCPConnection.CallBack
 		//boolean save = sharedPref.
 		
 	}
+
+	
 	
 }

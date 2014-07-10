@@ -383,4 +383,9 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 		
 		
 	}
+	
+	public void clearSelection()
+	{
+		getListView().clearChoices();
+	}
 }

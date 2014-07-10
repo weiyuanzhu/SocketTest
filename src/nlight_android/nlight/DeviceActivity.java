@@ -136,6 +136,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	
+	@Override
+	public void cancel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see nlight_android.nlight.InputDialogFragment.NoticeDialogListener#setInformation(java.lang.String)
 	 */
@@ -681,6 +688,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		SeekBarDialogFragment dialog = new SeekBarDialogFragment();
 		dialog.show(getFragmentManager(), "SetLocation");	
 	}
+
+	
 
 	
 
