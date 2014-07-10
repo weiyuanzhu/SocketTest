@@ -43,13 +43,18 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private List<PanelInfoFragment> fragmentList = null;
 	
-	private Panel currentDisplayingPanel;
-	private int panelPosition = -1;
-	private int previousPanelPosition = -1;
+	
 	
 	private ImageView panelInfoImage;
 
 	private PanelListFragment panelListFragment;
+	
+	//fields to indicate current displayed and previous displayed panel and their position
+	private Panel currentDisplayingPanel;
+	private int currentPanelPosition = -1;
+	private int previousPanelPosition = -1;
+	
+	private String passcodeEntered = "initial";
 	
 	//private int currentSelected;
 
@@ -110,34 +115,36 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					commandList = SetCmdEnum.SET_PANEL_NAME.set(buffer);
 					
 					//update both list and info fragments
-					fragmentList.get(panelPosition).updatePanelLocation(input);
-					panelListFragment.updateList(panelPosition, input);
-					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+					fragmentList.get(currentPanelPosition).updatePanelLocation(input);
+					panelListFragment.updateList(currentPanelPosition, input);
+					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_CONTACT: 
 				commandList = SetCmdEnum.SET_CONTACT_NAME.set(buffer);
 					currentDisplayingPanel.setContact(input);
-					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_TEL: 
 					commandList = SetCmdEnum.SET_CONTACT_NUMBER.set(buffer);
 					currentDisplayingPanel.setTel(input);
-					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_MOBILE:
 					commandList = SetCmdEnum.SET_CONTACT_MOBILE.set(buffer);
 					currentDisplayingPanel.setMobile(input);
-					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.PANEL_PASSCODE:
 					commandList = SetCmdEnum.SET_PASSCODE.set(buffer);
 					currentDisplayingPanel.setPasscode(input);
-					fragmentList.get(panelPosition).updatePanelInfo(currentDisplayingPanel);
+					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
 			case InputDialogFragment.ENTER_PASSCODE:
+					passcodeEntered = new String(input);
+					
 					if (input.equals(currentDisplayingPanel.getPasscode()))
 					{
-						panelInfoFragmentTransation(panelPosition);
+						panelInfoFragmentTransation(currentPanelPosition);
 					}
 					else{
 						currentDisplayingPanel = null;
@@ -168,14 +175,14 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		currentDisplayingPanel = panelMap.get(ip);
 		
-		previousPanelPosition = panelPosition==-1? -1 : panelPosition;
-		panelPosition = index;
+		previousPanelPosition = currentPanelPosition==-1? -1 : currentPanelPosition;
+		currentPanelPosition = index;
 		
 		clearPanelInfoFragment();
 		
 		
 		//test for pass code dialog
-		if(isDemo){
+		if(isDemo && !passcodeEntered.equals(currentDisplayingPanel.getPasscode())){
 			InputDialogFragment dialog = new InputDialogFragment();
 			
 			//dialog.setHint("Enter passcode");
@@ -620,15 +627,19 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 	}
 	
+	/**
+	 * Remove PanelInfoFagment and reset Mackwell logo 
+	 */
 	private void clearPanelInfoFragment(){
 		panelInfoImage.setVisibility(View.VISIBLE);
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
+		//get previous displayed fragment
 		if(previousPanelPosition!=-1) {
 			fragmentTransaction.remove(fragmentList.get(previousPanelPosition));
 		}
-		//fragmentTransaction.addToBackStack(null);  add fragment to backstack
+		
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
 		
