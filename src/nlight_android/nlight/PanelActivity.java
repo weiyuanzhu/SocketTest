@@ -19,10 +19,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -252,9 +254,19 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		//set home bar back navigation to display
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		
+		ViewGroup v = (ViewGroup)LayoutInflater.from(this)
+                .inflate(R.layout.actionbar_panel, null);
+		getActionBar().setCustomView(v);
+		
+		
 		//set title with demo
 		String title = isDemo? "N-Light Connect (Demo)" :  "N-Light Connect (Live)";
 		getActionBar().setTitle(title);
+		
+		getActionBar().setSubtitle("Panel list");
+		
+		
 		
 		System.out.println("DeomoMode--------> " + isDemo);
 		

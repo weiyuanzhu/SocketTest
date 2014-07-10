@@ -289,6 +289,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		//set title with mode
 		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + " (Demo)" : "Panel: " + panel.getPanelLocation().trim() + " (Live)";
 		getActionBar().setTitle(title);
+		getActionBar().setSubtitle("Device list");
 		
 		if(!isDemo) this.connection = new TCPConnection(this,panel.getIp());
 		
