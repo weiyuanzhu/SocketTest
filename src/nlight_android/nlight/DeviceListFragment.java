@@ -217,7 +217,7 @@ public class DeviceListFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
-				//deviceListView.setItemChecked(position, true);
+				deviceListView.setItemChecked(position, true);
 				System.out.println(position + " clicked");
 				
 			}
@@ -254,7 +254,7 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 			
-				deviceListView.clearChoices();
+				//deviceListView.clearChoices();
 				
 				if (mActionMode != null) {
 					mActionMode.finish();
@@ -286,13 +286,13 @@ public class DeviceListFragment extends Fragment {
 		        }
             	
             	
-            	/*if(groupPosition==0){
+            	if(groupPosition==0){
             		deviceListView.setItemChecked(childPosition+1, true);
             	}
             	else {
             		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
             		deviceListView.setItemChecked(pos, true);
-            	}*/
+            	}
                 mListener.onDeviceItemClicked(groupPosition, childPosition);
                 return true;
             }
