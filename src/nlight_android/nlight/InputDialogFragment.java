@@ -156,16 +156,20 @@ public class InputDialogFragment extends DialogFragment{
 		
 		switch(type){
 			case DEVICE_NAME: title = "Name device";
+				inputEditText.setHint("Enter device name");
 					break;
 			case PANEL_NAME: title = "Name panel";
+				inputEditText.setHint("Enter panel name");
 					break;
 			case PANEL_CONTACT: title = "Update contact name ";
+				inputEditText.setHint("Enter contact name");
 					break;
 			case PANEL_TEL: title = "Update Telphone Number";
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
 					break;
 			case PANEL_MOBILE: title = "Update Mobile Number";
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+					inputEditText.setHint("Enter mobile number");
 					break;
 			case PANEL_PASSCODE: title = "Update Passcode";
 					
@@ -177,6 +181,7 @@ public class InputDialogFragment extends DialogFragment{
 					
 					//input type is number only
 					inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+					inputEditText.setHint("Enter 4 digit passcode");
 					
 					//setup password mask
 					inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -193,7 +198,8 @@ public class InputDialogFragment extends DialogFragment{
 				//input type is number only
 				inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				inputEditText.setText("");
-				inputEditText.setHint("Hint test");
+				inputEditText.setHint("Enter 4 digit passcode");
+				inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 				
 				
 			
