@@ -96,7 +96,7 @@ public class DeviceInfoActivity extends ListActivity implements TCPConnection.Ca
 		listDataSource.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Emergendy mode");
+		map.put("text1", "Emergency mode");
 		map.put("text2", device==null? "n/a" : device.getEmergencyMode());
 			
 		listDataSource.add(map);
