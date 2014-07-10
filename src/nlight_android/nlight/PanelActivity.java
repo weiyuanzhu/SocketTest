@@ -85,6 +85,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	 */
 	@Override
 	public void cancel() {
+		
+		currentDisplayingPanel = null;
 		panelListFragment.clearSelection();
 		
 	}
