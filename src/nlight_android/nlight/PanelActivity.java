@@ -255,9 +255,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		
-		ViewGroup v = (ViewGroup)LayoutInflater.from(this)
-                .inflate(R.layout.actionbar_panel, null);
-		getActionBar().setCustomView(v);
+		
 		
 		
 		//set title with demo
