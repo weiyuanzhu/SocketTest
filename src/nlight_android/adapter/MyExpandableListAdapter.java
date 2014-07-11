@@ -3,20 +3,18 @@
  */
 package nlight_android.adapter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-
 import nlight_android.models.Device;
 import nlight_android.models.Loop;
-
-import com.example.nclient.R;
-
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,26 +23,101 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nclient.R;
+
 /**
  * @author weiyuan zhu
  *
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
+	//inner class
+	class MyFilter extends Filter{
+
+		@Override
+		protected FilterResults performFiltering(CharSequence arg0) {
+			//System.out.println("Filter Test");
+			
+			FilterResults results = new FilterResults();
+			
+		
+			return results;
+		}
+
+		
+		@Override
+		protected void publishResults(CharSequence query, FilterResults results) {
+			 //mDataList = (List<? extends Map<String,?>>) results.values;
+	            if (results.count > 0) {
+	                notifyDataSetChanged();
+	            } else {
+	                notifyDataSetInvalidated();
+	            }
+			
+		}
+		
+		
+	}
+	
+	//fields
 	private MyFilter mFilter;
 	private boolean mNotifyChanged = true;
 	private Context mContext;
     private List<Loop> listDataHeader; // header titles
     // child data in format of header title, child title
     private Map<Loop, List<Device>> listDataChild;
+    
+    
+    //two array for storing selected information for both loops
+    private SparseBooleanArray loop1CheckedArray;
+    private SparseBooleanArray loop2CheckedArray;
  
+    
+    /**
+     * Constructope
+     * @param context
+     * @param listDataHeader
+     * @param listChildData
+     */
     public MyExpandableListAdapter(Context context, List<Loop> listDataHeader,
             Map<Loop, List<Device>> listChildData) {
         this.mContext = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        
+        loop1CheckedArray = new SparseBooleanArray();
+        
+        for(int i=0; i<getChildCount(0);i++){
+        	
+        	loop1CheckedArray.put(i, false);
+        	
+        }
+       
+        
+        
+        loop2CheckedArray = new SparseBooleanArray();
+        
+        for(int i=0; i<getChildCount(1);i++){
+        	
+        	loop2CheckedArray.put(i, false);
+        	
+        }
+        
     }
  
+    
+    
+    //implements
+    
+    public int getChildCount(int groupPosition){
+    	
+    	int temp = listDataChild.get(listDataHeader.get(groupPosition)).size();
+    	
+    	return temp;
+    }
+    
+    
+    
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition))
@@ -105,6 +178,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.devicelist_child_location_textView);
         
         deviceLocation.setText(device.getLocation());
+        
+        updateRowBackground(groupPosition, childPosition, convertView);
+        
         return convertView;
     }
  
@@ -188,32 +264,28 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	if(mNotifyChanged) notifyDataSetChanged();
     }
     
-    class MyFilter extends Filter{
-
-		@Override
-		protected FilterResults performFiltering(CharSequence arg0) {
-			//System.out.println("Filter Test");
-			
-			FilterResults results = new FilterResults();
-			
-		
-			return results;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		protected void publishResults(CharSequence query, FilterResults results) {
-			 //mDataList = (List<? extends Map<String,?>>) results.values;
-	            if (results.count > 0) {
-	                notifyDataSetChanged();
-	            } else {
-	                notifyDataSetInvalidated();
-	            }
-			
-		}
-		
-		
-	}
+    public void selectItem(int groupPosition, int childPosition){
+    	if(groupPosition==0){
+    		//loop1CheckedArray.put(previousPosition, false);
+    		loop1CheckedArray.put(childPosition, true);
+    		
+    	}
+    	else loop2CheckedArray.put(childPosition, true);
+    	
+    }
+    
+    
+    public void updateRowBackground(int groupPosition,int childPosition, View view)
+    {
+    	if(groupPosition==0){
+    		view.setBackgroundColor(loop1CheckedArray.get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
+    	}
+    	else{
+    		view.setBackgroundColor(loop2CheckedArray.get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
+    	}
+    	
+    	
+    }
     
     
 
