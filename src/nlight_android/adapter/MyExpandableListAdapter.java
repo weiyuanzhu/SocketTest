@@ -93,7 +93,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         	SparseBooleanArray s = new SparseBooleanArray();
         	checkedList.add(s);
             
-            for(int j=0; j<getChildCount(i);j++){
+            for(int j=0; j<getChildCount(i)+1;j++){
             	
             	s.put(i, false);
             	
@@ -266,24 +266,16 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	if(mNotifyChanged) notifyDataSetChanged();
     }
     
-    public void selectItem(int groupPosition, int childPosition){
+    public void selectItem(int groupPosition, int childPosition)
+    {
     	
-    	checkedList.get(groupPosition).put(childPosition, true);
-    		
-    	
-    	
+    	checkedList.get(groupPosition).put(childPosition==-1? 0: childPosition+1, true);
     }
     
     
     public void updateRowBackground(int groupPosition,int childPosition, View view)
     {
-    	
-    		view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
-    	
-    		
-    	
-    	
-    	
+    	view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition)==true? Color.LTGRAY : Color.TRANSPARENT);
     }
     
     
