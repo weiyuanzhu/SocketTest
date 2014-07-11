@@ -206,7 +206,7 @@ public class DeviceListFragment extends Fragment {
 		
 		deviceListView.setAdapter(mAdapter);
 		
-		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		deviceListView.setMultiChoiceModeListener(new MyActionModeCallback());
 		
 		
@@ -217,7 +217,7 @@ public class DeviceListFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
-				deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);
 				System.out.println(position + " clicked");
 				
 			}
@@ -236,7 +236,7 @@ public class DeviceListFragment extends Fragment {
 				else {
 					 position = groupPosition;
 				}
-				deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);
 				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
@@ -286,14 +286,25 @@ public class DeviceListFragment extends Fragment {
 		        }
             	
             	
+				
             	if(groupPosition==0){
-            		deviceListView.setItemChecked(childPosition+1, true);
+            		int pos = childPosition + 1;
+            		//deviceListView.setItemChecked(childPosition+1, true);
+            		
             	}
             	else {
             		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
-            		deviceListView.setItemChecked(pos, true);
+            		//deviceListView.setItemChecked(pos, true);
+            		
             	}
+            	
+            	mAdapter.selectItem(groupPosition, childPosition);
+            	
                 mListener.onDeviceItemClicked(groupPosition, childPosition);
+                
+                mAdapter.notifyDataSetChanged();
+				
+				
                 return true;
             }
         });
