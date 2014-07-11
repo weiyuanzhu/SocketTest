@@ -3,6 +3,7 @@
  */
 package nlight_android.adapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -69,8 +70,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     
     
     //two array for storing selected information for both loops
-    private SparseBooleanArray loop1CheckedArray;
-    private SparseBooleanArray loop2CheckedArray;
+    private List<SparseBooleanArray> checkedList;
+    
  
     
     /**
@@ -85,23 +86,24 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         
-        loop1CheckedArray = new SparseBooleanArray();
+        checkedList = new ArrayList<SparseBooleanArray> (getGroupCount());
         
-        for(int i=0; i<getChildCount(0);i++){
-        	
-        	loop1CheckedArray.put(i, false);
+        
+        for(int i=0; i<getGroupCount();i++){
+        	SparseBooleanArray s = new SparseBooleanArray();
+        	checkedList.add(s);
+            
+            for(int j=0; j<getChildCount(i);j++){
+            	
+            	s.put(i, false);
+            	
+            }
         	
         }
+        
        
         
-        
-        loop2CheckedArray = new SparseBooleanArray();
-        
-        for(int i=0; i<getChildCount(1);i++){
-        	
-        	loop2CheckedArray.put(i, false);
-        	
-        }
+       
         
     }
  
@@ -265,24 +267,21 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     }
     
     public void selectItem(int groupPosition, int childPosition){
-    	if(groupPosition==0){
-    		//loop1CheckedArray.put(previousPosition, false);
-    		loop1CheckedArray.put(childPosition, true);
+    	
+    	checkedList.get(groupPosition).put(childPosition, true);
     		
-    	}
-    	else loop2CheckedArray.put(childPosition, true);
+    	
     	
     }
     
     
     public void updateRowBackground(int groupPosition,int childPosition, View view)
     {
-    	if(groupPosition==0){
-    		view.setBackgroundColor(loop1CheckedArray.get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
-    	}
-    	else{
-    		view.setBackgroundColor(loop2CheckedArray.get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
-    	}
+    	
+    		view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition)==true? Color.GRAY : Color.TRANSPARENT);
+    	
+    		
+    	
     	
     	
     }
