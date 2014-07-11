@@ -158,6 +158,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					
 					if (input.equals(currentDisplayingPanel.getPasscode()))
 					{
+
 						panelInfoFragmentTransation(currentPanelPosition);
 						currentDisplayingPanel.setEngineerMode(true);
 					}
@@ -171,7 +172,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 						//panelListFragment.clearSelection();
 						
 						Toast.makeText(this, "Passcode incorrect, please contact engineer.", Toast.LENGTH_LONG).show();
+
+
 					}
+					//else currentDisplayingPanel = null;
 					break;
 					
 			default: break;
