@@ -275,7 +275,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     
     public void updateRowBackground(int groupPosition,int childPosition, View view)
     {
-    	view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition)==true? Color.LTGRAY : Color.TRANSPARENT);
+    	view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition+1)==true? Color.LTGRAY : Color.TRANSPARENT);
     }
     
     
