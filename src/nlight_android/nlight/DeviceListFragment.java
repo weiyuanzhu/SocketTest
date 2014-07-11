@@ -238,10 +238,15 @@ public class DeviceListFragment extends Fragment {
 				}
 				//deviceListView.setItemChecked(position, true);
 				
+				
+				mAdapter.selectItem(groupPosition, -1);
+				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
 				mListener.onGroupExpandOrCollapse(groupPosition);
+				
+				mAdapter.notifyDataSetChanged();
 			}
 			
 			
@@ -287,7 +292,7 @@ public class DeviceListFragment extends Fragment {
             	
             	
 				
-            	if(groupPosition==0){
+            	/*if(groupPosition==0){
             		int pos = childPosition + 1;
             		//deviceListView.setItemChecked(childPosition+1, true);
             		
@@ -296,7 +301,7 @@ public class DeviceListFragment extends Fragment {
             		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
             		//deviceListView.setItemChecked(pos, true);
             		
-            	}
+            	}*/
             	
             	mAdapter.selectItem(groupPosition, childPosition);
             	
