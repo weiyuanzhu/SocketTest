@@ -341,13 +341,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search_device).getActionView();
+	    /*SearchView searchView = (SearchView) menu.findItem(R.id.action_search_device).getActionView();
 	    
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName())); // add searchable.xml configure file to searchView
 	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 	    searchView.setQueryHint("Search Device");
-	    searchView.setOnQueryTextListener(this);
-		
+	    searchView.setOnQueryTextListener(this);*/
 		
 		return true;
 	}

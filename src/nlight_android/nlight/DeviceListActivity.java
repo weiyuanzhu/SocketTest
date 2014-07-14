@@ -67,10 +67,10 @@ public class DeviceListActivity extends ListActivity {
 		getMenuInflater().inflate(R.menu.device_list, menu);
 		
 		//get menu item for Search action button 
-		MenuItem searchItem = menu.findItem(R.id.action_search_device);
+		//MenuItem searchItem = menu.findItem(R.id.action_search_device);
 		
 		//get SearchView
-		SearchView searchView = (SearchView) searchItem.getActionView();
+		//SearchView searchView = (SearchView) searchItem.getActionView();
 
 		
 		
