@@ -90,6 +90,10 @@ public class DeviceListFragment extends Fragment {
 		
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+			
+			mAdapter.setMultiSelectMode(false);
+			mAdapter.clearCheck();
+			mAdapter.notifyDataSetChanged();
 			mActionMode = null;
 		}
 		
@@ -102,9 +106,11 @@ public class DeviceListFragment extends Fragment {
 			
 			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
 			
-			counterTextView.setText("0");
+			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
 			mode.setCustomView(actionModeView);
+			
+			
 	        
 	        
 	        return true;
@@ -155,10 +161,15 @@ public class DeviceListFragment extends Fragment {
 		}
 
 		@Override
-		public void onItemCheckedStateChanged(ActionMode arg0, int arg1,
-				long arg2, boolean arg3) {
-			// TODO Auto-generated method stub
+		public void onItemCheckedStateChanged(ActionMode mode, int position,
+				long id, boolean checked) {
 			
+			mAdapter.setMultiSelectMode(true);
+			mAdapter.clearCheck();
+			mAdapter.notifyDataSetChanged();
+			
+			System.out.println("------------onItemCheckedStateChanged-------------");
+			System.out.println("Position: " + position + " checked: " + checked);
 		}
 	};
 	
@@ -206,7 +217,7 @@ public class DeviceListFragment extends Fragment {
 		
 		deviceListView.setAdapter(mAdapter);
 		
-		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		deviceListView.setMultiChoiceModeListener(new MyActionModeCallback());
 		
 		
@@ -260,7 +271,9 @@ public class DeviceListFragment extends Fragment {
 			public void onGroupCollapse(int groupPosition) {
 			
 				//deviceListView.clearChoices();
-				mAdapter.clearCheck();
+				if(!mAdapter.isMultiSelectMode()){
+					mAdapter.clearCheck();
+				}
 				
 				if (mActionMode != null) {
 					mActionMode.finish();
