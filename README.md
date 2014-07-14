@@ -1,10 +1,28 @@
 PATCH NOTES
 ================
 
+v 0.7.0
+===================
+
+## Still in development
+
+###Updates:
+- 1 Sort by faults is default for device list (also dummy devices have been added to demoMode)
+- 2 Display improvements
+- 3 DeviceName: ?[Click and hold to rename device] (easier for user to click)
+- 4 Auto refresh now works in demo mode too
+- 5 Set panel information, including panel name, contact, Tel, Mobile and passcode.
+- 6 Refactor InputDialogFragment for better reuse, with a title field and type
+- 7 Set inputType for different InputDialog type and hints
+- 8 Implemented password validation when user access panels
+- 9 Subtitle for panel/device action bar
+
+###Fix:
+- 1 Check if isDemo and if connection is null when change device name
+- 2 InputDialog cancel doesn't set currentDisplayingPanel to null as expected
 
 
-
-v.0.6.0
+v 0.6.0
 ================
 
 ###Updates:
@@ -18,7 +36,7 @@ v.0.6.0
 - 8 PanelLoadingScreen progress bar is back for displaying progress for loading panels
 - 9 AutoRefresh for all device list(60 seconds) and currently selected device(5 seconds)
 - 10 A stamp is displayed under device information with: AutoRefresh: and Last refreshed: 
-- 11 DeviceList can be sorted now by: Faults(default), A-Z and unnamed
+- 11 DeviceList can be sorted now by: Faults, A-Z and unnamed
 - 12 SettingActivity now has a <back navigation to navigate back to last activity who starts this.
 
 
