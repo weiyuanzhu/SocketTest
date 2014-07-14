@@ -1,9 +1,23 @@
-Patch Notes
+PATCH NOTES
 ================
 
-v0.4.6.1
+v 0.5.0
 
-Updates:
+##2014-06-09
+
+###Updates:
+
+- 1 UDP Connection for searching panels in the building
+- 2 Implemented a Preference settings for users to choose options
+
+
+###Fix:
+- 1 DemoMode will have duplicated panels when navi back to loading screen and click it again.
+- 2 
+
+v 0.4.6.1
+
+###Update:
 
 Device refresh status will now refresh device list icon too
 

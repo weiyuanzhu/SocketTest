@@ -93,10 +93,10 @@ public class ListDialogFragment extends DialogFragment {
 				listView.setItemChecked(position, true);
 			}
 			
-			if(position==0)
+			/*if(position==0)
 			{
 				location.setTextColor(Color.GREEN);
-			}
+			}*/
 			
 			return rowView;
 			
