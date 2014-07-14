@@ -290,10 +290,17 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     
     public void selectItem(int groupPosition, int childPosition)
     {
-    	clearCheck();
     	
+    	if(!isMultiSelectMode()) {
+    		clearCheck();
+    	}
     	
-    	checkedList.get(groupPosition).put(childPosition==-1? 0: childPosition+1, true);
+    	//get the reverse of current checked status
+    	    	
+    	boolean check = !checkedList.get(groupPosition).get(childPosition==-1? 0: childPosition+1);
+    	
+    	//set checked status
+    	checkedList.get(groupPosition).put(childPosition==-1? 0: childPosition+1, check);
     }
     
     
@@ -314,5 +321,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         	}
     	}
     	
+    }
+    
+    public int getCheckedCount(){
+    	
+    	int count =0;
+    	
+    	for(int j=0;j<checkedList.size();j++){
+    		for(int i=0; i<checkedList.get(j).size();i++){
+        		if(checkedList.get(j).get(i)){
+        			count++;
+        		}
+        	}
+    	}
+    	
+    	return count;
     }
 }
