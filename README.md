@@ -1,7 +1,35 @@
 PATCH NOTES
 ================
 
+
+
+
+v.0.6.0
+================
+
+###Updates:
+- 1 Device status is now coloured (Red for faults)
+- 2 Icon for FT
+- 3 Add pop-up menu for "Show loops"
+- 4 Added "SearchView" Icon
+- 5 Panel Info now displays faulty number by panel location(also trim spaces)
+- 6 DeviceList, expand/collapse loop will now rest deviceInfoFragment page and highlight current loop
+- 7 Loop (N) N is device number in the loop also a text showing number of faulty devices when loop is clicked
+- 8 PanelLoadingScreen progress bar is back for displaying progress for loading panels
+- 9 AutoRefresh for all device list(60 seconds) and currently selected device(5 seconds)
+- 10 A stamp is displayed under device information with: AutoRefresh: and Last refreshed: 
+- 11 DeviceList can be sorted now by: Faults(default), A-Z and unnamed
+- 12 SettingActivity now has a <back navigation to navigate back to last activity who starts this.
+
+
+###Fix:
+- 1 Device failure status error, caused by a snippet of test code
+- 2 NullPointAccess when accessing connectionList when PanelListFragmetn onPause()
+- 3 Changed logic in DeviceinfoFragment for update device information to prevent crash for updating device information
+
+
 v 0.5.0
+================
 
 ##2014-06-09
 
@@ -9,13 +37,18 @@ v 0.5.0
 
 - 1 UDP Connection for searching panels in the building
 - 2 Implemented a Preference settings for users to choose options
+- 3 When liveMode clicked, a dialog with list of panels will pop up for choose
+- 4 User can choose to cash panel location next time when they search panels
+- 5 Improved project branches(Master, Develop and Feature branches)
+
 
 
 ###Fix:
-- 1 DemoMode will have duplicated panels when navi back to loading screen and click it again.
-- 2 
+- 1 DemoMode will have duplicated panels when navigate back to loading screen and click it again.
+- 2 PanelListDialog logics
 
 v 0.4.6.1
+================
 
 ###Update:
 
