@@ -64,7 +64,7 @@ public class DeviceListFragment extends Fragment {
 	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
-	private ActionMode mActionMode;
+	private MyActionModeCallback mActionMode;
 	private List<Loop> listDataHeader;
     private Map<Loop, List<Device>> listDataChild;
     
@@ -94,7 +94,7 @@ public class DeviceListFragment extends Fragment {
 			mAdapter.setMultiSelectMode(false);
 			mAdapter.clearCheck();
 			mAdapter.notifyDataSetChanged();
-			mActionMode = null;
+			//mActionMode = null;
 		}
 		
 		@Override
@@ -168,8 +168,15 @@ public class DeviceListFragment extends Fragment {
 			mAdapter.clearCheck();
 			mAdapter.notifyDataSetChanged();
 			
+			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			
 			System.out.println("------------onItemCheckedStateChanged-------------");
 			System.out.println("Position: " + position + " checked: " + checked);
+		}
+		
+		public void updateCounter(){
+			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			
 		}
 	};
 	
@@ -211,6 +218,7 @@ public class DeviceListFragment extends Fragment {
 		initListData();
 		
 		mAdapter = new MyExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+		mActionMode = new MyActionModeCallback();
 				
 		//Sort by faults -- default sort
         sort(DeviceActivity.SORT_BY_FAULTY);
@@ -218,7 +226,7 @@ public class DeviceListFragment extends Fragment {
 		deviceListView.setAdapter(mAdapter);
 		
 		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		deviceListView.setMultiChoiceModeListener(new MyActionModeCallback());
+		deviceListView.setMultiChoiceModeListener(mActionMode);
 		
 		
 		
@@ -275,9 +283,10 @@ public class DeviceListFragment extends Fragment {
 					mAdapter.clearCheck();
 				}
 				
-				if (mActionMode != null) {
+				//this is for single action mode
+				/*if (mActionMode != null) {
 					mActionMode.finish();
-		        }
+		        }*/
 				
 				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
@@ -300,9 +309,10 @@ public class DeviceListFragment extends Fragment {
                                         childPosition), Toast.LENGTH_SHORT)
                         .show();*/
             	
-				if (mActionMode != null) {
+            	//single action mode
+				/*if (mActionMode != null) {
 					mActionMode.finish();
-		        }
+		        }*/
             	
             	
 				
@@ -318,6 +328,10 @@ public class DeviceListFragment extends Fragment {
             	}*/
             	
             	mAdapter.selectItem(groupPosition, childPosition);
+            	
+            	if(mAdapter.isMultiSelectMode()){
+            		mActionMode.updateCounter();
+            	}
             	
                 mListener.onDeviceItemClicked(groupPosition, childPosition);
                 
@@ -389,6 +403,8 @@ public class DeviceListFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+		mActionMode = null;
+		
 	}
 
 	
