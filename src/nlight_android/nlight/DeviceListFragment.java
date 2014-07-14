@@ -106,7 +106,7 @@ public class DeviceListFragment extends Fragment {
 			
 			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
 			
-			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			//counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
 			mode.setCustomView(actionModeView);
 			
@@ -164,8 +164,13 @@ public class DeviceListFragment extends Fragment {
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
 				long id, boolean checked) {
 			
-			mAdapter.setMultiSelectMode(true);
-			mAdapter.clearCheck();
+			if(!mAdapter.isMultiSelectMode()){
+				mAdapter.clearCheck();
+				mAdapter.setMultiSelectMode(true);
+				mAdapter.selectItem(0, position-1);
+			}
+			
+			updateCounter();
 			mAdapter.notifyDataSetChanged();
 			
 			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
