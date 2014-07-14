@@ -61,6 +61,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 	
 	//fields
+	
+	private boolean multiSelectMode = false;
 	private MyFilter mFilter;
 	private boolean mNotifyChanged = true;
 	private Context mContext;
@@ -69,12 +71,30 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private Map<Loop, List<Device>> listDataChild;
     
     
-    //two array for storing selected information for both loops
+    //a list for storing selected information for all loops
     private List<SparseBooleanArray> checkedList;
     
- 
+    //setters and getters
     
     /**
+	 * @return the multiSelectMode
+	 */
+	public boolean isMultiSelectMode() {
+		return multiSelectMode;
+	}
+
+
+
+	/**
+	 * @param multiSelectMode the multiSelectMode to set
+	 */
+	public void setMultiSelectMode(boolean multiSelectMode) {
+		this.multiSelectMode = multiSelectMode;
+	}
+
+
+
+	/**
      * Constructope
      * @param context
      * @param listDataHeader
@@ -241,6 +261,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         lblListHeader.setText(headerTitle);
         
         allDevicesNo.setText("(" + loop.getDeviceNumber() + ")");
+        
+        updateRowBackground(groupPosition, -1, convertView);
  
         return convertView;
     }
@@ -268,6 +290,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     
     public void selectItem(int groupPosition, int childPosition)
     {
+    	clearCheck();
+    	
     	
     	checkedList.get(groupPosition).put(childPosition==-1? 0: childPosition+1, true);
     }
@@ -278,6 +302,17 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	view.setBackgroundColor(checkedList.get(groupPosition).get(childPosition+1)==true? Color.LTGRAY : Color.TRANSPARENT);
     }
     
-    
-
+    /**
+     * clear checked status for a particular loop
+     * @param groupPosition
+     */
+    public void clearCheck()
+    {
+    	for(int j=0;j<checkedList.size();j++){
+    		for(int i=0; i<checkedList.get(j).size();i++){
+        		checkedList.get(j).put(i, false);
+        	}
+    	}
+    	
+    }
 }

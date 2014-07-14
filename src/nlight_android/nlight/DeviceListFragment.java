@@ -259,7 +259,8 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 			
-				deviceListView.clearChoices();
+				//deviceListView.clearChoices();
+				mAdapter.clearCheck();
 				
 				if (mActionMode != null) {
 					mActionMode.finish();
