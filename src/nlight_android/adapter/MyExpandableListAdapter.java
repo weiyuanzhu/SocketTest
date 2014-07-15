@@ -309,22 +309,24 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @SuppressLint("NewApi")
 	public void updateRowBackground(int groupPosition,int childPosition, View view)
     {
-    	int backgroundId =0;
+    	int backgroundId = R.drawable.conversation_item_background_read;
     	// +1 because checkedList contains 0 for group position
     	int childPositionInTheArray = childPosition+1;
     	boolean selected = checkedList.get(groupPosition).get(childPositionInTheArray);
     	//view.setBackgroundColor(selected==true? Color.MAGENTA : Color.TRANSPARENT);
     	
     	
-    	if(selected){
-    		backgroundId = android.R.color.holo_blue_light;
-    	
-    	}else{
-    		backgroundId = R.drawable.conversation_item_background_read;
-    	}
     	
     	Drawable backGround = mContext.getResources().getDrawable(backgroundId);
 		view.setBackground(backGround);
+		
+		if(selected){
+    		view.setBackgroundColor(mContext.getResources().getColor(android.R.color.holo_blue_light));
+    	
+    	}else{
+    		
+    	}
+		
     	
     }
     

@@ -421,6 +421,9 @@ public class DeviceListFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 	}
+	
+	
+	
 
 	@Override 
 	public void onDetach() {
