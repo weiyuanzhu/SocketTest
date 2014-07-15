@@ -11,9 +11,11 @@ import java.util.Map;
 
 import nlight_android.models.Device;
 import nlight_android.models.Loop;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -304,11 +306,26 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     }
     
     
-    public void updateRowBackground(int groupPosition,int childPosition, View view)
+    @SuppressLint("NewApi")
+	public void updateRowBackground(int groupPosition,int childPosition, View view)
     {
+    	int backgroundId =0;
     	// +1 because checkedList contains 0 for group position
     	int childPositionInTheArray = childPosition+1;
-    	view.setBackgroundColor(checkedList.get(groupPosition).get(childPositionInTheArray)==true? Color.LTGRAY : Color.TRANSPARENT);
+    	boolean selected = checkedList.get(groupPosition).get(childPositionInTheArray);
+    	//view.setBackgroundColor(selected==true? Color.MAGENTA : Color.TRANSPARENT);
+    	
+    	
+    	if(selected){
+    		backgroundId = android.R.color.holo_blue_light;
+    	
+    	}else{
+    		backgroundId = R.drawable.conversation_item_background_read;
+    	}
+    	
+    	Drawable backGround = mContext.getResources().getDrawable(backgroundId);
+		view.setBackground(backGround);
+    	
     }
     
     /**
