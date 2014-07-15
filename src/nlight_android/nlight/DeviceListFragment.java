@@ -153,6 +153,16 @@ public class DeviceListFragment extends Fragment {
 					mListener.refreshDevice(getAddress());
 					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
 					break;
+				case R.id.device_select_all:
+					mAdapter.selectAllDevices();
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
+				case R.id.device_deselect_all:
+					mAdapter.clearCheck();
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
 				
 				default: break;
 			
@@ -172,15 +182,18 @@ public class DeviceListFragment extends Fragment {
 			int groupPosition = ExpandableListView.getPackedPositionGroup(id);
             int childPosition = ExpandableListView.getPackedPositionChild(id);  
 			
-            if(type==0){
-            	mAdapter.clearCheck();
-            	mAdapter.setMultiSelectMode(true);
-            }
+            
+            //prevent loop itself being selected
+           
 			
-			if(!mAdapter.isMultiSelectMode() && type!=0){
+			if(!mAdapter.isMultiSelectMode()){
+				
 				mAdapter.clearCheck();
-				mAdapter.setMultiSelectMode(true);
-				mAdapter.selectItem(groupPosition,childPosition);
+            	mAdapter.setMultiSelectMode(true);
+            	
+            	if(type!=0){
+            		mAdapter.selectItem(groupPosition,childPosition);
+            	}
 			}
 			
 			

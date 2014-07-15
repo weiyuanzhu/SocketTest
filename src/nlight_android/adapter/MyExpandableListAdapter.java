@@ -118,6 +118,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         
+
         checkedList = new ArrayList<SparseBooleanArray> (getGroupCount());
         selectedDeviceAddressList = new ArrayList<Integer>();
         
@@ -348,8 +349,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public void clearCheck()
     {
     	for(int j=0;j<checkedList.size();j++){
-    		for(int i=0; i<checkedList.get(j).size();i++){
-        		checkedList.get(j).put(i, false);
+    		SparseBooleanArray s = checkedList.get(j);
+    		for(int i=0; i<s.size();i++){
+        		s.put(i, false);
         	}
     	}
     	
@@ -384,6 +386,18 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	return count;
     }
     
+    
+    public void selectAllDevices(){
+    	for(int j=0;j<checkedList.size();j++){
+    		SparseBooleanArray s = checkedList.get(j);
+    		//+1 because loop is in the array too
+    		int size = 1+listDataHeader.get(j).getDeviceNumber();
+    		for(int i=1; i<size;i++){
+        		s.put(i, true);
+        	}
+    	}
+    	
+    }
     
     
 }
