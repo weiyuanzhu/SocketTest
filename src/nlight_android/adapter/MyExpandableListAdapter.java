@@ -76,6 +76,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     //a list for storing selected information for all loops
     private List<SparseBooleanArray> checkedList;
     
+    //a array recording address for the device selected
+    List<Integer> selectedDeviceAddressList;
+    
+    
+
+	//counter for selected
+    int count = 0;
+    
     //setters and getters
     
     /**
@@ -85,13 +93,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 		return multiSelectMode;
 	}
 
-
-
 	/**
 	 * @param multiSelectMode the multiSelectMode to set
 	 */
 	public void setMultiSelectMode(boolean multiSelectMode) {
 		this.multiSelectMode = multiSelectMode;
+	}
+	
+	public List<Integer> getSelectedDeviceAddressList() {
+		return selectedDeviceAddressList;
 	}
 
 
@@ -109,6 +119,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         this.listDataChild = listChildData;
         
         checkedList = new ArrayList<SparseBooleanArray> (getGroupCount());
+        selectedDeviceAddressList = new ArrayList<Integer>();
         
         
         for(int i=0; i<getGroupCount();i++){
@@ -346,16 +357,33 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     
     public int getCheckedCount(){
     	
-    	int count =0;
+    	count =0;
+    	selectedDeviceAddressList.clear();
+    	
     	
     	for(int j=0;j<checkedList.size();j++){
     		for(int i=0; i<checkedList.get(j).size();i++){
         		if(checkedList.get(j).get(i)){
         			count++;
+        			int address;
+        			
+        			//put address in to selectedDeviceAddressList if it is selected(true)
+        			int childPosition = i - 1;
+        			if(childPosition==-1)
+        			{
+        				address = j==0? 64: 192;
+        			}else{
+        				address = listDataChild.get(listDataHeader.get(j)).get(i-1).getAddress();
+        			}
+        			
+        			selectedDeviceAddressList.add(address);
         		}
         	}
     	}
     	
     	return count;
     }
+    
+    
+    
 }

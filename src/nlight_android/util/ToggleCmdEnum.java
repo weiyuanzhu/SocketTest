@@ -78,6 +78,41 @@ public enum ToggleCmdEnum {
 		
 	}
 	
+	public List<char[]> multiToggleTest(List<Integer> addressList){
+		List<char[]> commandList = new ArrayList<char[]>();
+		
+		for(int i=0; i<addressList.size();i++){
+			List<Integer> txBuffer = new ArrayList<Integer>();
+			
+			txBuffer.add(Constants.HOST_ID);
+			txBuffer.add(Constants.MASTER_TOGGLE);
+			txBuffer.add(getValue());
+			txBuffer.add(addressList.get(i));
+			int checksum = CRC.calcCRC(txBuffer, txBuffer.size());
+			txBuffer.add(CRC.getUnsignedInt(checksum));
+			txBuffer.add(CRC.getUnsignedInt(checksum >> 8));
+			
+			txBuffer.add(Constants.UART_STOP_BIT_H);
+			txBuffer.add(Constants.UART_STOP_BIT_L);
+			txBuffer.add(Constants.UART_NEW_LINE_H);
+			txBuffer.add(Constants.UART_NEW_LINE_L);
+			
+			char[] command = new char[txBuffer.size()];
+			for(int j=0; j<txBuffer.size();j++)		
+			{
+				command[j] = (char) txBuffer.get(j).intValue();
+				
+				
+			}
+			
+			commandList.add(command);
+		}
+		
+		
+		return commandList;
+		
+	}
+	
 	
 	
 

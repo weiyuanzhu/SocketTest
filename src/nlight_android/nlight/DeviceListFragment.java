@@ -48,7 +48,7 @@ public class DeviceListFragment extends Fragment {
 		// TODO: Update argument type and name
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
 		public void onGroupExpandOrCollapse(int groupPosition);
-		public void ft(int address);
+		public void ft(List<Integer> addressList);
 		public void dt(int address);
 		public void st(int address);
 		public void id(int address);
@@ -126,7 +126,7 @@ public class DeviceListFragment extends Fragment {
 			switch(item.getItemId())
 			{
 				case R.id.device_ft:
-					mListener.ft(getAddress());
+					mListener.ft(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
@@ -350,13 +350,14 @@ public class DeviceListFragment extends Fragment {
             		
             	}*/
             	
+            	mListener.onDeviceItemClicked(groupPosition, childPosition);
             	mAdapter.selectItem(groupPosition, childPosition);
             	
             	if(mAdapter.isMultiSelectMode()){
             		mActionMode.updateCounter();
             	}
             	
-                mListener.onDeviceItemClicked(groupPosition, childPosition);
+                
                 
                 mAdapter.notifyDataSetChanged();
 				

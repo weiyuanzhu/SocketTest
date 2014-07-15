@@ -428,19 +428,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		return false;
 	}
 	
-	
-	@Override
-	public void onActionModeFinished(ActionMode mode) {
-		// TODO Auto-generated method stub
-		super.onActionModeFinished(mode);
-	}
 
-
-	@Override
-	public void onActionModeStarted(ActionMode mode) {
-		// TODO Auto-generated method stub
-		super.onActionModeStarted(mode);
-	}
 
 
 	@Override
@@ -467,13 +455,13 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 
 	@Override
-	public void ft(int address) {
+	public void ft(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
-		if(isConnected && !isDemo){
+		if(isConnected){
 			System.out.println("----------ftTest--------");
-			List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
-			connection.fetchData(commandList);
+			List<char[] > commandList = ToggleCmdEnum.FT.multiToggleTest(addressList);
+			//connection.fetchData(commandList);
 		}
 		
 	}
