@@ -399,5 +399,26 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	
     }
     
+    public void selectFaultyDevices(){
+    	//first clear all checkelist
+    	clearCheck();
+    	
+    	//check faulty ones
+    	for(int i=0;i<listDataHeader.size();i++){
+    		
+    		SparseBooleanArray s = checkedList.get(i);
+    		Loop loop = listDataHeader.get(i);
+    		List<Device> list = listDataChild.get(loop);
+    		for(int j=0; j<list.size();j++){
+    			Device device = list.get(j);
+    			if(device.isFailed()){
+    				int position = j+1;
+    				s.put(position, true);
+    			}
+    			
+    		}
+    	}
+    }
     
 }
+
