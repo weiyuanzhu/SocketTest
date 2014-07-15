@@ -268,17 +268,19 @@ public class DeviceListFragment extends Fragment {
 			public void onGroupExpand(int groupPosition) {
 				
 				// determine which position to highlight 
-				int position =0;
+				/*int position =0;
 				if(deviceListView.isGroupExpanded(0) ){
 					position = groupPosition ==0 ? groupPosition : groupPosition + listDataChild.get(loop1).size();	
 				}
 				else {
 					 position = groupPosition;
 				}
-				//deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);*/
 				
 				//-1 to indicating group been clicked
-				mAdapter.selectItem(groupPosition, -1);
+				if(!mAdapter.isMultiSelectMode()){
+					mAdapter.selectItem(groupPosition, -1);
+				}
 				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
@@ -308,6 +310,7 @@ public class DeviceListFragment extends Fragment {
 					mActionMode.finish();
 		        }*/
 				
+				mAdapter.notifyDataSetChanged();
 				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
