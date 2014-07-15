@@ -78,6 +78,9 @@ public class DeviceListFragment extends Fragment {
 	private Loop currentSelectedLoop;
 	private boolean isLoopSelected;
 	
+
+	
+	
 	private class MyActionModeCallback implements AbsListView.MultiChoiceModeListener {
 		
 		View actionModeView = null;
@@ -169,8 +172,12 @@ public class DeviceListFragment extends Fragment {
 			int groupPosition = ExpandableListView.getPackedPositionGroup(id);
             int childPosition = ExpandableListView.getPackedPositionChild(id);  
 			
+            if(type==0){
+            	mAdapter.clearCheck();
+            	mAdapter.setMultiSelectMode(true);
+            }
 			
-			if(!mAdapter.isMultiSelectMode()){
+			if(!mAdapter.isMultiSelectMode() && type!=0){
 				mAdapter.clearCheck();
 				mAdapter.setMultiSelectMode(true);
 				mAdapter.selectItem(groupPosition,childPosition);
@@ -349,6 +356,8 @@ public class DeviceListFragment extends Fragment {
             		//deviceListView.setItemChecked(pos, true);
             		
             	}*/
+            	
+            	
             	
             	mListener.onDeviceItemClicked(groupPosition, childPosition);
             	mAdapter.selectItem(groupPosition, childPosition);
