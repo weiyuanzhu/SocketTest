@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -428,6 +429,20 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 	
 	
+	@Override
+	public void onActionModeFinished(ActionMode mode) {
+		// TODO Auto-generated method stub
+		super.onActionModeFinished(mode);
+	}
+
+
+	@Override
+	public void onActionModeStarted(ActionMode mode) {
+		// TODO Auto-generated method stub
+		super.onActionModeStarted(mode);
+	}
+
+
 	@Override
 	protected void onDestroy() {
 		if(connection!=null){

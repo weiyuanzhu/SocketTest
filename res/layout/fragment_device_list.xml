@@ -8,8 +8,11 @@
         android:id="@+id/expandableListView_deviceList"
         android:layout_width="match_parent"
         android:layout_height="424dp"
-        android:listSelector="@android:color/darker_gray" 
-       >
+        android:listSelector="@android:color/transparent"
+        >
+        
+       
+       
         
     </ExpandableListView>
 
