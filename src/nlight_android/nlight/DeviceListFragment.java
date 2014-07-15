@@ -1,5 +1,6 @@
 package nlight_android.nlight;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -164,11 +165,18 @@ public class DeviceListFragment extends Fragment {
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
 				long id, boolean checked) {
 			
+			int type = ExpandableListView.getPackedPositionType(id);
+			int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+            int childPosition = ExpandableListView.getPackedPositionChild(id);  
+			
+			
 			if(!mAdapter.isMultiSelectMode()){
 				mAdapter.clearCheck();
 				mAdapter.setMultiSelectMode(true);
-				mAdapter.selectItem(0, position-1);
+				mAdapter.selectItem(groupPosition,childPosition);
 			}
+			
+			
 			
 			updateCounter();
 			mAdapter.notifyDataSetChanged();
@@ -183,6 +191,13 @@ public class DeviceListFragment extends Fragment {
 			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
 		}
+		
+		
+		/**
+		 * get group and child position for row selected
+		 * @return int[groupPosition, childPosition]
+		 */
+		
 	};
 	
 	
@@ -262,7 +277,7 @@ public class DeviceListFragment extends Fragment {
 				}
 				//deviceListView.setItemChecked(position, true);
 				
-				
+				//-1 to indicating group been clicked
 				mAdapter.selectItem(groupPosition, -1);
 				
 				int loop = groupPosition+1;
