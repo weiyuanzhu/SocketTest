@@ -163,6 +163,11 @@ public class DeviceListFragment extends Fragment {
 					mAdapter.notifyDataSetChanged();
 					mActionMode.updateCounter();
 					break;
+				case R.id.device_select_all_faulty:
+					mAdapter.selectFaultyDevices();
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
 				
 				default: break;
 			
