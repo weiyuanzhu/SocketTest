@@ -458,10 +458,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public void ft(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
-		if(isConnected){
+		if(isConnected && !isDemo){
 			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.FT.multiToggleTest(addressList);
-			//connection.fetchData(commandList);
+			connection.fetchData(commandList);
 		}
 		
 	}
