@@ -238,25 +238,37 @@ public class Device  implements Parcelable{
 		
 		EnumSet<FailureStatus> fsSet = new FailureStatusFlag().getFlagStatus(failureStatus);
 		
-		if (fsSet.size()==0)
-		{
-			return "All OK";
+		if(communicationStatus){
+			if (fsSet.size()==0)
+			{
+				sb.append("All OK");
+			}
+			else{
+				for(FailureStatus fs : fsSet)
+				{
+					sb.append(fs.getDescription()+" , ");
+				}
+				System.out.println(sb);
+				
+				//trim last ","
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
 		}
 		else{
-			for(FailureStatus fs : fsSet)
-			{
-				sb.append(fs.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			
-			//trim last ","
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
+		
 	}
 
 	public boolean isCommunicationStatus() {
 		return communicationStatus;
+	}
+	
+	public String getCommunicationStatusText(){
+		
+		return communicationStatus ? "OK" : "Device lost";
 	}
 
 	public int getEmergencyStatus() {
@@ -268,19 +280,26 @@ public class Device  implements Parcelable{
 		
 		EnumSet<EmergencyStatus> esSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
 		
-		if (esSet.size()==0)
-		{
-			return "-";
+		if(communicationStatus){
+			if (esSet.size()==0)
+			{
+				sb.append("-");
+			}
+			else{
+				for(EmergencyStatus es : esSet)
+				{
+					sb.append(es.getDescription()+" , ");
+				}
+				System.out.println(sb);
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
+			
 		}
 		else{
-			for(EmergencyStatus es : esSet)
-			{
-				sb.append(es.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
 	}
 
 	public int getEmergencyMode() {
@@ -292,19 +311,26 @@ public class Device  implements Parcelable{
 		
 		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
 		
-		if (emSet.size()==0)
-		{
-			return "Normal Mode";
+		if(communicationStatus){
+			if (emSet.size()==0)
+			{
+				sb.append("Normal Mode");
+			}
+			else{
+				for(EmergencyMode em : emSet)
+				{
+					sb.append(em.getDescription()+" , ");
+				}
+				System.out.println(sb);
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
+			
 		}
 		else{
-			for(EmergencyMode em : emSet)
-			{
-				sb.append(em.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
 	}
 
 	public int getBattery() {
@@ -423,9 +449,11 @@ public class Device  implements Parcelable{
 	/**
 	 * @param isFailed the isFailed to set
 	 */
-	public void setFailed(boolean isFailed) {
-		this.faulty = isFailed;
+	public void setFaulty(boolean faulty) {
+		this.faulty = faulty;
 	}
+	
+	
 
 	public Calendar getCal() {
 		return cal;
