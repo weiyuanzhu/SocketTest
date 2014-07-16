@@ -592,6 +592,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
 				refreshDevice(currentSelectedDevice.getAddress());
 			}
+			else{
+				mHandler.post(updateDeviceInfoFragmentUI);
+			}
 			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(Constants.SELECTED_DEVICE_AUTO_REFRESH_FREQUENCY));
 			
 		}

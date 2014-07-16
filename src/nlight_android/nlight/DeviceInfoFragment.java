@@ -334,7 +334,7 @@ public class DeviceInfoFragment extends ListFragment {
 		//Calendar deviceCal = device.getCal();
 		
 		//demo cal
-		Calendar deviceCal = Calendar.getInstance();
+		Calendar deviceCal = device.getCal();
 		
     	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
     	
