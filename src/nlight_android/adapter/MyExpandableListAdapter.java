@@ -411,7 +411,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     		List<Device> list = listDataChild.get(loop);
     		for(int j=0; j<list.size();j++){
     			Device device = list.get(j);
-    			if(device.isFailed()){
+    			if(device.isFaulty()){
     				int position = j+1;
     				s.put(position, true);
     			}
