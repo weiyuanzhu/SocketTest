@@ -243,7 +243,9 @@ public class Panel  implements Parcelable {
 		double r = (reportUsageLong / FLASH_MEMORY) * 100;
 		int a = (int) Math.round(r) + 1;
 		StringBuilder sb = new StringBuilder();
-		sb.append("< ");
+		if(a==1){
+			sb.append("< ");
+		}
 		sb.append(a);
 		sb.append("%");
 		return sb.toString();
@@ -307,6 +309,16 @@ public class Panel  implements Parcelable {
 
 	public void setReportUsage(String reportUsage) {
 		this.reportUsage = reportUsage;
+	}
+	
+	
+
+	public long getReportUsageLong() {
+		return reportUsageLong;
+	}
+
+	public void setReportUsageLong(long reportUsageLong) {
+		this.reportUsageLong = reportUsageLong;
 	}
 
 	public void setOverAllStatus(int overAllStatus) {

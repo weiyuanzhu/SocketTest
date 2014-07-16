@@ -69,9 +69,10 @@ public class Device  implements Parcelable{
 		gtinArray = new int[]{0,0,0,0,0,0};
 	}
 	
-	public Device(int add,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
+	public Device(int add, boolean cs,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
 	{
 		address = add;
+		communicationStatus = cs;
 		location = loc;
 		failureStatus = fs;
 		emergencyStatus = es;
