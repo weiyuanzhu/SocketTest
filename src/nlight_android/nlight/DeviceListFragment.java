@@ -49,11 +49,11 @@ public class DeviceListFragment extends Fragment {
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
 		public void onGroupExpandOrCollapse(int groupPosition);
 		public void ft(List<Integer> addressList);
-		public void dt(int address);
-		public void st(int address);
-		public void id(int address);
-		public void stopId(int address);
-		public void refreshDevice(int address);
+		public void dt(List<Integer> addressList);
+		public void st(List<Integer> addressList);
+		public void id(List<Integer> addressList);
+		public void stopId(List<Integer> addressList);
+		public void refreshSelectedDevices(List<Integer> addressList);
 		public void seekBar();
 
 	}
@@ -133,24 +133,24 @@ public class DeviceListFragment extends Fragment {
 					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
-					mListener.st(getAddress());
+					mListener.st(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
-					mListener.dt(getAddress());
+					mListener.dt(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
-					mListener.id(getAddress());
+					mListener.id(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
-					mListener.stopId(getAddress());
+					mListener.stopId(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_refresh:
 					
-					mListener.refreshDevice(getAddress());
+					mListener.refreshSelectedDevices(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_select_all:
