@@ -2,6 +2,8 @@ package nlight_android.util;
 
 public class Constants {
 	
+	public static final int GAP_BETWEEN_COMMANDS = 500;
+	
 	public static final int TEXT_MAX = 32;
 	public static final int PASSCODE_MAX = 4;
 	
