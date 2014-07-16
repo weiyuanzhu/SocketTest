@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nclient.R;
@@ -48,6 +49,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	
 	private ImageView panelInfoImage;
+	private TextView panelContact;
 
 	private PanelListFragment panelListFragment;
 	
@@ -151,8 +153,18 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 						panelInfoFragmentTransation(currentPanelPosition);
 					}
 					else{
+						StringBuilder sb = new StringBuilder();
+						sb.append("Contact name:    " + currentDisplayingPanel.getContact()+ "\n");
+						sb.append("Contact Tel:         " + currentDisplayingPanel.getTel() + "\n");
+						sb.append("Contact mobile:  " + currentDisplayingPanel.getMobile());
+						
+						panelInfoImage.setVisibility(View.INVISIBLE);
+						panelContact.setVisibility(View.VISIBLE);
+						panelContact.setText(sb.toString());
 						currentDisplayingPanel = null;
 						panelListFragment.clearSelection();
+						
+						Toast.makeText(this, "Passcode incorrect, please contact engineer.", Toast.LENGTH_LONG).show();
 					}
 					break;
 					
@@ -243,6 +255,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		//set panel fragments
 		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
+		panelContact = (TextView)findViewById( R.id.panelInfo_contact_textView);
 		
 		
 		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); 
@@ -611,6 +624,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private void panelInfoFragmentTransation(int index){
 		panelInfoImage.setVisibility(View.INVISIBLE);
+		panelContact.setVisibility(View.INVISIBLE);
 		
 		String ip = currentDisplayingPanel.getIp();
 		if(panelMap.get(ip)==null)
@@ -644,6 +658,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	 */
 	private void clearPanelInfoFragment(){
 		panelInfoImage.setVisibility(View.VISIBLE);
+		panelContact.setVisibility(View.INVISIBLE);
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		
