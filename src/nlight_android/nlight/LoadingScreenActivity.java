@@ -141,6 +141,82 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		}
 		return 1;
 	}
+
+	// 
+		/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+		 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
+		 */
+		@Override
+		public void connectToPanels(List<Integer> selected) {
+			
+			//connecting to panels, and close UDP socket
+			udpConnection.setListen(false);
+			
+			//save checkBox status
+			
+			savePanelSelectionToIpLIstSelected(selected);
+			
+			progressBar.setMax(16*ipListSelected.size());
+			
+			
+			System.out.println(ipListSelected);
+			
+			
+			
+			
+			/*
+			 *  Initial connections and rxBuffer for each panel
+			 */
+			
+			for(String ip : ipListSelected)
+			{
+				PanelConnection connection = new PanelConnection(this, ip);
+				ip_connection_map.put(ip, connection);
+				rxBufferMap.put(ip, new ArrayList<Integer>());
+				
+			}
+			//on main thread
+			//show progress bar and text
+			
+			//set isDemo flag
+			isDemo = false;
+			panelToLoad = ipListSelected.size();
+			
+			
+			//Message msg = mHandler.obtainMessage();
+			//msg.arg1 = LOADING;
+			//mHandler.sendMessage(msg);
+
+			
+			
+			//check if loading is already in process and panel selected not equal to 0
+			if(!isLoading && ipListSelected.size()!=0){
+				progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+				
+				progressText.setVisibility(View.VISIBLE);
+				progressBar.setVisibility(View.VISIBLE);
+				
+				
+				System.out.println("------------liveMode clicked");
+				List<char[]> commandList = CommandFactory.getPanelInfo();
+				
+				for(String ip: ipListSelected){
+					
+					PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
+					conn.fetchData(commandList);
+				}
+				
+				
+				//set button disable
+				liveBtn.setEnabled(false);
+				demoBtn.setEnabled(false);
+				isLoading = true;
+				
+			}
+			
+			saveCheckedStatsToPreference();
+			
+		}
 	
 	/**
 	 * This function takes an ip for the panel and return it's location in the SharedPreference 
@@ -161,6 +237,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		return "";
 	}
+	
+	
+	
+	//life Cycle
 	
 	@SuppressLint("HandlerLeak")
 	@Override
@@ -514,80 +594,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 	}
 
-	// 
-	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
-	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
-	 */
-	@Override
-	public void connectToPanels(List<Integer> selected) {
-		
-		//connecting to panels, and close UDP socket
-		udpConnection.setListen(false);
-		
-		//save checkBox status
-		
-		savePanelSelectionToIpLIstSelected(selected);
-		
-		progressBar.setMax(16*ipListSelected.size());
-		
-		
-		System.out.println(ipListSelected);
-		
-		
-		
-		
-		/*
-		 *  Initial connections and rxBuffer for each panel
-		 */
-		
-		for(String ip : ipListSelected)
-		{
-			PanelConnection connection = new PanelConnection(this, ip);
-			ip_connection_map.put(ip, connection);
-			rxBufferMap.put(ip, new ArrayList<Integer>());
-			
-		}
-		//on main thread
-		//show progress bar and text
-		
-		//set isDemo flag
-		isDemo = false;
-		panelToLoad = ipListSelected.size();
-		
-		
-		//Message msg = mHandler.obtainMessage();
-		//msg.arg1 = LOADING;
-		//mHandler.sendMessage(msg);
-
-		
-		
-		//check if loading is already in process and panel selected not equal to 0
-		if(!isLoading && ipListSelected.size()!=0){
-			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
-			
-			progressText.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.VISIBLE);
-			
-			
-			System.out.println("------------liveMode clicked");
-			List<char[]> commandList = CommandFactory.getPanelInfo();
-			
-			for(String ip: ipListSelected){
-				
-				PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
-				conn.fetchData(commandList);
-			}
-			
-			
-			//set button disable
-			liveBtn.setEnabled(false);
-			isLoading = true;
-			
-		}
-		
-		saveCheckedStatsToPreference();
-		
-	}
+	
 	
 	
 	public void popDialog()
