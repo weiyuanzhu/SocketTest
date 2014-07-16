@@ -44,7 +44,7 @@ public class Device  implements Parcelable{
 	
 	private int currentStatus;
 	
-	private boolean isFailed;
+	private boolean faulty;
 	
 	public Device(Parcel source) {
 		this();
@@ -409,11 +409,14 @@ public class Device  implements Parcelable{
 	}
 
 	/**
-	 * @return the isFailed
+	 * @return the boolean faulty
 	 */
-	public boolean isFailed() {
-		
-		if(failureStatus==0) return false;
+	public boolean isFaulty() {
+		//check both failure status and communication status
+		//either will cause device faulty
+		if(failureStatus==0 && communicationStatus) {
+			return false;
+		}
 		return true;
 	}
 
@@ -421,7 +424,7 @@ public class Device  implements Parcelable{
 	 * @param isFailed the isFailed to set
 	 */
 	public void setFailed(boolean isFailed) {
-		this.isFailed = isFailed;
+		this.faulty = isFailed;
 	}
 
 	public Calendar getCal() {

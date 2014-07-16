@@ -170,7 +170,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			//mHandler.post(new RefreshTest());
 			
 			//connection.setListening(true);
-			//deviceListFragment.updateProgressIcon(0);
+			mHandler.post(updateDeviceListFragment);
 		}
 		
 	}
@@ -579,23 +579,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
-	Runnable updateDeviceInfoFragmentUI = new Runnable()
-	{
-
-		@Override
-		public void run() {
-			
-			if(currentSelectedDevice != null){
-				deviceInfoFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
-			}
-			
-			
-			//deviceListFragment.refershStatus();
-			//deviceListFragment.updateProgressIcon(1);
-		}
 	
-		
-	};
 	
 	Runnable autoRefreshCurrentDevice = new Runnable(){
 
@@ -667,6 +651,35 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		
 	}
+	
+	Runnable updateDeviceInfoFragmentUI = new Runnable()
+	{
+
+		@Override
+		public void run() {
+			
+			if(currentSelectedDevice != null){
+				deviceInfoFragment.updateDevice(currentSelectedDevice, isAutoRefresh());
+			}
+			
+			
+			//deviceListFragment.refershStatus();
+			//deviceListFragment.updateProgressIcon(1);
+		}
+	
+		
+	};
+	
+	Runnable updateDeviceListFragment = new Runnable(){
+
+		@Override
+		public void run() {
+			deviceListFragment.updateDeviceList();
+		}
+		
+	};
+	
+	
 	
 	/**
 	 * A function for popup a PopupMenu below menu item

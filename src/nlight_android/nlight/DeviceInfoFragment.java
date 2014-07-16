@@ -274,7 +274,7 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		map.put("description", "Communication status");
-		map.put("value", device==null? "n/a" : "OK");
+		map.put("value", device==null? "n/a" : device.isCommunicationStatus());
 			
 		dataList.add(map);
 	

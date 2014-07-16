@@ -164,7 +164,7 @@ public class Loop  implements Parcelable{
 		
 		for(Device d: deviceList)
 		{
-			if (d.isFailed())
+			if (d.isFaulty())
 			{
 				status = Constants.FAULT;
 				
@@ -200,7 +200,7 @@ public class Loop  implements Parcelable{
 		List<Device> tempList = new ArrayList<Device>();
 		for(int i = deviceList.size()-1; i >=0 ;i--)
 		{
-			if(deviceList.get(i).isFailed()) tempList.add(deviceList.get(i));
+			if(deviceList.get(i).isFaulty()) tempList.add(deviceList.get(i));
 		}
 		return tempList;
 	}
@@ -216,7 +216,7 @@ public class Loop  implements Parcelable{
 		
 		for(Device d: deviceList)
 		{
-			if (d.isFailed())
+			if (d.isFaulty())
 			{
 				faultyDevicesNo++;
 				

@@ -434,6 +434,10 @@ public class DeviceListFragment extends Fragment {
 		mAdapter.notifyDataSetChanged();
 		
 	}
+	
+	public void updateDeviceList(){
+		mAdapter.notifyDataSetChanged();
+	}
 		
 }
 

@@ -82,9 +82,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.childImage);
         ImageView status = (ImageView) convertView.findViewById(R.id.devicelist_child_status_imageView);
         
-        if(device.getFailureStatus()==0){
-        	childImage.setImageResource(R.drawable.greentick);
-        }else childImage.setImageResource(R.drawable.redcross);
+        if(device.isFaulty()){
+        	childImage.setImageResource(R.drawable.redcross);
+        }else childImage.setImageResource(R.drawable.greentick);
         
         if(device.getCurrentStatus()==0)
         {
