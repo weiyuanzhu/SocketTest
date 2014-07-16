@@ -109,6 +109,45 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private SearchView searchView= null; //search view for search button on the action bar
 	
 	private SharedPreferences sharedPreferences = null;
+	
+	//Setters and Getters
+	
+		/**
+		 * @return the autoRefresh
+		 */
+		public boolean isAutoRefresh() {
+			
+			autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false);
+			return autoRefresh;
+		}
+
+
+		
+		private String getAppVersion(){
+			StringBuilder version = new StringBuilder();
+	    	version.append("Mackwell N-Light Connect, Version ");
+	    	String app_version = getString(R.string.app_version);
+	    	version.append(app_version);
+			
+	    	return version.toString();
+		}
+		
+		
+		/**
+		 * @return the autoRefreshAllDevices
+		 */
+		public boolean isAutoRefreshAllDevices() {
+			autoRefreshAllDevices = sharedPreferences.getBoolean("pref_auto_refresh_all_devices", false);
+			return autoRefreshAllDevices;
+		}
+
+		/**
+		 * @return the autoRefreshSelectedDevice
+		 */
+		public boolean isAutoRefreshSelectedDevice() {
+			autoRefreshSelectedDevice = sharedPreferences.getBoolean("pref_auto_refresh_selected_device", false);
+			return autoRefreshSelectedDevice;
+		}
 
 
 
@@ -216,44 +255,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	
-	//Setters and Getterso
 	
-	/**
-	 * @return the autoRefresh
-	 */
-	public boolean isAutoRefresh() {
-		
-		autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false);
-		return autoRefresh;
-	}
-
-
-	
-	private String getAppVersion(){
-		StringBuilder version = new StringBuilder();
-    	version.append("Mackwell N-Light Connect, Version ");
-    	String app_version = getString(R.string.app_version);
-    	version.append(app_version);
-		
-    	return version.toString();
-	}
-	
-	
-	/**
-	 * @return the autoRefreshAllDevices
-	 */
-	public boolean isAutoRefreshAllDevices() {
-		autoRefreshAllDevices = sharedPreferences.getBoolean("pref_auto_refresh_all_devices", false);
-		return autoRefreshAllDevices;
-	}
-
-	/**
-	 * @return the autoRefreshSelectedDevice
-	 */
-	public boolean isAutoRefreshSelectedDevice() {
-		autoRefreshSelectedDevice = sharedPreferences.getBoolean("pref_auto_refresh_selected_device", false);
-		return autoRefreshSelectedDevice;
-	}
 
 	
 
@@ -603,7 +605,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			System.out.println("---------------auto refresh current selected device----------------");
 			System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
 			
-			if(currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
+			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
 				refreshDevice(currentSelectedDevice.getAddress());
 			}
 			mHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(Constants.SELECTED_DEVICE_AUTO_REFRESH_FREQUENCY));
@@ -621,7 +623,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
 			
 			
-			if(isAutoRefreshAllDevices()){
+			if( isAutoRefresh() && isAutoRefreshAllDevices()){
 				refreshAllDevices();
 			}
 			//setup refresh frequency
