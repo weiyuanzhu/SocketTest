@@ -47,7 +47,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	public static final Comparator<Device> SORT_BY_FAULTY = new Comparator<Device>(){
 		@Override
 		public int compare(Device lhs, Device rhs) {
-			int faultComp = rhs.getFailureStatus() - lhs.getFailureStatus();
+			int lhsInt = (lhs.isFaulty()) ? 0 : 1;
+			int rhsInt = (rhs.isFaulty()) ? 0 : 1;
+			
+			int faultComp = lhsInt - rhsInt;
 			return (faultComp == 0 ? (lhs.getAddress() - rhs.getAddress()): faultComp);
 		}
 
