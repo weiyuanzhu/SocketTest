@@ -266,7 +266,7 @@ public class DeviceInfoFragment extends ListFragment {
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", "Total emgerency lamp operating time");
+		map.put("description", "Total emergency lamp operating time");
 		map.put("value", device==null? "n/a" : device.getLampEmergencyTimeText());
 	
 		
