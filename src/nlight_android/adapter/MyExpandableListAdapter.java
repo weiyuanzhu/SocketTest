@@ -64,9 +64,17 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	//fields
 	
+	//flags
 	private boolean multiSelectMode = false;
-	private MyFilter mFilter;
 	private boolean mNotifyChanged = true;
+	private boolean allDeviceSelected = false;
+	
+
+	private boolean loop1Selected = false;
+	private boolean loop2Selected = false;
+	
+	
+	private MyFilter mFilter;
 	private Context mContext;
     private List<Loop> listDataHeader; // header titles
     // child data in format of header title, child title
@@ -102,6 +110,47 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	public List<Integer> getSelectedDeviceAddressList() {
 		return selectedDeviceAddressList;
+	}
+	
+	public boolean isAllDeviceSelected() {
+		return allDeviceSelected;
+	}
+
+	public void setAllDeviceSelected(boolean allDeviceSelected) {
+		this.allDeviceSelected = allDeviceSelected;
+	}
+
+	public boolean isLoop1Selected() {
+		SparseBooleanArray s = checkedList.get(0);
+		int size = 1+listDataHeader.get(0).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		if(s.get(i) == false){
+    			return false;
+    		}
+    		
+    		
+    	}
+		return true;
+		
+	}
+
+	public void setLoop1Selected(boolean loop1Selected) {
+		this.loop1Selected = loop1Selected;
+	}
+
+	public boolean isLoop2Selected() {
+		SparseBooleanArray s = checkedList.get(1);
+		int size = 1+listDataHeader.get(1).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		if(s.get(i) == false){
+    			return false;
+    		}
+    	}
+		return true;
+	}
+
+	public void setLoop2Selected(boolean loop2Selected) {
+		this.loop2Selected = loop2Selected;
 	}
 
 
@@ -398,6 +447,49 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     	}
     	
     }
+    
+    public void selectLoop1(){
+    	SparseBooleanArray s = checkedList.get(0);
+		//+1 because loop is in the array too
+		int size = 1+listDataHeader.get(0).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		s.put(i, true);
+    	}
+		
+		loop1Selected = true;
+    	
+    }
+    
+    public void deselectLoop1(){
+    	SparseBooleanArray s = checkedList.get(0);
+		//+1 because loop is in the array too
+		int size = 1+listDataHeader.get(0).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		s.put(i, false);
+    	}
+		loop1Selected = false;
+    }
+    
+    public void selectLoop2(){
+    	SparseBooleanArray s = checkedList.get(1);
+		//+1 because loop is in the array too
+		int size = 1+listDataHeader.get(1).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		s.put(i, true);
+    	}
+		loop2Selected = true;
+    	
+    }
+    public void deselectLoop2(){
+    	SparseBooleanArray s = checkedList.get(1);
+		//+1 because loop is in the array too
+		int size = 1+listDataHeader.get(1).getDeviceNumber();
+		for(int i=1; i<size;i++){
+    		s.put(i, false);
+    	}
+		loop2Selected = false;
+    }
+    
     
     public void selectFaultyDevices(){
     	//first clear all checkelist

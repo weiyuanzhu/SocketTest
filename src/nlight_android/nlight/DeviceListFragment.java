@@ -88,7 +88,20 @@ public class DeviceListFragment extends Fragment {
 		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			// TODO Auto-generated method stub
+			
+			MenuItem mItem = menu.findItem(R.id.device_select_loop1_all);
+            if(mAdapter.isLoop1Selected()){
+            	mItem.setTitle(R.string.action_deselect_loop1);
+            }else{
+            	mItem.setTitle(R.string.action_select_loop1);
+            }			
+            
+            MenuItem mItem2 = menu.findItem(R.id.device_select_loop2_all);
+            if(mAdapter.isLoop2Selected()){
+            	mItem2.setTitle(R.string.action_deselect_loop2);
+            }else{
+            	mItem2.setTitle(R.string.action_select_loop2);
+            }	
 			return false;
 		}
 		
@@ -124,8 +137,8 @@ public class DeviceListFragment extends Fragment {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			
-			int position = deviceListView.getCheckedItemPosition();
-			System.out.println(position);
+			//int position = deviceListView.getCheckedItemPosition();
+			//System.out.println(position);
 			switch(item.getItemId())
 			{
 				case R.id.device_ft:
@@ -153,8 +166,24 @@ public class DeviceListFragment extends Fragment {
 					mListener.refreshSelectedDevices(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
 					break;
-				case R.id.device_select_all:
-					mAdapter.selectAllDevices();
+				case R.id.device_select_loop1_all:
+					if(mAdapter.isLoop1Selected()){
+						mAdapter.deselectLoop1();
+					}else{
+						mAdapter.selectLoop1();
+					}
+					
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
+				case R.id.device_select_loop2_all:
+					if(mAdapter.isLoop2Selected()){
+						mAdapter.deselectLoop2();
+					}else{
+						mAdapter.selectLoop2();
+					}
+					
+					
 					mAdapter.notifyDataSetChanged();
 					mActionMode.updateCounter();
 					break;
