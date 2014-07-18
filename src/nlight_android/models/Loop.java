@@ -20,6 +20,10 @@ import android.os.Parcelable.*;
 public class Loop  implements Parcelable{
 	
 	
+	public static final int LOOP1_ADDRESS = 64;
+	public static final int LOOP2_ADDRESS = 192;
+	
+	
 	private List<Device> deviceList;
 	
 	

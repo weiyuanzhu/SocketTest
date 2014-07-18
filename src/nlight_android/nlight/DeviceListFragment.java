@@ -524,6 +524,8 @@ public class DeviceListFragment extends Fragment {
 		
 	}
 	
+	
+	
 	private int getAddress()
 	{
 		int address = 0; 

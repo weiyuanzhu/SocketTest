@@ -108,7 +108,75 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 		this.multiSelectMode = multiSelectMode;
 	}
 	
+	/**
+	 * Get a list of address for devices been selected
+	 * If all device in loop1 or loop2 are selected
+	 * Loop broadcast address will be put int the list instead
+	 * Loop1 64, Loop2 192
+	 * 
+	 * @return a list contains address of devices
+	 */
 	public List<Integer> getSelectedDeviceAddressList() {
+		
+		selectedDeviceAddressList.clear();
+		
+		if (loop1Selected){
+			//loop1 broadcast address
+			selectedDeviceAddressList.add(Loop.LOOP1_ADDRESS);
+		}
+		else{
+			/* 1 go though checkedList for loop1
+			 * 2 if device is selected
+			 * 3 find it's address
+			 * 4 add it to list
+			 * 5 return
+			 * */
+			
+			int address = -1;
+			for(int i=1; i<checkedList.get(0).size();i++){
+        		if(checkedList.get(0).get(i)){
+        			
+        			
+        			//put address in to selectedDeviceAddressList if it is selected(true)
+        			int childPosition = i - 1;
+        		
+        			address = listDataChild.get(listDataHeader.get(0)).get(childPosition).getAddress();
+        			selectedDeviceAddressList.add(address);
+        			
+        			
+        		}
+			}
+			
+		}
+		
+		if(loop2Selected){
+			
+			selectedDeviceAddressList.add(Loop.LOOP2_ADDRESS);
+		}else{
+			
+			/* 1 go though checkedList for loop2
+			 * 2 if device is selected
+			 * 3 find it's address
+			 * 4 add it to list
+			 * 5 return
+			 * */
+			int address = -1;
+			for(int i=1; i<checkedList.get(1).size();i++){
+        		if(checkedList.get(1).get(i)){
+        			
+        			
+        			//put address in to selectedDeviceAddressList if it is selected(true)
+        			int childPosition = i - 1;
+        		
+        			address = listDataChild.get(listDataHeader.get(1)).get(childPosition).getAddress();
+        			selectedDeviceAddressList.add(address);
+        			
+        			
+        		}
+			}
+			
+		}
+		
 		return selectedDeviceAddressList;
 	}
 	
@@ -409,14 +477,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public int getCheckedCount(){
     	
     	count =0;
-    	selectedDeviceAddressList.clear();
+    	
     	
     	
     	for(int j=0;j<checkedList.size();j++){
     		for(int i=0; i<checkedList.get(j).size();i++){
         		if(checkedList.get(j).get(i)){
         			count++;
-        			int address;
+        			/*int address;
         			
         			//put address in to selectedDeviceAddressList if it is selected(true)
         			int childPosition = i - 1;
@@ -426,8 +494,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         			}else{
         				address = listDataChild.get(listDataHeader.get(j)).get(i-1).getAddress();
         			}
+        			*/
         			
-        			selectedDeviceAddressList.add(address);
         		}
         	}
     	}
