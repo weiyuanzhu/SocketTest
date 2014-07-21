@@ -56,6 +56,9 @@ public class Panel  implements Parcelable {
 	private int overAllStatus;
 	private int faultDeviceNo;
 	
+	private boolean engineerMode = false;
+	
+	
 	public Panel()
 	{
 		//init 
@@ -186,6 +189,20 @@ public class Panel  implements Parcelable {
 
 	//getters
 	
+	/**
+	 * @return the engineerMode
+	 */
+	public boolean isEngineerMode() {
+		return engineerMode;
+	}
+
+	/**
+	 * @param engineerMode the engineerMode to set
+	 */
+	public void setEngineerMode(boolean engineerMode) {
+		this.engineerMode = engineerMode;
+	}
+
 	public String getPanelLocation() {
 		return panelLocation;
 	}

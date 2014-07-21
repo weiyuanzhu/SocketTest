@@ -55,7 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/button1"
             android:layout_alignParentRight="true"
-            android:text="Contact engineer" />
+            android:text="Contact engineer" 
+            android:onClick="contactEngineerBtn"/>
 
         <Button
             android:id="@+id/button1"
@@ -63,7 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="Engineer mode" />
+            android:text="Engineer mode" 
+            android:onClick="engineerModeBtn"/>
 
         </RelativeLayout>
 

@@ -58,6 +58,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private int currentPanelPosition = -1;
 	private int previousPanelPosition = -1;
 	
+	
+	private boolean engineerMode = false;
+	
+	
 	private String passcodeEntered = "initial";
 	
 	//private int currentSelected;
@@ -90,8 +94,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	@Override
 	public void cancel() {
 		
-		currentDisplayingPanel = null;
-		panelListFragment.clearSelection();
+		//currentDisplayingPanel = null;
+		//panelListFragment.clearSelection();
 		
 	}
 	
@@ -151,18 +155,16 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					if (input.equals(currentDisplayingPanel.getPasscode()))
 					{
 						panelInfoFragmentTransation(currentPanelPosition);
+						currentDisplayingPanel.setEngineerMode(true);
 					}
 					else{
-						StringBuilder sb = new StringBuilder();
-						sb.append("Contact name:    " + currentDisplayingPanel.getContact()+ "\n");
-						sb.append("Contact Tel:         " + currentDisplayingPanel.getTel() + "\n");
-						sb.append("Contact mobile:  " + currentDisplayingPanel.getMobile());
+						
 						
 						panelInfoImage.setVisibility(View.INVISIBLE);
 						panelContact.setVisibility(View.VISIBLE);
-						panelContact.setText(sb.toString());
-						currentDisplayingPanel = null;
-						panelListFragment.clearSelection();
+						panelContact.setText(getContactDetails());
+						//currentDisplayingPanel = null;
+						//panelListFragment.clearSelection();
 						
 						Toast.makeText(this, "Passcode incorrect, please contact engineer.", Toast.LENGTH_LONG).show();
 					}
@@ -187,6 +189,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		
 		
+		
 		System.out.println(location + " " +  ip + "positon: " + index);
 		
 		currentDisplayingPanel = panelMap.get(ip);
@@ -194,7 +197,12 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		previousPanelPosition = currentPanelPosition==-1? -1 : currentPanelPosition;
 		currentPanelPosition = index;
 		
-		//clearPanelInfoFragment();
+		if(currentDisplayingPanel.isEngineerMode()){
+			panelInfoFragmentTransation(index);
+		}else{
+			updatePanelInfoFragment();
+			
+		}
 		
 		
 		//test for pass code dialog
@@ -206,12 +214,12 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			dialog.show(getFragmentManager(), "inputDialog");
 		} else{
 			
-			panelInfoFragmentTransation(index);
+			
 			
 			
 		}*/
 		
-		changePicture();
+		updateImage();
 		
 	}
 	
@@ -340,7 +348,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		{
 			case R.id.action_show_loops:
 				System.out.println("Show Loops");
-				if(currentDisplayingPanel != null){
+				if(currentDisplayingPanel != null && currentDisplayingPanel.isEngineerMode()){
 					showDevices(currentDisplayingPanel);
 				}
 				return true;
@@ -657,24 +665,27 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	/**
 	 * Remove PanelInfoFagment and reset Mackwell logo 
 	 */
-	private void clearPanelInfoFragment(){
-		panelInfoImage.setVisibility(View.VISIBLE);
-		panelContact.setVisibility(View.INVISIBLE);
+	private void updatePanelInfoFragment(){
 		
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+			panelInfoImage.setVisibility(View.VISIBLE);
 		
-		//get previous displayed fragment
-		if(previousPanelPosition!=-1) {
-			fragmentTransaction.remove(fragmentList.get(previousPanelPosition));
-		}
+			panelContact.setVisibility(View.INVISIBLE);
 		
-		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		fragmentTransaction.commit();
+			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		
+			//get previous displayed fragment
+			if(previousPanelPosition!=-1) {
+				fragmentTransaction.remove(fragmentList.get(previousPanelPosition));
+			}	
+		
+			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			fragmentTransaction.commit();
+		
 		
 	}
 	
 	
-	private void changePicture(){
+	private void updateImage(){
 		
 		switch(currentDisplayingPanel.getOverAllStatus()){
 		
@@ -689,7 +700,51 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		
 	}
+	
+	public void contactEngineerBtn(View view){
+		
+		
+		if(currentDisplayingPanel!=null && !currentDisplayingPanel.isEngineerMode()){
+			panelInfoImage.setVisibility(panelInfoImage.isShown()? 4:0);
+			panelContact.setVisibility(panelInfoImage.isShown()? 4:0);
+			panelContact.setText(getContactDetails());
+		}
+		
+	}
 
+	/**
+	 * When engineerModeBtn clicked
+	 * @param view
+	 */
+	public void engineerModeBtn(View view){
+		
+		if(currentDisplayingPanel!=null && !currentDisplayingPanel.isEngineerMode()){
+			InputDialogFragment dialog = new InputDialogFragment();
+		
+			//dialog.setHint("Enter passcode");
+			dialog.setType(InputDialogFragment.ENTER_PASSCODE);
+			dialog.show(getFragmentManager(), "inputDialog");
+			
+			
+		} 
+		
+		
+	}
+	
+	/**
+	 * Using a StringBuilder to build a string for contact textview
+	 * @return contact details string
+	 */
+	private String getContactDetails(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("To contact an engineer:" + "\n");
+		sb.append("Control panel location: " + currentDisplayingPanel.getPanelLocation() + "\n");
+		sb.append("Contact name:    " + currentDisplayingPanel.getContact()+ "\n");
+		sb.append("Contact Tel:         " + currentDisplayingPanel.getTel() + "\n");
+		sb.append("Contact mobile:  " + currentDisplayingPanel.getMobile());
+		
+		return sb.toString();
+	}
 	
 		
 }
