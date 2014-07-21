@@ -50,22 +50,25 @@
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/panel_contatc_engineer_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button1"
+            android:layout_above="@+id/panel_engineer_mode_btn"
             android:layout_alignParentRight="true"
             android:text="Contact engineer" 
-            android:onClick="contactEngineerBtn"/>
+            android:onClick="contactEngineerBtn"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/panel_engineer_mode_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:text="Engineer mode" 
-            android:onClick="engineerModeBtn"/>
+            android:onClick="engineerModeBtn"
+            android:visibility="gone"/>
+        
 
         </RelativeLayout>
 

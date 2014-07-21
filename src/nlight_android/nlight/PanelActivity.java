@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -50,6 +51,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private ImageView panelInfoImage;
 	private TextView panelContact;
+	private Button contact_engineer;
+	private Button engineer_mode;
+	
 
 	private PanelListFragment panelListFragment;
 	
@@ -265,6 +269,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		panelInfoImage = (ImageView) findViewById(R.id.panelInfo_image);
 		panelContact = (TextView)findViewById( R.id.panelInfo_contact_textView);
+		contact_engineer = (Button) findViewById(R.id.panel_contatc_engineer_btn);
+		engineer_mode = (Button) findViewById(R.id.panel_engineer_mode_btn);
 		
 		
 		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); 
@@ -660,6 +666,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
 		
+		contact_engineer.setVisibility(View.INVISIBLE);
+		engineer_mode.setVisibility(View.INVISIBLE);
+		
 	}
 	
 	/**
@@ -680,6 +689,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			fragmentTransaction.commit();
+			
+			contact_engineer.setVisibility(View.VISIBLE);
+			engineer_mode.setVisibility(View.VISIBLE);
 		
 		
 	}
