@@ -181,8 +181,8 @@ public class DeviceListFragment extends Fragment {
 						mAdapter.deselectLoop2();
 					}else{
 						mAdapter.selectLoop2();
-					}
-					
+				}
+
 					
 					mAdapter.notifyDataSetChanged();
 					mActionMode.updateCounter();
@@ -327,7 +327,7 @@ public class DeviceListFragment extends Fragment {
 					position = groupPosition ==0 ? groupPosition : groupPosition + listDataChild.get(loop1).size();	
 				}
 				else {
-					 position = groupPosition;
+					 = groupPosition;
 				}
 				//deviceListView.setItemChecked(position, true);*/
 				
