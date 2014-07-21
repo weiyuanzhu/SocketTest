@@ -194,11 +194,11 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		previousPanelPosition = currentPanelPosition==-1? -1 : currentPanelPosition;
 		currentPanelPosition = index;
 		
-		clearPanelInfoFragment();
+		//clearPanelInfoFragment();
 		
 		
 		//test for pass code dialog
-		if(isDemo && !passcodeEntered.equals(currentDisplayingPanel.getPasscode())){
+		/*if(isDemo && !passcodeEntered.equals(currentDisplayingPanel.getPasscode())){
 			InputDialogFragment dialog = new InputDialogFragment();
 			
 			//dialog.setHint("Enter passcode");
@@ -209,8 +209,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			panelInfoFragmentTransation(index);
 			
 			
-		}
+		}*/
 		
+		changePicture();
 		
 	}
 	
@@ -669,6 +670,23 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		fragmentTransaction.commit();
+		
+	}
+	
+	
+	private void changePicture(){
+		
+		switch(currentDisplayingPanel.getOverAllStatus()){
+		
+			case Panel.OK:	
+				panelInfoImage.setImageResource(R.drawable.greentick);
+				break;
+			case Panel.FAULT:  
+				panelInfoImage.setImageResource(R.drawable.redcross);
+				break;
+			default: break;
+		}
+		
 		
 	}
 

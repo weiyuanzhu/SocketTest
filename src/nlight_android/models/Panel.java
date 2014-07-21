@@ -19,6 +19,16 @@ import java.util.*;
 public class Panel  implements Parcelable {
 	
 	public static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
+	public static final int OK = 0x01;
+	public static final int NOT_CONFIG = 0x02;
+	public static final int FAULT = 0x03;
+	public static final int CLOCK_NOT_SYNC = 0x04;
+	public static final int RESERVED = 0x05;
+	public static final int GROUP_TEST_MISS = 0x06;
+	public static final int GROUP_TEST_MISS_AND_FAULT = 0x07;
+	public static final int MEMORY_FULL = 0x08;
+	public static final int MEMORY_FAILURE = 0x09;
+	
 	
 	
 	private Loop loop1;
@@ -398,9 +408,9 @@ public class Panel  implements Parcelable {
 		
 		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
 		{
-			overAllStatus = Constants.FAULT;
+			overAllStatus = Panel.FAULT;
 			
-		}else overAllStatus = Constants.ALL_OK;
+		}else overAllStatus = Panel.OK;
 		return overAllStatus;
 	}
 

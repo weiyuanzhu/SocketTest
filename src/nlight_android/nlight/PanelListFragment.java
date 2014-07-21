@@ -287,7 +287,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation().trim());
 			map.put("ip",p.getIp());
-			if(p.getOverAllStatus()== Constants.ALL_OK){
+			if(p.getOverAllStatus()== Panel.OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);
 			map.put("faultyNo", "("+p.getFaultDeviceNo()+")");
