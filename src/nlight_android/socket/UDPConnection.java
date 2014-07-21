@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UDPConnection implements Runnable{
+public class UDPConnection {
 
 	private List<int[]> panelUDPDataList;
 	
@@ -24,6 +24,8 @@ public class UDPConnection implements Runnable{
 	
 	private String msg;
 	
+	private Thread rxThread = null;
+	
 	public interface UDPCallback{
 		public int addIp(String ip);
 		
@@ -32,102 +34,120 @@ public class UDPConnection implements Runnable{
 	
 	public UDPConnection(String msg, UDPCallback callback)
 	{
-		super();
+		//super();
 		panelUDPDataList = new ArrayList<int[]>();
 		this.msg = msg;
 		mCallback = callback;
+		
+		//start udp listining
+	
 	}
 	
-
-	public void run()
-	{
-		try {
-			InetAddress address = InetAddress.getByName("255.255.255.255");
-			
-			
-			if(udpSocket==null){
-				udpSocket = new DatagramSocket(LISTEN_PORT);
-			}
-			
-			int msg_len = msg == null? 0 : msg.length();
-			
-			udpPacket = new DatagramPacket(msg.getBytes(),msg_len,address,SERVER_PORT);
-			
-			udpSocket.send(udpPacket);
-			
-			
-			
-			
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (SocketException e) {
-			e.printStackTrace();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
+	
+	public void tx(String msg){
+		this.msg = msg;
+		Thread t = new Thread(tx);
+		t.start();
 		
 		
-			
-			Runnable receive= new Runnable()
-			{
-
-				@Override
-				public void run() {
-
-					System.out.println("---------------receiving udp packages------------");
-					byte[] buf = new byte[1024];
-					udpPacket = new DatagramPacket(buf, buf.length);
-					
-					try{
-						while(isListening)
-						{
-						
-							udpSocket.receive(udpPacket);
-							int[] buffer = new int[buf.length];
-							int i = 0;
-							for(byte b : udpPacket.getData()) {
-								int a = b & 0xFF;
-								buffer[i] = a;
-								
-								i++;
-							}
-							
-							/*for(int j =0; j<buffer.length;j++)
-							{
-								System.out.print(buffer[j] + " ");
-								
-							}*/
-							
-							panelUDPDataList.add(buffer);
-							mCallback.addIp(getIp(buffer));
-							
-						}
-					}
-					catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					finally
-					{
-							
-						if(udpSocket!=null && !udpSocket.isClosed()){
-							System.out.println("Finally -- > UDP Socket Closing");
-							udpSocket.close();
-						}
-							
-					}
-						
+	}
+	
+	Runnable tx = new Runnable(){
+		
+		public void run()
+		{
+			try {
+				InetAddress address = InetAddress.getByName("255.255.255.255");
+				
+				if(udpSocket==null){
+					udpSocket = new DatagramSocket(LISTEN_PORT);
 				}
 				
+				
+				int msg_len = msg == null? 0 : msg.length();
+				
+				udpPacket = new DatagramPacket(msg.getBytes(),msg_len,address,SERVER_PORT);
+				
+				udpSocket.send(udpPacket);
+				
+				if(rxThread == null){
+					rxThread = new Thread(rx);
+					rxThread.start();
+				}
+				
+				
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+			
+			
+		
+		}	
+		};
 
-
-
-			};
-			Thread t = new Thread(receive);
-			t.start();
 	
-	}	
+	Runnable rx= new Runnable()
+	{
+
+		@Override
+		public void run() {
+
+			System.out.println("---------------receiving udp packages------------");
+			byte[] buf = new byte[1024];
+			udpPacket = new DatagramPacket(buf, buf.length);
+			
+			
+			
+			try{
+				
+				if(udpSocket==null){
+					udpSocket = new DatagramSocket(LISTEN_PORT);
+				}
+				
+				while(isListening)
+				{
+				
+					udpSocket.receive(udpPacket);
+					int[] buffer = new int[buf.length];
+					int i = 0;
+					for(byte b : udpPacket.getData()) {
+						int a = b & 0xFF;
+						buffer[i] = a;
+						
+						i++;
+					}
+					
+					/*for(int j =0; j<buffer.length;j++)
+					{
+						System.out.print(buffer[j] + " ");
+						
+					}*/
+					
+					panelUDPDataList.add(buffer);
+					mCallback.addIp(getIp(buffer));
+					
+				}
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+					
+				if(udpSocket!=null && !udpSocket.isClosed()){
+					System.out.println("Finally -- > UDP Socket Closing");
+					udpSocket.close();
+				}
+					
+			}
+				
+		}
+	};
 
 	
 	/**

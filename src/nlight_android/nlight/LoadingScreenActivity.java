@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nclient.R;
 
@@ -141,82 +142,98 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		}
 		return 1;
 	}
-
-	// 
-		/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
-		 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
+	@Override
+		public void searchAgain() {
+		
+		searchUDP();			
+	}
+	 
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
+	 */
+	@Override
+	public void connectToPanels(List<Integer> selected) {
+		
+		//connecting to panels, and close UDP socket
+		udpConnection.setListen(false);
+		
+		//save checkBox status
+		
+		savePanelSelectionToIpLIstSelected(selected);
+		
+		progressBar.setMax(16*ipListSelected.size());
+		
+		
+		System.out.println(ipListSelected);
+		
+		
+		
+		
+		/*
+		 *  Initial connections and rxBuffer for each panel
 		 */
-		@Override
-		public void connectToPanels(List<Integer> selected) {
-			
-			//connecting to panels, and close UDP socket
-			udpConnection.setListen(false);
-			
-			//save checkBox status
-			
-			savePanelSelectionToIpLIstSelected(selected);
-			
-			progressBar.setMax(16*ipListSelected.size());
-			
-			
-			System.out.println(ipListSelected);
-			
-			
-			
-			
-			/*
-			 *  Initial connections and rxBuffer for each panel
-			 */
-			
-			for(String ip : ipListSelected)
-			{
-				PanelConnection connection = new PanelConnection(this, ip);
-				ip_connection_map.put(ip, connection);
-				rxBufferMap.put(ip, new ArrayList<Integer>());
-				
-			}
-			//on main thread
-			//show progress bar and text
-			
-			//set isDemo flag
-			isDemo = false;
-			panelToLoad = ipListSelected.size();
-			
-			
-			//Message msg = mHandler.obtainMessage();
-			//msg.arg1 = LOADING;
-			//mHandler.sendMessage(msg);
-
-			
-			
-			//check if loading is already in process and panel selected not equal to 0
-			if(!isLoading && ipListSelected.size()!=0){
-				progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
-				
-				progressText.setVisibility(View.VISIBLE);
-				progressBar.setVisibility(View.VISIBLE);
-				
-				
-				System.out.println("------------liveMode clicked");
-				List<char[]> commandList = CommandFactory.getPanelInfo();
-				
-				for(String ip: ipListSelected){
-					
-					PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
-					conn.fetchData(commandList);
-				}
-				
-				
-				//set button disable
-				liveBtn.setEnabled(false);
-				demoBtn.setEnabled(false);
-				isLoading = true;
-				
-			}
-			
-			saveCheckedStatsToPreference();
+		
+		for(String ip : ipListSelected)
+		{
+			PanelConnection connection = new PanelConnection(this, ip);
+			ip_connection_map.put(ip, connection);
+			rxBufferMap.put(ip, new ArrayList<Integer>());
 			
 		}
+		//on main thread
+		//show progress bar and text
+		
+		//set isDemo flag
+		isDemo = false;
+		panelToLoad = ipListSelected.size();
+		
+		
+		//Message msg = mHandler.obtainMessage();
+		//msg.arg1 = LOADING;
+		//mHandler.sendMessage(msg);
+
+		
+		
+		//check if loading is already in process and panel selected not equal to 0
+		if(!isLoading && ipListSelected.size()!=0){
+			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+			
+			progressText.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
+			
+			
+			System.out.println("------------liveMode clicked");
+			List<char[]> commandList = CommandFactory.getPanelInfo();
+			
+			for(String ip: ipListSelected){
+				
+				PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
+				conn.fetchData(commandList);
+			}
+			
+			
+			//set button disable
+			liveBtn.setEnabled(false);
+			demoBtn.setEnabled(false);
+			isLoading = true;
+			
+		}
+		
+		saveCheckedStatsToPreference();
+		
+	}
+	
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#cancelDialog(java.util.List)
+	 */
+	@Override
+	public void cancelDialog(List<Integer> selected) {
+		
+		savePanelSelectionToIpLIstSelected(selected);	
+		saveCheckedStatsToPreference();
+		
+	}
+
 	
 	/**
 	 * This function takes an ip for the panel and return it's location in the SharedPreference 
@@ -248,7 +265,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading_screen);
 		
-		searchUDP();
+		
 		
 		//init all view items
 		liveBtn = (Button) findViewById(R.id.loadscreen_live_imageBtn);
@@ -258,6 +275,9 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		//init loading panals 
 		initializeFields();
+		
+		//search for all panels
+		searchUDP();
 		
 		//update connection flags
 		checkConnectivity();
@@ -272,13 +292,13 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 				
 				switch(msg.arg1){
 					case LOADING:
-						progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+						progressText.setText("Loading panel data... " + " (" + panelToLoad + ")");
 						break;
 					case PARSING: 
-						progressText.setText("Analysing Panel Data");
+						progressText.setText("Analysing panel data...");
 						break;
 					case LOADING_FINISHED:
-						progressText.setText("Finish Loading");
+						progressText.setText("Finish loading...");
 						break;
 					case ERROR:
 						String ipAdd = (String) msg.obj;
@@ -331,7 +351,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		if(udpConnection!=null)
 		{
 			udpConnection.setListen(false);
-			//udpConnection.closeConnection();
+			udpConnection.closeConnection();
 		}
 		
 		//close TCP connections
@@ -477,10 +497,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	
 	public void liveMode(View view)
 	{
-		if(ipListAll.size()==0){
+		/*if(ipListAll.size()==0){
 			
 			searchUDP();
-		}
+		}*/
 		popDialog();
 		
 		
@@ -583,18 +603,6 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	
 	
 	
-	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
-	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#cancelDialog(java.util.List)
-	 */
-	@Override
-	public void cancelDialog(List<Integer> selected) {
-		
-		savePanelSelectionToIpLIstSelected(selected);	
-		saveCheckedStatsToPreference();
-		
-	}
-
-	
 	
 	
 	public void popDialog()
@@ -640,6 +648,11 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	}
 
 	private void searchUDP(){
+		
+		//clear current ip list and datalist for dialog listview;
+		ipListAll.clear();
+		dataList.clear();
+		
 		if(udpConnection == null ){
 			udpConnection = new UDPConnection(Constants.FIND_PANELS, this);
 		}
@@ -651,10 +664,11 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		}
 		
 		//send UDP panel search messages
-		ExecutorService exec = Executors.newCachedThreadPool();
-		exec.execute(udpConnection);
-		exec.shutdown();
 		
+		udpConnection.tx(Constants.FIND_PANELS);
+		
+		
+		Toast.makeText(this, R.string.toast_search_panel, Toast.LENGTH_LONG).show();	
 	}
 	
 	/**
@@ -703,5 +717,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 			}
 		}
 	}
+
+	
 
 }

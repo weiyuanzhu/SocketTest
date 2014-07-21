@@ -36,6 +36,7 @@ public class ListDialogFragment extends DialogFragment {
 	public interface ListDialogListener{
 		public void connectToPanels(List<Integer> selected);
 		public void cancelDialog(List<Integer> selected);
+		public void searchAgain();
 
 		
 	} 
@@ -185,6 +186,14 @@ public class ListDialogFragment extends DialogFragment {
 	    // Set the action buttons
 	    builder.setView(listView);
 	    
+    		    builder.setNeutralButton("Search again", new DialogInterface.OnClickListener() {
+				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mListener.searchAgain();
+					}
+				});
+	    
 	           builder.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
@@ -197,13 +206,15 @@ public class ListDialogFragment extends DialogFragment {
 	                   
 	               }
 	           });
-	           builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+	           builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
 	            	   mListener.cancelDialog(mSelectedItems);            	   
 	               }
 	           });
+	           
+	       
 	    
 	    return builder.create();
 	}
