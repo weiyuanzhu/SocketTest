@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nclient.R;
@@ -306,7 +307,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
  
         ImageView childImage = (ImageView) convertView
                 .findViewById(R.id.childImage);
-        ImageView status = (ImageView) convertView.findViewById(R.id.devicelist_child_status_imageView);
+        ProgressBar pb = (ProgressBar) convertView.findViewById(R.id.deviceList_child_progressBar);
+        
         
         /*if(device.isFaulty()){
         	childImage.setImageResource(R.drawable.redcross);
@@ -314,11 +316,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         int sb =0;
         sb = device.getCurrentStatus();
         switch(sb){
-        	case Device.OK: childImage.setImageResource(R.drawable.greentick);
+        	case Device.OK:
+        		childImage.setVisibility(View.VISIBLE);
+        		pb.setVisibility(View.INVISIBLE);
+        		childImage.setImageResource(R.drawable.greentick);
         		break;
-        	case Device.FAULTY: childImage.setImageResource(R.drawable.redcross);
+        	case Device.FAULTY: 
+        		pb.setVisibility(View.INVISIBLE);
+        		childImage.setVisibility(View.VISIBLE);
+        		childImage.setImageResource(R.drawable.redcross);
         		break;
-        	case Device.LOADING: childImage.setImageResource(R.drawable.ic_action_refresh);
+        	case Device.LOADING: 
+        		pb.setVisibility(View.VISIBLE);
+        		childImage.setVisibility(View.INVISIBLE);
+        		childImage.setImageResource(R.drawable.ic_action_refresh);
         		break;
         	default: break;
         }
