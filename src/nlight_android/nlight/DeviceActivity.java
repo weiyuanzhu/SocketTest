@@ -92,6 +92,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private boolean autoRefresh = false;
 	private boolean autoRefreshAllDevices = false;
 	private boolean autoRefreshSelectedDevice = false;
+	
+	private boolean multiSelectionMode = false;
 
 	
 	private Handler mHandler = null;
@@ -257,6 +259,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	/* (non-Javadoc)when device list entering multi-selection mode
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onMultiSelectionMode()
+	 */
+	@Override
+	public void onMultiSelectionMode(boolean multiSelect) {
+		multiSelectionMode = multiSelect;
+		
+	}
+
+	
 	
 	
 	
@@ -266,6 +278,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	//Activity life circle
+
+	
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
