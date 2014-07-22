@@ -232,25 +232,22 @@ public class DeviceListFragment extends Fragment {
 			
 			
 			
-			updateCounter();
+			//updateCounter();
 			mAdapter.notifyDataSetChanged();
 			
-			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			updateCounter();
+			
 			
 			System.out.println("------------onItemCheckedStateChanged-------------");
 			System.out.println("Position: " + position + " checked: " + checked);
 		}
 		
-		public void updateCounter(){
+		private void updateCounter(){
 			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
 		}
 		
 		
-		/**
-		 * get group and child position for row selected
-		 * @return int[groupPosition, childPosition]
-		 */
 		
 	};
 	

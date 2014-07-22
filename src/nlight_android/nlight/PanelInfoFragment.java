@@ -119,7 +119,9 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	}
 	
 	
-	
+	public PanelInfoFragment(){
+		// Required empty public constructor
+	}
 	
 	
 	
@@ -139,7 +141,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	}
 
 	public PanelInfoFragment(Panel panel) {
-		// Required empty public constructor
+		
 		
 		this.panel = panel;
 		
