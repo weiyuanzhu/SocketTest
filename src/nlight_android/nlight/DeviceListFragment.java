@@ -48,6 +48,8 @@ public class DeviceListFragment extends Fragment {
 		// TODO: Update argument type and name
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
 		public void onGroupExpandOrCollapse(int groupPosition);
+		public void onMultiSelectionMode(boolean multiSelect);
+		
 		public void ft(List<Integer> addressList);
 		public void dt(List<Integer> addressList);
 		public void st(List<Integer> addressList);
@@ -109,6 +111,7 @@ public class DeviceListFragment extends Fragment {
 		public void onDestroyActionMode(ActionMode mode) {
 			
 			mAdapter.setMultiSelectMode(false);
+			mListener.onMultiSelectionMode(false);
 			mAdapter.clearCheck();
 			mAdapter.notifyDataSetChanged();
 			//mActionMode = null;
@@ -224,6 +227,8 @@ public class DeviceListFragment extends Fragment {
 				
 				mAdapter.clearCheck();
             	mAdapter.setMultiSelectMode(true);
+            	
+            	mListener.onMultiSelectionMode(true);
             	
             	if(type!=0){
             		mAdapter.selectItem(groupPosition,childPosition);
