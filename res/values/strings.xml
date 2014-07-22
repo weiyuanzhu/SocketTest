@@ -30,6 +30,8 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="panelInfo_contact">Contact</string>
     <string name="toast_search_panel">Searching panels in the building</string>
+    <string name="btn_contact_engineer">Contact engineer</string>
+    <string name="btn_engineer_mode">Engineer mode</string>
     
 
 </resources>

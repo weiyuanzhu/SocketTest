@@ -264,7 +264,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 	
 	
-	//Activity live circle
+	//Activity life circle
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
