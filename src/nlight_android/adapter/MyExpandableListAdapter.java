@@ -477,12 +477,17 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
      */
     public void clearCheck()
     {
+    	//clear checked list status
     	for(int j=0;j<checkedList.size();j++){
     		SparseBooleanArray s = checkedList.get(j);
     		for(int i=0; i<s.size();i++){
         		s.put(i, false);
         	}
     	}
+    	
+    	//clear loop status
+    	loop1Selected = false;
+    	loop2Selected = false;
     	
     }
     

@@ -478,6 +478,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.FT.multiToggleTest(addressList);
 			connection.fetchData(commandList);
+			if(addressList.contains(64)|| addressList.contains(192)){
+				
+				mHandler.postDelayed(refreshAllDevices, 10000);
+				
+				
+			}
 		}
 		
 	}
@@ -490,6 +496,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			System.out.println("----------ftTest--------");
 			List<char[] > commandList = ToggleCmdEnum.DT.multiToggleTest(addressList);
 			connection.fetchData(commandList);
+			
+			
 		}
 		
 	}
@@ -616,6 +624,24 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	Runnable refreshAllDevices  = new Runnable(){
+
+		@Override
+		public void run() {
+			if(!isDemo && connection!=null){
+				List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
+			
+				System.out.println(connection.isListening());
+				if(connection.isListening())
+				{
+					connection.fetchData(commandList);
+				}
+			}
+			
+		}
+		
+	};
+	
 	
 	Runnable autoRefreshCurrentDevice = new Runnable(){
 
@@ -625,7 +651,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			//System.out.println("---------------auto refresh current selected device----------------");
 			//System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
 			
-			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
+			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice())
+			{
 				refreshsSingleDevice(currentSelectedDevice.getAddress());
 			}
 			else{

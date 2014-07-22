@@ -235,12 +235,12 @@ public class DeviceListFragment extends Fragment {
             	}
 			}
 			
-			
+			updateCounter();
 			
 			//updateCounter();
 			mAdapter.notifyDataSetChanged();
 			
-			updateCounter();
+			
 			
 			
 			System.out.println("------------onItemCheckedStateChanged-------------");
