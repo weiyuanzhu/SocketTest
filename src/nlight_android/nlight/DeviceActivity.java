@@ -119,11 +119,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	//Setters and Getters
 	
 		/**
-		 * @return the autoRefresh
+		 * check if should autoRefresh 
+		 * @return true if autoRefresh is checked in preference and device IS NOT in multi-selection mode
 		 */
 		public boolean isAutoRefresh() {
 			
-			autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false);
+			autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false) && !multiSelectionMode;
 			return autoRefresh;
 		}
 

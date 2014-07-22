@@ -308,18 +308,30 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.childImage);
         ImageView status = (ImageView) convertView.findViewById(R.id.devicelist_child_status_imageView);
         
-        if(device.isFaulty()){
+        /*if(device.isFaulty()){
         	childImage.setImageResource(R.drawable.redcross);
-        }else childImage.setImageResource(R.drawable.greentick);
+        }else childImage.setImageResource(R.drawable.greentick);*/
+        int sb =0;
+        sb = device.getCurrentStatus();
+        switch(sb){
+        	case Device.OK: childImage.setImageResource(R.drawable.greentick);
+        		break;
+        	case Device.FAULTY: childImage.setImageResource(R.drawable.redcross);
+        		break;
+        	case Device.LOADING: childImage.setImageResource(R.drawable.ic_action_refresh);
+        		break;
+        	default: break;
+        }
         
-        if(device.getCurrentStatus()==0)
+        
+        /*if(sb==Device.FAULTY)
         {
         	status.setVisibility(View.INVISIBLE);
         }
         else {
         	status.setVisibility(View.VISIBLE);
         	status.setImageResource(R.drawable.ic_action_refresh);
-        }
+        }*/
         
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.devicelist_child_address_textView);
