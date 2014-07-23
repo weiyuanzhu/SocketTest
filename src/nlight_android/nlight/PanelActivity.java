@@ -51,7 +51,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private ImageView panelInfoImage;
 	private TextView panelContact;
+	private TextView faultTextView;
 	private Button contact_engineer;
+	
 	private Button engineer_mode;
 	
 
@@ -208,6 +210,14 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			
 		}
 		
+		int faults = currentDisplayingPanel.getFaultDeviceNo();
+		if(faults>0){
+			faultTextView.setText("Fault(s) found: " + faults );
+		}
+		else{
+			faultTextView.setText("All OK" );
+		}
+		
 		
 		//test for pass code dialog
 		/*if(isDemo && !passcodeEntered.equals(currentDisplayingPanel.getPasscode())){
@@ -271,6 +281,9 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		panelContact = (TextView)findViewById( R.id.panelInfo_contact_textView);
 		contact_engineer = (Button) findViewById(R.id.panel_contatc_engineer_btn);
 		engineer_mode = (Button) findViewById(R.id.panel_engineer_mode_btn);
+		faultTextView = (TextView) findViewById(R.id.panel_faults_textView);
+		
+		
 		
 		
 		panelListFragment = (PanelListFragment) getFragmentManager().findFragmentById(R.id.fragment_panel_list); 
@@ -718,6 +731,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		if(currentDisplayingPanel!=null && !currentDisplayingPanel.isEngineerMode()){
 			panelInfoImage.setVisibility(panelInfoImage.isShown()? 4:0);
+			faultTextView.setVisibility(faultTextView.isShown()? 4:0);
 			panelContact.setVisibility(panelInfoImage.isShown()? 4:0);
 			panelContact.setText(getContactDetails());
 		}
@@ -730,6 +744,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	 */
 	public void engineerModeBtn(View view){
 		
+		
 		if(currentDisplayingPanel!=null && !currentDisplayingPanel.isEngineerMode()){
 			InputDialogFragment dialog = new InputDialogFragment();
 		
@@ -739,6 +754,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 			
 			
 		} 
+		
 		
 		
 	}

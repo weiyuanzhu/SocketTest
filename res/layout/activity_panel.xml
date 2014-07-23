@@ -70,6 +70,15 @@
             android:text="@string/btn_engineer_mode"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/panel_faults_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/panelInfo_image"
+            android:layout_centerHorizontal="true"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
         </RelativeLayout>
 
     </FrameLayout>
