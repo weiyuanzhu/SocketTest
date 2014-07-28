@@ -297,7 +297,7 @@ public class DeviceInfoFragment extends ListFragment {
 				//display dialog
 				InputDialogFragment dialog = new InputDialogFragment();
 				dialog.setHint(device.getLocation());
-				dialog.setType(InputDialogFragment.DEVICE_NAME);
+				dialog.setType(InputDialogFragment.SET_DEVICE_NAME);
 				dialog.show(getFragmentManager(), "inputDialog");
 			}
 	

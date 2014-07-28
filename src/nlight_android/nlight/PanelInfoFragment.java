@@ -192,7 +192,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 				InputDialogFragment dialog = new InputDialogFragment();
 				
 				//setup dialog title and input hint
-				dialog.setType(InputDialogFragment.PANEL_NAME);
+				dialog.setType(InputDialogFragment.SET_PANEL_NAME);
 				dialog.setHint(panel.getPanelLocation());
 				dialog.show(getFragmentManager(), "UserInputDialog");
 				return true;
@@ -524,19 +524,19 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 			// if locaion long clicked
 			switch(position){
 				case 3: dialog.setHint(panel.getContact());
-						dialog.setType(InputDialogFragment.PANEL_CONTACT);
+						dialog.setType(InputDialogFragment.SET_PANEL_CONTACT);
 						dialog.show(getFragmentManager(), "inputDialog");
 						break;
 				case 4: dialog.setHint(panel.getTel());
-						dialog.setType(InputDialogFragment.PANEL_TEL);
+						dialog.setType(InputDialogFragment.SET_PANEL_TEL);
 						dialog.show(getFragmentManager(), "inputDialog");	
 						break;
 				case 5: dialog.setHint(panel.getMobile());
 						dialog.show(getFragmentManager(), "inputDialog");
-						dialog.setType(InputDialogFragment.PANEL_MOBILE);
+						dialog.setType(InputDialogFragment.SET_PANEL_MOBILE);
 						break;
 				case 8: dialog.setHint(panel.getPasscode());
-						dialog.setType(InputDialogFragment.PANEL_PASSCODE);
+						dialog.setType(InputDialogFragment.SET_PANEL_PASSCODE);
 						dialog.show(getFragmentManager(), "inputDialog");
 						break;
 				default: return false;
