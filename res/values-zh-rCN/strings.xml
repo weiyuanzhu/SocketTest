@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">N-Light Connect</string>
+    <string name="app_version">Beta v0.6.5</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+    <string name="action_search">搜索</string>
+    <string name="action_showDeviceList">查看Loop</string>
+    <string name="action_showLoops">Show Loops</string>
+    <string name="action_showFaultyDevices">Show Faulty Devices</string>
+    <string name="action_sort_by_faulty">错误</string>
+    <string name="action_sort_by_alphabet">字母顺序</string>
+    <string name="action_sort_by_unnamed">未命名</string>
+    <string name="action_refresh_status">RefreshPanelStatus</string>
+    <string name="hello_world">世界你好!</string>
+    <string name="title_activity_panel_list">N-Light</string>
+    <string name="overall">GetOverallStatus</string>
+    <string name="title_activity_loading_screen">N-Light</string>
+    <string name="location">位置</string>
+    <string name="status">状态</string>
+    <string name="title_activity_panel_info">PanelInfo</string>
+    <string name="title_activity_device_list">DeviceList</string>
+    <string name="title_activity_device_info">DeviceInfoActivity</string>
+    <string name="title_activity_main">N-Light Connect</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_device">DeviceActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="panelInfo_contact">联系人</string>
+    <string name="toast_search_panel">搜索附近的Panel</string>
+    <string name="btn_contact_engineer">联系工程师</string>
+    <string name="btn_engineer_mode">工程模式</string>
+    <string name="btn_live">实时模式</string>
+    <string name="btn_demo">演示模式</string>
+    <string name="btn_search">搜索</string>
+    <string name="title_dialog_panellist">Panel列表</string>
+    <string name="title_dialog_nopanelfound">未发现附近的Panel，请尝试重新搜索</string>
+    <string name="btn_connect">连接</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_searchagain">重新搜索</string>
+    
+
+</resources>

@@ -32,6 +32,14 @@
     <string name="toast_search_panel">Searching panels in the building</string>
     <string name="btn_contact_engineer">Contact engineer</string>
     <string name="btn_engineer_mode">Engineer mode</string>
+    <string name="btn_live">Live Mode</string>
+    <string name="btn_demo">Demo Mode</string>
+    <string name="btn_search">Search</string>
+    <string name="title_dialog_panellist">Panel list</string>
+    <string name="title_dialog_nopanelfound">No panel found in the building, please search again.</string>
+    <string name="btn_connect">Connect</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_searchagain">Search again</string>
     
 
 </resources>

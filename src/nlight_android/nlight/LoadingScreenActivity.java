@@ -546,7 +546,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	{
 		panelList = new ArrayList<Panel>();
 	
-		Panel panel = new Panel("192.168.1.18");
+		Panel panel = new Panel("192.168.1.241");
 		panel.setPanelLocation("Mackwell L&B 1   ");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
@@ -562,7 +562,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		panelList.add(panel);
 	
-		panel = new Panel("192.168.1.19");
+		panel = new Panel("192.168.1.242");
 		panel.setPanelLocation("Mackwell L&B 2    ");
 		panel.setSerialNumber((long)1375868516);
 		panel.setGtinArray(new int[]{132,2,166,43,154,4});
@@ -632,7 +632,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panelListDialog.setDataList(dataList);
 				
 		//test.setIps(null); //null test
-		panelListDialog.show(getFragmentManager(), "test"); //popup dialog
+		panelListDialog.show(getFragmentManager(), "panelListDialog"); //popup dialog
 				
 		
 	}
