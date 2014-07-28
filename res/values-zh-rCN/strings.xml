@@ -70,5 +70,14 @@
 	<string name="hint_dialog_input_setPasscode">4 位密码</string>
 	<string name="hint_dialog_input_enterInformation">信息</string>
     
+	<string name="text_fragment_panelInfo_ipAddress">IP 地址</string>
+	<string name="text_fragment_panelInfo_serialNumber">序列号</string>
+	<string name="text_fragment_panelInfo_gtin">GTIN</string>
+	<string name="text_fragment_panelInfo_contact">联系人</string>
+	<string name="text_fragment_panelInfo_tel">座机</string>
+	<string name="text_fragment_panelInfo_mobile">手机</string>
+	<string name="text_fragment_panelInfo_firmware">固件版本</string>
+	<string name="text_fragment_panelInfo_memoryUsage">内存使用</string>
+	<string name="text_fragment_panelInfo_passcode">密码</string>
 
 </resources>

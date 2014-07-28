@@ -396,14 +396,14 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "IP address");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_ipAddress));
 		map.put("text2", panel==null? "..." : panel.getIp());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Serial number");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_serialNumber));
 		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
 		dataList.add(map);
@@ -413,44 +413,44 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		
 		
-		map.put("text1", "GTIN");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_gtin));
 		map.put("text2", panel==null? "..." : panel.getGtin());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Contact");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_contact));
 		map.put("text2", panel==null? "..." : panel.getContact());
 		
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Tel");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_tel));
 		map.put("text2", panel==null? "..." : panel.getTel());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Mobile");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_mobile));
 		map.put("text2", panel==null? "..." : panel.getMobile());
 			
 		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Firmware version");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_firmware));
 		map.put("text2", panel==null? "..." : panel.getVersion());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Memory Used");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_memoryUsage));
 		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Passcode");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_passcode));
 		map.put("text2", panel==null? "..." : panel.getPasscode());
 			
 		dataList.add(map);

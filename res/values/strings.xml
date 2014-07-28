@@ -70,6 +70,16 @@
 	<string name="hint_dialog_input_setPasscode">4 digit passcode</string>
 	<string name="hint_dialog_input_enterInformation">Enter information</string>
 	
+	<string name="text_fragment_panelInfo_ipAddress">IP address</string>
+	<string name="text_fragment_panelInfo_serialNumber">Serial number</string>
+	<string name="text_fragment_panelInfo_gtin">GTIN</string>
+	<string name="text_fragment_panelInfo_contact">Contact</string>
+	<string name="text_fragment_panelInfo_tel">Telephone</string>
+	<string name="text_fragment_panelInfo_mobile">Mobile</string>
+	<string name="text_fragment_panelInfo_firmware">Firmware version</string>
+	<string name="text_fragment_panelInfo_memoryUsage">Memory used</string>
+	<string name="text_fragment_panelInfo_passcode">Passcode</string>
+	
 	
 	
 	
