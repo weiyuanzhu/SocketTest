@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 public class DeviceInfoActivity extends ListActivity implements TCPConnection.CallBack{
 	

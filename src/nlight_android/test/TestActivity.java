@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 public class TestActivity extends BaseActivity implements TCPConnection.CallBack,NoticeDialogListener{
 

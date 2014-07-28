@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 public class PanelInfoActivity extends ListActivity  implements TCPConnection.CallBack{
 	

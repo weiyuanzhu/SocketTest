@@ -29,7 +29,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 /**
  * @author weiyuan zhu

@@ -30,7 +30,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 /**
  * A simple   {@link android.support.v4.app.Fragment}  subclass. Use the {@link PanelInfoFragment#newInstance}  factory method to create an instance ofthis fragment.

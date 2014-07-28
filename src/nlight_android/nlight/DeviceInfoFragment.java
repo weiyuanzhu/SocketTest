@@ -11,7 +11,7 @@ import java.util.Map;
 import nlight_android.adapter.DeviceInfoListAdapter;
 import nlight_android.models.Device;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 import android.app.Activity;
 import android.app.ListFragment;

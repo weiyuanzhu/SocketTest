@@ -4,7 +4,7 @@ import java.util.List;
 
 import nlight_android.socket.TCPConnection.CallBack;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

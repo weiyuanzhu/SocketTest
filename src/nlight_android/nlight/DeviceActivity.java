@@ -36,7 +36,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 
 
@@ -523,6 +523,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	 */
 	@Override
 	public void onGroupExpandOrCollapse(int groupPosition) {
+		//set currentSelectedDevice to null to prevent DeviceInfoFragment getResources() null pointer
+		currentSelectedDevice = null;
 		System.out.println("GroupOpen/Close Test " + groupPosition);
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		

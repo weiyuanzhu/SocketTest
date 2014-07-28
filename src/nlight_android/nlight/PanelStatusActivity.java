@@ -23,8 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nclient.R;
-import com.example.nclient.R.drawable;
+import com.mackwell.nclient.R;
+import com.mackwell.nclient.R.drawable;
 
 public class PanelStatusActivity extends BaseActivity {
 	

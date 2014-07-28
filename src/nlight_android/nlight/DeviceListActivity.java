@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 public class DeviceListActivity extends ListActivity {
 	

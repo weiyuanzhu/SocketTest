@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.

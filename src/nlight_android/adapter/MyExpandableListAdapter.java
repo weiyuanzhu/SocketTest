@@ -13,7 +13,7 @@ import java.util.Map;
 import nlight_android.models.Device;
 import nlight_android.models.Loop;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 import android.content.Context;
 import android.graphics.Typeface;

@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 /**
  * @author weiyuan zhu

@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 
 /**

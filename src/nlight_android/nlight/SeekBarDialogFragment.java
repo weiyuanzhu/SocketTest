@@ -1,6 +1,6 @@
 package nlight_android.nlight;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

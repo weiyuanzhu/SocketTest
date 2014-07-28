@@ -1,6 +1,6 @@
 package nlight_android.nlight;
 
-import com.example.nclient.R;
+import com.mackwell.nclient.R;
 
 import android.os.Bundle;
 import android.app.Activity;
