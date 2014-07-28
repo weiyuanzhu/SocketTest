@@ -9,17 +9,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.nlight.InputDialogFragment.*;
-import android.widget.*;
-import android.os.*;
 
 /**
  * @author weiyuan zhu

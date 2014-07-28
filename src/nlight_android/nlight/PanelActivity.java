@@ -163,7 +163,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					}
 					else{
 						
-						
+						faultTextView.setVisibility(View.INVISIBLE);
 						panelInfoImage.setVisibility(View.INVISIBLE);
 						panelContact.setVisibility(View.VISIBLE);
 						panelContact.setText(getContactDetails());
@@ -301,7 +301,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		getActionBar().setTitle(isDemo? R.string.title_activity_panel_demo: R.string.title_activity_panel_live);
 		
-		getActionBar().setSubtitle(R.string.subtitle_panel);
+		getActionBar().setSubtitle(R.string.subtitle_activity_panel);
 		
 		
 		

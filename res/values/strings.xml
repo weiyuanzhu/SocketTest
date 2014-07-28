@@ -12,7 +12,10 @@
     <string name="action_sort_by_faulty">Faulty</string>
     <string name="action_sort_by_alphabet">A-Z</string>
     <string name="action_sort_by_unnamed">Unnamed</string>
+    <string name="action_sort_device_by">SORT DEVICE BY</string>
     <string name="action_refresh_status">RefreshPanelStatus</string>
+    
+    
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_panel_list">N-Light</string>
     <string name="overall">GetOverallStatus</string>
@@ -44,7 +47,9 @@
     <string name="btn_searchagain">Search again</string>
     <string name="btn_enter">Enter</string>
     
-    <string name="subtitle_panel">Panel list</string>
+    <string name="subtitle_activity_panel">Panel list</string>
+    <string name="subtitle_activity_device">Device list</string>
+    
     <string name="text_panelstatus_ok">All OK</string>
     <string name="text_panelstatus_fault">Fault(s) found: </string>
     <string name="text_contat_engineer">To contact an enginneer: </string>
@@ -52,6 +57,7 @@
     <string name="text_contact_name">Contact name: </string>
 	<string name="text_contact_tel">Telphone: </string>
 	<string name="text_contact_mobile">Mobile: </string>
+	
 	<string name="title_dialog_input_setPanelName">Name panel</string>
 	<string name="title_dialog_input_setDeviceName">Name device</string>
 	<string name="title_dialog_input_setContactName">Update contatc name</string>
@@ -79,6 +85,21 @@
 	<string name="text_fragment_panelInfo_firmware">Firmware version</string>
 	<string name="text_fragment_panelInfo_memoryUsage">Memory used</string>
 	<string name="text_fragment_panelInfo_passcode">Passcode</string>
+	
+	<string name="text_live"> (Live)</string>
+    <string name="text_demo"> (Demo)</string>
+    
+    <string name="text_fragment_deviceInfo_deviceName">Device name</string>
+    <string name="text_fragment_deviceInfo_address">Address</string>
+    <string name="text_fragment_deviceInfo_serialNumber">Serial number</string>
+    <string name="text_fragment_deviceInfo_gtin">GTIN</string>
+    <string name="text_fragment_deviceInfo_emergencyMode">Emergency mode</string>
+    <string name="text_fragment_deviceInfo_emergencyStatus">Emergency status</string>
+    <string name="text_fragment_deviceInfo_failureStatus">Failure  status</string>
+    <string name="text_fragment_deviceInfo_batteryLevel">Battery level</string>
+    <string name="text_fragment_deviceInfo_durationTest">Last duration test result</string>
+    <string name="text_fragment_deviceInfo_emergencyLamp">Total emergency lamp operating time</string>
+    <string name="text_fragment_deviceInfo_communicationStatus">Communication status</string>
 	
 	
 	

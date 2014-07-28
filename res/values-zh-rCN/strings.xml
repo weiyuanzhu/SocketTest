@@ -3,6 +3,7 @@
 
     <string name="app_name">N-Light Connect</string>
     <string name="app_version">版本：Beta v0.6.5</string>
+    
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
     <string name="action_search">搜索</string>
@@ -12,18 +13,21 @@
     <string name="action_sort_by_faulty">错误</string>
     <string name="action_sort_by_alphabet">字母顺序</string>
     <string name="action_sort_by_unnamed">未命名</string>
+    <string name="action_sort_device_by">设备排序</string>
+    
     <string name="action_refresh_status">RefreshPanelStatus</string>
     <string name="hello_world">世界你好!</string>
-    <string name="title_activity_panel_list">N-Light</string>
+    
     <string name="overall">GetOverallStatus</string>
-    <string name="title_activity_loading_screen">N-Light</string>
     <string name="location">位置</string>
     <string name="status">状态</string>
+    
+    <string name="title_activity_panel_list">N-Light</string>
+    <string name="title_activity_loading_screen">N-Light</string>
     <string name="title_activity_panel_info">PanelInfo</string>
     <string name="title_activity_device_list">DeviceList</string>
     <string name="title_activity_device_info">DeviceInfoActivity</string>
     <string name="title_activity_main">N-Light Connect</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_panel_live">N-Light Connect (实时)</string>
     <string name="title_activity_panel_demo">N-Light Connect (演示)</string>
     <string name="title_activity_device">DeviceActivity</string>
@@ -44,7 +48,10 @@
     <string name="btn_connect">连接</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_searchagain">重新搜索</string>
-    <string name="subtitle_panel">Panel列表</string>
+    
+    <string name="subtitle_activity_panel">Panel列表</string>
+    <string name="subtitle_activity_device">设备列表</string>
+    
     <string name="text_panelstatus_ok">系统正常</string>
     <string name="text_panelstatus_fault">设备异常：  </string>
     <string name="text_contat_engineer">联系工程师: </string>
@@ -52,6 +59,7 @@
     <string name="text_contact_name">工程师姓名: </string>
 	<string name="text_contact_tel">电话: </string>
 	<string name="text_contact_mobile">手机: </string>
+	
 	<string name="title_dialog_input_setPanelName">设置Panel位置</string>
 	<string name="title_dialog_input_setDeviceName">设置设备位置</string>
 	<string name="title_dialog_input_setContactName">设置联系人</string>
@@ -80,4 +88,21 @@
 	<string name="text_fragment_panelInfo_memoryUsage">内存使用</string>
 	<string name="text_fragment_panelInfo_passcode">密码</string>
 
+	<string name="text_live"> （实时）</string>
+    <string name="text_demo"> （演示）</string>
+    
+    <string name="text_fragment_deviceInfo_deviceName">设备名称</string>
+    <string name="text_fragment_deviceInfo_address">地址</string>
+    <string name="text_fragment_deviceInfo_serialNumber">序列号</string>
+    <string name="text_fragment_deviceInfo_gtin">GTIN</string>
+    <string name="text_fragment_deviceInfo_emergencyMode">应急模式</string>
+    <string name="text_fragment_deviceInfo_emergencyStatus">应急状态</string>
+    <string name="text_fragment_deviceInfo_failureStatus">异常状态</string>
+    <string name="text_fragment_deviceInfo_batteryLevel">电池</string>
+    <string name="text_fragment_deviceInfo_durationTest">上一次持续时间测试结果</string>
+    <string name="text_fragment_deviceInfo_emergencyLamp">应急灯使用时常</string>
+    <string name="text_fragment_deviceInfo_communicationStatus">通讯状态</string>
+	
+	
+	
 </resources>
