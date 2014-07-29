@@ -196,7 +196,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		//check if loading is already in process and panel selected not equal to 0
 		if(!isLoading && ipListSelected.size()!=0){
-			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+			progressText.setText(getResources().getString(R.string.text_loading_panel,panelToLoad));
 			
 			progressText.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.VISIBLE);
@@ -292,17 +292,17 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 				
 				switch(msg.arg1){
 					case LOADING:
-						progressText.setText("Loading panel data... " + " (" + panelToLoad + ")");
+						progressText.setText(getResources().getString(R.string.text_loading_panel,panelToLoad));
 						break;
 					case PARSING: 
-						progressText.setText("Analysing panel data...");
+						progressText.setText(R.string.text_analyzing_data);
 						break;
 					case LOADING_FINISHED:
-						progressText.setText("Finish loading...");
+						progressText.setText(R.string.text_finish_loading);
 						break;
 					case ERROR:
 						String ipAdd = (String) msg.obj;
-						progressText.setText("Cannot connect to " + ipAdd + ", please check connection.");
+						progressText.setText(getResources().getString(R.string.text_connect_error,ipAdd));
 						progressBar.setVisibility(View.INVISIBLE);
 						liveBtn.setEnabled(true);
 						break;
@@ -370,8 +370,13 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		// TODO Auto-generated method stub
 		super.onResume();
 		
+		//reset panelToLoad to 0 to prevent unexpected error
+		panelToLoad = 0;
+		 		
+		
 		//reset progress bar and progress
 		progress = 0;
+		
 		progressBar.setVisibility(View.INVISIBLE);
 		
 		//re-enable buttons
@@ -484,7 +489,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		isDemo = true;
 		
-		progressText.setText("Preparing Panel Data");
+		progressText.setText(R.string.text_prepPanelData);
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
 
