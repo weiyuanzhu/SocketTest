@@ -27,7 +27,7 @@
         android:layout_alignRight="@+id/loadscreen_logo_imageView"
         android:layout_alignTop="@+id/loadscreen_logo_imageView"
         android:onClick="demoMode"
-        android:text="DEMO MODE"/>
+        android:text="@string/btn_demo"/>
     
     <Button
         android:id="@+id/loadscreen_live_imageBtn"
@@ -36,7 +36,7 @@
         android:onClick="liveMode"
         android:layout_alignTop="@+id/loadscreen_live_imageBtn"
         android:layout_toLeftOf="@+id/loadscreen_live_imageBtn"
-        android:text="LIVE MODE"/>
+        android:text="@string/btn_live"/>
 
     <ImageView
         android:id="@+id/loadscreen_logo_imageView"
@@ -74,7 +74,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:onClick="searchPanelsBtn"
-        android:text="Search" 
+        android:text="@string/btn_search" 
         android:visibility="gone"/>
 
     

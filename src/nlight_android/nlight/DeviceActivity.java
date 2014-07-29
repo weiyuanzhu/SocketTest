@@ -309,9 +309,10 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//set title with mode
-		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + " (Demo)" : "Panel: " + panel.getPanelLocation().trim() + " (Live)";
+		String title = isDemo? "Panel: " + panel.getPanelLocation().trim() + getResources().getString(R.string.text_demo)
+				: "Panel: " + panel.getPanelLocation().trim() + getResources().getString(R.string.text_live);
 		getActionBar().setTitle(title);
-		getActionBar().setSubtitle("Device list");
+		getActionBar().setSubtitle(R.string.subtitle_activity_device);
 		
 		if(!isDemo) this.connection = new TCPConnection(this,panel.getIp());
 		

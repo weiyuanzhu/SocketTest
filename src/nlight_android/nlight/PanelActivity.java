@@ -19,12 +19,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -122,7 +120,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		System.out.println(buffer);
 		
 		switch(type){
-			case InputDialogFragment.PANEL_NAME: 
+			case InputDialogFragment.SET_PANEL_NAME: 
 					//set current panel location and also update shared preference
 					currentDisplayingPanel.setPanelLocation(input);
 					savePanelToPreference();
@@ -135,22 +133,22 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					panelListFragment.updateList(currentPanelPosition, input);
 					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
-			case InputDialogFragment.PANEL_CONTACT: 
+			case InputDialogFragment.SET_PANEL_CONTACT: 
 				commandList = SetCmdEnum.SET_CONTACT_NAME.set(buffer);
 					currentDisplayingPanel.setContact(input);
 					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
-			case InputDialogFragment.PANEL_TEL: 
+			case InputDialogFragment.SET_PANEL_TEL: 
 					commandList = SetCmdEnum.SET_CONTACT_NUMBER.set(buffer);
 					currentDisplayingPanel.setTel(input);
 					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
-			case InputDialogFragment.PANEL_MOBILE:
+			case InputDialogFragment.SET_PANEL_MOBILE:
 					commandList = SetCmdEnum.SET_CONTACT_MOBILE.set(buffer);
 					currentDisplayingPanel.setMobile(input);
 					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
 					break;
-			case InputDialogFragment.PANEL_PASSCODE:
+			case InputDialogFragment.SET_PANEL_PASSCODE:
 					commandList = SetCmdEnum.SET_PASSCODE.set(buffer);
 					currentDisplayingPanel.setPasscode(input);
 					fragmentList.get(currentPanelPosition).updatePanelInfo(currentDisplayingPanel);
@@ -166,7 +164,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 					}
 					else{
 						
-						
+						faultTextView.setVisibility(View.INVISIBLE);
 						panelInfoImage.setVisibility(View.INVISIBLE);
 						panelContact.setVisibility(View.VISIBLE);
 						panelContact.setText(getContactDetails());
@@ -216,10 +214,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		int faults = currentDisplayingPanel.getFaultDeviceNo();
 		if(faults>0){
-			faultTextView.setText("Fault(s) found: " + faults );
+			faultTextView.setText(getResources().getString(R.string.text_panelstatus_fault) + faults );
 		}
 		else{
-			faultTextView.setText("All OK" );
+			faultTextView.setText(R.string.text_panelstatus_ok);
 		}
 		
 		
@@ -304,10 +302,10 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 		
 		
 		//set title with demo
-		String title = isDemo? "N-Light Connect (Demo)" :  "N-Light Connect (Live)";
-		getActionBar().setTitle(title);
 		
-		getActionBar().setSubtitle("Panel list");
+		getActionBar().setTitle(isDemo? R.string.title_activity_panel_demo: R.string.title_activity_panel_live);
+		
+		getActionBar().setSubtitle(R.string.subtitle_activity_panel);
 		
 		
 		
@@ -581,7 +579,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	
 	private String getAppVersion(){
 		StringBuilder version = new StringBuilder();
-    	version.append("Mackwell N-Light Connect, Version ");
+    	version.append("Mackwell N-Light Connect, ");
     	String app_version = getString(R.string.app_version);
     	version.append(app_version);
 		
@@ -657,6 +655,8 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private void panelInfoFragmentTransation(int index){
 		panelInfoImage.setVisibility(View.INVISIBLE);
 		panelContact.setVisibility(View.INVISIBLE);
+		faultTextView.setVisibility(View.INVISIBLE);
+		
 		
 		String ip = currentDisplayingPanel.getIp();
 		if(panelMap.get(ip)==null)
@@ -694,6 +694,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	private void updatePanelInfoFragment(){
 		
 			panelInfoImage.setVisibility(View.VISIBLE);
+			faultTextView.setVisibility(View.VISIBLE);
 		
 			panelContact.setVisibility(View.INVISIBLE);
 		
@@ -769,11 +770,11 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	 */
 	private String getContactDetails(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("To contact an engineer:" + "\n");
-		sb.append("Control panel location: " + currentDisplayingPanel.getPanelLocation() + "\n");
-		sb.append("Contact name:    " + currentDisplayingPanel.getContact()+ "\n");
-		sb.append("Contact Tel:         " + currentDisplayingPanel.getTel() + "\n");
-		sb.append("Contact mobile:  " + currentDisplayingPanel.getMobile());
+		sb.append(getResources().getString(R.string.text_contat_engineer) + "\n");
+		sb.append(getResources().getString(R.string.text_control_panel_location) + currentDisplayingPanel.getPanelLocation() + "\n");
+		sb.append(getResources().getString(R.string.text_contact_name) + currentDisplayingPanel.getContact()+ "\n");
+		sb.append(getResources().getString(R.string.text_contact_tel) + currentDisplayingPanel.getTel() + "\n");
+		sb.append(getResources().getString(R.string.text_contact_mobile) + currentDisplayingPanel.getMobile());
 		
 		return sb.toString();
 	}

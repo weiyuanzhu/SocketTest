@@ -76,7 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/panelInfo_image"
             android:layout_centerHorizontal="true"
-            android:text="Large Text"
+            android:text="@string/app_name"
+            android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </RelativeLayout>

@@ -9,17 +9,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.nclient.R;
-import android.app.*;
-import nlight_android.nlight.InputDialogFragment.*;
-import android.widget.*;
-import android.os.*;
 
 /**
  * @author weiyuan zhu
@@ -29,12 +24,12 @@ public class InputDialogFragment extends DialogFragment{
 	
 	
 	
-	public static final int DEVICE_NAME = 0;
-	public static final int PANEL_NAME = 1;
-	public static final int PANEL_CONTACT = 2;
-	public static final int PANEL_TEL = 3;
-	public static final int PANEL_MOBILE = 4;
-	public static final int PANEL_PASSCODE = 5;
+	public static final int SET_DEVICE_NAME = 0;
+	public static final int SET_PANEL_NAME = 1;
+	public static final int SET_PANEL_CONTACT = 2;
+	public static final int SET_PANEL_TEL = 3;
+	public static final int SET_PANEL_MOBILE = 4;
+	public static final int SET_PANEL_PASSCODE = 5;
 	public static final int ENTER_PASSCODE = 6;
 	
 	
@@ -106,7 +101,7 @@ public class InputDialogFragment extends DialogFragment{
 		
 		//set title and buttons
 		builder.setMessage(getTitle())
-				.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.btn_enter, new DialogInterface.OnClickListener() {
 			
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
@@ -119,7 +114,7 @@ public class InputDialogFragment extends DialogFragment{
 						
 					}
 				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
@@ -157,24 +152,24 @@ public class InputDialogFragment extends DialogFragment{
 	public String getTitle() {
 		
 		switch(type){
-			case DEVICE_NAME: title = "Name device";
-				inputEditText.setHint("Enter device name");
+			case SET_DEVICE_NAME: title = getResources().getString(R.string.title_dialog_input_setDeviceName);
+				inputEditText.setHint(R.string.hint_dialog_input_setDeviceName);
 					break;
-			case PANEL_NAME: title = "Name panel";
-				inputEditText.setHint("Panel name");
+			case SET_PANEL_NAME: title = getResources().getString(R.string.title_dialog_input_setPanelName);
+				inputEditText.setHint(R.string.hint_dialog_input_setPanelName);
 					break;
-			case PANEL_CONTACT: title = "Update contact name ";
-				inputEditText.setHint("Contact name");
+			case SET_PANEL_CONTACT: title = getResources().getString(R.string.title_dialog_input_setContactName);
+				inputEditText.setHint(R.string.hint_dialog_input_setContactName);
 					break;
-			case PANEL_TEL: title = "Update Telphone Number";
+			case SET_PANEL_TEL: title = getResources().getString(R.string.title_dialog_input_setTel);
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
-					inputEditText.setHint("Telephone number");
+					inputEditText.setHint(R.string.hint_dialog_input_setTel);
 					break;
-			case PANEL_MOBILE: title = "Update Mobile Number";
+			case SET_PANEL_MOBILE: title = getResources().getString(R.string.title_dialog_input_setMobile);
 					inputEditText.setInputType(InputType.TYPE_CLASS_PHONE);
-					inputEditText.setHint("Mobile number");
+					inputEditText.setHint(R.string.hint_dialog_input_setMobile);
 					break;
-			case PANEL_PASSCODE: title = "Update Passcode";
+			case SET_PANEL_PASSCODE: title = getResources().getString(R.string.title_dialog_input_setPasscode);
 					
 					//set filter for EditText
 					
@@ -184,13 +179,13 @@ public class InputDialogFragment extends DialogFragment{
 					
 					//input type is number only
 					inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-					inputEditText.setHint("4 digit passcode");
+					inputEditText.setHint(R.string.hint_dialog_input_setPasscode);
 					
 					//setup password mask
 					inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 					
 					break;
-			case ENTER_PASSCODE: title = "Please enter passcode for the panel";
+			case ENTER_PASSCODE: title = getResources().getString(R.string.title_dialog_input_enterPasscode);
 			
 				//set filter for EditText
 				
@@ -201,13 +196,13 @@ public class InputDialogFragment extends DialogFragment{
 				//input type is number only
 				inputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				inputEditText.setText("");
-				inputEditText.setHint("4 digit passcode");
+				inputEditText.setHint(R.string.hint_dialog_input_enterPasscode);
 				inputEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 				
 				
 			
 				break;
-			default: title = "Enter Information";
+			default: title = getResources().getString(R.string.title_dialog_input_enterInformation);
 					break;
 		
 		
