@@ -23,6 +23,12 @@ import java.util.*;
 public class Device  implements Parcelable{
 	//05 Feb 2014
 	
+	public static final int OK = 0;
+	public static final int FAULTY = 1;
+	public static final int LOADING = 2;
+	
+	
+	
 	private Calendar cal;
 	
 	private int address;
@@ -321,6 +327,7 @@ public class Device  implements Parcelable{
 				for(EmergencyMode em : emSet)
 				{
 					sb.append(em.getDescription()+" , ");
+					
 				}
 				System.out.println(sb);
 				sb.deleteCharAt(sb.length()-2);
@@ -465,7 +472,21 @@ public class Device  implements Parcelable{
 	}
 
 	public int getCurrentStatus() {
-		return currentStatus;
+		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
+		EnumSet<EmergencyStatus> esSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
+		
+		if(esSet.contains(EmergencyStatus.IDENTIFICATION_ACTIVE) 
+			|| emSet.contains(EmergencyMode.DURATION_TEST_IN_PROGRESS)
+			|| emSet.contains(EmergencyMode.FUNCTION_TEST_IN_PROGRESS)){
+			return LOADING;
+		}
+		
+		if(failureStatus!=0 || !communicationStatus) {
+			return FAULTY;
+			
+		}
+		
+		return OK;
 	}
 
 	public void setCurrentStatus(int currentStatus) {

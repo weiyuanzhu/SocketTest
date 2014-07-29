@@ -587,8 +587,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 
 	@Override
 	public void error(String ip) {
+	
 		// TODO Auto-generated method stub
 		super.error(ip);
+		
 		System.out.println("Error: " + ip);
 		ip_connection_map.get(ip).closeConnection();
 		

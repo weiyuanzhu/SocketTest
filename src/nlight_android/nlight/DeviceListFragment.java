@@ -1,5 +1,6 @@
 package nlight_android.nlight;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -34,7 +36,7 @@ import android.widget.Toast;
 import com.example.nclient.R;
 
 /**
- * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities thatcontain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
+ * A simple   {@link android.support.v4.app.Fragment}  subclass. Activities that contain this fragment must implement the  {@link DeviceListFragment.OnDevicdListFragmentListener}  interface to handleinteraction events.
  */
 public class DeviceListFragment extends Fragment {
 	
@@ -46,12 +48,14 @@ public class DeviceListFragment extends Fragment {
 		// TODO: Update argument type and name
 		public void onDeviceItemClicked(int groupPosition, int childPosition);
 		public void onGroupExpandOrCollapse(int groupPosition);
-		public void ft(int address);
-		public void dt(int address);
-		public void st(int address);
-		public void id(int address);
-		public void stopId(int address);
-		public void refreshDevice(int address);
+		public void onMultiSelectionMode(boolean multiSelect);
+		
+		public void ft(List<Integer> addressList);
+		public void dt(List<Integer> addressList);
+		public void st(List<Integer> addressList);
+		public void id(List<Integer> addressList);
+		public void stopId(List<Integer> addressList);
+		public void refreshSelectedDevices(List<Integer> addressList);
 		public void seekBar();
 
 	}
@@ -63,7 +67,7 @@ public class DeviceListFragment extends Fragment {
 	
 	private ExpandableListView deviceListView;
 	private MyExpandableListAdapter mAdapter;
-	private ActionMode mActionMode;
+	private MyActionModeCallback mActionMode;
 	private List<Loop> listDataHeader;
     private Map<Loop, List<Device>> listDataChild;
     
@@ -76,23 +80,59 @@ public class DeviceListFragment extends Fragment {
 	private Loop currentSelectedLoop;
 	private boolean isLoopSelected;
 	
-	private ActionMode.Callback deviceActionModeCallback = new ActionMode.Callback() {
+
+	
+	
+	private class MyActionModeCallback implements AbsListView.MultiChoiceModeListener {
+		
+		View actionModeView = null;
+		TextView counterTextView = null;
 		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			// TODO Auto-generated method stub
+			
+			MenuItem mItem = menu.findItem(R.id.device_select_loop1_all);
+            if(mAdapter.isLoop1Selected()){
+            	mItem.setTitle(R.string.action_deselect_loop1);
+            }else{
+            	mItem.setTitle(R.string.action_select_loop1);
+            }			
+            
+            MenuItem mItem2 = menu.findItem(R.id.device_select_loop2_all);
+            if(mAdapter.isLoop2Selected()){
+            	mItem2.setTitle(R.string.action_deselect_loop2);
+            }else{
+            	mItem2.setTitle(R.string.action_select_loop2);
+            }	
 			return false;
 		}
 		
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			mActionMode = null;
+			
+			mAdapter.setMultiSelectMode(false);
+			mListener.onMultiSelectionMode(false);
+			mAdapter.clearCheck();
+			mAdapter.notifyDataSetChanged();
+			//mActionMode = null;
 		}
 		
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 	        inflater.inflate(R.menu.device_actionmode, menu);
+	        
+	        actionModeView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_devicelist,null);
+			
+			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
+			
+			//counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			
+			mode.setCustomView(actionModeView);
+			
+			
+	        
+	        
 	        return true;
 		
 		}
@@ -100,34 +140,65 @@ public class DeviceListFragment extends Fragment {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			
-			int position = deviceListView.getCheckedItemPosition();
-			System.out.println(position);
+			//int position = deviceListView.getCheckedItemPosition();
+			//System.out.println(position);
 			switch(item.getItemId())
 			{
 				case R.id.device_ft:
-					mListener.ft(getAddress());
+					mListener.ft(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
-					mListener.st(getAddress());
+					mListener.st(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
-					mListener.dt(getAddress());
+					mListener.dt(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
-					mListener.id(getAddress());
+					mListener.id(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
-					mListener.stopId(getAddress());
+					mListener.stopId(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_refresh:
 					
-					mListener.refreshDevice(getAddress());
+					mListener.refreshSelectedDevices(mAdapter.getSelectedDeviceAddressList());
 					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
+					break;
+				case R.id.device_select_loop1_all:
+					if(mAdapter.isLoop1Selected()){
+						mAdapter.deselectLoop1();
+					}else{
+						mAdapter.selectLoop1();
+					}
+					
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
+				case R.id.device_select_loop2_all:
+					if(mAdapter.isLoop2Selected()){
+						mAdapter.deselectLoop2();
+					}else{
+						mAdapter.selectLoop2();
+				}
+
+					
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
+				case R.id.device_deselect_all:
+					mAdapter.clearCheck();
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
+					break;
+				case R.id.device_select_all_faulty:
+					mAdapter.selectFaultyDevices();
+					mAdapter.notifyDataSetChanged();
+					mActionMode.updateCounter();
 					break;
 				
 				default: break;
@@ -139,6 +210,50 @@ public class DeviceListFragment extends Fragment {
 			//mode.finish();
 			return false;
 		}
+
+		@Override
+		public void onItemCheckedStateChanged(ActionMode mode, int position,
+				long id, boolean checked) {
+			
+			int type = ExpandableListView.getPackedPositionType(id);
+			int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+            int childPosition = ExpandableListView.getPackedPositionChild(id);  
+			
+            
+            //prevent loop itself being selected
+           
+			
+			if(!mAdapter.isMultiSelectMode()){
+				
+				mAdapter.clearCheck();
+            	mAdapter.setMultiSelectMode(true);
+            	
+            	mListener.onMultiSelectionMode(true);
+            	
+            	if(type!=0){
+            		mAdapter.selectItem(groupPosition,childPosition);
+            	}
+			}
+			
+			updateCounter();
+			
+			//updateCounter();
+			mAdapter.notifyDataSetChanged();
+			
+			
+			
+			
+			System.out.println("------------onItemCheckedStateChanged-------------");
+			System.out.println("Position: " + position + " checked: " + checked);
+		}
+		
+		private void updateCounter(){
+			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			
+		}
+		
+		
+		
 	};
 	
 	
@@ -179,13 +294,15 @@ public class DeviceListFragment extends Fragment {
 		initListData();
 		
 		mAdapter = new MyExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+		mActionMode = new MyActionModeCallback();
 				
 		//Sort by faults -- default sort
         sort(DeviceActivity.SORT_BY_FAULTY);
 		
 		deviceListView.setAdapter(mAdapter);
 		
-		deviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		deviceListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		deviceListView.setMultiChoiceModeListener(mActionMode);
 		
 		
 		
@@ -195,7 +312,7 @@ public class DeviceListFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
-				deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);
 				System.out.println(position + " clicked");
 				
 			}
@@ -207,19 +324,26 @@ public class DeviceListFragment extends Fragment {
 			public void onGroupExpand(int groupPosition) {
 				
 				// determine which position to highlight 
-				int position =0;
+				/*int position =0;
 				if(deviceListView.isGroupExpanded(0) ){
 					position = groupPosition ==0 ? groupPosition : groupPosition + listDataChild.get(loop1).size();	
 				}
 				else {
-					 position = groupPosition;
+					 = groupPosition;
 				}
-				deviceListView.setItemChecked(position, true);
+				//deviceListView.setItemChecked(position, true);*/
+				
+				//-1 to indicating group been clicked
+				if(!mAdapter.isMultiSelectMode()){
+					mAdapter.selectItem(groupPosition, -1);
+				}
 				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
 				mListener.onGroupExpandOrCollapse(groupPosition);
+				
+				mAdapter.notifyDataSetChanged();
 			}
 			
 			
@@ -232,12 +356,17 @@ public class DeviceListFragment extends Fragment {
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 			
-				deviceListView.clearChoices();
+				//deviceListView.clearChoices();
+				if(!mAdapter.isMultiSelectMode()){
+					mAdapter.clearCheck();
+				}
 				
-				if (mActionMode != null) {
+				//this is for single action mode
+				/*if (mActionMode != null) {
 					mActionMode.finish();
-		        }
+		        }*/
 				
+				mAdapter.notifyDataSetChanged();
 				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
@@ -259,24 +388,43 @@ public class DeviceListFragment extends Fragment {
                                         childPosition), Toast.LENGTH_SHORT)
                         .show();*/
             	
-				if (mActionMode != null) {
+            	//single action mode
+				/*if (mActionMode != null) {
 					mActionMode.finish();
-		        }
+		        }*/
             	
             	
-            	if(groupPosition==0){
-            		deviceListView.setItemChecked(childPosition+1, true);
+				
+            	/*if(groupPosition==0){
+            		int pos = childPosition + 1;
+            		//deviceListView.setItemChecked(childPosition+1, true);
+            		
             	}
             	else {
             		int pos = listDataChild.get(listDataHeader.get(1)).size()+2+childPosition;   
-            		deviceListView.setItemChecked(pos, true);
+            		//deviceListView.setItemChecked(pos, true);
+            		
+            	}*/
+            	
+            	
+            	
+            	mListener.onDeviceItemClicked(groupPosition, childPosition);
+            	mAdapter.selectItem(groupPosition, childPosition);
+            	
+            	if(mAdapter.isMultiSelectMode()){
+            		mActionMode.updateCounter();
             	}
-                mListener.onDeviceItemClicked(groupPosition, childPosition);
-                return false;
+            	
+                
+                
+                mAdapter.notifyDataSetChanged();
+				
+				
+                return true;
             }
         });
 		
-		deviceListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+		/*deviceListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -327,19 +475,21 @@ public class DeviceListFragment extends Fragment {
 				
 
 			}
-			
-			
-			
-			
 		});
+		*/
 		
 		super.onActivityCreated(savedInstanceState);
 	}
+	
+	
+	
 
 	@Override 
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+		mActionMode = null;
+		
 	}
 
 	
@@ -375,6 +525,8 @@ public class DeviceListFragment extends Fragment {
         
 		
 	}
+	
+	
 	
 	private int getAddress()
 	{

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,6 +92,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private boolean autoRefresh = false;
 	private boolean autoRefreshAllDevices = false;
 	private boolean autoRefreshSelectedDevice = false;
+	
+	private boolean multiSelectionMode = false;
 
 	
 	private Handler mHandler = null;
@@ -116,11 +119,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	//Setters and Getters
 	
 		/**
-		 * @return the autoRefresh
+		 * check if should autoRefresh 
+		 * @return true if autoRefresh is checked in preference and device IS NOT in multi-selection mode
 		 */
 		public boolean isAutoRefresh() {
 			
-			autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false);
+			autoRefresh = sharedPreferences.getBoolean("pref_key_refresh", false) && !multiSelectionMode;
 			return autoRefresh;
 		}
 
@@ -256,6 +260,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	/* (non-Javadoc)when device list entering multi-selection mode
+	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#onMultiSelectionMode()
+	 */
+	@Override
+	public void onMultiSelectionMode(boolean multiSelect) {
+		multiSelectionMode = multiSelect;
+		
+	}
+
+	
 	
 	
 	
@@ -265,6 +279,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 	
 	//Activity life circle
+
+	
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -427,7 +444,9 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		return false;
 	}
 	
-	
+
+
+
 	@Override
 	protected void onDestroy() {
 		if(connection!=null){
@@ -452,25 +471,33 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	
 
 	@Override
-	public void ft(int address) {
+	public void ft(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
 			System.out.println("----------ftTest--------");
-			List<char[] > commandList = ToggleCmdEnum.FT.toggle(address);
+			List<char[] > commandList = ToggleCmdEnum.FT.multiToggleTest(addressList);
 			connection.fetchData(commandList);
+			if(addressList.contains(64)|| addressList.contains(192)){
+				
+				mHandler.postDelayed(refreshAllDevices, 10000);
+				
+				
+			}
 		}
 		
 	}
 
 	@Override
-	public void dt(int address) {
+	public void dt(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
 			System.out.println("----------ftTest--------");
-			List<char[] > commandList = ToggleCmdEnum.DT.toggle(address);
+			List<char[] > commandList = ToggleCmdEnum.DT.multiToggleTest(addressList);
 			connection.fetchData(commandList);
+			
+			
 		}
 		
 	}
@@ -479,36 +506,36 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	 * @see nlight_android.nlight.DeviceListFragment.OnDevicdListFragmentListener#st(int)
 	 */
 	@Override
-	public void st(int address) {
+	public void st(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
 			System.out.println("----------ftTest--------");
-			List<char[] > commandList = ToggleCmdEnum.ST.toggle(address);
+			List<char[] > commandList = ToggleCmdEnum.ST.multiToggleTest(addressList);
 			connection.fetchData(commandList);
 		}
 		
 	}
 
 	@Override
-	public void id(int address) {
+	public void id(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
 			System.out.println("----------ID--------");
-			List<char[] > commandList = ToggleCmdEnum.IDENTIFY.toggle(address);
+			List<char[] > commandList = ToggleCmdEnum.IDENTIFY.multiToggleTest(addressList);
 			connection.fetchData(commandList);
 		}
 		
 	}
 
 	@Override
-	public void stopId(int address) {
+	public void stopId(List<Integer> addressList) {
 		
 		 //commandList = CommandFactory.ftTest(device.getAddress());
 		if(isConnected && !isDemo){
 			System.out.println("--------stopId----------");
-			List<char[] > commandList = ToggleCmdEnum.STOP_IDENTIFY.toggle(address);
+			List<char[] > commandList = ToggleCmdEnum.STOP_IDENTIFY.multiToggleTest(addressList);
 			connection.fetchData(commandList);
 		}
 		
@@ -567,7 +594,22 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	}
 	
 	@Override
-	public void refreshDevice(int address)
+	public void refreshSelectedDevices(List<Integer> addressList)
+	{
+		if(isConnected && !isDemo){
+			System.out.println("----------refresh device status--------");
+			List<char[] > commandList = ToggleCmdEnum.REFRESH.multiToggleTest(addressList);
+			connection.fetchData(commandList);
+		}
+		else {
+			
+			mHandler.post(updateDeviceInfoFragmentUI);
+		}
+	
+		
+	}
+	
+	public void refreshsSingleDevice(int address)
 	{
 		if(isConnected && !isDemo){
 			System.out.println("----------refresh device status--------");
@@ -582,6 +624,23 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 	}
 	
+	Runnable refreshAllDevices  = new Runnable(){
+
+		@Override
+		public void run() {
+			if(!isDemo && connection!=null){
+				List<char[] > commandList = GetCmdEnum.UPDATE_LIST.get();
+			
+				System.out.println(connection.isListening());
+				if(connection.isListening())
+				{
+					connection.fetchData(commandList);
+				}
+			}
+			
+		}
+		
+	};
 	
 	
 	Runnable autoRefreshCurrentDevice = new Runnable(){
@@ -589,11 +648,12 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		@Override
 		public void run() {
 			
-			System.out.println("---------------auto refresh current selected device----------------");
-			System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
+			//System.out.println("---------------auto refresh current selected device----------------");
+			//System.out.println("AutoRresh: " + isAutoRefreshSelectedDevice());
 			
-			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice()){
-				refreshDevice(currentSelectedDevice.getAddress());
+			if( isAutoRefresh() && currentSelectedDevice!=null && isAutoRefreshSelectedDevice())
+			{
+				refreshsSingleDevice(currentSelectedDevice.getAddress());
 			}
 			else{
 				mHandler.post(updateDeviceInfoFragmentUI);
@@ -609,8 +669,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 
 		@Override
 		public void run() {
-			System.out.println("---------------auto refresh all devices----------------");
-			System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
+			//System.out.println("---------------auto refresh all devices----------------");
+			//System.out.println("AutoRresh: " + isAutoRefreshAllDevices());
 			
 			
 			if( isAutoRefresh() && isAutoRefreshAllDevices()){
