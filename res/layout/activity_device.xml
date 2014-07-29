@@ -7,7 +7,7 @@
     android:showDividers="middle">
 
     <fragment
-        android:name="nlight_android.nlight.DeviceListFragment"
+        android:name="com.mackwell.nlight.nlight.DeviceListFragment"
         android:tag="deviceListFragment"
         android:id="@+id/device_list_fragment"
         android:layout_width="0dip"
