@@ -384,14 +384,14 @@ public class Device  implements Parcelable{
 		return lampEmergencyTime;
 	}
 	
-	public String getLampEmergencyTimeText()
+	public int getLampEmergencyTimeHour()
 	{
 		
 		int i = getLampEmergencyTime()/60 + 1;
 		
-		String str = "Less than " + i + " hours";
 		
-		return str;
+		
+		return i;
 		
 	}
 

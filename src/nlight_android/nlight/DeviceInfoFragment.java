@@ -15,6 +15,7 @@ import com.example.nclient.R;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,6 +179,8 @@ public class DeviceInfoFragment extends ListFragment {
 	
 	public List<Map<String,Object>> getData(Device device)
 	{
+		Resources res = getResources();
+		
 		//initial dataList
 		if(dataList==null) {
 			dataList = new ArrayList<Map<String,Object>>();
@@ -261,20 +264,38 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_durationTest));
-		map.put("value", device==null? "n/a" : device.getDtTime() + " minutes");
+		String dtTimeText;
+		if(device.isCommunicationStatus()){
+		dtTimeText = res.getString(R.string.text_durationTest_value,device.getDtTime()); 
+		}
+		else{
+			dtTimeText = "-";
+		}
+		
+		map.put("value", device==null? "n/a" : dtTimeText);
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyLamp));
-		map.put("value", device==null? "n/a" : device.getLampEmergencyTimeText());
-	
+			
+		String emgergencyLampText ;
+		if(device.isCommunicationStatus()){
+			emgergencyLampText= res.getString(R.string.text_emergencyLamp_value, device.getLampEmergencyTimeHour());
+		}
+		else{
+			emgergencyLampText = "-";
+		}
+		
+		map.put("value", device==null? "n/a" : emgergencyLampText);
+
 		
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_communicationStatus));
-		map.put("value", device==null? "n/a" : device.getCommunicationStatusText());
+		String communicationText = device.isCommunicationStatus()? res.getString(R.string.text_deviceCommunicationOk): res.getString(R.string.text_deviceLost);
+		map.put("value", device==null? "n/a" : communicationText);
 			
 		dataList.add(map);
 	
