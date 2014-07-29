@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nclient.R;
 
@@ -141,6 +142,98 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		}
 		return 1;
 	}
+	@Override
+		public void searchAgain() {
+		
+		searchUDP();			
+	}
+	 
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
+	 */
+	@Override
+	public void connectToPanels(List<Integer> selected) {
+		
+		//connecting to panels, and close UDP socket
+		udpConnection.setListen(false);
+		
+		//save checkBox status
+		
+		savePanelSelectionToIpLIstSelected(selected);
+		
+		progressBar.setMax(16*ipListSelected.size());
+		
+		
+		System.out.println(ipListSelected);
+		
+		
+		
+		
+		/*
+		 *  Initial connections and rxBuffer for each panel
+		 */
+		
+		for(String ip : ipListSelected)
+		{
+			PanelConnection connection = new PanelConnection(this, ip);
+			ip_connection_map.put(ip, connection);
+			rxBufferMap.put(ip, new ArrayList<Integer>());
+			
+		}
+		//on main thread
+		//show progress bar and text
+		
+		//set isDemo flag
+		isDemo = false;
+		panelToLoad = ipListSelected.size();
+		
+		
+		//Message msg = mHandler.obtainMessage();
+		//msg.arg1 = LOADING;
+		//mHandler.sendMessage(msg);
+
+		
+		
+		//check if loading is already in process and panel selected not equal to 0
+		if(!isLoading && ipListSelected.size()!=0){
+			progressText.setText(getResources().getString(R.string.text_loading_panel,panelToLoad));
+			
+			progressText.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
+			
+			
+			System.out.println("------------liveMode clicked");
+			List<char[]> commandList = CommandFactory.getPanelInfo();
+			
+			for(String ip: ipListSelected){
+				
+				PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
+				conn.fetchData(commandList);
+			}
+			
+			
+			//set button disable
+			liveBtn.setEnabled(false);
+			demoBtn.setEnabled(false);
+			isLoading = true;
+			
+		}
+		
+		saveCheckedStatsToPreference();
+		
+	}
+	
+	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
+	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#cancelDialog(java.util.List)
+	 */
+	@Override
+	public void cancelDialog(List<Integer> selected) {
+		
+		savePanelSelectionToIpLIstSelected(selected);	
+		saveCheckedStatsToPreference();
+		
+	}
+
 	
 	/**
 	 * This function takes an ip for the panel and return it's location in the SharedPreference 
@@ -162,13 +255,17 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		return "";
 	}
 	
+	
+	
+	//life Cycle
+	
 	@SuppressLint("HandlerLeak")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loading_screen);
 		
-		searchUDP();
+		
 		
 		//init all view items
 		liveBtn = (Button) findViewById(R.id.loadscreen_live_imageBtn);
@@ -178,6 +275,9 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		//init loading panals 
 		initializeFields();
+		
+		//search for all panels
+		searchUDP();
 		
 		//update connection flags
 		checkConnectivity();
@@ -192,17 +292,17 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 				
 				switch(msg.arg1){
 					case LOADING:
-						progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
+						progressText.setText(getResources().getString(R.string.text_loading_panel,panelToLoad));
 						break;
 					case PARSING: 
-						progressText.setText("Analysing Panel Data");
+						progressText.setText(R.string.text_analyzing_data);
 						break;
 					case LOADING_FINISHED:
-						progressText.setText("Finish Loading");
+						progressText.setText(R.string.text_finish_loading);
 						break;
 					case ERROR:
 						String ipAdd = (String) msg.obj;
-						progressText.setText("Cannot connect to " + ipAdd + ", please check connection.");
+						progressText.setText(getResources().getString(R.string.text_connect_error,ipAdd));
 						progressBar.setVisibility(View.INVISIBLE);
 						liveBtn.setEnabled(true);
 						break;
@@ -251,7 +351,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		if(udpConnection!=null)
 		{
 			udpConnection.setListen(false);
-			//udpConnection.closeConnection();
+			udpConnection.closeConnection();
 		}
 		
 		//close TCP connections
@@ -270,8 +370,13 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		// TODO Auto-generated method stub
 		super.onResume();
 		
+		//reset panelToLoad to 0 to prevent unexpected error
+		panelToLoad = 0;
+		 		
+		
 		//reset progress bar and progress
 		progress = 0;
+		
 		progressBar.setVisibility(View.INVISIBLE);
 		
 		//re-enable buttons
@@ -384,7 +489,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		
 		isDemo = true;
 		
-		progressText.setText("Preparing Panel Data");
+		progressText.setText(R.string.text_prepPanelData);
 		progressText.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.VISIBLE);
 
@@ -397,10 +502,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	
 	public void liveMode(View view)
 	{
-		if(ipListAll.size()==0){
+		/*if(ipListAll.size()==0){
 			
 			searchUDP();
-		}
+		}*/
 		popDialog();
 		
 		
@@ -446,35 +551,38 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	{
 		panelList = new ArrayList<Panel>();
 	
-		Panel panel = new Panel("192.168.1.18");
+		Panel panel = new Panel("192.168.1.241");
 		panel.setPanelLocation("Mackwell L&B 1   ");
 		panel.setSerialNumber((long)1376880756);
 		panel.setGtinArray(new int[]{131,1,166,43,154,4});
+		panel.setReportUsageLong(10234);
 
-		panel.getLoop1().addDevice(new Device(0,"?LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(1,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,true,"?LB 1",0,0,0,254,1375167879,new int[]{11,1,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,true,"LB 2",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
 		
 		
-		panel.getLoop2().addDevice(new Device(128,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(129,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(128,true,"LB 4",0,0,0,150,1374467255,new int[]{78,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(129,true,"LB 4",0,0,0,150,1374537221,new int[]{130,4,166,43,154,4}));
 		
 		
 		panelList.add(panel);
 	
-		panel = new Panel("192.168.1.19");
+		panel = new Panel("192.168.1.242");
 		panel.setPanelLocation("Mackwell L&B 2    ");
 		panel.setSerialNumber((long)1375868516);
 		panel.setGtinArray(new int[]{132,2,166,43,154,4});
+		panel.setReportUsageLong(1010234);
 		
-		panel.getLoop1().addDevice(new Device(0,"LB 5",72,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(1,"LB 6",0,0,0,200,1366965291,new int[]{178,5,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(2,"?",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(3,"Dining Room",4,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(4,"Bed Room",192,0,0,192,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,true,"LB 5",72,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,true,"LB 6",0,0,0,200,1366965291,new int[]{178,5,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(2,true,"?",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(3,true,"Dining Room",4,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",192,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
 		
 		
-		panel.getLoop2().addDevice(new Device(128,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
-		panel.getLoop2().addDevice(new Device(129,"LB 8",0,0,0,150,1363967292,new int[]{243,4,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(128,true,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(129,true,"LB 8",0,0,0,23,1363967292,new int[]{243,4,166,43,154,4}));
+		panel.getLoop2().addDevice(new Device(130,false,"Exit",0,0,0,0,1363947292,new int[]{246,5,166,43,154,4}));
 
 		panelList.add(panel);
 		
@@ -484,8 +592,10 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 
 	@Override
 	public void error(String ip) {
+	
 		// TODO Auto-generated method stub
 		super.error(ip);
+		
 		System.out.println("Error: " + ip);
 		ip_connection_map.get(ip).closeConnection();
 		
@@ -500,91 +610,6 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	
 	
 	
-	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
-	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#cancelDialog(java.util.List)
-	 */
-	@Override
-	public void cancelDialog(List<Integer> selected) {
-		
-		savePanelSelectionToIpLIstSelected(selected);	
-		saveCheckedStatsToPreference();
-		
-	}
-
-	// 
-	/* (non-Javadoc) implementing ListDialogFragment's ListDialogListener interface
-	 * @see nlight_android.nlight.ListDialogFragment.ListDialogListener#connectPanels(java.util.List)
-	 */
-	@Override
-	public void connectToPanels(List<Integer> selected) {
-		
-		//connecting to panels, and close UDP socket
-		udpConnection.setListen(false);
-		
-		//save checkBox status
-		
-		savePanelSelectionToIpLIstSelected(selected);
-		
-		progressBar.setMax(16*ipListSelected.size());
-		
-		
-		System.out.println(ipListSelected);
-		
-		
-		
-		
-		/*
-		 *  Initial connections and rxBuffer for each panel
-		 */
-		
-		for(String ip : ipListSelected)
-		{
-			PanelConnection connection = new PanelConnection(this, ip);
-			ip_connection_map.put(ip, connection);
-			rxBufferMap.put(ip, new ArrayList<Integer>());
-			
-		}
-		//on main thread
-		//show progress bar and text
-		
-		//set isDemo flag
-		isDemo = false;
-		panelToLoad = ipListSelected.size();
-		
-		
-		//Message msg = mHandler.obtainMessage();
-		//msg.arg1 = LOADING;
-		//mHandler.sendMessage(msg);
-
-		
-		
-		//check if loading is already in process and panel selected not equal to 0
-		if(!isLoading && ipListSelected.size()!=0){
-			progressText.setText("Loading Panel Data " + " (" + panelToLoad + ")");
-			
-			progressText.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.VISIBLE);
-			
-			
-			System.out.println("------------liveMode clicked");
-			List<char[]> commandList = CommandFactory.getPanelInfo();
-			
-			for(String ip: ipListSelected){
-				
-				PanelConnection conn = (PanelConnection) ip_connection_map.get(ip);
-				conn.fetchData(commandList);
-			}
-			
-			
-			//set button disable
-			liveBtn.setEnabled(false);
-			isLoading = true;
-			
-		}
-		
-		saveCheckedStatsToPreference();
-		
-	}
 	
 	
 	public void popDialog()
@@ -614,7 +639,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panelListDialog.setDataList(dataList);
 				
 		//test.setIps(null); //null test
-		panelListDialog.show(getFragmentManager(), "test"); //popup dialog
+		panelListDialog.show(getFragmentManager(), "panelListDialog"); //popup dialog
 				
 		
 	}
@@ -630,6 +655,11 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 	}
 
 	private void searchUDP(){
+		
+		//clear current ip list and datalist for dialog listview;
+		ipListAll.clear();
+		dataList.clear();
+		
 		if(udpConnection == null ){
 			udpConnection = new UDPConnection(Constants.FIND_PANELS, this);
 		}
@@ -641,10 +671,11 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		}
 		
 		//send UDP panel search messages
-		ExecutorService exec = Executors.newCachedThreadPool();
-		exec.execute(udpConnection);
-		exec.shutdown();
 		
+		udpConnection.tx(Constants.FIND_PANELS);
+		
+		
+		Toast.makeText(this, R.string.toast_search_panel, Toast.LENGTH_LONG).show();	
 	}
 	
 	/**
@@ -693,5 +724,7 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 			}
 		}
 	}
+
+	
 
 }

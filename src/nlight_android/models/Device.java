@@ -23,6 +23,12 @@ import java.util.*;
 public class Device  implements Parcelable{
 	//05 Feb 2014
 	
+	public static final int OK = 0;
+	public static final int FAULTY = 1;
+	public static final int LOADING = 2;
+	
+	
+	
 	private Calendar cal;
 	
 	private int address;
@@ -44,7 +50,7 @@ public class Device  implements Parcelable{
 	
 	private int currentStatus;
 	
-	private boolean isFailed;
+	private boolean faulty;
 	
 	public Device(Parcel source) {
 		this();
@@ -69,9 +75,10 @@ public class Device  implements Parcelable{
 		gtinArray = new int[]{0,0,0,0,0,0};
 	}
 	
-	public Device(int add,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
+	public Device(int add, boolean cs,String loc,int fs,int es,int em,int bat,long sn,int[] gtin)
 	{
 		address = add;
+		communicationStatus = cs;
 		location = loc;
 		failureStatus = fs;
 		emergencyStatus = es;
@@ -238,25 +245,37 @@ public class Device  implements Parcelable{
 		
 		EnumSet<FailureStatus> fsSet = new FailureStatusFlag().getFlagStatus(failureStatus);
 		
-		if (fsSet.size()==0)
-		{
-			return "All OK";
+		if(communicationStatus){
+			if (fsSet.size()==0)
+			{
+				sb.append("All OK");
+			}
+			else{
+				for(FailureStatus fs : fsSet)
+				{
+					sb.append(fs.getDescription()+" , ");
+				}
+				System.out.println(sb);
+				
+				//trim last ","
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
 		}
 		else{
-			for(FailureStatus fs : fsSet)
-			{
-				sb.append(fs.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			
-			//trim last ","
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
+		
 	}
 
 	public boolean isCommunicationStatus() {
 		return communicationStatus;
+	}
+	
+	public String getCommunicationStatusText(){
+		
+		return communicationStatus ? "OK" : "Device lost";
 	}
 
 	public int getEmergencyStatus() {
@@ -268,19 +287,26 @@ public class Device  implements Parcelable{
 		
 		EnumSet<EmergencyStatus> esSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
 		
-		if (esSet.size()==0)
-		{
-			return "-";
+		if(communicationStatus){
+			if (esSet.size()==0)
+			{
+				sb.append("-");
+			}
+			else{
+				for(EmergencyStatus es : esSet)
+				{
+					sb.append(es.getDescription()+" , ");
+				}
+				System.out.println(sb);
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
+			
 		}
 		else{
-			for(EmergencyStatus es : esSet)
-			{
-				sb.append(es.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
 	}
 
 	public int getEmergencyMode() {
@@ -292,19 +318,27 @@ public class Device  implements Parcelable{
 		
 		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
 		
-		if (emSet.size()==0)
-		{
-			return "Normal Mode";
+		if(communicationStatus){
+			if (emSet.size()==0)
+			{
+				sb.append("Normal Mode");
+			}
+			else{
+				for(EmergencyMode em : emSet)
+				{
+					sb.append(em.getDescription()+" , ");
+					
+				}
+				System.out.println(sb);
+				sb.deleteCharAt(sb.length()-2);
+				
+			}
+			
 		}
 		else{
-			for(EmergencyMode em : emSet)
-			{
-				sb.append(em.getDescription()+" , ");
-			}
-			System.out.println(sb);
-			sb.deleteCharAt(sb.length()-2);
-			return sb.toString();
+			sb.append("-");
 		}
+		return sb.toString();
 	}
 
 	public int getBattery() {
@@ -316,15 +350,19 @@ public class Device  implements Parcelable{
 		DecimalFormat df = new DecimalFormat("#.0");
 		double bat = (double) battery/254*100;
 		
-		switch(battery)
-		{
-			case 254:
-
-				return "100 %";
-			case 0:
-				return "0 %";
-			default: return df.format(bat) + " %";
-
+		if(isCommunicationStatus()){
+			switch(battery)
+			{
+				case 254:
+	
+					return "100 %";
+				case 0:
+					return "0 %";
+				default: return df.format(bat) + " %";
+	
+			}
+		}else{
+			return "-";
 		}
 	
 		
@@ -350,14 +388,14 @@ public class Device  implements Parcelable{
 		return lampEmergencyTime;
 	}
 	
-	public String getLampEmergencyTimeText()
+	public int getLampEmergencyTimeHour()
 	{
 		
 		int i = getLampEmergencyTime()/60 + 1;
 		
-		String str = "Less than " + i + " hours";
 		
-		return str;
+		
+		return i;
 		
 	}
 
@@ -409,20 +447,25 @@ public class Device  implements Parcelable{
 	}
 
 	/**
-	 * @return the isFailed
+	 * @return the boolean faulty
 	 */
-	public boolean isFailed() {
-		
-		if(failureStatus==0) return false;
+	public boolean isFaulty() {
+		//check both failure status and communication status
+		//either will cause device faulty
+		if(failureStatus==0 && communicationStatus) {
+			return false;
+		}
 		return true;
 	}
 
 	/**
 	 * @param isFailed the isFailed to set
 	 */
-	public void setFailed(boolean isFailed) {
-		this.isFailed = isFailed;
+	public void setFaulty(boolean faulty) {
+		this.faulty = faulty;
 	}
+	
+	
 
 	public Calendar getCal() {
 		return cal;
@@ -433,7 +476,21 @@ public class Device  implements Parcelable{
 	}
 
 	public int getCurrentStatus() {
-		return currentStatus;
+		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
+		EnumSet<EmergencyStatus> esSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
+		
+		if(esSet.contains(EmergencyStatus.IDENTIFICATION_ACTIVE) 
+			|| emSet.contains(EmergencyMode.DURATION_TEST_IN_PROGRESS)
+			|| emSet.contains(EmergencyMode.FUNCTION_TEST_IN_PROGRESS)){
+			return LOADING;
+		}
+		
+		if(failureStatus!=0 || !communicationStatus) {
+			return FAULTY;
+			
+		}
+		
+		return OK;
 	}
 
 	public void setCurrentStatus(int currentStatus) {

@@ -62,7 +62,17 @@ public class DeviceInfoListAdapter extends SimpleAdapter {
 		
 		if(descriptionString.equals("Failure status"))
 		{
-			content.setTextColor(contentString.equals("All OK")? Color.BLACK : Color.RED);
+			if(contentString.equals("All OK") || contentString.equals("-")){
+				content.setTextColor(Color.BLACK);
+			}
+			else{
+				content.setTextColor(Color.RED);
+			}
+		}
+		
+		if(descriptionString.equals("Communication status"))
+		{
+			content.setTextColor(contentString.equals("OK")? Color.BLACK : Color.RED);
 			
 		}
 		

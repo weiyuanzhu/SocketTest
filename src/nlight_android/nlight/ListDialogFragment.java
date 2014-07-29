@@ -36,6 +36,7 @@ public class ListDialogFragment extends DialogFragment {
 	public interface ListDialogListener{
 		public void connectToPanels(List<Integer> selected);
 		public void cancelDialog(List<Integer> selected);
+		public void searchAgain();
 
 		
 	} 
@@ -161,7 +162,7 @@ public class ListDialogFragment extends DialogFragment {
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    
 	    // Set the dialog title
-	    builder.setTitle(ips == null? "No panel found in the building " : "Panel List");
+	    builder.setTitle(ips == null? R.string.title_dialog_nopanelfound : R.string.title_dialog_panellist);
 	    
 	    
 	    
@@ -185,7 +186,15 @@ public class ListDialogFragment extends DialogFragment {
 	    // Set the action buttons
 	    builder.setView(listView);
 	    
-	           builder.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+    		    builder.setNeutralButton(R.string.btn_searchagain, new DialogInterface.OnClickListener() {
+				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mListener.searchAgain();
+					}
+				});
+	    
+	           builder.setPositiveButton(R.string.btn_connect, new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
 	                   // User clicked OK, so save the mSelectedItems results somewhere
@@ -197,13 +206,15 @@ public class ListDialogFragment extends DialogFragment {
 	                   
 	               }
 	           });
-	           builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+	           builder.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
 	               @Override
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   mSelectedItems = getCheckedItemsList(listView.getCheckedItemPositions()); // convert SparseBooleanMap to list
 	            	   mListener.cancelDialog(mSelectedItems);            	   
 	               }
 	           });
+	           
+	       
 	    
 	    return builder.create();
 	}

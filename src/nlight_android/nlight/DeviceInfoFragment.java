@@ -15,6 +15,7 @@ import com.example.nclient.R;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,6 +179,8 @@ public class DeviceInfoFragment extends ListFragment {
 	
 	public List<Map<String,Object>> getData(Device device)
 	{
+		Resources res = getResources();
+		
 		//initial dataList
 		if(dataList==null) {
 			dataList = new ArrayList<Map<String,Object>>();
@@ -194,7 +197,7 @@ public class DeviceInfoFragment extends ListFragment {
 		String name = location.startsWith("?")? location + "[Click and hold to name device]" : location;
 		
 		
-		map.put("description", "Device name");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_deviceName));
 		map.put("value", device==null? "n/a" : name);
 			
 		dataList.add(map);
@@ -206,20 +209,20 @@ public class DeviceInfoFragment extends ListFragment {
 		//put correct address for device, -128 if it is on loop2
 		int address = device.getAddress() < 127 ? device.getAddress(): device.getAddress()-128; 
 		
-		map.put("description", "Address");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_address));
 		map.put("value", device==null? "n/a" : address);
 		
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "Serial number");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_serialNumber));
 		map.put("value", device==null? "n/a" : device.getSerialNumber());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "GTIN");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_gtin));
 		map.put("value", device==null? "n/a" : device.getGTIN());
 			
 		dataList.add(map);
@@ -235,46 +238,64 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "Emergency mode");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyMode));
 		map.put("value", device==null? "n/a" : device.getEmergencyModeText());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "Emergency status");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyStatus));
 		map.put("value", device==null? "n/a" : device.getEmergencyStatusText());
 			
 		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("description", "Failure status");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_failureStatus));
 		map.put("value", device==null? "n/a" : device.getFailureStatusText());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", "Battery level");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_batteryLevel));
 		map.put("value", device==null? "n/a" : device.getBatteryLevel());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", "Last duration test result");
-		map.put("value", device==null? "n/a" : device.getDtTime() + " minutes");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_durationTest));
+		String dtTimeText;
+		if(device.isCommunicationStatus()){
+			dtTimeText = res.getString(R.string.text_durationTest_value,device.getDtTime()); 
+		}
+		else{
+			dtTimeText = "-";
+		}
+		
+		map.put("value", device==null? "n/a" : dtTimeText);
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", "Total emgerency lamp operating time");
-		map.put("value", device==null? "n/a" : device.getLampEmergencyTimeText());
-	
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyLamp));
+			
+		String emgergencyLampText ;
+		if(device.isCommunicationStatus()){
+			emgergencyLampText= res.getString(R.string.text_emergencyLamp_value, device.getLampEmergencyTimeHour());
+		}
+		else{
+			emgergencyLampText = "-";
+		}
+		
+		map.put("value", device==null? "n/a" : emgergencyLampText);
+
 		
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", "Communication status");
-		map.put("value", device==null? "n/a" : "OK");
+		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_communicationStatus));
+		String communicationText = device.isCommunicationStatus()? res.getString(R.string.text_deviceCommunicationOk): res.getString(R.string.text_deviceLost);
+		map.put("value", device==null? "n/a" : communicationText);
 			
 		dataList.add(map);
 	
@@ -297,7 +318,7 @@ public class DeviceInfoFragment extends ListFragment {
 				//display dialog
 				InputDialogFragment dialog = new InputDialogFragment();
 				dialog.setHint(device.getLocation());
-				dialog.setType(InputDialogFragment.DEVICE_NAME);
+				dialog.setType(InputDialogFragment.SET_DEVICE_NAME);
 				dialog.show(getFragmentManager(), "inputDialog");
 			}
 	
@@ -334,13 +355,16 @@ public class DeviceInfoFragment extends ListFragment {
 		//Calendar deviceCal = device.getCal();
 		
 		//demo cal
-		Calendar deviceCal = Calendar.getInstance();
+		Calendar deviceCal = device.getCal();
 		
     	SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
     	
     	String on = autoRefresh? "On" : "Off";
     	
-		updateStampTextView.setText("Auto refresh: " + on + ", Device last refreshed: " + sdf.format(deviceCal.getTime()));
+    	String auto = getResources().getString(R.string.text_autoRefresh,on);
+    	String time = getResources().getString(R.string.text_lastRefresh,sdf.format(deviceCal.getTime()));
+    	    	
+		updateStampTextView.setText(auto + time);
 		
 		//update deviceInfo ListView
 		dataList.clear();

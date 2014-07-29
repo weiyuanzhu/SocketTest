@@ -6,8 +6,6 @@ package nlight_android.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import nlight_android.util.CRC;
-import nlight_android.util.Constants;
 import nlight_android.util.*;
 import java.util.*;
 
@@ -73,6 +71,38 @@ public enum GetCmdEnum  {
 		commandList.add(command);
 		System.out.println(txBuffer);
 		return commandList;
+		
+		
+	}
+	
+	public char[] getSingleCommand()
+	{
+		
+		
+		List<Integer> txBuffer = new ArrayList<Integer>();
+		
+		txBuffer.add(Constants.HOST_ID);
+		txBuffer.add(Constants.MASTER_GET);
+		txBuffer.add(getValue());
+		int checksum = CRC.calcCRC(txBuffer, txBuffer.size());
+		txBuffer.add(CRC.getUnsignedInt(checksum));
+		txBuffer.add(CRC.getUnsignedInt(checksum >> 8));
+		
+		txBuffer.add(Constants.UART_STOP_BIT_H);
+		txBuffer.add(Constants.UART_STOP_BIT_L);
+		txBuffer.add(Constants.UART_NEW_LINE_H);
+		txBuffer.add(Constants.UART_NEW_LINE_L);
+		
+		char[] command = new char[txBuffer.size()];
+		for(int j=0; j<txBuffer.size();j++)		
+		{
+			command[j] = (char) txBuffer.get(j).intValue();
+			
+			
+		}
+		
+	
+		return command;
 		
 		
 	}

@@ -66,7 +66,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 	private boolean isConnected;
 	
 
-	/* (non-Javadoc) implementing TCPConnection callback for retreive data from another thread
+	/* (non-Javadoc) implementing TCPConnection callback for retrieve data from another thread
 	 * @see nlight_android.socket.TCPConnection.CallBack#receive(java.util.List, java.lang.String)
 	 */
 	@Override
@@ -287,7 +287,7 @@ public class PanelListFragment extends ListFragment implements TCPConnection.Cal
 			map = new HashMap<String, Object>();
 			map.put("location",p.getPanelLocation().trim());
 			map.put("ip",p.getIp());
-			if(p.getOverAllStatus()== Constants.ALL_OK){
+			if(p.getOverAllStatus()== Panel.OK){
 				map.put("img", R.drawable.greentick);
 			}else map.put("img", R.drawable.redcross);
 			map.put("faultyNo", "("+p.getFaultDeviceNo()+")");

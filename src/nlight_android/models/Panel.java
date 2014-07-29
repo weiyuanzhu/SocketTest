@@ -19,6 +19,16 @@ import java.util.*;
 public class Panel  implements Parcelable {
 	
 	public static final double FLASH_MEMORY = 7549747; // 90% of 8M bytes (8288608 bits)
+	public static final int OK = 0x01;
+	public static final int NOT_CONFIG = 0x02;
+	public static final int FAULT = 0x03;
+	public static final int CLOCK_NOT_SYNC = 0x04;
+	public static final int RESERVED = 0x05;
+	public static final int GROUP_TEST_MISS = 0x06;
+	public static final int GROUP_TEST_MISS_AND_FAULT = 0x07;
+	public static final int MEMORY_FULL = 0x08;
+	public static final int MEMORY_FAILURE = 0x09;
+	
 	
 	
 	private Loop loop1;
@@ -45,6 +55,9 @@ public class Panel  implements Parcelable {
 	
 	private int overAllStatus;
 	private int faultDeviceNo;
+	
+	private boolean engineerMode = false;
+	
 	
 	public Panel()
 	{
@@ -176,6 +189,20 @@ public class Panel  implements Parcelable {
 
 	//getters
 	
+	/**
+	 * @return the engineerMode
+	 */
+	public boolean isEngineerMode() {
+		return engineerMode;
+	}
+
+	/**
+	 * @param engineerMode the engineerMode to set
+	 */
+	public void setEngineerMode(boolean engineerMode) {
+		this.engineerMode = engineerMode;
+	}
+
 	public String getPanelLocation() {
 		return panelLocation;
 	}
@@ -243,7 +270,9 @@ public class Panel  implements Parcelable {
 		double r = (reportUsageLong / FLASH_MEMORY) * 100;
 		int a = (int) Math.round(r) + 1;
 		StringBuilder sb = new StringBuilder();
-		sb.append("< ");
+		if(a==1){
+			sb.append("< ");
+		}
 		sb.append(a);
 		sb.append("%");
 		return sb.toString();
@@ -307,6 +336,16 @@ public class Panel  implements Parcelable {
 
 	public void setReportUsage(String reportUsage) {
 		this.reportUsage = reportUsage;
+	}
+	
+	
+
+	public long getReportUsageLong() {
+		return reportUsageLong;
+	}
+
+	public void setReportUsageLong(long reportUsageLong) {
+		this.reportUsageLong = reportUsageLong;
 	}
 
 	public void setOverAllStatus(int overAllStatus) {
@@ -386,9 +425,9 @@ public class Panel  implements Parcelable {
 		
 		if(loop1.getStatus()!=0 || loop2.getStatus()!=0)
 		{
-			overAllStatus = Constants.FAULT;
+			overAllStatus = Panel.FAULT;
 			
-		}else overAllStatus = Constants.ALL_OK;
+		}else overAllStatus = Panel.OK;
 		return overAllStatus;
 	}
 

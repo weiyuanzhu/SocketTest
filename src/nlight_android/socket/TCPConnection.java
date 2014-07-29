@@ -18,6 +18,9 @@ import nlight_android.util.Constants;
 
 public class TCPConnection {
 	
+	
+	
+	
 	//interface for callback
 		public interface CallBack 
 		{
@@ -203,7 +206,7 @@ public class TCPConnection {
 						
 				}
 				
-					
+				
 			
 				
 				catch(Exception ex)
@@ -213,13 +216,21 @@ public class TCPConnection {
 				}
 				finally
 				{		
-
+					try {
+						TimeUnit.MILLISECONDS.sleep(Constants.GAP_BETWEEN_COMMANDS);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					System.out.println("Tx: complete (finally)");
 						
 					
 				}		
 		
 			}
+			
+			//finished all commands in the commandList
+			//Thread.yield();
 		}
 	
 	};

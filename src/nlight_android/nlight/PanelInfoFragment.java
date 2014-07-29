@@ -119,7 +119,9 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	}
 	
 	
-	
+	public PanelInfoFragment(){
+		// Required empty public constructor
+	}
 	
 	
 	
@@ -139,7 +141,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 	}
 
 	public PanelInfoFragment(Panel panel) {
-		// Required empty public constructor
+		
 		
 		this.panel = panel;
 		
@@ -192,7 +194,7 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 				InputDialogFragment dialog = new InputDialogFragment();
 				
 				//setup dialog title and input hint
-				dialog.setType(InputDialogFragment.PANEL_NAME);
+				dialog.setType(InputDialogFragment.SET_PANEL_NAME);
 				dialog.setHint(panel.getPanelLocation());
 				dialog.show(getFragmentManager(), "UserInputDialog");
 				return true;
@@ -396,14 +398,14 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "IP address");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_ipAddress));
 		map.put("text2", panel==null? "..." : panel.getIp());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Serial number");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_serialNumber));
 		map.put("text2", panel==null? "..." : panel.getSerialNumber());
 			
 		dataList.add(map);
@@ -413,44 +415,44 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 		
 		
 		
-		map.put("text1", "GTIN");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_gtin));
 		map.put("text2", panel==null? "..." : panel.getGtin());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Contact");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_contact));
 		map.put("text2", panel==null? "..." : panel.getContact());
 		
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Tel");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_tel));
 		map.put("text2", panel==null? "..." : panel.getTel());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Mobile");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_mobile));
 		map.put("text2", panel==null? "..." : panel.getMobile());
 			
 		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("text1", "Firmware version");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_firmware));
 		map.put("text2", panel==null? "..." : panel.getVersion());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Memory Used");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_memoryUsage));
 		map.put("text2", panel==null? "..." : panel.getReportUsage());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("text1", "Passcode");
+		map.put("text1", getResources().getString(R.string.text_fragment_panelInfo_passcode));
 		map.put("text2", panel==null? "..." : panel.getPasscode());
 			
 		dataList.add(map);
@@ -524,19 +526,19 @@ public class PanelInfoFragment extends Fragment implements TCPConnection.CallBac
 			// if locaion long clicked
 			switch(position){
 				case 3: dialog.setHint(panel.getContact());
-						dialog.setType(InputDialogFragment.PANEL_CONTACT);
+						dialog.setType(InputDialogFragment.SET_PANEL_CONTACT);
 						dialog.show(getFragmentManager(), "inputDialog");
 						break;
 				case 4: dialog.setHint(panel.getTel());
-						dialog.setType(InputDialogFragment.PANEL_TEL);
+						dialog.setType(InputDialogFragment.SET_PANEL_TEL);
 						dialog.show(getFragmentManager(), "inputDialog");	
 						break;
 				case 5: dialog.setHint(panel.getMobile());
 						dialog.show(getFragmentManager(), "inputDialog");
-						dialog.setType(InputDialogFragment.PANEL_MOBILE);
+						dialog.setType(InputDialogFragment.SET_PANEL_MOBILE);
 						break;
 				case 8: dialog.setHint(panel.getPasscode());
-						dialog.setType(InputDialogFragment.PANEL_PASSCODE);
+						dialog.setType(InputDialogFragment.SET_PANEL_PASSCODE);
 						dialog.show(getFragmentManager(), "inputDialog");
 						break;
 				default: return false;

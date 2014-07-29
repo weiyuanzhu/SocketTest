@@ -7,7 +7,9 @@
     <ExpandableListView
         android:id="@+id/expandableListView_deviceList"
         android:layout_width="match_parent"
-        android:layout_height="424dp" >
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent" >
+        
     </ExpandableListView>
 
     
