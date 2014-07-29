@@ -266,7 +266,7 @@ public class DeviceInfoFragment extends ListFragment {
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_durationTest));
 		String dtTimeText;
 		if(device.isCommunicationStatus()){
-		dtTimeText = res.getString(R.string.text_durationTest_value,device.getDtTime()); 
+			dtTimeText = res.getString(R.string.text_durationTest_value,device.getDtTime()); 
 		}
 		else{
 			dtTimeText = "-";
@@ -361,7 +361,10 @@ public class DeviceInfoFragment extends ListFragment {
     	
     	String on = autoRefresh? "On" : "Off";
     	
-		updateStampTextView.setText("Auto refresh: " + on + ", Device last refreshed: " + sdf.format(deviceCal.getTime()));
+    	String auto = getResources().getString(R.string.text_autoRefresh,on);
+    	String time = getResources().getString(R.string.text_lastRefresh,sdf.format(deviceCal.getTime()));
+    	    	
+		updateStampTextView.setText(auto + time);
 		
 		//update deviceInfo ListView
 		dataList.clear();

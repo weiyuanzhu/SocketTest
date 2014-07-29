@@ -350,15 +350,19 @@ public class Device  implements Parcelable{
 		DecimalFormat df = new DecimalFormat("#.0");
 		double bat = (double) battery/254*100;
 		
-		switch(battery)
-		{
-			case 254:
-
-				return "100 %";
-			case 0:
-				return "0 %";
-			default: return df.format(bat) + " %";
-
+		if(isCommunicationStatus()){
+			switch(battery)
+			{
+				case 254:
+	
+					return "100 %";
+				case 0:
+					return "0 %";
+				default: return df.format(bat) + " %";
+	
+			}
+		}else{
+			return "-";
 		}
 	
 		
