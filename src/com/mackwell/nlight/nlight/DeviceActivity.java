@@ -103,8 +103,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	private DeviceListFragment deviceListFragment = null;
 	private DeviceInfoFragment deviceInfoFragment = null;
 	
-	private ImageView image = null;
-	private TextView faultyDeviceNo = null;
+	private ImageView imageView = null;
+	private TextView messageTextView = null;
 	
 	private TCPConnection connection = null;
 	
@@ -236,8 +236,8 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		System.out.println("current device:-------------->" + currentDeviceAddress);
 		
-		image.setVisibility(View.INVISIBLE);
-		faultyDeviceNo.setVisibility(View.INVISIBLE);
+		imageView.setVisibility(View.INVISIBLE);
+		messageTextView.setVisibility(View.INVISIBLE);
 		
 		System.out.println("groupPositon: " + groupPosition + " childPosition: " + childPosition);
 		
@@ -266,6 +266,20 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 	@Override
 	public void onMultiSelectionMode(boolean multiSelect) {
 		multiSelectionMode = multiSelect;
+
+		currentSelectedDevice = null;
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		if(deviceInfoFragment != null){
+			fragmentTransaction.remove(deviceInfoFragment);
+			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			fragmentTransaction.commit();
+		}
+		
+		imageView.setImageResource(R.drawable.mackwell_logo);
+		imageView.setVisibility(View.VISIBLE);
+		messageTextView.setVisibility(View.VISIBLE);
+		messageTextView.setText("Device multiple selection mode.");
+		
 		
 	}
 
@@ -316,16 +330,16 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		
 		if(!isDemo) this.connection = new TCPConnection(this,panel.getIp());
 		
-		this.image = (ImageView) findViewById(R.id.deviceInfo_image);
-		this.faultyDeviceNo = (TextView) findViewById(R.id.device_faultyNo_text);
-		faultyDeviceNo.setText("Panel Fault(s): " + panel.getFaultDeviceNo());
+		this.imageView = (ImageView) findViewById(R.id.deviceInfo_image);
+		this.messageTextView = (TextView) findViewById(R.id.device_faultyNo_text);
+		messageTextView.setText("Panel Fault(s): " + panel.getFaultDeviceNo());
 		
 		
 		if(panel.getOverAllStatus()!=0)
 		{
-			image.setImageResource(R.drawable.redcross);		
+			imageView.setImageResource(R.drawable.redcross);		
 		}
-		else image.setImageResource(R.drawable.greentick);
+		else imageView.setImageResource(R.drawable.greentick);
 		
 		deviceListFragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.device_list_fragment);
 		deviceListFragment.setLoop1(panel.getLoop1());
@@ -564,30 +578,30 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 			fragmentTransaction.commit();
 		}
 		
-		image.setVisibility(View.VISIBLE);
-		faultyDeviceNo.setVisibility(View.VISIBLE);
+		imageView.setVisibility(View.VISIBLE);
+		messageTextView.setVisibility(View.VISIBLE);
 		
 		
 		//reset image according to loop faulty status
 		switch(groupPosition)
 		{
 			case 0: 
-				faultyDeviceNo.setText("Number of faulty device(s): " + panel.getLoop1().getFaultyDevicesNo());
+				messageTextView.setText("Number of faulty device(s): " + panel.getLoop1().getFaultyDevicesNo());
 				if(panel.getLoop1().getFaultyDevicesNo()!=0)
 				{
-					image.setImageResource(R.drawable.redcross);		
+					imageView.setImageResource(R.drawable.redcross);		
 				}
-				else image.setImageResource(R.drawable.greentick);
+				else imageView.setImageResource(R.drawable.greentick);
 				break;
 			case 1: 
 				
-				faultyDeviceNo.setText("Number of faulty device(s): " + panel.getLoop2().getFaultyDevicesNo());
+				messageTextView.setText("Number of faulty device(s): " + panel.getLoop2().getFaultyDevicesNo());
 				if(panel.getLoop2().getFaultyDevicesNo()!=0)
 					
 				{
-					image.setImageResource(R.drawable.redcross);		
+					imageView.setImageResource(R.drawable.redcross);		
 				}
-				else image.setImageResource(R.drawable.greentick);
+				else imageView.setImageResource(R.drawable.greentick);
 				break;
 				
 			default: 

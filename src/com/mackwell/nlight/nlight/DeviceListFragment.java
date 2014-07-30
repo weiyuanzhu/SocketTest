@@ -338,12 +338,14 @@ public class DeviceListFragment extends Fragment {
 				//-1 to indicating group been clicked
 				if(!mAdapter.isMultiSelectMode()){
 					mAdapter.selectItem(groupPosition, -1);
+					mListener.onGroupExpandOrCollapse(groupPosition);
+					
 				}
 				
 				int loop = groupPosition+1;
 				String str = "Loop " + loop + " Expanded";
 				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
-				mListener.onGroupExpandOrCollapse(groupPosition);
+				
 				
 				mAdapter.notifyDataSetChanged();
 			}
@@ -361,6 +363,7 @@ public class DeviceListFragment extends Fragment {
 				//deviceListView.clearChoices();
 				if(!mAdapter.isMultiSelectMode()){
 					mAdapter.clearCheck();
+					mListener.onGroupExpandOrCollapse(groupPosition);
 				}
 				
 				//this is for single action mode
@@ -369,7 +372,6 @@ public class DeviceListFragment extends Fragment {
 		        }*/
 				
 				mAdapter.notifyDataSetChanged();
-				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
 			
@@ -410,11 +412,13 @@ public class DeviceListFragment extends Fragment {
             	
             	
             	
-            	mListener.onDeviceItemClicked(groupPosition, childPosition);
             	mAdapter.selectItem(groupPosition, childPosition);
             	
             	if(mAdapter.isMultiSelectMode()){
             		mActionMode.updateCounter();
+            	}else{
+	            	mListener.onDeviceItemClicked(groupPosition, childPosition);
+            		
             	}
             	
                 
