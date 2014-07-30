@@ -53,7 +53,7 @@ public class DeviceInfoFragment extends ListFragment {
 	private Device device;
 	private boolean isAutoRefresh;
 
-	private SimpleAdapter mAdapter;
+	private DeviceInfoListAdapter mAdapter;
 	private List<Map<String,Object>> dataList;
 	private TextView deviceName_textView;
 
@@ -161,7 +161,7 @@ public class DeviceInfoFragment extends ListFragment {
 		dataList = getData(device);
 		
 		mAdapter = new DeviceInfoListAdapter(getActivity(), dataList, R.layout.device_info_row, 
-				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue});
+				new String[] {"description","value"}, new int[] {R.id.deviceDescription,R.id.deviceValue}, device);
 		
 		setListAdapter(mAdapter);
 		
@@ -197,7 +197,7 @@ public class DeviceInfoFragment extends ListFragment {
 		String name = location.startsWith("?")? location + "[Click and hold to name device]" : location;
 		
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_deviceName));
+		map.put("description", R.string.text_fragment_deviceInfo_deviceName);
 		map.put("value", device==null? "n/a" : name);
 			
 		dataList.add(map);
@@ -209,20 +209,20 @@ public class DeviceInfoFragment extends ListFragment {
 		//put correct address for device, -128 if it is on loop2
 		int address = device.getAddress() < 127 ? device.getAddress(): device.getAddress()-128; 
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_address));
+		map.put("description", R.string.text_fragment_deviceInfo_address);
 		map.put("value", device==null? "n/a" : address);
 		
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_serialNumber));
+		map.put("description", R.string.text_fragment_deviceInfo_serialNumber);
 		map.put("value", device==null? "n/a" : device.getSerialNumber());
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_gtin));
+		map.put("description", R.string.text_fragment_deviceInfo_gtin);
 		map.put("value", device==null? "n/a" : device.getGTIN());
 			
 		dataList.add(map);
@@ -238,32 +238,32 @@ public class DeviceInfoFragment extends ListFragment {
 		
 		map = new HashMap<String,Object>();
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyMode));
+		map.put("description", R.string.text_fragment_deviceInfo_emergencyMode);
 		map.put("value", device==null? "n/a" : getEmergencyText(device.getEmergencyModeStringIds()));
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyStatus));
+		map.put("description", R.string.text_fragment_deviceInfo_emergencyStatus);
 		map.put("value", device==null? "n/a" : getEmergencyText(device.getEmergencyStatusStringIds()));
 			
 		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_failureStatus));
+		map.put("description", R.string.text_fragment_deviceInfo_failureStatus);
 		map.put("value", device==null? "n/a" : getEmergencyText(device.getFailureStringIds()));
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_batteryLevel));
+		map.put("description",R.string.text_fragment_deviceInfo_batteryLevel);
 		map.put("value", device==null? "n/a" : device.getBatteryLevel());
 			
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_durationTest));
+		map.put("description", R.string.text_fragment_deviceInfo_durationTest);
 		String dtTimeText;
 		if(device.isCommunicationStatus()){
 			dtTimeText = res.getString(R.string.text_durationTest_value,device.getDtTime()); 
@@ -277,7 +277,7 @@ public class DeviceInfoFragment extends ListFragment {
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyLamp));
+		map.put("description", R.string.text_fragment_deviceInfo_emergencyLamp);
 			
 		String emgergencyLampText ;
 		if(device.isCommunicationStatus()){
@@ -293,7 +293,7 @@ public class DeviceInfoFragment extends ListFragment {
 		dataList.add(map);
 		
 		map = new HashMap<String,Object>();
-		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_communicationStatus));
+		map.put("description", R.string.text_fragment_deviceInfo_communicationStatus);
 		String communicationText = device.isCommunicationStatus()? res.getString(R.string.text_deviceCommunicationOk): res.getString(R.string.text_deviceLost);
 		map.put("value", device==null? "n/a" : communicationText);
 			
@@ -308,10 +308,14 @@ public class DeviceInfoFragment extends ListFragment {
 		Resources res = getResources();
 		if(device.isCommunicationStatus()){
 			for(int emStringId : stringId){
-				
-				String s = res.getString(emStringId);
-				sb.append(s);
+				if(emStringId != R.string.emergencyStatus_BATTERY_FULLY_CHARGED){
+					String s = res.getString(emStringId);
+					sb.append(s);
+				}
 			}
+			sb.deleteCharAt(sb.length()-1);
+			
+			
 		}else{
 			sb.append("-");
 		}
