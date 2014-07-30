@@ -137,6 +137,10 @@
     <string name="action_select_loop2">选择 Loop2 设备</string>
     <string name="action_deselect_loop2">反选 Loop2 设备</string>
 	
+    <string name="text_multi_selection_mode">多选模式</string>
+    <string name="text_loop_faulty_message"><xliff:g id="faulty_device_no">%1$s</xliff:g> 故障设备数目: <xliff:g id="faulty_device_no">%2$d</xliff:g></string>
+    <string name="text_panel_faulty_message">Panel 总故障设备数: <xliff:g id="faulty_panel_no">%1$d</xliff:g></string>
+    
     
     
     

@@ -239,20 +239,20 @@ public class DeviceInfoFragment extends ListFragment {
 		map = new HashMap<String,Object>();
 		
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyMode));
-		map.put("value", device==null? "n/a" : device.getEmergencyModeText());
+		map.put("value", device==null? "n/a" : getEmergencyText(device.getEmergencyModeStringIds()));
 			
 		dataList.add(map);
 		map = new HashMap<String,Object>();
 		
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_emergencyStatus));
-		map.put("value", device==null? "n/a" : device.getEmergencyStatusText());
+		map.put("value", device==null? "n/a" : getEmergencyText(device.getEmergencyStatusStringIds()));
 			
 		dataList.add(map);
 	
 		map = new HashMap<String,Object>();
 		
 		map.put("description", getActivity().getResources().getString(R.string.text_fragment_deviceInfo_failureStatus));
-		map.put("value", device==null? "n/a" : device.getFailureStatusText());
+		map.put("value", device==null? "n/a" : getEmergencyText(device.getFailureStringIds()));
 			
 		dataList.add(map);
 		
@@ -301,6 +301,24 @@ public class DeviceInfoFragment extends ListFragment {
 	
 		return dataList;
 	}
+	
+	
+	private String getEmergencyText(List<Integer> stringId){
+		StringBuilder sb = new StringBuilder();
+		Resources res = getResources();
+		if(device.isCommunicationStatus()){
+			for(int emStringId : stringId){
+				
+				String s = res.getString(emStringId);
+				sb.append(s);
+			}
+		}else{
+			sb.append("-");
+		}
+		return sb.toString();
+	}
+	
+	
 
 	
 	// location long clicked listener to set location for device

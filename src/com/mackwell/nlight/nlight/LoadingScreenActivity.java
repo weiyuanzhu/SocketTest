@@ -367,6 +367,8 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 
 	@Override
 	protected void onResume() {
+		
+		System.out.println("--------Loading screen onResume()-----------");
 		// TODO Auto-generated method stub
 		super.onResume();
 		
@@ -573,11 +575,14 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panel.setGtinArray(new int[]{132,2,166,43,154,4});
 		panel.setReportUsageLong(1010234);
 		
-		panel.getLoop1().addDevice(new Device(0,true,"LB 5",72,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(1,true,"LB 6",0,0,0,200,1366965291,new int[]{178,5,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(2,true,"?",0,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(3,true,"Dining Room",4,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
-		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",192,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
+		panel.getLoop1().addDevice(new Device(0,true,"LB 5",2,48,0,0,1365167879,new int[]{145,5,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(1,true,"LB 6",4,4,0,200,1366965291,new int[]{178,5,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(2,true,"?",8,4,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(3,true,"Dining Room",16,0,0,200,1374967295,new int[]{45,2,166,43,154,4}));
+		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",32,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
+		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",64,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
+		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",128,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
+		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",256,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
 		
 		
 		panel.getLoop2().addDevice(new Device(128,true,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));

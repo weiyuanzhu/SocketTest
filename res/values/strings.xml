@@ -138,7 +138,44 @@
     <string name="action_deselect_loop1">Deselect loop1 devices</string>
     <string name="action_select_loop2">Select loop2 devices</string>
     <string name="action_deselect_loop2">Deselect loop1 devices</string>
+    
+    <string name="text_multi_selection_mode">Multiple selection mode.</string>
+    <string name="text_loop_faulty_message"><xliff:g id="faulty_device_no">%1$s</xliff:g> Number of faulty device(s): <xliff:g id="faulty_device_no">%2$d</xliff:g></string>
+    <string name="text_panel_faulty_message">Faute de Groupe(s): <xliff:g id="faulty_panel_no">%1$d</xliff:g></string>
+    
 
+    <string name="emergencyMode_REST_MODE">Rest Mode</string>
+    <string name="emergencyMode_NORMAL_MODE">Normal Mode</string>
+    <string name="emergencyMode_EMERGENCY_MODE">Emergency Mode</string>
+    <string name="emergencyMode_EXTENDED_EMERGENCY_MODE">Extended Emergency Mode</string>
+    <string name="emergencyMode_FUNCTION_TEST_IN_PROGRESS">"FT in Progress</string>
+    <string name="emergencyMode_DURATION_TEST_IN_PROGRESS">DT in Progress</string>
+    <string name="emergencyMode_HARDWIRED_INHIBIT">Hardwired Inhibited</string>
+    <string name="emergencyMode_HARDWIRED_SWITCH_ON">Hardwire switch is on</string>
+    
+    <string name="failureStatus_CIRCUIT_FAILURE">Circuit Failed </string>
+    <string name="failureStatus_BATTERY_DURATION_FAILURE">Battery Duration </string>
+    <string name="failureStatus_LAMP_FAILURE">Lamp Failed </string>
+    <string name="failureStatus_FUNCTION_TEST_MAXIMUM_DELAY_EXCEEDED">FT Max </string>
+    <string name="failureStatus_BATTERY_FAILURE">Battery Failed </string>
+    <string name="failureStatus_DURATION_TEST_MAXIMUM_DELAY_EXCEEDED">DT Max </string>
+    <string name="failureStatus_FUNCTION_TEST_FAILURE">FT Failed </string>
+    <string name="failureStatus_DURATION_TEST_FAILURE">DT Failed </string>
+    <string name="failureStatus_ALL_OK">All OK</string>
+    
+    <string name="emergencyStatus_INHIBIT_MODE">Inhibit Mode</string>
+    <string name="emergencyStatus_FUNCTION_TEST_DONE">FT Done</string>
+    <string name="emergencyStatus_DURATION_TEST_DONE">DT Done</string>
+    <string name="emergencyStatus_BATTERY_FULLY_CHARGED">Battery Full</string>
+    <string name="emergencyStatus_FUNCTION_TEST_PENDING">FT Pending</string>
+    <string name="emergencyStatus_DURATION_TEST_PENDING">DT Pending</string>
+    <string name="emergencyStatus_IDENTIFICATION_ACTIVE">Identification Activt</string>
+    <string name="emergencyStatus_PHYSICALLY_SELECTED">Physically Selected</string>
+  	<string name="emergencyStatus_NORMAL">-</string>
+    
+
+    
+    
 
 
 </resources>
