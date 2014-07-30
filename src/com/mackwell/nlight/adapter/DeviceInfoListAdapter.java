@@ -25,6 +25,12 @@ import android.widget.TextView;
  */
 public class DeviceInfoListAdapter extends SimpleAdapter {
 	
+	class ViewHolder{
+		TextView descriptionTextView;
+		TextView valueTextView;
+		
+	}
+	
 	
 	Device mDevice;
 	private Context mContext;
@@ -53,35 +59,42 @@ public class DeviceInfoListAdapter extends SimpleAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		Resources res = mContext.getResources();
-		
-		
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = mInflater.inflate(mResource, parent,false);
+
+		View rowView = convertView;
+				
+		if(rowView==null){
+			rowView = mInflater.inflate(mResource, parent,false);
+			ViewHolder viewHolder = new ViewHolder();
+			viewHolder.descriptionTextView = (TextView) rowView.findViewById(mTo[0]);
+			viewHolder.valueTextView = (TextView) rowView.findViewById(mTo[1]);
+			rowView.setTag(viewHolder);
+		}
 		
 		
-		TextView description = (TextView) rowView.findViewById(mTo[0]);
-		TextView content = (TextView) rowView.findViewById(mTo[1]);
+		ViewHolder viewHolder = (ViewHolder) rowView.getTag();
+		
 		
 		int stringId = (Integer) mData.get(position).get(mFrom[0]);
 		String descriptionString = res.getString(stringId);
 		String contentString = mData.get(position).get(mFrom[1]).toString();
 		
 		
-		description.setText(descriptionString);
-		content.setText(contentString );
+		viewHolder.descriptionTextView.setText(descriptionString);
+		viewHolder.valueTextView.setText(contentString );
 		
 		if(stringId==R.string.text_fragment_deviceInfo_failureStatus)
 		{
-			if(!mDevice.isFaulty()){
-				content.setTextColor(Color.BLACK);
+			if(!mDevice.isFaulty() || contentString.equals("-") ){
+				viewHolder.valueTextView.setTextColor(Color.BLACK);
 			}
 			else{
-				content.setTextColor(Color.RED);
+				viewHolder.valueTextView.setTextColor(Color.RED);
 			}
 		}
 		
 		if(stringId == R.string.text_fragment_deviceInfo_communicationStatus){
-			content.setTextColor(mDevice.isCommunicationStatus()? Color.BLACK : Color.RED);
+			viewHolder.valueTextView.setTextColor(mDevice.isCommunicationStatus()? Color.BLACK : Color.RED);
 		}
 			
 		
