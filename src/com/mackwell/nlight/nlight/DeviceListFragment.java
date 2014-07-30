@@ -124,7 +124,7 @@ public class DeviceListFragment extends Fragment {
 	        
 	        actionModeView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_devicelist,null);
 			
-			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
+			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_description_textView);
 			
 			//counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
@@ -235,12 +235,14 @@ public class DeviceListFragment extends Fragment {
             	}
 			}
 			
-			updateCounter();
 			
-			//updateCounter();
+			
+			
 			mAdapter.notifyDataSetChanged();
 			
 			
+			//updateCounter();
+			updateCounter();
 			
 			
 			System.out.println("------------onItemCheckedStateChanged-------------");
@@ -248,7 +250,7 @@ public class DeviceListFragment extends Fragment {
 		}
 		
 		private void updateCounter(){
-			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			counterTextView.setText(getResources().getString(R.string.device_selected_description,mAdapter.getCheckedCount()));
 			
 		}
 		

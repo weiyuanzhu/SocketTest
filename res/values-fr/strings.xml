@@ -129,6 +129,13 @@
 	<string name="text_connect_error">"Impossible de se connecter à " <xliff:g id="error_ip">%1$s</xliff:g> ", s'il vous plaît vérifier la connexion."</string>
 	<string name="text_prepPanelData">"Préparation des données de panel"</string>
 	
+	<string name="device_selected_description">Sélectionné: <xliff:g id="device_selected_counter">%1$d</xliff:g></string>
+    <string name="device_selected_number">0</string>
+    <string name="action_select_loop1">Sélectionner loop1 dispositifs</string>
+    <string name="action_deselect_loop1">Désélectionner loop1 dispositifs</string>
+    <string name="action_select_loop2">Sélectionner loop2 dispositifs</string>
+    <string name="action_deselect_loop2">Désélectionner loop1 dispositifs</string>
+	
 	
 	
 	
