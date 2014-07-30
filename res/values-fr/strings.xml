@@ -140,7 +140,35 @@
     <string name="text_loop_faulty_message"><xliff:g id="faulty_device_no">%1$s</xliff:g> Nombre de dispositif défectueuse(s): <xliff:g id="faulty_device_no">%2$d</xliff:g></string>
     <string name="text_panel_faulty_message">Panel (s): <xliff:g id="faulty_panel_no">%1$d</xliff:g></string>
     
-	
+	<string name="emergencyMode_REST_MODE">Mode repos,</string>
+    <string name="emergencyMode_NORMAL_MODE">Mode Normal,</string>
+    <string name="emergencyMode_EMERGENCY_MODE">"Mode d'urgence,"</string>
+    <string name="emergencyMode_EXTENDED_EMERGENCY_MODE">"Mode d'urgence prolongé,"</string>
+    <string name="emergencyMode_FUNCTION_TEST_IN_PROGRESS">FT en cours,</string>
+    <string name="emergencyMode_DURATION_TEST_IN_PROGRESS">DT en cours,</string>
+    <string name="emergencyMode_HARDWIRED_INHIBIT">Câblé inhibé,</string>
+    <string name="emergencyMode_HARDWIRED_SWITCH_ON">Commutateur câblé est sur,</string>
+    
+    <string name="failureStatus_CIRCUIT_FAILURE">Circuit Échec, </string>
+    <string name="failureStatus_BATTERY_DURATION_FAILURE">Durée de batterie, </string>
+    <string name="failureStatus_LAMP_FAILURE">Lampe Échec, </string>
+    <string name="failureStatus_FUNCTION_TEST_MAXIMUM_DELAY_EXCEEDED">FT Max, </string>
+    <string name="failureStatus_BATTERY_FAILURE">Batterie défectueuse, </string>
+    <string name="failureStatus_DURATION_TEST_MAXIMUM_DELAY_EXCEEDED">DT Max, </string>
+    <string name="failureStatus_FUNCTION_TEST_FAILURE">FT Échec, </string>
+    <string name="failureStatus_DURATION_TEST_FAILURE">DT Échec, </string>
+    <string name="failureStatus_ALL_OK">Tout OK,</string>
+    
+    <string name="emergencyStatus_INHIBIT_MODE">Inhiber mode,</string>
+    <string name="emergencyStatus_FUNCTION_TEST_DONE">FT Fait,</string>
+    <string name="emergencyStatus_DURATION_TEST_DONE">DT Fait,</string>
+    <string name="emergencyStatus_BATTERY_FULLY_CHARGED">Batterie pleine,</string>
+    <string name="emergencyStatus_FUNCTION_TEST_PENDING">FT attente,</string>
+    <string name="emergencyStatus_DURATION_TEST_PENDING">DT attente,</string>
+    <string name="emergencyStatus_IDENTIFICATION_ACTIVE">"Activt d'identification,"</string>
+    <string name="emergencyStatus_PHYSICALLY_SELECTED">Physiquement sélectionnée,</string>
+  	<string name="emergencyStatus_NORMAL">-,</string>
+    
 	
 	
 	

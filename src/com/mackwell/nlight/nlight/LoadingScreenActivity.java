@@ -582,7 +582,6 @@ public class LoadingScreenActivity extends BaseActivity implements PanelConnecti
 		panel.getLoop1().addDevice(new Device(4,true,"Bed Room",64,0,0,192,1374965293,new int[]{200,1,162,43,154,4}));
 		
 		
-		
 		panel.getLoop2().addDevice(new Device(128,true,"LB 7",0,0,0,150,1361562293,new int[]{223,3,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(129,true,"LB 8",0,0,0,23,1363967292,new int[]{243,4,166,43,154,4}));
 		panel.getLoop2().addDevice(new Device(130,false,"Exit",0,0,0,0,1363947292,new int[]{246,5,166,43,154,4}));

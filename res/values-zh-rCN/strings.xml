@@ -142,6 +142,34 @@
     <string name="text_panel_faulty_message">Panel 总故障设备数: <xliff:g id="faulty_panel_no">%1$d</xliff:g></string>
     
     
+    <string name="emergencyMode_REST_MODE">休眠模式,</string>
+    <string name="emergencyMode_NORMAL_MODE">正常模式,</string>
+    <string name="emergencyMode_EMERGENCY_MODE">应急模式,</string>
+    <string name="emergencyMode_EXTENDED_EMERGENCY_MODE">扩展应急模式,</string>
+    <string name="emergencyMode_FUNCTION_TEST_IN_PROGRESS">"FT 进行中,</string>
+    <string name="emergencyMode_DURATION_TEST_IN_PROGRESS">DT 进行中,</string>
+    <string name="emergencyMode_HARDWIRED_INHIBIT">硬件休眠,</string>
+    <string name="emergencyMode_HARDWIRED_SWITCH_ON">硬件开关打开,</string>
+    
+    <string name="failureStatus_CIRCUIT_FAILURE">电路故障, </string>
+    <string name="failureStatus_BATTERY_DURATION_FAILURE">电池持续问题, </string>
+    <string name="failureStatus_LAMP_FAILURE">灯泡故障, </string>
+    <string name="failureStatus_FUNCTION_TEST_MAXIMUM_DELAY_EXCEEDED">FT Max, </string>
+    <string name="failureStatus_BATTERY_FAILURE">电池故障, </string>
+    <string name="failureStatus_DURATION_TEST_MAXIMUM_DELAY_EXCEEDED">DT Max, </string>
+    <string name="failureStatus_FUNCTION_TEST_FAILURE">FT 失败, </string>
+    <string name="failureStatus_DURATION_TEST_FAILURE">DT 失败, </string>
+    <string name="failureStatus_ALL_OK">正常,</string>
+    
+    <string name="emergencyStatus_INHIBIT_MODE">休眠模式,</string>
+    <string name="emergencyStatus_FUNCTION_TEST_DONE">FT 完成,</string>
+    <string name="emergencyStatus_DURATION_TEST_DONE">DT 完成,</string>
+    <string name="emergencyStatus_BATTERY_FULLY_CHARGED">电池充满,</string>
+    <string name="emergencyStatus_FUNCTION_TEST_PENDING">FT 等待中,</string>
+    <string name="emergencyStatus_DURATION_TEST_PENDING">DT 等待中,</string>
+    <string name="emergencyStatus_IDENTIFICATION_ACTIVE">搜索激活,</string>
+    <string name="emergencyStatus_PHYSICALLY_SELECTED">物理选择,</string>
+  	<string name="emergencyStatus_NORMAL">-,</string>
     
     
 	
