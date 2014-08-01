@@ -146,28 +146,28 @@ public class DeviceListFragment extends Fragment {
 			{
 				case R.id.device_ft:
 					mListener.ft(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_ft_inProgress,Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
 					mListener.st(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_stop_all, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
 					mListener.dt(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_dt_inProgress, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
 					mListener.id(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_id_inProgress, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
 					mListener.stopId(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_stop_identify, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_refresh:
 					
 					mListener.refreshSelectedDevices(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_refresh_device, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_select_loop1_all:
 					if(mAdapter.isLoop1Selected()){
@@ -343,8 +343,9 @@ public class DeviceListFragment extends Fragment {
 				}
 				
 				int loop = groupPosition+1;
-				String str = "Loop " + loop + " Expanded";
-				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
+				String str = "Loop" + loop ;
+				String toastText = getResources().getString(R.string.toast_expand_loop,str); 
+				Toast.makeText(getActivity(),toastText,Toast.LENGTH_SHORT).show();
 				
 				
 				mAdapter.notifyDataSetChanged();

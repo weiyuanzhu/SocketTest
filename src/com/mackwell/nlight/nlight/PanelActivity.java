@@ -346,7 +346,7 @@ public class PanelActivity extends BaseActivity implements OnPanelListItemClicke
 	            startActivityForResult(intent, 0);
 	            return true;
 	        case R.id.action_refresh:
-	        	Toast.makeText(this, "Refreshing panel status...", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(this, R.string.toast_refresh_panelStatus, Toast.LENGTH_LONG).show();
 	        	panelListFragment.refreshStatus(isDemo, isConnected);
 	        	return true;
 	    

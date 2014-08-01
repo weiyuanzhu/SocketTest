@@ -278,7 +278,7 @@ public class DeviceActivity extends BaseActivity implements OnDevicdListFragment
 		imageView.setImageResource(R.drawable.mackwell_logo);
 		imageView.setVisibility(View.VISIBLE);
 		messageTextView.setVisibility(View.VISIBLE);
-		messageTextView.setText("Device multiple selection mode.");
+		messageTextView.setText(R.string.text_multi_selection_mode);
 		
 		
 	}
