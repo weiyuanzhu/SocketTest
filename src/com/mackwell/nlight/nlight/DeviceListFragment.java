@@ -124,7 +124,7 @@ public class DeviceListFragment extends Fragment {
 	        
 	        actionModeView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_devicelist,null);
 			
-			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_number_textView);
+			counterTextView = (TextView) actionModeView.findViewById(R.id.deviceListFragment_counter_description_textView);
 			
 			//counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
 			
@@ -146,28 +146,28 @@ public class DeviceListFragment extends Fragment {
 			{
 				case R.id.device_ft:
 					mListener.ft(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Function test in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_ft_inProgress,Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_st:
 					mListener.st(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Stoping all pending tests.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_stop_all, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_dt:
 					mListener.dt(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Duration test in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_dt_inProgress, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_id:
 					mListener.id(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Device identifying in progress.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_id_inProgress, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_stopId:
 					mListener.stopId(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Stoping device identifying.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_stop_identify, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_refresh:
 					
 					mListener.refreshSelectedDevices(mAdapter.getSelectedDeviceAddressList());
-					Toast.makeText(getActivity(), "Refreshing device status.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_refresh_device, Toast.LENGTH_LONG).show();
 					break;
 				case R.id.device_select_loop1_all:
 					if(mAdapter.isLoop1Selected()){
@@ -235,12 +235,14 @@ public class DeviceListFragment extends Fragment {
             	}
 			}
 			
-			updateCounter();
 			
-			//updateCounter();
+			
+			
 			mAdapter.notifyDataSetChanged();
 			
 			
+			//updateCounter();
+			updateCounter();
 			
 			
 			System.out.println("------------onItemCheckedStateChanged-------------");
@@ -248,7 +250,7 @@ public class DeviceListFragment extends Fragment {
 		}
 		
 		private void updateCounter(){
-			counterTextView.setText(Integer.toString(mAdapter.getCheckedCount()));
+			counterTextView.setText(getResources().getString(R.string.device_selected_description,mAdapter.getCheckedCount()));
 			
 		}
 		
@@ -336,12 +338,15 @@ public class DeviceListFragment extends Fragment {
 				//-1 to indicating group been clicked
 				if(!mAdapter.isMultiSelectMode()){
 					mAdapter.selectItem(groupPosition, -1);
+					mListener.onGroupExpandOrCollapse(groupPosition);
+					
 				}
 				
 				int loop = groupPosition+1;
-				String str = "Loop " + loop + " Expanded";
-				Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
-				mListener.onGroupExpandOrCollapse(groupPosition);
+				String str = "Loop" + loop ;
+				String toastText = getResources().getString(R.string.toast_expand_loop,str); 
+				Toast.makeText(getActivity(),toastText,Toast.LENGTH_SHORT).show();
+				
 				
 				mAdapter.notifyDataSetChanged();
 			}
@@ -359,6 +364,7 @@ public class DeviceListFragment extends Fragment {
 				//deviceListView.clearChoices();
 				if(!mAdapter.isMultiSelectMode()){
 					mAdapter.clearCheck();
+					mListener.onGroupExpandOrCollapse(groupPosition);
 				}
 				
 				//this is for single action mode
@@ -367,7 +373,6 @@ public class DeviceListFragment extends Fragment {
 		        }*/
 				
 				mAdapter.notifyDataSetChanged();
-				mListener.onGroupExpandOrCollapse(groupPosition);
 			}
 			
 			
@@ -408,11 +413,13 @@ public class DeviceListFragment extends Fragment {
             	
             	
             	
-            	mListener.onDeviceItemClicked(groupPosition, childPosition);
             	mAdapter.selectItem(groupPosition, childPosition);
             	
             	if(mAdapter.isMultiSelectMode()){
             		mActionMode.updateCounter();
+            	}else{
+	            	mListener.onDeviceItemClicked(groupPosition, childPosition);
+            		
             	}
             	
                 

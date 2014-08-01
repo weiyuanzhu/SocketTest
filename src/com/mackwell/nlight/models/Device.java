@@ -13,6 +13,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.*;
 
+import com.mackwell.nlight.R;
 import com.mackwell.nlight.messageType.EmergencyMode;
 import com.mackwell.nlight.messageType.EmergencyModeFlag;
 import com.mackwell.nlight.messageType.EmergencyStatus;
@@ -269,6 +270,26 @@ public class Device  implements Parcelable{
 		return sb.toString();
 		
 	}
+	
+	public List<Integer> getFailureStringIds(){
+		ArrayList<Integer> failureStringIds = new ArrayList<Integer>();
+		
+		EnumSet<FailureStatus> emSet = new FailureStatusFlag().getFlagStatus(failureStatus);
+		if (emSet.size()==0)
+		{
+			failureStringIds.add(FailureStatus.ALL_OK.getStringId());
+		}
+		else{
+			for(FailureStatus em : emSet)
+			{
+				failureStringIds.add(em.getStringId());
+				
+			}
+			
+		}
+		
+		return failureStringIds;
+	}
 
 	public boolean isCommunicationStatus() {
 		return communicationStatus;
@@ -309,6 +330,26 @@ public class Device  implements Parcelable{
 		}
 		return sb.toString();
 	}
+	
+	public List<Integer> getEmergencyStatusStringIds(){
+		ArrayList<Integer> emergencyStatusStringIds = new ArrayList<Integer>();
+		
+		EnumSet<EmergencyStatus> emSet = new EmergencyStatusFlag().getFlagStatus(emergencyStatus);
+		if (emSet.size()==0)
+		{
+			emergencyStatusStringIds.add(EmergencyStatus.NORMAL.getStringId());
+		}
+		else{
+			for(EmergencyStatus em : emSet)
+			{
+				emergencyStatusStringIds.add(em.getStringId());
+				
+			}
+			
+		}
+		
+		return emergencyStatusStringIds;
+	}
 
 	public int getEmergencyMode() {
 		return emergencyMode;
@@ -341,10 +382,31 @@ public class Device  implements Parcelable{
 		}
 		return sb.toString();
 	}
+	
+	public List<Integer> getEmergencyModeStringIds(){
+		ArrayList<Integer> emergencyModeStringIds = new ArrayList<Integer>();
+		
+		EnumSet<EmergencyMode> emSet = new EmergencyModeFlag().getFlagStatus(emergencyMode);
+		if (emSet.size()==0)
+		{
+			emergencyModeStringIds.add(EmergencyMode.NORMAL_MODE.getStringId());
+		}
+		else{
+			for(EmergencyMode em : emSet)
+			{
+				emergencyModeStringIds.add(em.getStringId());
+				
+			}
+			
+		}
+		
+		return emergencyModeStringIds;
+	}
 
 	public int getBattery() {
 		return battery;
 	}
+	
 	
 	public String getBatteryLevel()
 	{
