@@ -70,7 +70,7 @@
 	<string name="title_dialog_input_enterInformation">Entrez les informations</string> 
   
 	<string name="hint_dialog_input_setPanelName">Nom de Groupe</string>
-	<string name="hint_dialog_input_setDeviceName">Nom de l'appareil</string>
+	<string name="hint_dialog_input_setDeviceName">"Nom de l'appareil"</string>
 	<string name="hint_dialog_input_setContactName">Nom du contact</string>
 	<string name="hint_dialog_input_setTel">Numéro de téléphone</string>
 	<string name="hint_dialog_input_setMobile">Numéro de portable</string>
